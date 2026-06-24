@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1920px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+.bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&q=85&fit=crop&crop=center');
+  background-size: cover;
+  background-position: center 30%;
+  filter: brightness(0.28) saturate(0.7);
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(6,12,30,0.4) 0%,
+    rgba(6,12,30,0.1) 30%,
+    rgba(6,12,30,0.0) 50%,
+    rgba(6,12,30,0.5) 75%,
+    rgba(6,12,30,0.85) 100%
+  );
+}
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 110px 90px 90px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+/* header */
+.eyebrow {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #f59e0b;
+  margin-bottom: 22px;
+}
+h1 {
+  font-size: 100px;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -3px;
+  margin-bottom: 24px;
+}
+.subtitle {
+  font-size: 34px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+.spacer { flex: 1; }
+/* entries */
+.entries { display: flex; flex-direction: column; gap: 52px; }
+.entry { display: flex; align-items: center; gap: 36px; }
+.rank {
+  font-size: 28px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.18);
+  width: 44px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.flag {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+  background: rgba(255,255,255,0.05);
+}
+.info { flex: 1; min-width: 0; }
+.country {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.bar-wrap {
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  height: 9px;
+  overflow: hidden;
+}
+.bar {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #d97706, #fbbf24);
+}
+.score {
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 110px;
+}
+.count {
+  font-size: 72px;
+  font-weight: 900;
+  color: #fbbf24;
+  line-height: 1;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+}
+.count-label {
+  font-size: 19px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+/* footer */
+.footer {
+  margin-top: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.source {
+  font-size: 20px;
+  color: rgba(255,255,255,0.25);
+  line-height: 1.5;
+}
+.source strong { color: rgba(255,255,255,0.45); }
+.logo {
+  font-size: 20px;
+  color: rgba(255,255,255,0.25);
+  text-align: right;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="overlay"></div>
+<div class="content">
+  <div>
+    <div class="eyebrow">World Cup 2026</div>
+    <h1>Top 5<br>Importers</h1>
+    <div class="subtitle">Countries with the most players<br>born abroad</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="entries">
+    <div class="entry">
+      <div class="rank">1</div>
+      <img class="flag" src="https://cdn.jsdelivr.net/npm/circle-flags@2/flags/cd.svg">
+      <div class="info">
+        <div class="country">DR Congo</div>
+        <div class="bar-wrap"><div class="bar" style="width:100%"></div></div>
+      </div>
+      <div class="score">
+        <div class="count">25</div>
+        <div class="count-label">players</div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="rank">1</div>
+      <img class="flag" src="https://cdn.jsdelivr.net/npm/circle-flags@2/flags/cw.svg">
+      <div class="info">
+        <div class="country">Curaçao</div>
+        <div class="bar-wrap"><div class="bar" style="width:100%"></div></div>
+      </div>
+      <div class="score">
+        <div class="count">25</div>
+        <div class="count-label">players</div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="rank">3</div>
+      <img class="flag" src="https://cdn.jsdelivr.net/npm/circle-flags@2/flags/ma.svg">
+      <div class="info">
+        <div class="country">Morocco</div>
+        <div class="bar-wrap"><div class="bar" style="width:76%"></div></div>
+      </div>
+      <div class="score">
+        <div class="count">19</div>
+        <div class="count-label">players</div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="rank">4</div>
+      <img class="flag" src="https://cdn.jsdelivr.net/npm/circle-flags@2/flags/dz.svg">
+      <div class="info">
+        <div class="country">Algeria</div>
+        <div class="bar-wrap"><div class="bar" style="width:64%"></div></div>
+      </div>
+      <div class="score">
+        <div class="count">16</div>
+        <div class="count-label">players</div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="rank">4</div>
+      <img class="flag" src="https://cdn.jsdelivr.net/npm/circle-flags@2/flags/ht.svg">
+      <div class="info">
+        <div class="country">Haiti</div>
+        <div class="bar-wrap"><div class="bar" style="width:64%"></div></div>
+      </div>
+      <div class="score">
+        <div class="count">16</div>
+        <div class="count-label">players</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="source">
+      <strong>Source:</strong> Wikipedia<br>
+      mundial.cthiebaud.com/
+    </div>
+    <div class="logo">
+      281 players · 43 birth countries<br>
+      <strong>WC 2026 Export Map</strong>
+    </div>
+  </div>
+</div>
+</body>
+</html>
