@@ -1,0 +1,242 @@
+# Propositions de citations detournees pour mundial
+# Status: pending = a detourner, done = deja dans i18n.js
+# Pour chaque citation, trouver un detournement lie au theme:
+# joueurs nes dans un pays, selectionnes par un autre.
+
+done:
+  - original: "Il calcio e l'ultima rappresentazione sacra del nostro tempo."
+    detournement: same (the quote itself fits the theme)
+    note: In Italian, not French — kept in original language
+    author: Pier Paolo Pasolini
+    work: Il Giorno
+    date: 1971
+
+pending:
+  - original: "En mon pays suis en terre lointaine."
+    author: "Francois Villon"
+    work: "Ballade du concours de Blois"
+    date: ~1458
+
+  - original: "Parce que c'etait lui, parce que c'etait moi."
+    author: "Michel de Montaigne"
+    work: Essais
+    date: 1580
+
+  - original: "Patience et longueur de temps font plus que force ni que rage."
+    author: "Jean de La Fontaine"
+    work: Fables
+    ref: "Le Lion et le Rat"
+    date: 1668
+
+  - original: "De l'audace, encore de l'audace, toujours de l'audace !"
+    author: "Georges Jacques Danton"
+    date: 1792
+
+  # XIXe siecle
+  - original: "Derriere chaque grande fortune se cache un crime."
+    author: "Honore de Balzac"
+    work: Le Pere Goriot
+    date: 1835
+
+  - original: "Etre bete, egoiste, et avoir une bonne sante, voila les trois conditions pour etre heureux."
+    author: "Gustave Flaubert"
+    work: Correspondance
+
+  - original: "Il faut etre absolument moderne."
+    author: "Arthur Rimbaud"
+    work: "Une saison en enfer"
+    date: 1873
+
+  - original: "Je est un autre."
+    author: "Arthur Rimbaud"
+    work: "Lettre du voyant"
+    date: 1871
+
+  - original: "On n'est pas serieux quand on a dix-sept ans."
+    author: "Arthur Rimbaud"
+    work: Roman
+    date: 1870
+
+  - original: "O temps ! suspends ton vol."
+    author: "Alphonse de Lamartine"
+    work: Le Lac
+    date: 1820
+
+  - original: "Un seul etre vous manque et tout est depeuple."
+    author: "Alphonse de Lamartine"
+    work: "L'Isolement"
+    date: 1820
+
+  - original: "La chair est triste, helas ! et j'ai lu tous les livres."
+    author: "Stephane Mallarme"
+    work: Brise marine
+    date: 1866
+
+  - original: "Luxe, calme et volupte."
+    author: "Charles Baudelaire"
+    work: "L'Invitation au voyage"
+    date: 1857
+
+  - original: "Le poete est semblable au prince des nuees."
+    author: "Charles Baudelaire"
+    work: "L'Albatros"
+    date: 1857
+
+  - original: "Je suis le tenebreux, le veuf, l'inconsole."
+    author: "Gerard de Nerval"
+    work: El Desdichado
+    date: 1854
+
+  - original: "C'est un roc ! c'est un pic ! c'est un cap ! Que dis-je, c'est un cap ? C'est une peninsule !"
+    author: "Edmond Rostand"
+    work: Cyrano de Bergerac
+    ref: "Acte I, sc. 4"
+    date: 1897
+
+  # XXe siecle — litterature & pensee
+  - original: "Le vent se leve, il faut tenter de vivre."
+    author: "Paul Valery"
+    work: Le Cimetiere marin
+    date: 1920
+
+  - original: "La beaute sera convulsive ou ne sera pas."
+    author: "Andre Breton"
+    work: Nadja
+    date: 1928
+
+  - original: "La vie ne vaut rien, mais rien ne vaut la vie."
+    author: "Andre Malraux"
+
+  - original: "Il n'y a pas de hasard, il n'y a que des rendez-vous."
+    author: "Paul Eluard"
+
+  - original: "Creer, c'est vivre deux fois."
+    author: "Albert Camus"
+    work: Le Mythe de Sisyphe
+    date: 1942
+
+  - original: "Je me revolte, donc nous sommes."
+    author: "Albert Camus"
+    work: "L'Homme revolte"
+    date: 1951
+
+  - original: "Mal nommer les choses, c'est ajouter au malheur du monde."
+    author: "Albert Camus"
+
+  - original: "Ce que l'on concoit bien s'enonce clairement."
+    author: "Nicolas Boileau"
+    work: Art poetique
+    date: 1674
+
+  - original: "Vingt fois sur le metier remettez votre ouvrage."
+    author: "Nicolas Boileau"
+    work: Art poetique
+    date: 1674
+
+  - original: "Le style, c'est l'homme meme."
+    author: "Georges-Louis Leclerc de Buffon"
+    work: "Discours de reception a l'Academie"
+    date: 1753
+
+  # Sport
+  - original: "Et un, et deux, et trois-zero !"
+    author: "chant des supporters francais"
+    date: 1998
+
+  - original: "On est en finale ! On est en finale !"
+    author: "Thierry Roland"
+    date: 1998
+
+  - original: "La victoire est dans les tetes avant d'etre dans les pieds."
+    author: "Aime Jacquet"
+
+  # Cinema & spectacle
+  - original: "Atmosphere ! Atmosphere ! Est-ce que j'ai une gueule d'atmosphere ?"
+    author: Arletty
+    work: "Hotel du Nord (Marcel Carne)"
+    date: 1938
+
+  - original: "T'as de beaux yeux, tu sais."
+    author: "Jean Gabin"
+    work: "Quai des brumes"
+    date: 1938
+
+  - original: "Les cons, ca ose tout, c'est meme a ca qu'on les reconnait."
+    author: "Michel Audiard"
+    work: Les Tontons flingueurs
+    date: 1963
+
+  - original: "C'est l'histoire d'un mec..."
+    author: Coluche
+
+  # Contemporain
+  - original: "La possibilite d'une ile."
+    author: "Michel Houellebecq"
+    work: titre de roman
+    date: 2005
+
+  - original: "Souvent femme varie, bien fol est qui s'y fie."
+    author: "Francois Ier"
+    date: ~1530
+
+  # Football — English
+  - original: "Some people believe football is a matter of life and death. I assure you it is much more serious than that."
+    lang: en
+    author: "Bill Shankly"
+
+  - original: "Football is a simple game. Twenty-two men chase a ball for 90 minutes and at the end, the Germans always win."
+    lang: en
+    author: "Gary Lineker"
+
+  - original: "I spent a lot of money on booze, birds and fast cars. The rest I just squandered."
+    lang: en
+    author: "George Best"
+
+  - original: "You can't win anything with kids."
+    lang: en
+    author: "Alan Hansen"
+    date: 1995
+
+  - original: "They think it's all over... it is now!"
+    lang: en
+    author: "Kenneth Wolstenholme"
+    date: 1966
+
+  - original: "I am not a man who has come from nowhere. I come from somewhere very precise."
+    lang: en
+    author: "Eric Cantona"
+
+  # Football — French
+  - original: "La victoire est dans les tetes avant d'etre dans les pieds."
+    lang: fr
+    author: "Aime Jacquet"
+
+  - original: "On ne choisit pas son pays de naissance, on choisit les couleurs qu'on defend."
+    lang: fr
+    author: "Lilian Thuram"
+
+  # Football — German
+  - original: "Der Ball ist rund und das Spiel dauert 90 Minuten."
+    lang: de
+    author: "Sepp Herberger"
+
+  - original: "Nach dem Spiel ist vor dem Spiel."
+    lang: de
+    author: "Sepp Herberger"
+
+  # Football — Spanish
+  - original: "La pelota no se mancha."
+    lang: es
+    author: "Diego Maradona"
+    date: 2001
+
+  - original: "No se puede ganar siempre, pero siempre se puede pelear."
+    lang: es
+
+  # Football — Italian
+  - original: "Il calcio e la cosa piu importante delle cose meno importanti."
+    lang: it
+    author: "Arrigo Sacchi"
+
+  - original: "Perdere e morire un po'."
+    lang: it
