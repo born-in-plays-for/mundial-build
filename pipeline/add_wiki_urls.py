@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import unquote, quote
 from bs4 import BeautifulSoup
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent / "data"
 JSON_PATH = ROOT / "wc2026_map_data.json"
 
 WIKI_URL  = "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads"

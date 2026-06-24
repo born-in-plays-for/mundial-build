@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent / "data"
 
 # ── Config ────────────────────────────────────────────────────────────────────
 OUTPUT      = ROOT / 'wc2026_export_ratio.png'

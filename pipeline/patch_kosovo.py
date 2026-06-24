@@ -12,7 +12,7 @@ Capital: Pristina (Q120816 on Wikidata).
 import json, urllib.request, urllib.parse
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent / "data"
 
 WD_QUERY = """
 SELECT ?capEn ?capFr ?capDe ?capIt ?capEs WHERE {

@@ -30,7 +30,7 @@ try:
 except ImportError:
     sys.exit('pip install requests')
 
-ROOT    = Path(__file__).parent.parent
+ROOT    = Path(__file__).parent.parent / "data"
 OUT     = ROOT / 'wc2026_elo_history.json'
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; mundial-bot/1.0)'}
 

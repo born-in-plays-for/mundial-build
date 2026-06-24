@@ -11,7 +11,7 @@ Population figures: official 2021/2022 census / mid-year estimates.
 import json, urllib.request, urllib.parse
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent / "data"
 
 UK_NATIONS = {
     "8260": {"alpha2": "gb-eng", "name": "England",          "qid": "Q21",  "cap_qid": "Q84"},

@@ -42,7 +42,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-ROOT     = Path(__file__).parent.parent
+ROOT     = Path(__file__).parent.parent / "data"
 PIPELINE = Path(__file__).parent
 OUT_CSV  = PIPELINE / 'uk_regional_gdp.csv'
 GDP_JSON = ROOT / 'wc2026_gdp.json'

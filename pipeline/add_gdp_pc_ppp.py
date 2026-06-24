@@ -9,7 +9,7 @@ import json
 import requests
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent / "data"
 
 WB_NAME_MAP = {
     'Iran, Islamic Rep.':              'Iran',

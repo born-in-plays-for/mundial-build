@@ -1,0 +1,63 @@
+name: Update Elo Rankings
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests pycountry beautifulsoup4
+
+      - name: Fetch and update Elo rankings
+        run: python3 pipeline/update_elo_rankings.py
+
+      - name: Commit and push data if changed
+        run: |
+          cd data
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add wc2026_elo_rank.json
+          if git diff --quiet --cached; then
+            echo "No data changes"
+            exit 0
+          fi
+          git commit -m "update Elo rankings $(date -u +%Y-%m-%d)"
+          git push
+
+      - name: Commit pipeline artifacts if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data pipeline/wc2026_elo_rank.tsv pipeline/fifa_members_cache.json
+          if git diff --quiet --cached; then
+            echo "No pipeline changes"
+            exit 0
+          fi
+          git commit -m "update Elo rankings artifacts $(date -u +%Y-%m-%d)"
+          git push
+
+      - name: Trigger mundial submodule update
+        if: success()
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.MUNDIAL_DISPATCH_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/born-in-plays-for/mundial/dispatches \
+            -d '{"event_type":"update-data-submodule"}'

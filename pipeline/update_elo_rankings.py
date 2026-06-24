@@ -29,7 +29,7 @@ except ImportError:
     print("Missing deps. Run: pip install requests pycountry beautifulsoup4", file=sys.stderr)
     sys.exit(1)
 
-ROOT    = Path(__file__).parent.parent
+ROOT    = Path(__file__).parent.parent / "data"
 OUT     = ROOT / 'wc2026_elo_rank.json'
 OUT_TSV = Path(__file__).parent / 'wc2026_elo_rank.tsv'
 

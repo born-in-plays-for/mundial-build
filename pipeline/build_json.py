@@ -19,7 +19,7 @@ import json, csv
 from pathlib import Path
 from collections import defaultdict
 
-ROOT           = Path(__file__).parent.parent
+ROOT           = Path(__file__).parent.parent / "data"
 CSV_PATH       = Path(__file__).parent / "wc2026_players.csv"
 COACHES_PATH   = Path(__file__).parent / "wc2026_coaches.csv"
 JSON_PATH      = ROOT / "wc2026_map_data.json"

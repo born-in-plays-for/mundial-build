@@ -11,7 +11,7 @@ import requests
 import pandas as pd
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent / "data"
 
 HDR_CSV_URL = (
     'https://hdr.undp.org/sites/default/files/2023-24_HDR/'

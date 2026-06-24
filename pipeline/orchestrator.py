@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT     = Path(__file__).parent.parent
+ROOT     = Path(__file__).parent.parent / "data"
 PIPELINE = Path(__file__).parent
 sys.path.insert(0, str(PIPELINE))
 
