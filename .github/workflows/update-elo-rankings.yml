@@ -32,6 +32,7 @@ jobs:
         run: |
           cd data
           git checkout main
+          git remote set-url origin https://x-access-token:${{ secrets.MUNDIAL_DISPATCH_TOKEN }}@github.com/born-in-plays-for/mundial-data.git
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add wc2026_elo_rank.json
