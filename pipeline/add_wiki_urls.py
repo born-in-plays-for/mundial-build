@@ -15,7 +15,7 @@ JSON_PATH = ROOT / "wc2026_map_data.json"
 
 WIKI_URL  = "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads"
 WIKI_API  = "https://en.wikipedia.org/w/api.php"
-HEADERS   = {"User-Agent": "mundial-enricher/1.0 (github.com/cthiebaud/mundial)"}
+HEADERS   = {"User-Agent": "mundial-build/1.0 (github.com/born-in-plays-for)"}
 LANGS     = ["fr", "de", "it", "es"]
 BATCH     = 50  # max titles per API call
 
