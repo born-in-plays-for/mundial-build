@@ -38,7 +38,10 @@ FIFA_WIKI_URL     = 'https://en.wikipedia.org/wiki/List_of_FIFA_country_codes'
 FIFA_CACHE_PATH   = Path(__file__).parent / 'fifa_members_cache.json'
 FIFA_CACHE_TTL_DAYS = 30
 
-HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; mundial-bot/1.0)'}
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    'Accept': 'text/tab-separated-values, text/plain, */*',
+}
 
 # UK home nations + Tahiti: eloratings code → (app_id, iso2, name, fifaMember)
 # These bypass the standard ISO alpha-2 lookup entirely.
