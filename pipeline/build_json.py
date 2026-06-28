@@ -45,6 +45,12 @@ name_to_id     = {v["name"]: int(k)              for k, v in countries_raw.items
 alpha2_to_pop_M = {v["alpha2"].lower(): v["population"] / 1_000_000
                    for v in countries_raw.values() if v.get("population")}
 
+# Most recent year present in World Bank population data
+pop_updated = max(
+    (v["pop_year"] for v in countries_raw.values() if v.get("pop_year")),
+    default="",
+)
+
 # ── Load existing JSON (for id overrides, wiki_langs) ────────────────────────
 with open(JSON_PATH, encoding="utf-8") as f:
     existing = json.load(f)
@@ -156,10 +162,12 @@ capital_data = {v["alpha2"].lower(): v["capital"]
 
 # ── Assemble and write ────────────────────────────────────────────────────────
 output = {
-    "data":    data_records,
-    "pop":     pop_data,
-    "capital": capital_data,
-    "natives": dict(natives),
+    "data":       data_records,
+    "pop":        pop_data,
+    "capital":    capital_data,
+    "natives":    dict(natives),
+    "popSource":  "data.worldbank.org/indicator/SP.POP.TOTL",
+    "popUpdated": pop_updated,
 }
 
 with open(JSON_PATH, "w", encoding="utf-8") as f:

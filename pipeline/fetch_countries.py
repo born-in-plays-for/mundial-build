@@ -81,17 +81,19 @@ wb_raw = fetch(WB_URL)
 wb_rows = wb_raw[1]
 print(f"  {len(wb_rows)} rows (includes aggregates)", flush=True)
 
-wb_pop = {}  # alpha3 → population int
+wb_pop = {}  # alpha3 → (population int, year str)
 for row in wb_rows:
     code = row.get("countryiso3code", "")
     val  = row.get("value")
     if code and val is not None:
-        wb_pop[code] = int(val)
+        wb_pop[code] = (int(val), row.get("date", ""))
 
 matched = 0
 for alpha3, entry in base.items():
     if alpha3 in wb_pop:
-        entry["population"] = wb_pop[alpha3]
+        pop, year = wb_pop[alpha3]
+        entry["population"] = pop
+        entry["pop_year"]   = year
         matched += 1
 print(f"  Population matched for {matched}/{len(base)} countries", flush=True)
 
