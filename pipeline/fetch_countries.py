@@ -6,7 +6,7 @@ Sources:
   - World Bank API (SP.POP.TOTL): population, most recent year
   - Wikidata SPARQL: capital city names in fr, de, it, es, en
 
-Output: countries.json  (project root), keyed by ISO numeric id (string).
+Output: data/countries.json  (data submodule root), keyed by ISO numeric id (string).
 
 Entry shape:
   {
@@ -20,6 +20,9 @@ Entry shape:
 """
 
 import json, time, urllib.request, urllib.parse
+from pathlib import Path
+
+ROOT = Path(__file__).parent.parent / "data"
 
 MLEDOZE_URL = "https://raw.githubusercontent.com/mledoze/countries/master/countries.json"
 WB_URL = (
@@ -139,7 +142,7 @@ print(f"  Capital translations matched for {wd_matched}/{len(base)} countries", 
 # ── 4. Save ───────────────────────────────────────────────────────────────────
 result = {str(e["id"]): e for e in sorted(base.values(), key=lambda x: x["id"])}
 
-out_path = "countries.json"
+out_path = ROOT / "countries.json"
 with open(out_path, "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
