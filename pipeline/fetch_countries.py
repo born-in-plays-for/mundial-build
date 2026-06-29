@@ -19,7 +19,7 @@ Entry shape:
   }
 """
 
-import json, time, urllib.request, urllib.parse
+import json, subprocess, sys, time, urllib.request, urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent / "data"
@@ -147,3 +147,9 @@ with open(out_path, "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
 print(f"  Written {len(result)} entries → {out_path}")
+
+# ── 5. Apply patches (UK home nations + Kosovo) ───────────────────────────────
+here = Path(__file__).parent
+for patch in ("patch_uk_nations.py", "patch_kosovo.py"):
+    print(f"\n── {patch} ──────────────────────────────────────────────")
+    subprocess.run([sys.executable, str(here / patch)], check=True)
