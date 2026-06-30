@@ -12,7 +12,7 @@ Capital: Pristina (Q120816 on Wikidata).
 import json, urllib.request, urllib.parse
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent / "data"
+DATA_DIR = Path(__file__).parent.parent / "data"
 
 WD_QUERY = """
 SELECT ?capEn ?capFr ?capDe ?capIt ?capEs WHERE {
@@ -26,7 +26,7 @@ SELECT ?capEn ?capFr ?capDe ?capIt ?capEs WHERE {
 """
 
 # ── Patch countries.json (skip if Kosovo already present) ────────────────────
-countries_path = ROOT / "countries.json"
+countries_path = Path(__file__).parent / "countries.json"
 with open(countries_path, encoding="utf-8") as f:
     countries = json.load(f)
 
@@ -70,7 +70,7 @@ else:
     print("countries.json: Kosovo already present — skipped.")
 
 # ── Patch wc2026_elo_rank.json ────────────────────────────────────────────────
-elo_path = ROOT / "wc2026_elo_rank.json"
+elo_path = DATA_DIR / "wc2026_elo_rank.json"
 with open(elo_path, encoding="utf-8") as f:
     elo = json.load(f)
 

@@ -1,0 +1,3547 @@
+{
+  "4": {
+    "id": 4,
+    "alpha2": "AF",
+    "alpha3": "AFG",
+    "name": "Afghanistan",
+    "capital": {
+      "en": "Kabul",
+      "fr": "Kaboul",
+      "de": "Kabul",
+      "it": "Kabul",
+      "es": "Kabul"
+    },
+    "population": 42647492,
+    "pop_year": "2024"
+  },
+  "8": {
+    "id": 8,
+    "alpha2": "AL",
+    "alpha3": "ALB",
+    "name": "Albania",
+    "capital": {
+      "en": "Tirana",
+      "fr": "Tirana",
+      "de": "Tirana",
+      "it": "Tirana",
+      "es": "Tirana"
+    },
+    "population": 2377128,
+    "pop_year": "2024"
+  },
+  "10": {
+    "id": 10,
+    "alpha2": "AQ",
+    "alpha3": "ATA",
+    "name": "Antarctica",
+    "capital": null,
+    "population": 0
+  },
+  "12": {
+    "id": 12,
+    "alpha2": "DZ",
+    "alpha3": "DZA",
+    "name": "Algeria",
+    "capital": {
+      "en": "Algiers",
+      "fr": "Alger",
+      "de": "Algier",
+      "it": "Algeri",
+      "es": "Argel"
+    },
+    "population": 46814308,
+    "pop_year": "2024"
+  },
+  "16": {
+    "id": 16,
+    "alpha2": "AS",
+    "alpha3": "ASM",
+    "name": "American Samoa",
+    "capital": {
+      "en": "Pago Pago"
+    },
+    "population": 46765,
+    "pop_year": "2024"
+  },
+  "20": {
+    "id": 20,
+    "alpha2": "AD",
+    "alpha3": "AND",
+    "name": "Andorra",
+    "capital": {
+      "en": "Andorra la Vella",
+      "fr": "Andorre-la-Vieille",
+      "de": "Andorra la Vella",
+      "it": "Andorra la Vella",
+      "es": "Andorra la Vieja"
+    },
+    "population": 81938,
+    "pop_year": "2024"
+  },
+  "24": {
+    "id": 24,
+    "alpha2": "AO",
+    "alpha3": "AGO",
+    "name": "Angola",
+    "capital": {
+      "en": "Luanda",
+      "fr": "Luanda",
+      "de": "Luanda",
+      "it": "Luanda",
+      "es": "Luanda"
+    },
+    "population": 37885849,
+    "pop_year": "2024"
+  },
+  "28": {
+    "id": 28,
+    "alpha2": "AG",
+    "alpha3": "ATG",
+    "name": "Antigua and Barbuda",
+    "capital": {
+      "en": "St. John's",
+      "fr": "Saint John's",
+      "de": "Saint John's",
+      "it": "Saint John's",
+      "es": "Saint John"
+    },
+    "population": 93772,
+    "pop_year": "2024"
+  },
+  "31": {
+    "id": 31,
+    "alpha2": "AZ",
+    "alpha3": "AZE",
+    "name": "Azerbaijan",
+    "capital": {
+      "en": "Baku",
+      "fr": "Bakou",
+      "de": "Baku",
+      "it": "Baku",
+      "es": "Bakú"
+    },
+    "population": 10202830,
+    "pop_year": "2024"
+  },
+  "32": {
+    "id": 32,
+    "alpha2": "AR",
+    "alpha3": "ARG",
+    "name": "Argentina",
+    "capital": {
+      "en": "Buenos Aires",
+      "fr": "Buenos Aires",
+      "de": "Buenos Aires",
+      "it": "Buenos Aires",
+      "es": "Buenos Aires"
+    },
+    "population": 45696159,
+    "pop_year": "2024"
+  },
+  "36": {
+    "id": 36,
+    "alpha2": "AU",
+    "alpha3": "AUS",
+    "name": "Australia",
+    "capital": {
+      "en": "Canberra",
+      "fr": "Canberra",
+      "de": "Canberra",
+      "it": "Canberra",
+      "es": "Canberra"
+    },
+    "population": 27196812,
+    "pop_year": "2024"
+  },
+  "40": {
+    "id": 40,
+    "alpha2": "AT",
+    "alpha3": "AUT",
+    "name": "Austria",
+    "capital": {
+      "en": "Vienna",
+      "fr": "Vienne",
+      "de": "Wien",
+      "it": "Vienna",
+      "es": "Viena"
+    },
+    "population": 9177982,
+    "pop_year": "2024"
+  },
+  "44": {
+    "id": 44,
+    "alpha2": "BS",
+    "alpha3": "BHS",
+    "name": "Bahamas",
+    "capital": {
+      "en": "Nassau",
+      "fr": "Nassau",
+      "de": "Nassau",
+      "it": "Nassau",
+      "es": "Nasáu"
+    },
+    "population": 401283,
+    "pop_year": "2024"
+  },
+  "48": {
+    "id": 48,
+    "alpha2": "BH",
+    "alpha3": "BHR",
+    "name": "Bahrain",
+    "capital": {
+      "en": "Manama",
+      "fr": "Manama",
+      "de": "Manama",
+      "it": "Manama",
+      "es": "Manama"
+    },
+    "population": 1588670,
+    "pop_year": "2024"
+  },
+  "50": {
+    "id": 50,
+    "alpha2": "BD",
+    "alpha3": "BGD",
+    "name": "Bangladesh",
+    "capital": {
+      "en": "Dhaka",
+      "fr": "Dacca",
+      "de": "Dhaka",
+      "it": "Dacca",
+      "es": "Daca"
+    },
+    "population": 173562364,
+    "pop_year": "2024"
+  },
+  "51": {
+    "id": 51,
+    "alpha2": "AM",
+    "alpha3": "ARM",
+    "name": "Armenia",
+    "capital": {
+      "en": "Yerevan",
+      "fr": "Erevan",
+      "de": "Jerewan",
+      "it": "Erevan",
+      "es": "Ereván"
+    },
+    "population": 3033500,
+    "pop_year": "2024"
+  },
+  "52": {
+    "id": 52,
+    "alpha2": "BB",
+    "alpha3": "BRB",
+    "name": "Barbados",
+    "capital": {
+      "en": "Bridgetown",
+      "fr": "Bridgetown",
+      "de": "Bridgetown",
+      "it": "Bridgetown",
+      "es": "Bridgetown"
+    },
+    "population": 282467,
+    "pop_year": "2024"
+  },
+  "56": {
+    "id": 56,
+    "alpha2": "BE",
+    "alpha3": "BEL",
+    "name": "Belgium",
+    "capital": {
+      "en": "Brussels",
+      "fr": "Bruxelles",
+      "de": "Brüssel",
+      "it": "Bruxelles",
+      "es": "Bruselas"
+    },
+    "population": 11858610,
+    "pop_year": "2024"
+  },
+  "60": {
+    "id": 60,
+    "alpha2": "BM",
+    "alpha3": "BMU",
+    "name": "Bermuda",
+    "capital": {
+      "en": "Hamilton"
+    },
+    "population": 64636,
+    "pop_year": "2024"
+  },
+  "64": {
+    "id": 64,
+    "alpha2": "BT",
+    "alpha3": "BTN",
+    "name": "Bhutan",
+    "capital": {
+      "en": "Thimphu",
+      "fr": "Thimphou",
+      "de": "Thimphu",
+      "it": "Thimphu",
+      "es": "Timbu"
+    },
+    "population": 791524,
+    "pop_year": "2024"
+  },
+  "68": {
+    "id": 68,
+    "alpha2": "BO",
+    "alpha3": "BOL",
+    "name": "Bolivia",
+    "capital": {
+      "en": "Sucre",
+      "fr": "Sucre",
+      "de": "Sucre",
+      "it": "Sucre",
+      "es": "Sucre"
+    },
+    "population": 12413315,
+    "pop_year": "2024"
+  },
+  "70": {
+    "id": 70,
+    "alpha2": "BA",
+    "alpha3": "BIH",
+    "name": "Bosnia and Herzegovina",
+    "capital": {
+      "en": "Sarajevo",
+      "fr": "Sarajevo",
+      "de": "Sarajevo",
+      "it": "Sarajevo",
+      "es": "Sarajevo"
+    },
+    "population": 3164253,
+    "pop_year": "2024"
+  },
+  "72": {
+    "id": 72,
+    "alpha2": "BW",
+    "alpha3": "BWA",
+    "name": "Botswana",
+    "capital": {
+      "en": "Gaborone",
+      "fr": "Gaborone",
+      "de": "Gaborone",
+      "it": "Gaborone",
+      "es": "Gaborone"
+    },
+    "population": 2521139,
+    "pop_year": "2024"
+  },
+  "74": {
+    "id": 74,
+    "alpha2": "BV",
+    "alpha3": "BVT",
+    "name": "Bouvet Island",
+    "capital": null,
+    "population": 0
+  },
+  "76": {
+    "id": 76,
+    "alpha2": "BR",
+    "alpha3": "BRA",
+    "name": "Brazil",
+    "capital": {
+      "en": "Brasília",
+      "fr": "Brasilia",
+      "de": "Brasília",
+      "it": "Brasilia",
+      "es": "Brasilia"
+    },
+    "population": 211998573,
+    "pop_year": "2024"
+  },
+  "84": {
+    "id": 84,
+    "alpha2": "BZ",
+    "alpha3": "BLZ",
+    "name": "Belize",
+    "capital": {
+      "en": "Belmopan",
+      "fr": "Belmopan",
+      "de": "Belmopan",
+      "it": "Belmopan",
+      "es": "Belmopán"
+    },
+    "population": 417072,
+    "pop_year": "2024"
+  },
+  "86": {
+    "id": 86,
+    "alpha2": "IO",
+    "alpha3": "IOT",
+    "name": "British Indian Ocean Territory",
+    "capital": {
+      "en": "Diego Garcia"
+    },
+    "population": 0
+  },
+  "90": {
+    "id": 90,
+    "alpha2": "SB",
+    "alpha3": "SLB",
+    "name": "Solomon Islands",
+    "capital": {
+      "en": "Honiara",
+      "fr": "Honiara",
+      "de": "Honiara",
+      "it": "Honiara",
+      "es": "Honiara"
+    },
+    "population": 819198,
+    "pop_year": "2024"
+  },
+  "92": {
+    "id": 92,
+    "alpha2": "VG",
+    "alpha3": "VGB",
+    "name": "British Virgin Islands",
+    "capital": {
+      "en": "Road Town"
+    },
+    "population": 39471,
+    "pop_year": "2024"
+  },
+  "96": {
+    "id": 96,
+    "alpha2": "BN",
+    "alpha3": "BRN",
+    "name": "Brunei",
+    "capital": {
+      "en": "Bandar Seri Begawan",
+      "fr": "Bandar Seri Begawan",
+      "de": "Bandar Seri Begawan",
+      "it": "Bandar Seri Begawan",
+      "es": "Bandar Seri Begawan"
+    },
+    "population": 462721,
+    "pop_year": "2024"
+  },
+  "100": {
+    "id": 100,
+    "alpha2": "BG",
+    "alpha3": "BGR",
+    "name": "Bulgaria",
+    "capital": {
+      "en": "Sofia",
+      "fr": "Sofia",
+      "de": "Sofia",
+      "it": "Sofia",
+      "es": "Sofía"
+    },
+    "population": 6441421,
+    "pop_year": "2024"
+  },
+  "104": {
+    "id": 104,
+    "alpha2": "MM",
+    "alpha3": "MMR",
+    "name": "Myanmar",
+    "capital": {
+      "en": "Naypyidaw",
+      "fr": "Naypyidaw",
+      "de": "Naypyidaw",
+      "it": "Naypyidaw",
+      "es": "Naipyidó"
+    },
+    "population": 54500091,
+    "pop_year": "2024"
+  },
+  "108": {
+    "id": 108,
+    "alpha2": "BI",
+    "alpha3": "BDI",
+    "name": "Burundi",
+    "capital": {
+      "en": "Gitega",
+      "fr": "Gitega",
+      "de": "Gitega",
+      "it": "Gitega",
+      "es": "Guitega"
+    },
+    "population": 14047786,
+    "pop_year": "2024"
+  },
+  "112": {
+    "id": 112,
+    "alpha2": "BY",
+    "alpha3": "BLR",
+    "name": "Belarus",
+    "capital": {
+      "en": "Minsk",
+      "fr": "Minsk",
+      "de": "Minsk",
+      "it": "Minsk",
+      "es": "Minsk"
+    },
+    "population": 9132629,
+    "pop_year": "2024"
+  },
+  "116": {
+    "id": 116,
+    "alpha2": "KH",
+    "alpha3": "KHM",
+    "name": "Cambodia",
+    "capital": {
+      "en": "Phnom Penh",
+      "fr": "Phnom Penh",
+      "de": "Phnom Penh",
+      "it": "Phnom Penh",
+      "es": "Nom Pen"
+    },
+    "population": 17638801,
+    "pop_year": "2024"
+  },
+  "120": {
+    "id": 120,
+    "alpha2": "CM",
+    "alpha3": "CMR",
+    "name": "Cameroon",
+    "capital": {
+      "en": "Yaoundé",
+      "fr": "Yaoundé",
+      "de": "Yaoundé",
+      "it": "Yaoundé",
+      "es": "Yaundé"
+    },
+    "population": 29123744,
+    "pop_year": "2024"
+  },
+  "124": {
+    "id": 124,
+    "alpha2": "CA",
+    "alpha3": "CAN",
+    "name": "Canada",
+    "capital": {
+      "en": "Ottawa",
+      "fr": "Ottawa",
+      "de": "Ottawa",
+      "it": "Ottawa",
+      "es": "Ottawa"
+    },
+    "population": 41288599,
+    "pop_year": "2024"
+  },
+  "132": {
+    "id": 132,
+    "alpha2": "CV",
+    "alpha3": "CPV",
+    "name": "Cape Verde",
+    "capital": {
+      "en": "Praia",
+      "fr": "Praia",
+      "de": "Praia",
+      "it": "Praia",
+      "es": "Praia"
+    },
+    "population": 524877,
+    "pop_year": "2024"
+  },
+  "136": {
+    "id": 136,
+    "alpha2": "KY",
+    "alpha3": "CYM",
+    "name": "Cayman Islands",
+    "capital": {
+      "en": "George Town"
+    },
+    "population": 74457,
+    "pop_year": "2024"
+  },
+  "140": {
+    "id": 140,
+    "alpha2": "CF",
+    "alpha3": "CAF",
+    "name": "Central African Republic",
+    "capital": {
+      "en": "Bangui",
+      "fr": "Bangui",
+      "de": "Bangui",
+      "it": "Bangui",
+      "es": "Bangui"
+    },
+    "population": 5330690,
+    "pop_year": "2024"
+  },
+  "144": {
+    "id": 144,
+    "alpha2": "LK",
+    "alpha3": "LKA",
+    "name": "Sri Lanka",
+    "capital": {
+      "en": "Colombo",
+      "fr": "Colombo",
+      "de": "Colombo",
+      "it": "Colombo",
+      "es": "Colombo"
+    },
+    "population": 21916000,
+    "pop_year": "2024"
+  },
+  "148": {
+    "id": 148,
+    "alpha2": "TD",
+    "alpha3": "TCD",
+    "name": "Chad",
+    "capital": {
+      "en": "N'Djamena",
+      "fr": "N'Djaména",
+      "de": "N’Djamena",
+      "it": "N’Djamena",
+      "es": "Yamena"
+    },
+    "population": 20299123,
+    "pop_year": "2024"
+  },
+  "152": {
+    "id": 152,
+    "alpha2": "CL",
+    "alpha3": "CHL",
+    "name": "Chile",
+    "capital": {
+      "en": "Santiago",
+      "fr": "Santiago",
+      "de": "Santiago de Chile",
+      "it": "Santiago del Cile",
+      "es": "Santiago de Chile"
+    },
+    "population": 19764771,
+    "pop_year": "2024"
+  },
+  "156": {
+    "id": 156,
+    "alpha2": "CN",
+    "alpha3": "CHN",
+    "name": "China",
+    "capital": {
+      "en": "Beijing",
+      "fr": "Pékin",
+      "de": "Peking",
+      "it": "Pechino",
+      "es": "Pekín"
+    },
+    "population": 1408975000,
+    "pop_year": "2024"
+  },
+  "158": {
+    "id": 158,
+    "alpha2": "TW",
+    "alpha3": "TWN",
+    "name": "Taiwan",
+    "capital": {
+      "en": "Taipei",
+      "fr": "Taipei",
+      "de": "Taipeh",
+      "it": "Taipei",
+      "es": "Taipéi"
+    },
+    "population": 0
+  },
+  "162": {
+    "id": 162,
+    "alpha2": "CX",
+    "alpha3": "CXR",
+    "name": "Christmas Island",
+    "capital": {
+      "en": "Flying Fish Cove"
+    },
+    "population": 0
+  },
+  "166": {
+    "id": 166,
+    "alpha2": "CC",
+    "alpha3": "CCK",
+    "name": "Cocos (Keeling) Islands",
+    "capital": {
+      "en": "West Island"
+    },
+    "population": 0
+  },
+  "170": {
+    "id": 170,
+    "alpha2": "CO",
+    "alpha3": "COL",
+    "name": "Colombia",
+    "capital": {
+      "en": "Bogotá",
+      "fr": "Bogota",
+      "de": "Bogotá",
+      "it": "Bogotà",
+      "es": "Bogotá"
+    },
+    "population": 52886363,
+    "pop_year": "2024"
+  },
+  "174": {
+    "id": 174,
+    "alpha2": "KM",
+    "alpha3": "COM",
+    "name": "Comoros",
+    "capital": {
+      "en": "Moroni",
+      "fr": "Moroni",
+      "de": "Moroni",
+      "it": "Moroni",
+      "es": "Moroni"
+    },
+    "population": 866628,
+    "pop_year": "2024"
+  },
+  "175": {
+    "id": 175,
+    "alpha2": "YT",
+    "alpha3": "MYT",
+    "name": "Mayotte",
+    "capital": {
+      "en": "Mamoudzou"
+    },
+    "population": 0
+  },
+  "178": {
+    "id": 178,
+    "alpha2": "CG",
+    "alpha3": "COG",
+    "name": "Congo",
+    "capital": {
+      "en": "Brazzaville",
+      "fr": "Brazzaville",
+      "de": "Brazzaville",
+      "it": "Brazzaville",
+      "es": "Brazzaville"
+    },
+    "population": 6332961,
+    "pop_year": "2024"
+  },
+  "180": {
+    "id": 180,
+    "alpha2": "CD",
+    "alpha3": "COD",
+    "name": "DR Congo",
+    "capital": {
+      "en": "Kinshasa",
+      "fr": "Kinshasa",
+      "de": "Kinshasa",
+      "it": "Kinshasa",
+      "es": "Kinsasa"
+    },
+    "population": 109276265,
+    "pop_year": "2024"
+  },
+  "184": {
+    "id": 184,
+    "alpha2": "CK",
+    "alpha3": "COK",
+    "name": "Cook Islands",
+    "capital": {
+      "en": "Avarua"
+    },
+    "population": 0
+  },
+  "188": {
+    "id": 188,
+    "alpha2": "CR",
+    "alpha3": "CRI",
+    "name": "Costa Rica",
+    "capital": {
+      "en": "San José",
+      "fr": "San José",
+      "de": "San José",
+      "it": "San José",
+      "es": "San José"
+    },
+    "population": 5129910,
+    "pop_year": "2024"
+  },
+  "191": {
+    "id": 191,
+    "alpha2": "HR",
+    "alpha3": "HRV",
+    "name": "Croatia",
+    "capital": {
+      "en": "Zagreb",
+      "fr": "Zagreb",
+      "de": "Zagreb",
+      "it": "Zagabria",
+      "es": "Zagreb"
+    },
+    "population": 3866200,
+    "pop_year": "2024"
+  },
+  "192": {
+    "id": 192,
+    "alpha2": "CU",
+    "alpha3": "CUB",
+    "name": "Cuba",
+    "capital": {
+      "en": "Havana",
+      "fr": "La Havane",
+      "de": "Havanna",
+      "it": "L'Avana",
+      "es": "La Habana"
+    },
+    "population": 10979783,
+    "pop_year": "2024"
+  },
+  "196": {
+    "id": 196,
+    "alpha2": "CY",
+    "alpha3": "CYP",
+    "name": "Cyprus",
+    "capital": {
+      "en": "Nicosia",
+      "fr": "Nicosie",
+      "de": "Nikosia",
+      "it": "Nicosia",
+      "es": "Nicosia"
+    },
+    "population": 1358282,
+    "pop_year": "2024"
+  },
+  "203": {
+    "id": 203,
+    "alpha2": "CZ",
+    "alpha3": "CZE",
+    "name": "Czechia",
+    "capital": {
+      "en": "Prague",
+      "fr": "Prague",
+      "de": "Prag",
+      "it": "Praga",
+      "es": "Praga"
+    },
+    "population": 10905028,
+    "pop_year": "2024"
+  },
+  "204": {
+    "id": 204,
+    "alpha2": "BJ",
+    "alpha3": "BEN",
+    "name": "Benin",
+    "capital": {
+      "en": "Porto-Novo",
+      "fr": "Porto-Novo",
+      "de": "Porto-Novo",
+      "it": "Porto-Novo",
+      "es": "Porto Novo"
+    },
+    "population": 14462724,
+    "pop_year": "2024"
+  },
+  "208": {
+    "id": 208,
+    "alpha2": "DK",
+    "alpha3": "DNK",
+    "name": "Denmark",
+    "capital": {
+      "en": "Copenhagen"
+    },
+    "population": 5976992,
+    "pop_year": "2024"
+  },
+  "212": {
+    "id": 212,
+    "alpha2": "DM",
+    "alpha3": "DMA",
+    "name": "Dominica",
+    "capital": {
+      "en": "Roseau",
+      "fr": "Roseau",
+      "de": "Roseau",
+      "it": "Roseau",
+      "es": "Roseau"
+    },
+    "population": 66205,
+    "pop_year": "2024"
+  },
+  "214": {
+    "id": 214,
+    "alpha2": "DO",
+    "alpha3": "DOM",
+    "name": "Dominican Republic",
+    "capital": {
+      "en": "Santo Domingo",
+      "fr": "Saint-Domingue",
+      "de": "Santo Domingo",
+      "it": "Santo Domingo",
+      "es": "Santo Domingo"
+    },
+    "population": 11427557,
+    "pop_year": "2024"
+  },
+  "218": {
+    "id": 218,
+    "alpha2": "EC",
+    "alpha3": "ECU",
+    "name": "Ecuador",
+    "capital": {
+      "en": "Quito",
+      "fr": "Quito",
+      "de": "Quito",
+      "it": "Quito",
+      "es": "Quito"
+    },
+    "population": 18135478,
+    "pop_year": "2024"
+  },
+  "222": {
+    "id": 222,
+    "alpha2": "SV",
+    "alpha3": "SLV",
+    "name": "El Salvador",
+    "capital": {
+      "en": "San Salvador",
+      "fr": "San Salvador",
+      "de": "San Salvador",
+      "it": "San Salvador",
+      "es": "San Salvador"
+    },
+    "population": 6338193,
+    "pop_year": "2024"
+  },
+  "226": {
+    "id": 226,
+    "alpha2": "GQ",
+    "alpha3": "GNQ",
+    "name": "Equatorial Guinea",
+    "capital": {
+      "en": "Ciudad de la Paz",
+      "fr": "Ciudad de la Paz",
+      "de": "Ciudad de la Paz",
+      "it": "Ciudad de la Paz",
+      "es": "Ciudad de la Paz"
+    },
+    "population": 1892516,
+    "pop_year": "2024"
+  },
+  "231": {
+    "id": 231,
+    "alpha2": "ET",
+    "alpha3": "ETH",
+    "name": "Ethiopia",
+    "capital": {
+      "en": "Addis Ababa",
+      "fr": "Addis-Abeba",
+      "de": "Addis Abeba",
+      "it": "Addis Abeba",
+      "es": "Adís Abeba"
+    },
+    "population": 132059767,
+    "pop_year": "2024"
+  },
+  "232": {
+    "id": 232,
+    "alpha2": "ER",
+    "alpha3": "ERI",
+    "name": "Eritrea",
+    "capital": {
+      "en": "Asmara",
+      "fr": "Asmara",
+      "de": "Asmara",
+      "it": "Asmara",
+      "es": "Asmara"
+    },
+    "population": 3535603,
+    "pop_year": "2024"
+  },
+  "233": {
+    "id": 233,
+    "alpha2": "EE",
+    "alpha3": "EST",
+    "name": "Estonia",
+    "capital": {
+      "en": "Tallinn",
+      "fr": "Tallinn",
+      "de": "Tallinn",
+      "it": "Tallinn",
+      "es": "Tallin"
+    },
+    "population": 1372341,
+    "pop_year": "2024"
+  },
+  "234": {
+    "id": 234,
+    "alpha2": "FO",
+    "alpha3": "FRO",
+    "name": "Faroe Islands",
+    "capital": {
+      "en": "Tórshavn"
+    },
+    "population": 54681,
+    "pop_year": "2024"
+  },
+  "238": {
+    "id": 238,
+    "alpha2": "FK",
+    "alpha3": "FLK",
+    "name": "Falkland Islands",
+    "capital": {
+      "en": "Stanley"
+    },
+    "population": 0
+  },
+  "239": {
+    "id": 239,
+    "alpha2": "GS",
+    "alpha3": "SGS",
+    "name": "South Georgia",
+    "capital": {
+      "en": "King Edward Point"
+    },
+    "population": 0
+  },
+  "242": {
+    "id": 242,
+    "alpha2": "FJ",
+    "alpha3": "FJI",
+    "name": "Fiji",
+    "capital": {
+      "en": "Suva",
+      "fr": "Suva",
+      "de": "Suva",
+      "it": "Suva",
+      "es": "Suva"
+    },
+    "population": 928784,
+    "pop_year": "2024"
+  },
+  "246": {
+    "id": 246,
+    "alpha2": "FI",
+    "alpha3": "FIN",
+    "name": "Finland",
+    "capital": {
+      "en": "Helsinki",
+      "fr": "Helsinki",
+      "de": "Helsinki",
+      "it": "Helsinki",
+      "es": "Helsinki"
+    },
+    "population": 5619911,
+    "pop_year": "2024"
+  },
+  "248": {
+    "id": 248,
+    "alpha2": "AX",
+    "alpha3": "ALA",
+    "name": "Åland Islands",
+    "capital": {
+      "en": "Mariehamn"
+    },
+    "population": 0
+  },
+  "250": {
+    "id": 250,
+    "alpha2": "FR",
+    "alpha3": "FRA",
+    "name": "France",
+    "capital": {
+      "en": "Paris",
+      "fr": "Paris",
+      "de": "Paris",
+      "it": "Parigi",
+      "es": "París"
+    },
+    "population": 68551653,
+    "pop_year": "2024"
+  },
+  "254": {
+    "id": 254,
+    "alpha2": "GF",
+    "alpha3": "GUF",
+    "name": "French Guiana",
+    "capital": {
+      "en": "Cayenne"
+    },
+    "population": 0
+  },
+  "258": {
+    "id": 258,
+    "alpha2": "PF",
+    "alpha3": "PYF",
+    "name": "French Polynesia",
+    "capital": {
+      "en": "Papeetē"
+    },
+    "population": 281807,
+    "pop_year": "2024"
+  },
+  "260": {
+    "id": 260,
+    "alpha2": "TF",
+    "alpha3": "ATF",
+    "name": "French Southern and Antarctic Lands",
+    "capital": {
+      "en": "Port-aux-Français"
+    },
+    "population": 0
+  },
+  "262": {
+    "id": 262,
+    "alpha2": "DJ",
+    "alpha3": "DJI",
+    "name": "Djibouti",
+    "capital": {
+      "en": "Djibouti",
+      "fr": "Djibouti",
+      "de": "Dschibuti",
+      "it": "Gibuti",
+      "es": "Ciudad de Yibuti"
+    },
+    "population": 1168722,
+    "pop_year": "2024"
+  },
+  "266": {
+    "id": 266,
+    "alpha2": "GA",
+    "alpha3": "GAB",
+    "name": "Gabon",
+    "capital": {
+      "en": "Libreville",
+      "fr": "Libreville",
+      "de": "Libreville",
+      "it": "Libreville",
+      "es": "Libreville"
+    },
+    "population": 2538952,
+    "pop_year": "2024"
+  },
+  "268": {
+    "id": 268,
+    "alpha2": "GE",
+    "alpha3": "GEO",
+    "name": "Georgia",
+    "capital": {
+      "en": "Tbilisi",
+      "fr": "Tbilissi",
+      "de": "Tiflis",
+      "it": "Tbilisi",
+      "es": "Tiflis"
+    },
+    "population": 3699557,
+    "pop_year": "2024"
+  },
+  "270": {
+    "id": 270,
+    "alpha2": "GM",
+    "alpha3": "GMB",
+    "name": "Gambia",
+    "capital": {
+      "en": "Banjul",
+      "fr": "Banjul",
+      "de": "Banjul",
+      "it": "Banjul",
+      "es": "Banjul"
+    },
+    "population": 2759988,
+    "pop_year": "2024"
+  },
+  "275": {
+    "id": 275,
+    "alpha2": "PS",
+    "alpha3": "PSE",
+    "name": "Palestine",
+    "capital": {
+      "en": "East Jerusalem",
+      "fr": "Jérusalem-Est",
+      "de": "Ostjerusalem",
+      "it": "Gerusalemme Est",
+      "es": "Jerusalén Este"
+    },
+    "population": 5289152,
+    "pop_year": "2024"
+  },
+  "276": {
+    "id": 276,
+    "alpha2": "DE",
+    "alpha3": "DEU",
+    "name": "Germany",
+    "capital": {
+      "en": "Berlin",
+      "fr": "Berlin",
+      "de": "Berlin",
+      "it": "Berlino",
+      "es": "Berlín"
+    },
+    "population": 83516593,
+    "pop_year": "2024"
+  },
+  "288": {
+    "id": 288,
+    "alpha2": "GH",
+    "alpha3": "GHA",
+    "name": "Ghana",
+    "capital": {
+      "en": "Accra",
+      "fr": "Accra",
+      "de": "Accra",
+      "it": "Accra",
+      "es": "Acra"
+    },
+    "population": 34427414,
+    "pop_year": "2024"
+  },
+  "292": {
+    "id": 292,
+    "alpha2": "GI",
+    "alpha3": "GIB",
+    "name": "Gibraltar",
+    "capital": {
+      "en": "Gibraltar"
+    },
+    "population": 39329,
+    "pop_year": "2024"
+  },
+  "296": {
+    "id": 296,
+    "alpha2": "KI",
+    "alpha3": "KIR",
+    "name": "Kiribati",
+    "capital": {
+      "en": "South Tarawa",
+      "fr": "Tarawa-Sud",
+      "de": "South Tarawa",
+      "it": "Tarawa Sud",
+      "es": "Tarawa Sur"
+    },
+    "population": 134518,
+    "pop_year": "2024"
+  },
+  "300": {
+    "id": 300,
+    "alpha2": "GR",
+    "alpha3": "GRC",
+    "name": "Greece",
+    "capital": {
+      "en": "Athens",
+      "fr": "Athènes",
+      "de": "Athen",
+      "it": "Atene",
+      "es": "Atenas"
+    },
+    "population": 10405134,
+    "pop_year": "2024"
+  },
+  "304": {
+    "id": 304,
+    "alpha2": "GL",
+    "alpha3": "GRL",
+    "name": "Greenland",
+    "capital": {
+      "en": "Nuuk"
+    },
+    "population": 56836,
+    "pop_year": "2024"
+  },
+  "308": {
+    "id": 308,
+    "alpha2": "GD",
+    "alpha3": "GRD",
+    "name": "Grenada",
+    "capital": {
+      "en": "St. George's",
+      "fr": "Saint-Georges",
+      "de": "St. George’s",
+      "it": "Saint George's",
+      "es": "Saint George"
+    },
+    "population": 117207,
+    "pop_year": "2024"
+  },
+  "312": {
+    "id": 312,
+    "alpha2": "GP",
+    "alpha3": "GLP",
+    "name": "Guadeloupe",
+    "capital": {
+      "en": "Basse-Terre"
+    },
+    "population": 0
+  },
+  "316": {
+    "id": 316,
+    "alpha2": "GU",
+    "alpha3": "GUM",
+    "name": "Guam",
+    "capital": {
+      "en": "Hagåtña"
+    },
+    "population": 167777,
+    "pop_year": "2024"
+  },
+  "320": {
+    "id": 320,
+    "alpha2": "GT",
+    "alpha3": "GTM",
+    "name": "Guatemala",
+    "capital": {
+      "en": "Guatemala City",
+      "fr": "Guatemala",
+      "de": "Guatemala-Stadt",
+      "it": "Città del Guatemala",
+      "es": "Ciudad de Guatemala"
+    },
+    "population": 18406359,
+    "pop_year": "2024"
+  },
+  "324": {
+    "id": 324,
+    "alpha2": "GN",
+    "alpha3": "GIN",
+    "name": "Guinea",
+    "capital": {
+      "en": "Conakry",
+      "fr": "Conakry",
+      "de": "Conakry",
+      "it": "Conakry",
+      "es": "Conakri"
+    },
+    "population": 14754785,
+    "pop_year": "2024"
+  },
+  "328": {
+    "id": 328,
+    "alpha2": "GY",
+    "alpha3": "GUY",
+    "name": "Guyana",
+    "capital": {
+      "en": "Georgetown",
+      "fr": "Georgetown",
+      "de": "Georgetown",
+      "it": "Georgetown",
+      "es": "Georgetown"
+    },
+    "population": 831087,
+    "pop_year": "2024"
+  },
+  "332": {
+    "id": 332,
+    "alpha2": "HT",
+    "alpha3": "HTI",
+    "name": "Haiti",
+    "capital": {
+      "en": "Port-au-Prince",
+      "fr": "Port-au-Prince",
+      "de": "Port-au-Prince",
+      "it": "Port-au-Prince",
+      "es": "Puerto Príncipe"
+    },
+    "population": 11772557,
+    "pop_year": "2024"
+  },
+  "334": {
+    "id": 334,
+    "alpha2": "HM",
+    "alpha3": "HMD",
+    "name": "Heard Island and McDonald Islands",
+    "capital": null,
+    "population": 0
+  },
+  "336": {
+    "id": 336,
+    "alpha2": "VA",
+    "alpha3": "VAT",
+    "name": "Vatican City",
+    "capital": {
+      "en": "Vatican City",
+      "fr": "Vatican",
+      "de": "Vatikanstadt",
+      "it": "Città del Vaticano",
+      "es": "Ciudad del Vaticano"
+    },
+    "population": 0
+  },
+  "340": {
+    "id": 340,
+    "alpha2": "HN",
+    "alpha3": "HND",
+    "name": "Honduras",
+    "capital": {
+      "en": "Tegucigalpa",
+      "fr": "Tegucigalpa",
+      "de": "Tegucigalpa",
+      "it": "Tegucigalpa",
+      "es": "Tegucigalpa"
+    },
+    "population": 10825703,
+    "pop_year": "2024"
+  },
+  "344": {
+    "id": 344,
+    "alpha2": "HK",
+    "alpha3": "HKG",
+    "name": "Hong Kong",
+    "capital": {
+      "en": "City of Victoria"
+    },
+    "population": 7524100,
+    "pop_year": "2024"
+  },
+  "348": {
+    "id": 348,
+    "alpha2": "HU",
+    "alpha3": "HUN",
+    "name": "Hungary",
+    "capital": {
+      "en": "Budapest",
+      "fr": "Budapest",
+      "de": "Budapest",
+      "it": "Budapest",
+      "es": "Budapest"
+    },
+    "population": 9562065,
+    "pop_year": "2024"
+  },
+  "352": {
+    "id": 352,
+    "alpha2": "IS",
+    "alpha3": "ISL",
+    "name": "Iceland",
+    "capital": {
+      "en": "Reykjavík",
+      "fr": "Reykjavik",
+      "de": "Reykjavík",
+      "it": "Reykjavík",
+      "es": "Reikiavik"
+    },
+    "population": 386506,
+    "pop_year": "2024"
+  },
+  "356": {
+    "id": 356,
+    "alpha2": "IN",
+    "alpha3": "IND",
+    "name": "India",
+    "capital": {
+      "en": "New Delhi",
+      "fr": "New Delhi",
+      "de": "Neu-Delhi",
+      "it": "Nuova Delhi",
+      "es": "Nueva Delhi"
+    },
+    "population": 1450935791,
+    "pop_year": "2024"
+  },
+  "360": {
+    "id": 360,
+    "alpha2": "ID",
+    "alpha3": "IDN",
+    "name": "Indonesia",
+    "capital": {
+      "en": "Jakarta",
+      "fr": "Jakarta",
+      "de": "Jakarta",
+      "it": "Giacarta",
+      "es": "Yakarta"
+    },
+    "population": 283487931,
+    "pop_year": "2024"
+  },
+  "364": {
+    "id": 364,
+    "alpha2": "IR",
+    "alpha3": "IRN",
+    "name": "Iran",
+    "capital": {
+      "en": "Tehran",
+      "fr": "Téhéran",
+      "de": "Teheran",
+      "it": "Teheran",
+      "es": "Teherán"
+    },
+    "population": 91567738,
+    "pop_year": "2024"
+  },
+  "368": {
+    "id": 368,
+    "alpha2": "IQ",
+    "alpha3": "IRQ",
+    "name": "Iraq",
+    "capital": {
+      "en": "Baghdad",
+      "fr": "Bagdad",
+      "de": "Bagdad",
+      "it": "Baghdad",
+      "es": "Bagdad"
+    },
+    "population": 46042015,
+    "pop_year": "2024"
+  },
+  "372": {
+    "id": 372,
+    "alpha2": "IE",
+    "alpha3": "IRL",
+    "name": "Ireland",
+    "capital": {
+      "en": "Dublin",
+      "fr": "Dublin",
+      "de": "Dublin",
+      "it": "Dublino",
+      "es": "Dublín"
+    },
+    "population": 5395790,
+    "pop_year": "2024"
+  },
+  "376": {
+    "id": 376,
+    "alpha2": "IL",
+    "alpha3": "ISR",
+    "name": "Israel",
+    "capital": {
+      "en": "Jerusalem",
+      "fr": "Jérusalem",
+      "de": "Jerusalem",
+      "it": "Gerusalemme",
+      "es": "Jerusalén"
+    },
+    "population": 9974400,
+    "pop_year": "2024"
+  },
+  "380": {
+    "id": 380,
+    "alpha2": "IT",
+    "alpha3": "ITA",
+    "name": "Italy",
+    "capital": {
+      "en": "Rome",
+      "fr": "Rome",
+      "de": "Rom",
+      "it": "Roma",
+      "es": "Roma"
+    },
+    "population": 58952704,
+    "pop_year": "2024"
+  },
+  "384": {
+    "id": 384,
+    "alpha2": "CI",
+    "alpha3": "CIV",
+    "name": "Ivory Coast",
+    "capital": {
+      "en": "Yamoussoukro",
+      "fr": "Yamoussoukro",
+      "de": "Yamoussoukro",
+      "it": "Yamoussoukro",
+      "es": "Yamusukro"
+    },
+    "population": 31934230,
+    "pop_year": "2024"
+  },
+  "388": {
+    "id": 388,
+    "alpha2": "JM",
+    "alpha3": "JAM",
+    "name": "Jamaica",
+    "capital": {
+      "en": "Kingston",
+      "fr": "Kingston",
+      "de": "Kingston",
+      "it": "Kingston",
+      "es": "Kingston"
+    },
+    "population": 2839175,
+    "pop_year": "2024"
+  },
+  "392": {
+    "id": 392,
+    "alpha2": "JP",
+    "alpha3": "JPN",
+    "name": "Japan",
+    "capital": {
+      "en": "Tokyo",
+      "fr": "Tokyo",
+      "de": "Tokio",
+      "it": "Tokyo",
+      "es": "Tokio"
+    },
+    "population": 123975371,
+    "pop_year": "2024"
+  },
+  "398": {
+    "id": 398,
+    "alpha2": "KZ",
+    "alpha3": "KAZ",
+    "name": "Kazakhstan",
+    "capital": {
+      "en": "Astana",
+      "fr": "Astana",
+      "de": "Astana",
+      "it": "Astana",
+      "es": "Astaná"
+    },
+    "population": 20592571,
+    "pop_year": "2024"
+  },
+  "400": {
+    "id": 400,
+    "alpha2": "JO",
+    "alpha3": "JOR",
+    "name": "Jordan",
+    "capital": {
+      "en": "Amman",
+      "fr": "Amman",
+      "de": "Amman",
+      "it": "Amman",
+      "es": "Amán"
+    },
+    "population": 11552876,
+    "pop_year": "2024"
+  },
+  "404": {
+    "id": 404,
+    "alpha2": "KE",
+    "alpha3": "KEN",
+    "name": "Kenya",
+    "capital": {
+      "en": "Nairobi",
+      "fr": "Nairobi",
+      "de": "Nairobi",
+      "it": "Nairobi",
+      "es": "Nairobi"
+    },
+    "population": 56432944,
+    "pop_year": "2024"
+  },
+  "408": {
+    "id": 408,
+    "alpha2": "KP",
+    "alpha3": "PRK",
+    "name": "North Korea",
+    "capital": {
+      "en": "Pyongyang",
+      "fr": "Pyongyang",
+      "de": "Pjöngjang",
+      "it": "Pyongyang",
+      "es": "Pionyang"
+    },
+    "population": 26498823,
+    "pop_year": "2024"
+  },
+  "410": {
+    "id": 410,
+    "alpha2": "KR",
+    "alpha3": "KOR",
+    "name": "South Korea",
+    "capital": {
+      "en": "Seoul",
+      "fr": "Séoul",
+      "de": "Seoul",
+      "it": "Seul",
+      "es": "Seúl"
+    },
+    "population": 51751065,
+    "pop_year": "2024"
+  },
+  "414": {
+    "id": 414,
+    "alpha2": "KW",
+    "alpha3": "KWT",
+    "name": "Kuwait",
+    "capital": {
+      "en": "Kuwait City",
+      "fr": "Koweït",
+      "de": "Kuweit-Stadt",
+      "it": "Al Kuwait",
+      "es": "Ciudad de Kuwait"
+    },
+    "population": 4897263,
+    "pop_year": "2024"
+  },
+  "417": {
+    "id": 417,
+    "alpha2": "KG",
+    "alpha3": "KGZ",
+    "name": "Kyrgyzstan",
+    "capital": {
+      "en": "Bishkek",
+      "fr": "Bichkek",
+      "de": "Bischkek",
+      "it": "Biškek",
+      "es": "Biskek"
+    },
+    "population": 7221868,
+    "pop_year": "2024"
+  },
+  "418": {
+    "id": 418,
+    "alpha2": "LA",
+    "alpha3": "LAO",
+    "name": "Laos",
+    "capital": {
+      "en": "Vientiane",
+      "fr": "Vientiane",
+      "de": "Vientiane",
+      "it": "Vientiane",
+      "es": "Vientián"
+    },
+    "population": 7769819,
+    "pop_year": "2024"
+  },
+  "422": {
+    "id": 422,
+    "alpha2": "LB",
+    "alpha3": "LBN",
+    "name": "Lebanon",
+    "capital": {
+      "en": "Beirut",
+      "fr": "Beyrouth",
+      "de": "Beirut",
+      "it": "Beirut",
+      "es": "Beirut"
+    },
+    "population": 5805962,
+    "pop_year": "2024"
+  },
+  "426": {
+    "id": 426,
+    "alpha2": "LS",
+    "alpha3": "LSO",
+    "name": "Lesotho",
+    "capital": {
+      "en": "Maseru",
+      "fr": "Maseru",
+      "de": "Maseru",
+      "it": "Maseru",
+      "es": "Maseru"
+    },
+    "population": 2337423,
+    "pop_year": "2024"
+  },
+  "428": {
+    "id": 428,
+    "alpha2": "LV",
+    "alpha3": "LVA",
+    "name": "Latvia",
+    "capital": {
+      "en": "Riga",
+      "fr": "Riga",
+      "de": "Riga",
+      "it": "Riga",
+      "es": "Riga"
+    },
+    "population": 1866124,
+    "pop_year": "2024"
+  },
+  "430": {
+    "id": 430,
+    "alpha2": "LR",
+    "alpha3": "LBR",
+    "name": "Liberia",
+    "capital": {
+      "en": "Monrovia",
+      "fr": "Monrovia",
+      "de": "Monrovia",
+      "it": "Monrovia",
+      "es": "Monrovia"
+    },
+    "population": 5612817,
+    "pop_year": "2024"
+  },
+  "434": {
+    "id": 434,
+    "alpha2": "LY",
+    "alpha3": "LBY",
+    "name": "Libya",
+    "capital": {
+      "en": "Tripoli",
+      "fr": "Tripoli",
+      "de": "Tripolis",
+      "it": "Tripoli",
+      "es": "Trípoli"
+    },
+    "population": 7381023,
+    "pop_year": "2024"
+  },
+  "438": {
+    "id": 438,
+    "alpha2": "LI",
+    "alpha3": "LIE",
+    "name": "Liechtenstein",
+    "capital": {
+      "en": "Vaduz",
+      "fr": "Vaduz",
+      "de": "Vaduz",
+      "it": "Vaduz",
+      "es": "Vaduz"
+    },
+    "population": 40450,
+    "pop_year": "2024"
+  },
+  "440": {
+    "id": 440,
+    "alpha2": "LT",
+    "alpha3": "LTU",
+    "name": "Lithuania",
+    "capital": {
+      "en": "Vilnius",
+      "fr": "Vilnius",
+      "de": "Vilnius",
+      "it": "Vilnius",
+      "es": "Vilna"
+    },
+    "population": 2888278,
+    "pop_year": "2024"
+  },
+  "442": {
+    "id": 442,
+    "alpha2": "LU",
+    "alpha3": "LUX",
+    "name": "Luxembourg",
+    "capital": {
+      "en": "Luxembourg",
+      "fr": "Luxembourg",
+      "de": "Luxemburg",
+      "it": "Lussemburgo",
+      "es": "Luxemburgo"
+    },
+    "population": 677012,
+    "pop_year": "2024"
+  },
+  "446": {
+    "id": 446,
+    "alpha2": "MO",
+    "alpha3": "MAC",
+    "name": "Macau",
+    "capital": null,
+    "population": 687000,
+    "pop_year": "2024"
+  },
+  "450": {
+    "id": 450,
+    "alpha2": "MG",
+    "alpha3": "MDG",
+    "name": "Madagascar",
+    "capital": {
+      "en": "Antananarivo",
+      "fr": "Antananarivo",
+      "de": "Antananarivo",
+      "it": "Antananarivo",
+      "es": "Antananarivo"
+    },
+    "population": 31964956,
+    "pop_year": "2024"
+  },
+  "454": {
+    "id": 454,
+    "alpha2": "MW",
+    "alpha3": "MWI",
+    "name": "Malawi",
+    "capital": {
+      "en": "Lilongwe",
+      "fr": "Lilongwe",
+      "de": "Lilongwe",
+      "it": "Lilongwe",
+      "es": "Lilongüe"
+    },
+    "population": 21655286,
+    "pop_year": "2024"
+  },
+  "458": {
+    "id": 458,
+    "alpha2": "MY",
+    "alpha3": "MYS",
+    "name": "Malaysia",
+    "capital": {
+      "en": "Kuala Lumpur",
+      "fr": "Kuala Lumpur",
+      "de": "Kuala Lumpur",
+      "it": "Kuala Lumpur",
+      "es": "Kuala Lumpur"
+    },
+    "population": 35557673,
+    "pop_year": "2024"
+  },
+  "462": {
+    "id": 462,
+    "alpha2": "MV",
+    "alpha3": "MDV",
+    "name": "Maldives",
+    "capital": {
+      "en": "Malé",
+      "fr": "Malé",
+      "de": "Malé",
+      "it": "Male",
+      "es": "Malé"
+    },
+    "population": 527799,
+    "pop_year": "2024"
+  },
+  "466": {
+    "id": 466,
+    "alpha2": "ML",
+    "alpha3": "MLI",
+    "name": "Mali",
+    "capital": {
+      "en": "Bamako",
+      "fr": "Bamako",
+      "de": "Bamako",
+      "it": "Bamako",
+      "es": "Bamako"
+    },
+    "population": 24478595,
+    "pop_year": "2024"
+  },
+  "470": {
+    "id": 470,
+    "alpha2": "MT",
+    "alpha3": "MLT",
+    "name": "Malta",
+    "capital": {
+      "en": "Valletta",
+      "fr": "La Valette",
+      "de": "Valletta",
+      "it": "La Valletta",
+      "es": "La Valeta"
+    },
+    "population": 568847,
+    "pop_year": "2024"
+  },
+  "474": {
+    "id": 474,
+    "alpha2": "MQ",
+    "alpha3": "MTQ",
+    "name": "Martinique",
+    "capital": {
+      "en": "Fort-de-France"
+    },
+    "population": 0
+  },
+  "478": {
+    "id": 478,
+    "alpha2": "MR",
+    "alpha3": "MRT",
+    "name": "Mauritania",
+    "capital": {
+      "en": "Nouakchott",
+      "fr": "Nouakchott",
+      "de": "Nouakchott",
+      "it": "Nouakchott",
+      "es": "Nuakchot"
+    },
+    "population": 5169395,
+    "pop_year": "2024"
+  },
+  "480": {
+    "id": 480,
+    "alpha2": "MU",
+    "alpha3": "MUS",
+    "name": "Mauritius",
+    "capital": {
+      "en": "Port Louis",
+      "fr": "Port-Louis",
+      "de": "Port Louis",
+      "it": "Port Louis",
+      "es": "Port Louis"
+    },
+    "population": 1245779,
+    "pop_year": "2024"
+  },
+  "484": {
+    "id": 484,
+    "alpha2": "MX",
+    "alpha3": "MEX",
+    "name": "Mexico",
+    "capital": {
+      "en": "Mexico City",
+      "fr": "Mexico",
+      "de": "Mexiko-Stadt",
+      "it": "Città del Messico",
+      "es": "Ciudad de México"
+    },
+    "population": 130861007,
+    "pop_year": "2024"
+  },
+  "492": {
+    "id": 492,
+    "alpha2": "MC",
+    "alpha3": "MCO",
+    "name": "Monaco",
+    "capital": {
+      "en": "Monaco",
+      "fr": "Monaco",
+      "de": "Monaco",
+      "it": "Principato di Monaco",
+      "es": "Mónaco"
+    },
+    "population": 38631,
+    "pop_year": "2024"
+  },
+  "496": {
+    "id": 496,
+    "alpha2": "MN",
+    "alpha3": "MNG",
+    "name": "Mongolia",
+    "capital": {
+      "en": "Ulaanbaatar",
+      "fr": "Oulan-Bator",
+      "de": "Ulaanbaatar",
+      "it": "Ulan Bator",
+      "es": "Ulán Bator"
+    },
+    "population": 3524788,
+    "pop_year": "2024"
+  },
+  "498": {
+    "id": 498,
+    "alpha2": "MD",
+    "alpha3": "MDA",
+    "name": "Moldova",
+    "capital": {
+      "en": "Chișinău",
+      "fr": "Chișinău",
+      "de": "Chișinău / Kischinjow",
+      "it": "Chișinău",
+      "es": "Chisináu"
+    },
+    "population": 2402306,
+    "pop_year": "2024"
+  },
+  "499": {
+    "id": 499,
+    "alpha2": "ME",
+    "alpha3": "MNE",
+    "name": "Montenegro",
+    "capital": {
+      "en": "Podgorica",
+      "fr": "Podgorica",
+      "de": "Podgorica",
+      "it": "Podgorica",
+      "es": "Podgorica"
+    },
+    "population": 623525,
+    "pop_year": "2024"
+  },
+  "500": {
+    "id": 500,
+    "alpha2": "MS",
+    "alpha3": "MSR",
+    "name": "Montserrat",
+    "capital": {
+      "en": "Plymouth"
+    },
+    "population": 0
+  },
+  "504": {
+    "id": 504,
+    "alpha2": "MA",
+    "alpha3": "MAR",
+    "name": "Morocco",
+    "capital": {
+      "en": "Rabat",
+      "fr": "Rabat",
+      "de": "Rabat",
+      "it": "Rabat",
+      "es": "Rabat"
+    },
+    "population": 38081173,
+    "pop_year": "2024"
+  },
+  "508": {
+    "id": 508,
+    "alpha2": "MZ",
+    "alpha3": "MOZ",
+    "name": "Mozambique",
+    "capital": {
+      "en": "Maputo",
+      "fr": "Maputo",
+      "de": "Maputo",
+      "it": "Maputo",
+      "es": "Maputo"
+    },
+    "population": 34631766,
+    "pop_year": "2024"
+  },
+  "512": {
+    "id": 512,
+    "alpha2": "OM",
+    "alpha3": "OMN",
+    "name": "Oman",
+    "capital": {
+      "en": "Muscat",
+      "fr": "Mascate",
+      "de": "Maskat",
+      "it": "Mascate",
+      "es": "Mascate"
+    },
+    "population": 5281538,
+    "pop_year": "2024"
+  },
+  "516": {
+    "id": 516,
+    "alpha2": "NA",
+    "alpha3": "NAM",
+    "name": "Namibia",
+    "capital": {
+      "en": "Windhoek",
+      "fr": "Windhoek",
+      "de": "Windhoek",
+      "it": "Windhoek",
+      "es": "Windhoek"
+    },
+    "population": 3030131,
+    "pop_year": "2024"
+  },
+  "520": {
+    "id": 520,
+    "alpha2": "NR",
+    "alpha3": "NRU",
+    "name": "Nauru",
+    "capital": {
+      "en": "Yaren District",
+      "fr": "Yaren",
+      "de": "Yaren",
+      "it": "Yaren",
+      "es": "Yaren"
+    },
+    "population": 11947,
+    "pop_year": "2024"
+  },
+  "524": {
+    "id": 524,
+    "alpha2": "NP",
+    "alpha3": "NPL",
+    "name": "Nepal",
+    "capital": {
+      "en": "Kathmandu",
+      "fr": "Katmandou",
+      "de": "Kathmandu",
+      "it": "Katmandu",
+      "es": "Katmandú"
+    },
+    "population": 29651054,
+    "pop_year": "2024"
+  },
+  "528": {
+    "id": 528,
+    "alpha2": "NL",
+    "alpha3": "NLD",
+    "name": "Netherlands",
+    "capital": {
+      "en": "Amsterdam",
+      "fr": "Amsterdam",
+      "de": "Amsterdam",
+      "it": "Amsterdam",
+      "es": "Ámsterdam"
+    },
+    "population": 17993485,
+    "pop_year": "2024"
+  },
+  "531": {
+    "id": 531,
+    "alpha2": "CW",
+    "alpha3": "CUW",
+    "name": "Curaçao",
+    "capital": {
+      "en": "Willemstad"
+    },
+    "population": 155967,
+    "pop_year": "2024"
+  },
+  "533": {
+    "id": 533,
+    "alpha2": "AW",
+    "alpha3": "ABW",
+    "name": "Aruba",
+    "capital": {
+      "en": "Oranjestad"
+    },
+    "population": 107995,
+    "pop_year": "2024"
+  },
+  "534": {
+    "id": 534,
+    "alpha2": "SX",
+    "alpha3": "SXM",
+    "name": "Sint Maarten",
+    "capital": {
+      "en": "Philipsburg"
+    },
+    "population": 43350,
+    "pop_year": "2024"
+  },
+  "535": {
+    "id": 535,
+    "alpha2": "BQ",
+    "alpha3": "BES",
+    "name": "Caribbean Netherlands",
+    "capital": {
+      "en": "Kralendijk"
+    },
+    "population": 0
+  },
+  "540": {
+    "id": 540,
+    "alpha2": "NC",
+    "alpha3": "NCL",
+    "name": "New Caledonia",
+    "capital": {
+      "en": "Nouméa"
+    },
+    "population": 292639,
+    "pop_year": "2024"
+  },
+  "548": {
+    "id": 548,
+    "alpha2": "VU",
+    "alpha3": "VUT",
+    "name": "Vanuatu",
+    "capital": {
+      "en": "Port Vila",
+      "fr": "Port-Vila",
+      "de": "Port Vila",
+      "it": "Port Vila",
+      "es": "Port Vila"
+    },
+    "population": 327777,
+    "pop_year": "2024"
+  },
+  "554": {
+    "id": 554,
+    "alpha2": "NZ",
+    "alpha3": "NZL",
+    "name": "New Zealand",
+    "capital": {
+      "en": "Wellington",
+      "fr": "Wellington",
+      "de": "Wellington",
+      "it": "Wellington",
+      "es": "Wellington"
+    },
+    "population": 5287500,
+    "pop_year": "2024"
+  },
+  "558": {
+    "id": 558,
+    "alpha2": "NI",
+    "alpha3": "NIC",
+    "name": "Nicaragua",
+    "capital": {
+      "en": "Managua",
+      "fr": "Managua",
+      "de": "Managua",
+      "it": "Managua",
+      "es": "Managua"
+    },
+    "population": 6916140,
+    "pop_year": "2024"
+  },
+  "562": {
+    "id": 562,
+    "alpha2": "NE",
+    "alpha3": "NER",
+    "name": "Niger",
+    "capital": {
+      "en": "Niamey",
+      "fr": "Niamey",
+      "de": "Niamey",
+      "it": "Niamey",
+      "es": "Niamey"
+    },
+    "population": 27032412,
+    "pop_year": "2024"
+  },
+  "566": {
+    "id": 566,
+    "alpha2": "NG",
+    "alpha3": "NGA",
+    "name": "Nigeria",
+    "capital": {
+      "en": "Abuja",
+      "fr": "Abuja",
+      "de": "Abuja",
+      "it": "Abuja",
+      "es": "Abuya"
+    },
+    "population": 232679478,
+    "pop_year": "2024"
+  },
+  "570": {
+    "id": 570,
+    "alpha2": "NU",
+    "alpha3": "NIU",
+    "name": "Niue",
+    "capital": {
+      "en": "Alofi"
+    },
+    "population": 0
+  },
+  "574": {
+    "id": 574,
+    "alpha2": "NF",
+    "alpha3": "NFK",
+    "name": "Norfolk Island",
+    "capital": {
+      "en": "Kingston"
+    },
+    "population": 0
+  },
+  "578": {
+    "id": 578,
+    "alpha2": "NO",
+    "alpha3": "NOR",
+    "name": "Norway",
+    "capital": {
+      "en": "Oslo",
+      "fr": "Oslo",
+      "de": "Oslo",
+      "it": "Oslo",
+      "es": "Oslo"
+    },
+    "population": 5572279,
+    "pop_year": "2024"
+  },
+  "580": {
+    "id": 580,
+    "alpha2": "MP",
+    "alpha3": "MNP",
+    "name": "Northern Mariana Islands",
+    "capital": {
+      "en": "Saipan"
+    },
+    "population": 44278,
+    "pop_year": "2024"
+  },
+  "581": {
+    "id": 581,
+    "alpha2": "UM",
+    "alpha3": "UMI",
+    "name": "United States Minor Outlying Islands",
+    "capital": null,
+    "population": 0
+  },
+  "583": {
+    "id": 583,
+    "alpha2": "FM",
+    "alpha3": "FSM",
+    "name": "Micronesia",
+    "capital": {
+      "en": "Palikir",
+      "fr": "Palikir",
+      "de": "Palikir",
+      "it": "Palikir",
+      "es": "Palikir"
+    },
+    "population": 113160,
+    "pop_year": "2024"
+  },
+  "584": {
+    "id": 584,
+    "alpha2": "MH",
+    "alpha3": "MHL",
+    "name": "Marshall Islands",
+    "capital": {
+      "en": "Majuro",
+      "fr": "Majuro",
+      "de": "Majuro",
+      "it": "Majuro",
+      "es": "Majuro"
+    },
+    "population": 37548,
+    "pop_year": "2024"
+  },
+  "585": {
+    "id": 585,
+    "alpha2": "PW",
+    "alpha3": "PLW",
+    "name": "Palau",
+    "capital": {
+      "en": "Ngerulmud",
+      "fr": "Ngerulmud",
+      "de": "Ngerulmud",
+      "it": "Ngerulmud",
+      "es": "Ngerulmud"
+    },
+    "population": 17695,
+    "pop_year": "2024"
+  },
+  "586": {
+    "id": 586,
+    "alpha2": "PK",
+    "alpha3": "PAK",
+    "name": "Pakistan",
+    "capital": {
+      "en": "Islamabad",
+      "fr": "Islamabad",
+      "de": "Islamabad",
+      "it": "Islamabad",
+      "es": "Islamabad"
+    },
+    "population": 251269164,
+    "pop_year": "2024"
+  },
+  "591": {
+    "id": 591,
+    "alpha2": "PA",
+    "alpha3": "PAN",
+    "name": "Panama",
+    "capital": {
+      "en": "Panama City",
+      "fr": "Panama",
+      "de": "Panama-Stadt",
+      "it": "Panama",
+      "es": "Ciudad de Panamá"
+    },
+    "population": 4515577,
+    "pop_year": "2024"
+  },
+  "598": {
+    "id": 598,
+    "alpha2": "PG",
+    "alpha3": "PNG",
+    "name": "Papua New Guinea",
+    "capital": {
+      "en": "Port Moresby",
+      "fr": "Port Moresby",
+      "de": "Port Moresby",
+      "it": "Port Moresby",
+      "es": "Puerto Moresby"
+    },
+    "population": 10576502,
+    "pop_year": "2024"
+  },
+  "600": {
+    "id": 600,
+    "alpha2": "PY",
+    "alpha3": "PRY",
+    "name": "Paraguay",
+    "capital": {
+      "en": "Asunción",
+      "fr": "Asuncion",
+      "de": "Asunción",
+      "it": "Asunción",
+      "es": "Asunción"
+    },
+    "population": 6929153,
+    "pop_year": "2024"
+  },
+  "604": {
+    "id": 604,
+    "alpha2": "PE",
+    "alpha3": "PER",
+    "name": "Peru",
+    "capital": {
+      "en": "Lima",
+      "fr": "Lima",
+      "de": "Lima",
+      "it": "Lima",
+      "es": "Lima"
+    },
+    "population": 34217848,
+    "pop_year": "2024"
+  },
+  "608": {
+    "id": 608,
+    "alpha2": "PH",
+    "alpha3": "PHL",
+    "name": "Philippines",
+    "capital": {
+      "en": "Manila",
+      "fr": "Manille",
+      "de": "Manila",
+      "it": "Manila",
+      "es": "Manila"
+    },
+    "population": 115843670,
+    "pop_year": "2024"
+  },
+  "612": {
+    "id": 612,
+    "alpha2": "PN",
+    "alpha3": "PCN",
+    "name": "Pitcairn Islands",
+    "capital": {
+      "en": "Adamstown"
+    },
+    "population": 0
+  },
+  "616": {
+    "id": 616,
+    "alpha2": "PL",
+    "alpha3": "POL",
+    "name": "Poland",
+    "capital": {
+      "en": "Warsaw",
+      "fr": "Varsovie",
+      "de": "Warschau",
+      "it": "Varsavia",
+      "es": "Varsovia"
+    },
+    "population": 36559233,
+    "pop_year": "2024"
+  },
+  "620": {
+    "id": 620,
+    "alpha2": "PT",
+    "alpha3": "PRT",
+    "name": "Portugal",
+    "capital": {
+      "en": "Lisbon",
+      "fr": "Lisbonne",
+      "de": "Lissabon",
+      "it": "Lisbona",
+      "es": "Lisboa"
+    },
+    "population": 10694681,
+    "pop_year": "2024"
+  },
+  "624": {
+    "id": 624,
+    "alpha2": "GW",
+    "alpha3": "GNB",
+    "name": "Guinea-Bissau",
+    "capital": {
+      "en": "Bissau",
+      "fr": "Bissau",
+      "de": "Bissau",
+      "it": "Bissau",
+      "es": "Bisáu"
+    },
+    "population": 2201352,
+    "pop_year": "2024"
+  },
+  "626": {
+    "id": 626,
+    "alpha2": "TL",
+    "alpha3": "TLS",
+    "name": "Timor-Leste",
+    "capital": {
+      "en": "Dili",
+      "fr": "Dili",
+      "de": "Dili",
+      "it": "Dili",
+      "es": "Dili"
+    },
+    "population": 1400638,
+    "pop_year": "2024"
+  },
+  "630": {
+    "id": 630,
+    "alpha2": "PR",
+    "alpha3": "PRI",
+    "name": "Puerto Rico",
+    "capital": {
+      "en": "San Juan"
+    },
+    "population": 3203295,
+    "pop_year": "2024"
+  },
+  "634": {
+    "id": 634,
+    "alpha2": "QA",
+    "alpha3": "QAT",
+    "name": "Qatar",
+    "capital": {
+      "en": "Doha",
+      "fr": "Doha",
+      "de": "Doha",
+      "it": "Doha",
+      "es": "Doha"
+    },
+    "population": 2857822,
+    "pop_year": "2024"
+  },
+  "638": {
+    "id": 638,
+    "alpha2": "RE",
+    "alpha3": "REU",
+    "name": "Réunion",
+    "capital": {
+      "en": "Saint-Denis"
+    },
+    "population": 0
+  },
+  "642": {
+    "id": 642,
+    "alpha2": "RO",
+    "alpha3": "ROU",
+    "name": "Romania",
+    "capital": {
+      "en": "Bucharest",
+      "fr": "Bucarest",
+      "de": "Bukarest",
+      "it": "Bucarest",
+      "es": "Bucarest"
+    },
+    "population": 19051804,
+    "pop_year": "2024"
+  },
+  "643": {
+    "id": 643,
+    "alpha2": "RU",
+    "alpha3": "RUS",
+    "name": "Russia",
+    "capital": {
+      "en": "Moscow",
+      "fr": "Moscou",
+      "de": "Moskau",
+      "it": "Mosca",
+      "es": "Moscú"
+    },
+    "population": 143533851,
+    "pop_year": "2024"
+  },
+  "646": {
+    "id": 646,
+    "alpha2": "RW",
+    "alpha3": "RWA",
+    "name": "Rwanda",
+    "capital": {
+      "en": "Kigali",
+      "fr": "Kigali",
+      "de": "Kigali",
+      "it": "Kigali",
+      "es": "Kigali"
+    },
+    "population": 14256567,
+    "pop_year": "2024"
+  },
+  "652": {
+    "id": 652,
+    "alpha2": "BL",
+    "alpha3": "BLM",
+    "name": "Saint Barthélemy",
+    "capital": {
+      "en": "Gustavia"
+    },
+    "population": 0
+  },
+  "654": {
+    "id": 654,
+    "alpha2": "SH",
+    "alpha3": "SHN",
+    "name": "Saint Helena, Ascension and Tristan da Cunha",
+    "capital": {
+      "en": "Jamestown"
+    },
+    "population": 0
+  },
+  "659": {
+    "id": 659,
+    "alpha2": "KN",
+    "alpha3": "KNA",
+    "name": "Saint Kitts and Nevis",
+    "capital": {
+      "en": "Basseterre",
+      "fr": "Basseterre",
+      "de": "Basseterre",
+      "it": "Basseterre",
+      "es": "Basseterre"
+    },
+    "population": 46843,
+    "pop_year": "2024"
+  },
+  "660": {
+    "id": 660,
+    "alpha2": "AI",
+    "alpha3": "AIA",
+    "name": "Anguilla",
+    "capital": {
+      "en": "The Valley"
+    },
+    "population": 0
+  },
+  "662": {
+    "id": 662,
+    "alpha2": "LC",
+    "alpha3": "LCA",
+    "name": "Saint Lucia",
+    "capital": {
+      "en": "Castries",
+      "fr": "Castries",
+      "de": "Castries",
+      "it": "Castries",
+      "es": "Castries"
+    },
+    "population": 179744,
+    "pop_year": "2024"
+  },
+  "663": {
+    "id": 663,
+    "alpha2": "MF",
+    "alpha3": "MAF",
+    "name": "Saint Martin",
+    "capital": {
+      "en": "Marigot"
+    },
+    "population": 26129,
+    "pop_year": "2024"
+  },
+  "666": {
+    "id": 666,
+    "alpha2": "PM",
+    "alpha3": "SPM",
+    "name": "Saint Pierre and Miquelon",
+    "capital": {
+      "en": "Saint-Pierre"
+    },
+    "population": 0
+  },
+  "670": {
+    "id": 670,
+    "alpha2": "VC",
+    "alpha3": "VCT",
+    "name": "Saint Vincent and the Grenadines",
+    "capital": {
+      "en": "Kingstown",
+      "fr": "Kingstown",
+      "de": "Kingstown",
+      "it": "Kingstown",
+      "es": "Kingstown"
+    },
+    "population": 100616,
+    "pop_year": "2024"
+  },
+  "674": {
+    "id": 674,
+    "alpha2": "SM",
+    "alpha3": "SMR",
+    "name": "San Marino",
+    "capital": {
+      "en": "San Marino",
+      "fr": "Saint-Marin",
+      "de": "San Marino",
+      "it": "Città di San Marino",
+      "es": "San Marino"
+    },
+    "population": 33977,
+    "pop_year": "2024"
+  },
+  "678": {
+    "id": 678,
+    "alpha2": "ST",
+    "alpha3": "STP",
+    "name": "São Tomé and Príncipe",
+    "capital": {
+      "en": "São Tomé",
+      "fr": "São Tomé",
+      "de": "São Tomé",
+      "it": "São Tomé",
+      "es": "Santo Tomé"
+    },
+    "population": 235536,
+    "pop_year": "2024"
+  },
+  "682": {
+    "id": 682,
+    "alpha2": "SA",
+    "alpha3": "SAU",
+    "name": "Saudi Arabia",
+    "capital": {
+      "en": "Riyadh",
+      "fr": "Riyad",
+      "de": "Riad",
+      "it": "Riad",
+      "es": "Riad"
+    },
+    "population": 35300280,
+    "pop_year": "2024"
+  },
+  "686": {
+    "id": 686,
+    "alpha2": "SN",
+    "alpha3": "SEN",
+    "name": "Senegal",
+    "capital": {
+      "en": "Dakar",
+      "fr": "Dakar",
+      "de": "Dakar",
+      "it": "Dakar",
+      "es": "Dakar"
+    },
+    "population": 18501984,
+    "pop_year": "2024"
+  },
+  "688": {
+    "id": 688,
+    "alpha2": "RS",
+    "alpha3": "SRB",
+    "name": "Serbia",
+    "capital": {
+      "en": "Belgrade",
+      "fr": "Belgrade",
+      "de": "Belgrad",
+      "it": "Belgrado",
+      "es": "Belgrado"
+    },
+    "population": 6586476,
+    "pop_year": "2024"
+  },
+  "690": {
+    "id": 690,
+    "alpha2": "SC",
+    "alpha3": "SYC",
+    "name": "Seychelles",
+    "capital": {
+      "en": "Victoria",
+      "fr": "Victoria",
+      "de": "Victoria",
+      "it": "Victoria",
+      "es": "Victoria"
+    },
+    "population": 121354,
+    "pop_year": "2024"
+  },
+  "694": {
+    "id": 694,
+    "alpha2": "SL",
+    "alpha3": "SLE",
+    "name": "Sierra Leone",
+    "capital": {
+      "en": "Freetown",
+      "fr": "Freetown",
+      "de": "Freetown",
+      "it": "Freetown",
+      "es": "Freetown"
+    },
+    "population": 8642022,
+    "pop_year": "2024"
+  },
+  "702": {
+    "id": 702,
+    "alpha2": "SG",
+    "alpha3": "SGP",
+    "name": "Singapore",
+    "capital": {
+      "en": "Singapore",
+      "fr": "Singapour",
+      "de": "Singapur",
+      "it": "Singapore",
+      "es": "Singapur"
+    },
+    "population": 6036860,
+    "pop_year": "2024"
+  },
+  "703": {
+    "id": 703,
+    "alpha2": "SK",
+    "alpha3": "SVK",
+    "name": "Slovakia",
+    "capital": {
+      "en": "Bratislava",
+      "fr": "Bratislava",
+      "de": "Bratislava",
+      "it": "Bratislava",
+      "es": "Bratislava"
+    },
+    "population": 5422069,
+    "pop_year": "2024"
+  },
+  "704": {
+    "id": 704,
+    "alpha2": "VN",
+    "alpha3": "VNM",
+    "name": "Vietnam",
+    "capital": {
+      "en": "Hanoi",
+      "fr": "Hanoï",
+      "de": "Hanoi",
+      "it": "Hanoi",
+      "es": "Hanói"
+    },
+    "population": 100987686,
+    "pop_year": "2024"
+  },
+  "705": {
+    "id": 705,
+    "alpha2": "SI",
+    "alpha3": "SVN",
+    "name": "Slovenia",
+    "capital": {
+      "en": "Ljubljana",
+      "fr": "Ljubljana",
+      "de": "Ljubljana",
+      "it": "Lubiana",
+      "es": "Liubliana"
+    },
+    "population": 2127400,
+    "pop_year": "2024"
+  },
+  "706": {
+    "id": 706,
+    "alpha2": "SO",
+    "alpha3": "SOM",
+    "name": "Somalia",
+    "capital": {
+      "en": "Mogadishu",
+      "fr": "Mogadiscio",
+      "de": "Mogadischu",
+      "it": "Mogadiscio",
+      "es": "Mogadiscio"
+    },
+    "population": 19009151,
+    "pop_year": "2024"
+  },
+  "710": {
+    "id": 710,
+    "alpha2": "ZA",
+    "alpha3": "ZAF",
+    "name": "South Africa",
+    "capital": {
+      "en": "Bloemfontein",
+      "fr": "Bloemfontein",
+      "de": "Bloemfontein",
+      "it": "Bloemfontein",
+      "es": "Bloemfontein"
+    },
+    "population": 64007187,
+    "pop_year": "2024"
+  },
+  "716": {
+    "id": 716,
+    "alpha2": "ZW",
+    "alpha3": "ZWE",
+    "name": "Zimbabwe",
+    "capital": {
+      "en": "Harare",
+      "fr": "Harare",
+      "de": "Harare",
+      "it": "Harare",
+      "es": "Harare"
+    },
+    "population": 16634373,
+    "pop_year": "2024"
+  },
+  "724": {
+    "id": 724,
+    "alpha2": "ES",
+    "alpha3": "ESP",
+    "name": "Spain",
+    "capital": {
+      "en": "Madrid",
+      "fr": "Madrid",
+      "de": "Madrid",
+      "it": "Madrid",
+      "es": "Madrid"
+    },
+    "population": 48848840,
+    "pop_year": "2024"
+  },
+  "728": {
+    "id": 728,
+    "alpha2": "SS",
+    "alpha3": "SSD",
+    "name": "South Sudan",
+    "capital": {
+      "en": "Juba",
+      "fr": "Djouba",
+      "de": "Juba",
+      "it": "Giuba",
+      "es": "Yuba"
+    },
+    "population": 11943408,
+    "pop_year": "2024"
+  },
+  "729": {
+    "id": 729,
+    "alpha2": "SD",
+    "alpha3": "SDN",
+    "name": "Sudan",
+    "capital": {
+      "en": "Khartoum",
+      "fr": "Khartoum",
+      "de": "Chartum",
+      "it": "Khartum",
+      "es": "Jartum"
+    },
+    "population": 50448963,
+    "pop_year": "2024"
+  },
+  "732": {
+    "id": 732,
+    "alpha2": "EH",
+    "alpha3": "ESH",
+    "name": "Western Sahara",
+    "capital": {
+      "en": "El Aaiún"
+    },
+    "population": 0
+  },
+  "740": {
+    "id": 740,
+    "alpha2": "SR",
+    "alpha3": "SUR",
+    "name": "Suriname",
+    "capital": {
+      "en": "Paramaribo",
+      "fr": "Paramaribo",
+      "de": "Paramaribo",
+      "it": "Paramaribo",
+      "es": "Paramaribo"
+    },
+    "population": 634431,
+    "pop_year": "2024"
+  },
+  "744": {
+    "id": 744,
+    "alpha2": "SJ",
+    "alpha3": "SJM",
+    "name": "Svalbard and Jan Mayen",
+    "capital": {
+      "en": "Longyearbyen"
+    },
+    "population": 0
+  },
+  "748": {
+    "id": 748,
+    "alpha2": "SZ",
+    "alpha3": "SWZ",
+    "name": "Eswatini",
+    "capital": {
+      "en": "Lobamba",
+      "fr": "Lobamba",
+      "de": "Lobamba",
+      "it": "Lobamba",
+      "es": "Lobamba"
+    },
+    "population": 1242822,
+    "pop_year": "2024"
+  },
+  "752": {
+    "id": 752,
+    "alpha2": "SE",
+    "alpha3": "SWE",
+    "name": "Sweden",
+    "capital": {
+      "en": "Stockholm",
+      "fr": "Stockholm",
+      "de": "Stockholm",
+      "it": "Stoccolma",
+      "es": "Estocolmo"
+    },
+    "population": 10569709,
+    "pop_year": "2024"
+  },
+  "756": {
+    "id": 756,
+    "alpha2": "CH",
+    "alpha3": "CHE",
+    "name": "Switzerland",
+    "capital": {
+      "en": "Bern",
+      "fr": "Berne",
+      "de": "Bern",
+      "it": "Berna",
+      "es": "Berna"
+    },
+    "population": 9005582,
+    "pop_year": "2024"
+  },
+  "760": {
+    "id": 760,
+    "alpha2": "SY",
+    "alpha3": "SYR",
+    "name": "Syria",
+    "capital": {
+      "en": "Damascus",
+      "fr": "Damas",
+      "de": "Damaskus",
+      "it": "Damasco",
+      "es": "Damasco"
+    },
+    "population": 24672760,
+    "pop_year": "2024"
+  },
+  "762": {
+    "id": 762,
+    "alpha2": "TJ",
+    "alpha3": "TJK",
+    "name": "Tajikistan",
+    "capital": {
+      "en": "Dushanbe",
+      "fr": "Douchanbé",
+      "de": "Duschanbe",
+      "it": "Dušanbe",
+      "es": "Dusambé"
+    },
+    "population": 10590927,
+    "pop_year": "2024"
+  },
+  "764": {
+    "id": 764,
+    "alpha2": "TH",
+    "alpha3": "THA",
+    "name": "Thailand",
+    "capital": {
+      "en": "Bangkok",
+      "fr": "Bangkok",
+      "de": "Bangkok",
+      "it": "Bangkok",
+      "es": "Bangkok"
+    },
+    "population": 71668011,
+    "pop_year": "2024"
+  },
+  "768": {
+    "id": 768,
+    "alpha2": "TG",
+    "alpha3": "TGO",
+    "name": "Togo",
+    "capital": {
+      "en": "Lomé",
+      "fr": "Lomé",
+      "de": "Lomé",
+      "it": "Lomé",
+      "es": "Lomé"
+    },
+    "population": 9515236,
+    "pop_year": "2024"
+  },
+  "772": {
+    "id": 772,
+    "alpha2": "TK",
+    "alpha3": "TKL",
+    "name": "Tokelau",
+    "capital": {
+      "en": "Fakaofo"
+    },
+    "population": 0
+  },
+  "776": {
+    "id": 776,
+    "alpha2": "TO",
+    "alpha3": "TON",
+    "name": "Tonga",
+    "capital": {
+      "en": "Nukuʻalofa",
+      "fr": "Nukuʻalofa",
+      "de": "Nukuʻalofa",
+      "it": "Nukuʻalofa",
+      "es": "Nukualofa"
+    },
+    "population": 104175,
+    "pop_year": "2024"
+  },
+  "780": {
+    "id": 780,
+    "alpha2": "TT",
+    "alpha3": "TTO",
+    "name": "Trinidad and Tobago",
+    "capital": {
+      "en": "Port of Spain",
+      "fr": "Port-d'Espagne",
+      "de": "Port of Spain",
+      "it": "Port of Spain",
+      "es": "Puerto España"
+    },
+    "population": 1368333,
+    "pop_year": "2024"
+  },
+  "784": {
+    "id": 784,
+    "alpha2": "AE",
+    "alpha3": "ARE",
+    "name": "United Arab Emirates",
+    "capital": {
+      "en": "Abu Dhabi",
+      "fr": "Abou Dabi",
+      "de": "Abu Dhabi",
+      "it": "Abu Dhabi",
+      "es": "Abu Dhabi"
+    },
+    "population": 10986400,
+    "pop_year": "2024"
+  },
+  "788": {
+    "id": 788,
+    "alpha2": "TN",
+    "alpha3": "TUN",
+    "name": "Tunisia",
+    "capital": {
+      "en": "Tunis",
+      "fr": "Tunis",
+      "de": "Tunis",
+      "it": "Tunisi",
+      "es": "Túnez"
+    },
+    "population": 12277109,
+    "pop_year": "2024"
+  },
+  "792": {
+    "id": 792,
+    "alpha2": "TR",
+    "alpha3": "TUR",
+    "name": "Türkiye",
+    "capital": {
+      "en": "Ankara",
+      "fr": "Ankara",
+      "de": "Ankara",
+      "it": "Ankara",
+      "es": "Ankara"
+    },
+    "population": 85518661,
+    "pop_year": "2024"
+  },
+  "795": {
+    "id": 795,
+    "alpha2": "TM",
+    "alpha3": "TKM",
+    "name": "Turkmenistan",
+    "capital": {
+      "en": "Ashgabat",
+      "fr": "Achgabat",
+      "de": "Aşgabat",
+      "it": "Aşgabat",
+      "es": "Asjabad"
+    },
+    "population": 7494498,
+    "pop_year": "2024"
+  },
+  "796": {
+    "id": 796,
+    "alpha2": "TC",
+    "alpha3": "TCA",
+    "name": "Turks and Caicos Islands",
+    "capital": {
+      "en": "Cockburn Town"
+    },
+    "population": 46535,
+    "pop_year": "2024"
+  },
+  "798": {
+    "id": 798,
+    "alpha2": "TV",
+    "alpha3": "TUV",
+    "name": "Tuvalu",
+    "capital": {
+      "en": "Funafuti",
+      "fr": "Funafuti",
+      "de": "Funafuti",
+      "it": "Funafuti",
+      "es": "Funafuti"
+    },
+    "population": 9646,
+    "pop_year": "2024"
+  },
+  "800": {
+    "id": 800,
+    "alpha2": "UG",
+    "alpha3": "UGA",
+    "name": "Uganda",
+    "capital": {
+      "en": "Kampala",
+      "fr": "Kampala",
+      "de": "Kampala",
+      "it": "Kampala",
+      "es": "Kampala"
+    },
+    "population": 50015092,
+    "pop_year": "2024"
+  },
+  "804": {
+    "id": 804,
+    "alpha2": "UA",
+    "alpha3": "UKR",
+    "name": "Ukraine",
+    "capital": {
+      "en": "Kyiv",
+      "fr": "Kiev",
+      "de": "Kiew",
+      "it": "Kiev",
+      "es": "Kiev"
+    },
+    "population": 37860221,
+    "pop_year": "2024"
+  },
+  "807": {
+    "id": 807,
+    "alpha2": "MK",
+    "alpha3": "MKD",
+    "name": "North Macedonia",
+    "capital": {
+      "en": "Skopje",
+      "fr": "Skopje",
+      "de": "Skopje",
+      "it": "Skopje",
+      "es": "Skopie"
+    },
+    "population": 1824359,
+    "pop_year": "2024"
+  },
+  "818": {
+    "id": 818,
+    "alpha2": "EG",
+    "alpha3": "EGY",
+    "name": "Egypt",
+    "capital": {
+      "en": "Cairo",
+      "fr": "Le Caire",
+      "de": "Kairo",
+      "it": "Il Cairo",
+      "es": "El Cairo"
+    },
+    "population": 116538258,
+    "pop_year": "2024"
+  },
+  "826": {
+    "id": 826,
+    "alpha2": "GB",
+    "alpha3": "GBR",
+    "name": "United Kingdom",
+    "capital": {
+      "en": "London",
+      "fr": "Londres",
+      "de": "London",
+      "it": "Londra",
+      "es": "Londres"
+    },
+    "population": 69226000,
+    "pop_year": "2024"
+  },
+  "831": {
+    "id": 831,
+    "alpha2": "GG",
+    "alpha3": "GGY",
+    "name": "Guernsey",
+    "capital": {
+      "en": "St. Peter Port"
+    },
+    "population": 0
+  },
+  "832": {
+    "id": 832,
+    "alpha2": "JE",
+    "alpha3": "JEY",
+    "name": "Jersey",
+    "capital": {
+      "en": "Saint Helier"
+    },
+    "population": 0
+  },
+  "833": {
+    "id": 833,
+    "alpha2": "IM",
+    "alpha3": "IMN",
+    "name": "Isle of Man",
+    "capital": {
+      "en": "Douglas"
+    },
+    "population": 84160,
+    "pop_year": "2024"
+  },
+  "834": {
+    "id": 834,
+    "alpha2": "TZ",
+    "alpha3": "TZA",
+    "name": "Tanzania",
+    "capital": {
+      "en": "Dodoma",
+      "fr": "Dodoma",
+      "de": "Dodoma",
+      "it": "Dodoma",
+      "es": "Dodoma"
+    },
+    "population": 68560157,
+    "pop_year": "2024"
+  },
+  "840": {
+    "id": 840,
+    "alpha2": "US",
+    "alpha3": "USA",
+    "name": "United States",
+    "capital": {
+      "en": "Washington, D.C.",
+      "fr": "Washington",
+      "de": "Washington, D.C.",
+      "it": "Washington",
+      "es": "Washington D. C."
+    },
+    "population": 340110988,
+    "pop_year": "2024"
+  },
+  "850": {
+    "id": 850,
+    "alpha2": "VI",
+    "alpha3": "VIR",
+    "name": "United States Virgin Islands",
+    "capital": {
+      "en": "Charlotte Amalie"
+    },
+    "population": 104377,
+    "pop_year": "2024"
+  },
+  "854": {
+    "id": 854,
+    "alpha2": "BF",
+    "alpha3": "BFA",
+    "name": "Burkina Faso",
+    "capital": {
+      "en": "Ouagadougou",
+      "fr": "Ouagadougou",
+      "de": "Ouagadougou",
+      "it": "Ouagadougou",
+      "es": "Uagadugú"
+    },
+    "population": 23548781,
+    "pop_year": "2024"
+  },
+  "858": {
+    "id": 858,
+    "alpha2": "UY",
+    "alpha3": "URY",
+    "name": "Uruguay",
+    "capital": {
+      "en": "Montevideo",
+      "fr": "Montevideo",
+      "de": "Montevideo",
+      "it": "Montevideo",
+      "es": "Montevideo"
+    },
+    "population": 3386588,
+    "pop_year": "2024"
+  },
+  "860": {
+    "id": 860,
+    "alpha2": "UZ",
+    "alpha3": "UZB",
+    "name": "Uzbekistan",
+    "capital": {
+      "en": "Tashkent",
+      "fr": "Tachkent",
+      "de": "Taschkent",
+      "it": "Tashkent",
+      "es": "Taskent"
+    },
+    "population": 36361859,
+    "pop_year": "2024"
+  },
+  "862": {
+    "id": 862,
+    "alpha2": "VE",
+    "alpha3": "VEN",
+    "name": "Venezuela",
+    "capital": {
+      "en": "Caracas",
+      "fr": "Caracas",
+      "de": "Caracas",
+      "it": "Caracas",
+      "es": "Caracas"
+    },
+    "population": 28405543,
+    "pop_year": "2024"
+  },
+  "876": {
+    "id": 876,
+    "alpha2": "WF",
+    "alpha3": "WLF",
+    "name": "Wallis and Futuna",
+    "capital": {
+      "en": "Mata-Utu"
+    },
+    "population": 0
+  },
+  "882": {
+    "id": 882,
+    "alpha2": "WS",
+    "alpha3": "WSM",
+    "name": "Samoa",
+    "capital": {
+      "en": "Apia",
+      "fr": "Apia",
+      "de": "Apia",
+      "it": "Apia",
+      "es": "Apia"
+    },
+    "population": 218019,
+    "pop_year": "2024"
+  },
+  "887": {
+    "id": 887,
+    "alpha2": "YE",
+    "alpha3": "YEM",
+    "name": "Yemen",
+    "capital": {
+      "en": "Aden",
+      "fr": "Aden",
+      "de": "Aden",
+      "it": "Aden",
+      "es": "Adén"
+    },
+    "population": 40583164,
+    "pop_year": "2024"
+  },
+  "894": {
+    "id": 894,
+    "alpha2": "ZM",
+    "alpha3": "ZMB",
+    "name": "Zambia",
+    "capital": {
+      "en": "Lusaka",
+      "fr": "Lusaka",
+      "de": "Lusaka",
+      "it": "Lusaka",
+      "es": "Lusaka"
+    },
+    "population": 21314956,
+    "pop_year": "2024"
+  },
+  "8260": {
+    "id": 8260,
+    "alpha2": "gb-eng",
+    "alpha3": "",
+    "name": "England",
+    "capital": {
+      "en": "London",
+      "fr": "Londres",
+      "de": "London",
+      "it": "Londra",
+      "es": "Londres"
+    },
+    "population": 56490048
+  },
+  "8261": {
+    "id": 8261,
+    "alpha2": "gb-sct",
+    "alpha3": "",
+    "name": "Scotland",
+    "capital": {
+      "en": "Edinburgh",
+      "fr": "Édimbourg",
+      "de": "Edinburgh",
+      "it": "Edimburgo",
+      "es": "Edimburgo"
+    },
+    "population": 5479000
+  },
+  "8262": {
+    "id": 8262,
+    "alpha2": "gb-wls",
+    "alpha3": "",
+    "name": "Wales",
+    "capital": {
+      "en": "Cardiff",
+      "de": "Cardiff",
+      "fr": "Cardiff",
+      "it": "Cardiff",
+      "es": "Cardiff"
+    },
+    "population": 3107500
+  },
+  "8263": {
+    "id": 8263,
+    "alpha2": "gb-nir",
+    "alpha3": "",
+    "name": "Northern Ireland",
+    "capital": {
+      "en": "Belfast",
+      "fr": "Belfast",
+      "de": "Belfast",
+      "it": "Belfast",
+      "es": "Belfast"
+    },
+    "population": 1903175
+  },
+  "383": {
+    "id": 383,
+    "alpha2": "xk",
+    "alpha3": "xkx",
+    "name": "Kosovo",
+    "capital": {
+      "en": "Pristina",
+      "fr": "Pristina",
+      "de": "Pristina",
+      "it": "Priština",
+      "es": "Pristina"
+    },
+    "population": 1762009
+  }
+}

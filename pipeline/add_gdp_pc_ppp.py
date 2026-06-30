@@ -9,7 +9,8 @@ import json
 import requests
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent / "data"
+DATA_DIR   = Path(__file__).parent.parent / "data"
+EXTRAS_DIR = Path(__file__).parent.parent / "extras"
 
 WB_NAME_MAP = {
     'Iran, Islamic Rep.':              'Iran',
@@ -54,7 +55,7 @@ for entry in payload[1]:
 
 print(f'Fetched {len(gdp_pc)} countries')
 
-pop = json.load(open(ROOT / 'wc2026_map_data.json', encoding='utf-8'))['pop']
+pop = json.load(open(DATA_DIR / 'wc2026_map_data.json', encoding='utf-8'))['pop']
 missing = [k for k in pop if k not in gdp_pc]
 if missing:
     print(f'No GDP/cap for {len(missing)} countries (expected for UK home nations):')
@@ -63,7 +64,7 @@ if missing:
 else:
     print('All pop countries covered.')
 
-out_path = ROOT / 'wc2026_gdp_pc_ppp.json'
+out_path = EXTRAS_DIR / 'wc2026_gdp_pc_ppp.json'
 with open(out_path, 'w', encoding='utf-8') as f:
     json.dump(gdp_pc, f, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
 print(f'Done → {out_path.name}')

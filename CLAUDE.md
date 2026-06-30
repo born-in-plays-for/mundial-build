@@ -8,9 +8,19 @@
 
 | Path | Purpose |
 |---|---|
-| `pipeline/` | Data pipeline scripts and source CSVs (see `pipeline/README.md`) |
-| `data/` | Git submodule → [mundial-data](https://github.com/born-in-plays-for/mundial-data) |
+| `pipeline/` | Data pipeline scripts, source CSVs, and `countries.json` (build input) |
+| `data/` | Git submodule → [mundial-data](https://github.com/born-in-plays-for/mundial-data) — core frontend assets only |
+| `extras/` | Supplementary data not consumed by the main map (`wc2026_gdp.json`, `wc2026_gdp_pc_ppp.json`, `wc2026_hdi.json`) |
+| `pages/` | Self-contained HTML pages hosted from this repo (`wc2026_correlation.html`) |
 | `infographics/` | Infographic HTML sources |
+
+### `data/` submodule — what belongs there
+
+Only files consumed directly by the `mundial` frontend map belong in the submodule:
+`wc2026_map_data.json`, `wc2026_elo_rank.json`, `wc2026_elo_history.json`, `wc2026_r32_teams.json`, `uk-nations.geojson`.
+
+`countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
+GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.
 
 ## Related repos
 
@@ -24,7 +34,7 @@
 
 ```bash
 # Countries (run when rebuilding from scratch — patches run automatically at end)
-python3 pipeline/fetch_countries.py      # → data/countries.json (includes patch_uk_nations + patch_kosovo)
+python3 pipeline/fetch_countries.py      # → pipeline/countries.json (includes patch_uk_nations + patch_kosovo)
 
 # Squad data
 python3 pipeline/wc2026_birthplaces.py  # → pipeline/wc2026_players.csv
@@ -33,14 +43,19 @@ python3 pipeline/build_json.py          # → data/wc2026_map_data.json
 
 # Enrich Wikipedia URLs (slow, ~5 min)
 python3 pipeline/add_wiki_urls.py       # → data/wc2026_map_data.json (in-place)
+
+# Extras (only needed for pages/wc2026_correlation.html)
+python3 pipeline/add_gdp.py            # → extras/wc2026_gdp.json
+python3 pipeline/add_gdp_pc_ppp.py     # → extras/wc2026_gdp_pc_ppp.json
+python3 pipeline/add_hdi.py            # → extras/wc2026_hdi.json
 ```
 
 ## UK home nations & Kosovo
 
 Standard ISO tables don't include UK home nations (ids 8260–8263, alpha2 `gb-eng/gb-sct/gb-wls/gb-nir`) or Kosovo (id 383, `xk`). They are injected by patch scripts:
 
-- `pipeline/patch_uk_nations.py` — patches `data/countries.json` in-place
-- `pipeline/patch_kosovo.py` — patches `data/countries.json` and `data/wc2026_elo_rank.json`
+- `pipeline/patch_uk_nations.py` — patches `pipeline/countries.json` in-place
+- `pipeline/patch_kosovo.py` — patches `pipeline/countries.json` and `data/wc2026_elo_rank.json`
 
 Both patches are **automatically called** at the end of `fetch_countries.py`. They can also be run standalone.
 

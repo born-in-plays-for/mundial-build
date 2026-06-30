@@ -22,7 +22,7 @@ Entry shape:
 import json, subprocess, sys, time, urllib.request, urllib.parse
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent / "data"
+ROOT = Path(__file__).parent
 
 MLEDOZE_URL = "https://raw.githubusercontent.com/mledoze/countries/master/countries.json"
 WB_URL = (

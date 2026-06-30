@@ -11,7 +11,8 @@ import requests
 import pandas as pd
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent / "data"
+DATA_DIR   = Path(__file__).parent.parent / "data"
+EXTRAS_DIR = Path(__file__).parent.parent / "extras"
 
 HDR_CSV_URL = (
     'https://hdr.undp.org/sites/default/files/2023-24_HDR/'
@@ -76,7 +77,7 @@ for _, row in df.iterrows():
 
 print(f'Extracted HDI for {len(hdi)} countries')
 
-pop = json.load(open(ROOT / 'wc2026_map_data.json', encoding='utf-8'))['pop']
+pop = json.load(open(DATA_DIR / 'wc2026_map_data.json', encoding='utf-8'))['pop']
 missing = [k for k in pop if k not in hdi]
 if missing:
     print(f'No HDI for {len(missing)} countries:')
@@ -85,7 +86,7 @@ if missing:
 else:
     print('All pop countries covered.')
 
-out_path = ROOT / 'wc2026_hdi.json'
+out_path = EXTRAS_DIR / 'wc2026_hdi.json'
 with open(out_path, 'w', encoding='utf-8') as f:
     json.dump(hdi, f, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
 print(f'Done → {out_path.name}')

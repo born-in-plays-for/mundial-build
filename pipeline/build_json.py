@@ -19,11 +19,11 @@ import json, csv
 from pathlib import Path
 from collections import defaultdict
 
-ROOT           = Path(__file__).parent.parent / "data"
+DATA_DIR       = Path(__file__).parent.parent / "data"
 CSV_PATH       = Path(__file__).parent / "wc2026_players.csv"
 COACHES_PATH   = Path(__file__).parent / "wc2026_coaches.csv"
-JSON_PATH      = ROOT / "wc2026_map_data.json"
-COUNTRIES_PATH = ROOT / "countries.json"
+JSON_PATH      = DATA_DIR / "wc2026_map_data.json"
+COUNTRIES_PATH = Path(__file__).parent / "countries.json"
 
 # ── Load countries.json — authoritative source for numeric IDs + population ───
 with open(COUNTRIES_PATH, encoding="utf-8") as f:
