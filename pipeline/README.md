@@ -58,7 +58,6 @@ plus Wikidata for birth city/country lookup.
 
 Outputs:
 - `pipeline/wc2026_players.csv` — full squad roster (1 row per player)
-- `pipeline/wc2026_by_birthcountry.csv` — aggregated ranking by birth country
 
 **Known issue:** a small number of players (~20) may have `birth_country` set to
 `]`, `[a]` (Wikipedia footnote markers) or `NaN` (missing data). See
@@ -288,7 +287,6 @@ Outputs `wc2026_export_ratio.png` in the project root. Requires `matplotlib`.
 | File | Description |
 |------|-------------|
 | `wc2026_players.csv` | Full squad roster — **source of truth** for squad data |
-| `wc2026_by_birthcountry.csv` | Aggregated ranking by birth country |
 | `uk_regional_gdp.csv` | ONS regional GDP/GDHI data for UK home nations (used by `add_uk_regional_gdp.py`) |
 
 The generated files (`wc2026_map_data.json`, `countries.json`, `wc2026_elo_rank.json`,
