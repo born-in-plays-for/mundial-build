@@ -24,4 +24,7 @@ flowchart TD
 ```
 
 `patch_kosovo.py` is called automatically at the end of `update_elo_rankings.py`.
-Kosovo (XK) has no standard ISO entry and is injected manually with `rank=null, pts=null`.
+Kosovo (XK) has no standard ISO entry and is injected with `rank=null, pts=null`.
+
+Note: `patch_kosovo.py` also patches `pipeline/countries.json` (adding Kosovo's metadata),
+but that side-effect is only relevant when rebuilding `map_data.json` — see `map_data.md`.
