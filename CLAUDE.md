@@ -45,10 +45,10 @@ python3 pipeline/build_json.py          # → data/map_data.json
 python3 pipeline/add_wiki_urls.py       # → data/map_data.json (in-place)
 
 # Extras (only needed for pages/ standalone charts)
-python3 pipeline/build_elo_history.py  # → extras/elo_history.json  (for pages/wc2026_elo_history.html)
-python3 pipeline/add_gdp.py            # → extras/wc2026_gdp.json           (for pages/wc2026_correlation.html)
-python3 pipeline/add_gdp_pc_ppp.py     # → extras/wc2026_gdp_pc_ppp.json    (for pages/wc2026_correlation.html)
-python3 pipeline/add_hdi.py            # → extras/wc2026_hdi.json            (for pages/wc2026_correlation.html)
+python3 extras/build_elo_history.py  # → extras/elo_history.json  (for pages/wc2026_elo_history.html)
+python3 extras/add_gdp.py            # → extras/gdp.json                   (for pages/wc2026_correlation.html)
+python3 extras/add_gdp_pc_ppp.py     # → extras/gdp_pc_ppp.json            (for pages/wc2026_correlation.html)
+python3 extras/add_hdi.py            # → extras/hdi.json                   (for pages/wc2026_correlation.html)
 ```
 
 ## UK home nations & Kosovo

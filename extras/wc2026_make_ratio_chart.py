@@ -17,10 +17,11 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 
-ROOT = Path(__file__).parent.parent / "data"
+ROOT   = Path(__file__).parent.parent / "data"
+EXTRAS = Path(__file__).parent
 
 # ── Config ────────────────────────────────────────────────────────────────────
-OUTPUT      = ROOT / 'wc2026_export_ratio.png'
+OUTPUT      = EXTRAS / 'wc2026_export_ratio.png'
 MIN_RATIO   = 0.05          # hide countries below this threshold
 TOP_N       = 20            # max bars to show
 BG_COLOR    = '#f5f2ec'     # map background
@@ -41,7 +42,7 @@ args = parser.parse_args()
 exclude_curacao = not args.with_curacao
 
 # ── Data ──────────────────────────────────────────────────────────────────────
-with open(ROOT / 'wc2026_map_data.json', encoding='utf-8') as f:
+with open(ROOT / 'map_data.json', encoding='utf-8') as f:
     app = json.load(f)
 
 CURA_NATION = 'Curaçao'
