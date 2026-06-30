@@ -44,10 +44,11 @@ python3 pipeline/build_json.py          # → data/wc2026_map_data.json
 # Enrich Wikipedia URLs (slow, ~5 min)
 python3 pipeline/add_wiki_urls.py       # → data/wc2026_map_data.json (in-place)
 
-# Extras (only needed for pages/wc2026_correlation.html)
-python3 pipeline/add_gdp.py            # → extras/wc2026_gdp.json
-python3 pipeline/add_gdp_pc_ppp.py     # → extras/wc2026_gdp_pc_ppp.json
-python3 pipeline/add_hdi.py            # → extras/wc2026_hdi.json
+# Extras (only needed for pages/ standalone charts)
+python3 pipeline/build_elo_history.py  # → extras/wc2026_elo_history.json  (for pages/wc2026_elo_history.html)
+python3 pipeline/add_gdp.py            # → extras/wc2026_gdp.json           (for pages/wc2026_correlation.html)
+python3 pipeline/add_gdp_pc_ppp.py     # → extras/wc2026_gdp_pc_ppp.json    (for pages/wc2026_correlation.html)
+python3 pipeline/add_hdi.py            # → extras/wc2026_hdi.json            (for pages/wc2026_correlation.html)
 ```
 
 ## UK home nations & Kosovo

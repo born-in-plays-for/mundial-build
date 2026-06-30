@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Football Elo Ratings History</title>
+<style>
+  :root { --bg: #1a1a18; --fg: #f0ece4; --muted: #777; --amber: #fbbf24; --amber-dk: #d97706; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; }
+  body {
+    height: 100dvh; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* ── 9:16 page, capped at 1080 × 1920 ───────────────────────────── */
+  #page {
+    background: var(--bg); color: var(--fg);
+    font-family: system-ui, -apple-system, sans-serif;
+    width:  min(100dvw, calc(100dvh * 9 / 16), 1080px);
+    height: min(100dvh, calc(100dvw * 16 / 9), 1920px);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 14px 12px 10px; gap: 8px;
+    overflow: hidden;
+  }
+
+  h1   { font-size: 20px; font-weight: 400; letter-spacing: -.3px; margin-bottom: 2px; }
+  .sub { font-size: 11px; color: var(--muted); }
+
+  #wrap { min-height: 0; overflow: hidden; }
+  #chart { display: block; width: 100%; height: 100%; }
+
+  .bar-name { fill: var(--fg); }
+  .bar-val  { fill: var(--amber); font-variant-numeric: tabular-nums; }
+  .year-bg  { fill: rgba(255,255,255,.06); font-weight: 700; }
+
+  #controls {
+    display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;
+  }
+  #play-btn {
+    background: var(--amber-dk); border: none; color: #fff;
+    border-radius: 6px; padding: 7px 18px; font-size: 14px;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  }
+  #play-btn:hover { background: var(--amber); color: #111; }
+  .ctrl-lbl    { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+  #year-slider { flex: 1; min-width: 60px; accent-color: var(--amber); }
+  #spd-slider  { width: 64px; flex-shrink: 0; accent-color: var(--amber); }
+  #n-slider    { width: 56px; flex-shrink: 0; accent-color: var(--amber); }
+  #n-disp      { font-size: 13px; font-weight: 600; color: var(--amber); min-width: 20px; text-align: right; flex-shrink: 0; }
+  #year-disp   { font-size: 14px; font-weight: 600; color: var(--amber);
+                 font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+                 min-width: 72px; text-align: right; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div id="page">
+
+  <div id="header">
+    <h1>World Football Elo Ratings — History</h1>
+    <p class="sub" id="data-sub">source: eloratings.net</p>
+  </div>
+
+  <div id="wrap"><svg id="chart"></svg></div>
+
+  <div id="controls">
+    <button id="play-btn">▶ Play</button>
+    <span class="ctrl-lbl">Year:</span>
+    <input type="range" id="year-slider" min="0" max="0" value="0">
+    <span id="year-disp">1872</span>
+    <span class="ctrl-lbl">Speed:</span>
+    <input type="range" id="spd-slider" min="1" max="12" value="5">
+    <span class="ctrl-lbl">Teams:</span>
+    <input type="range" id="n-slider" min="3" max="15" value="8">
+    <span id="n-disp">8</span>
+  </div>
+
+</div><!-- #page -->
+
+<script type="module">
+import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+
+// Rectangular 4:3 flags — work well stretched to fill a wide bar
+const FLAG = iso2 => `https://cdn.jsdelivr.net/npm/flag-icons@7/flags/4x3/${iso2}.svg`;
+
+let N = 8;   // bars visible (controlled by #n-slider)
+
+// ── SVG scaffold (one-time) ───────────────────────────────────────────
+const svg  = d3.select('#chart');
+const defs = svg.append('defs');
+
+// Fallback gradient for countries without a flag
+const grad = defs.append('linearGradient').attr('id', 'fallbackGrad')
+  .attr('x1','0%').attr('y1','0%').attr('x2','100%').attr('y2','0%');
+grad.append('stop').attr('offset','0%' ).attr('stop-color','#92400e');
+grad.append('stop').attr('offset','45%').attr('stop-color','#d97706');
+grad.append('stop').attr('offset','100%').attr('stop-color','#fbbf24');
+
+const yearBg = svg.append('text').attr('class','year-bg').attr('text-anchor','end');
+const g      = svg.append('g');
+const xScale = d3.scaleLinear();
+
+function topData(snap) {
+  return Object.entries(snap)
+    .map(([code, elo]) => ({ code, elo, ...data.teams[code] }))
+    .filter(d => d.name)
+    .sort((a, b) => b.elo - a.elo)
+    .slice(0, N)
+    .map((d, i) => ({ ...d, i }));
+}
+
+// ── Layout ─────────────────────────────────────────────────────────────
+let L = null;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function computeLayout() {
+  const el = document.getElementById('wrap');
+  const W  = el.clientWidth  || 900;
+  const H  = el.clientHeight || 500;
+
+  const ML = clamp(Math.round(W * 0.27), 110, 230);   // name column
+  const MR = clamp(Math.round(W * 0.09),  44,  82);   // value column
+  const MT = Math.round(H * 0.025);
+  const MB = Math.round(H * 0.08);
+  const IW = W - ML - MR;
+
+  const STEP  = (H - MT - MB) / N;
+  const BAR_H = Math.round(STEP * 0.74);
+
+  const fnName = clamp(Math.round(BAR_H * 0.36), 10, 15);
+  const fnVal  = clamp(Math.round(BAR_H * 0.32),  9, 13);
+  const fnYear = clamp(Math.round(H * 0.16),     36, 130);
+
+  return { W, H, ML, MR, MT, MB, IW, STEP, BAR_H, fnName, fnVal, fnYear };
+}
+
+function applyLayout(lNew) {
+  L = lNew;
+  svg.attr('viewBox', `0 0 ${L.W} ${L.H}`);
+  yearBg.attr('x', L.W - 14).attr('y', L.H - 8)
+        .style('font-size', `${L.fnYear}px`);
+  g.attr('transform', `translate(${L.ML},${L.MT})`);
+  xScale.range([0, L.IW]);
+
+  // Refit existing bars to new geometry (render handles widths)
+  g.selectAll('.bar-track').attr('width', L.IW).attr('height', L.BAR_H);
+  g.selectAll('.bar-fall' ).attr('height', L.BAR_H);
+  g.selectAll('.bar-flag' ).attr('height', L.BAR_H);
+  g.selectAll('.bar-fimg' ).attr('height', L.BAR_H);
+  g.selectAll('.bar-name' ).attr('x', -6).attr('y', L.BAR_H / 2 + 1).style('font-size', `${L.fnName}px`);
+  g.selectAll('.bar-val'  ).attr('x', L.IW + 6).attr('y', L.BAR_H / 2 + 1).style('font-size', `${L.fnVal}px`);
+  g.selectAll('.bar').attr('transform', d => d ? `translate(0,${d.i * L.STEP})` : null);
+}
+
+// ── Load data ─────────────────────────────────────────────────────────
+// (top-level await; everything after runs once data is ready)
+const data = await fetch('../extras/wc2026_elo_history.json').then(r => r.json());
+
+const totalFrames = data.snapshots.length;   // one snapshot per month from pipeline
+const startOff    = data.start_year * 12 + ((data.start_month || 1) - 1);
+const endYear     = Math.floor((startOff + totalFrames - 1) / 12);
+const yearSlider  = document.getElementById('year-slider');
+yearSlider.max    = totalFrames - 1;
+yearSlider.value  = totalFrames - 1;
+document.getElementById('data-sub').textContent =
+  `source: eloratings.net · ${data.start_year}/${String(data.start_month || 1).padStart(2,'0')}–${endYear} · generated ${data.generated}`;
+
+// ── Initial render ────────────────────────────────────────────────────
+let frameIdx = totalFrames - 1;
+applyLayout(computeLayout());
+render(frameIdx, 0);
+
+new ResizeObserver(() => { applyLayout(computeLayout()); render(frameIdx, 0); })
+  .observe(document.getElementById('wrap'));
+
+// ── Playback ─────────────────────────────────────────────────────────
+let playing = false, rafId = null, lastTs = null;
+
+document.getElementById('play-btn').addEventListener('click', () =>
+  playing ? stop() : start()
+);
+yearSlider.addEventListener('input', () => {
+  if (playing) stop();
+  frameIdx = +yearSlider.value;
+  render(frameIdx, 0);
+});
+document.getElementById('n-slider').addEventListener('input', function () {
+  N = +this.value;
+  document.getElementById('n-disp').textContent = N;
+  g.selectAll('.bar').remove();   // wipe stale bars; render() rebuilds
+  applyLayout(computeLayout());
+  render(frameIdx, 400);          // slide new bars in
+});
+
+function start() {
+  if (frameIdx >= totalFrames - 1) frameIdx = 0;
+  playing = true;
+  document.getElementById('play-btn').textContent = '⏸ Pause';
+  lastTs = null;
+  rafId = requestAnimationFrame(tick);
+}
+function stop() {
+  playing = false;
+  document.getElementById('play-btn').textContent = '▶ Play';
+  if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+}
+function tick(ts) {
+  if (!playing) return;
+  if (!lastTs) lastTs = ts;
+
+  const baseSpeed = +document.getElementById('spd-slider').value;
+  const mspf = 1200 / baseSpeed;   // constant — linear time
+
+  if (ts - lastTs >= mspf) {
+    frameIdx++;
+    yearSlider.value = frameIdx;
+    const dur = Math.min(Math.round(mspf * 0.5), 200);   // same every month
+    try { render(frameIdx, dur); } catch (e) { console.error('render error', e); }
+    lastTs = ts;
+    if (frameIdx >= totalFrames - 1) { stop(); return; }
+  }
+  rafId = requestAnimationFrame(tick);
+}
+
+// ── Render ───────────────────────────────────────────────────────────
+function render(idx, duration) {
+  const snap = data.snapshots[idx] || {};
+  const top  = topData(snap);
+  if (!top.length || !L) return;
+
+  const absM  = startOff + idx;
+  const year  = Math.floor(absM / 12);
+  const month = (absM % 12) + 1;
+  const label = `${year}/${String(month).padStart(2, '0')}`;
+  document.getElementById('year-disp').textContent = label;
+  yearBg.text(label);
+
+  // Offset scale: subtract last-place Elo, add 1/5 of leader's absolute Elo as base.
+  // Keeps bars meaningfully different in length; flags in shorter bars are less distorted.
+  const minElo  = top[top.length - 1].elo;
+  const base    = top[0].elo / 5;
+  const maxDisp = (top[0].elo - minElo) + base;
+  xScale.domain([0, maxDisp * 1.06]);
+  const bw = d => Math.max(2, xScale((d.elo - minElo) + base));
+
+  const t   = d3.transition().duration(duration).ease(d3.easeLinear);
+  const sel = g.selectAll('.bar').data(top, d => d.code);
+
+  // ── ENTER ─────────────────────────────────────────────────────────
+  const enter = sel.enter().append('g').attr('class', 'bar')
+    .attr('opacity', 0)
+    .attr('transform', `translate(0,${(N + 1) * L.STEP})`);
+
+  // 1. full-width dim track (shows the "empty" portion of the bar)
+  enter.append('rect').attr('class', 'bar-track')
+    .attr('x', 0).attr('y', 0)
+    .attr('width', L.IW).attr('height', L.BAR_H)
+    .attr('fill', 'rgba(255,255,255,0.07)');
+
+  // 2. fallback gradient bar (hidden when flag available)
+  enter.append('rect').attr('class', 'bar-fall')
+    .attr('x', 0).attr('y', 0).attr('height', L.BAR_H)
+    .attr('fill', 'url(#fallbackGrad)').attr('opacity', 0.92);
+
+  // 3. flag bar: nested <svg> clips the stretched flag image to bar width
+  const fs = enter.append('svg').attr('class', 'bar-flag')
+    .attr('x', 0).attr('y', 0).attr('height', L.BAR_H);
+  fs.append('image').attr('class', 'bar-fimg')
+    .attr('x', 0).attr('y', 0)
+    .attr('height', L.BAR_H)
+    .attr('preserveAspectRatio', 'none')   // stretch flag to fill bar
+    .on('error', function () {
+      // Flag SVG not found → show gradient fallback instead
+      d3.select(this.parentNode).attr('visibility', 'hidden');
+      d3.select(this.parentNode.parentNode).select('.bar-fall').attr('visibility', 'visible');
+    });
+
+  // 4. Country name — right-aligned, just left of bar
+  enter.append('text').attr('class', 'bar-name')
+    .attr('x', -6).attr('y', L.BAR_H / 2 + 1)
+    .attr('dominant-baseline', 'middle').attr('text-anchor', 'end')
+    .style('font-size', `${L.fnName}px`);
+
+  // 5. Elo value — right of bar
+  enter.append('text').attr('class', 'bar-val')
+    .attr('x', L.IW + 6).attr('y', L.BAR_H / 2 + 1)
+    .attr('dominant-baseline', 'middle')
+    .style('font-size', `${L.fnVal}px`);
+
+  // Set flag source + visibility once per bar (iso2 is fixed per country code)
+  enter.each(function (d) {
+    const bar = d3.select(this);
+    if (d.iso2) {
+      bar.select('.bar-fall').attr('visibility', 'hidden');
+      bar.select('.bar-fimg').attr('href', FLAG(d.iso2));
+    } else {
+      bar.select('.bar-flag').attr('visibility', 'hidden');
+    }
+  });
+
+  // ── EXIT: slide down and fade ──────────────────────────────────────
+  sel.exit().transition(t)
+    .attr('opacity', 0)
+    .attr('transform', `translate(0,${(N + 1) * L.STEP})`)
+    .remove();
+
+  // ── UPDATE + ENTER ────────────────────────────────────────────────
+  const all = sel.merge(enter);
+
+  all.transition(t)
+    .attr('transform', d => `translate(0,${d.i * L.STEP})`)
+    .attr('opacity', 1);
+
+  // Animate bar widths — both the svg container and its image track the same width
+  all.select('.bar-fall').transition(t).attr('width', bw);
+  all.select('.bar-flag').transition(t).attr('width', bw);
+  all.select('.bar-fimg').transition(t).attr('width', bw);
+
+  all.select('.bar-name').text(d => d.name);
+  all.select('.bar-val' ).text(d => d.elo.toLocaleString());
+}
+</script>
+</body>
+</html>
