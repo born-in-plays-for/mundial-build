@@ -15,7 +15,6 @@ Usage :
 
 Sortie :
     wc2026_players.csv            — tous les joueurs avec lieu de naissance
-    wc2026_by_birthcountry.csv    — classement des pays de naissance
 """
 
 import io
@@ -51,7 +50,6 @@ SPARQL_HEADERS = {
 
 
 OUT_PLAYERS = "wc2026_players.csv"
-OUT_RANKING = "wc2026_by_birthcountry.csv"
 
 # Exact nation names as they appear on the Wikipedia squads page.
 # Only these 48 nations qualified for WC 2026 — any other heading is rejected.
@@ -264,15 +262,20 @@ def parse_wikipedia_pandas(soup: BeautifulSoup) -> list:
 
 # ── Enrichissement Wikidata ────────────────────────────────────────────────────
 
-def _get_with_backoff(url, params, headers, timeout=15, max_retries=5):
-    """GET avec backoff exponentiel sur erreur réseau ou réponse vide."""
+def _get_with_backoff(url, params, headers, timeout=15, max_retries=8):
+    """GET with exponential backoff; honours Retry-After on 429."""
     delay = 1.0
     for attempt in range(max_retries):
         try:
             r = requests.get(url, params=params, headers=headers, timeout=timeout)
+            if r.status_code == 429:
+                wait = float(r.headers.get("Retry-After", delay))
+                print(f"\n   ⏳ 429 — attente {wait:.0f}s avant relance ...", flush=True)
+                time.sleep(wait)
+                delay = max(delay * 2, wait)
+                continue
             r.raise_for_status()
-            data = r.json()
-            return data
+            return r.json()
         except Exception:
             if attempt == max_retries - 1:
                 raise
@@ -303,7 +306,7 @@ def get_wikidata_ids(titles: list) -> dict:
         except Exception as e:
             print(f"   ⚠ Wikipedia API (lot {i//50 + 1}) : {e}")
         print(f"\r   → QIDs résolus : {len(mapping)}/{total}", end="", flush=True)
-        time.sleep(1.5)
+        time.sleep(2.0)
     print()
     return mapping
 
@@ -455,25 +458,6 @@ def enrich_with_wikipedia_pages(players: list) -> None:
 
 # ── Classement ────────────────────────────────────────────────────────────────
 
-def build_ranking(df: pd.DataFrame) -> pd.DataFrame:
-    has_birth = df[df['birth_country'].notna() & (df['birth_country'].str.strip() != '')]
-    if has_birth.empty:
-        return pd.DataFrame()
-
-    ranking = (
-        has_birth
-        .groupby('birth_country', sort=False)
-        .agg(
-            players_count=('player', 'count'),
-            nations_represented=('nation', lambda x: ' / '.join(sorted(set(x)))),
-        )
-        .sort_values('players_count', ascending=False)
-        .reset_index()
-    )
-    ranking.index = ranking.index + 1
-    ranking.index.name = 'rank'
-    return ranking
-
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
@@ -528,21 +512,7 @@ def main():
     )
     print(f"\n💾 {OUT_PLAYERS}  ({len(df)} lignes)")
 
-    # 7. Classement pays de naissance
-    ranking = build_ranking(df)
-    if not ranking.empty:
-        ranking.to_csv(OUT_RANKING, encoding='utf-8-sig')
-        print(f"💾 {OUT_RANKING}  ({len(ranking)} pays)")
-
-        print("\n" + "=" * 60)
-        print("  TOP 25 — Pays de naissance des joueurs")
-        print("=" * 60)
-        print(f"{'Rang':<5} {'Pays':<25} {'Joueurs':>8}")
-        print("-" * 40)
-        for rank, row in ranking.head(25).iterrows():
-            print(f"{rank:<5} {row['birth_country']:<25} {row['players_count']:>8}")
-
-    # 8. Focus : joueurs nés en France (toutes sélections)
+    # 7. Focus : joueurs nés en France (toutes sélections)
     print("\n" + "=" * 60)
     print("  Focus : joueurs nés en France (toutes sélections)")
     print("=" * 60)

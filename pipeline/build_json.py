@@ -75,13 +75,14 @@ for players in existing.get("natives", {}).values():
 
 # ── Read CSV ──────────────────────────────────────────────────────────────────
 players = []
-with open(CSV_PATH, encoding="utf-8") as f:
+with open(CSV_PATH, encoding="utf-8-sig") as f:
     for row in csv.DictReader(f):
         players.append({
-            "name":         row["player"],
-            "nation":       row["nation"],
+            "name":          row["player"],
+            "nation":        row["nation"],
+            "birth_city":    row["birth_city"],
             "birth_country": row["birth_country"],
-            "caps":         int(row["caps"]) if row["caps"] else 0,
+            "caps":          int(row["caps"]) if row["caps"] else 0,
         })
 
 # ── Read coaches CSV (optional) ──────────────────────────────────────────────
@@ -93,6 +94,7 @@ if COACHES_PATH.exists():
             players.append({
                 "name":          row["coach"],
                 "nation":        row["nation"],
+                "birth_city":    row.get("birth_city", ""),
                 "birth_country": row["birth_country"],
                 "caps":          0,
                 "role":          "coach",
@@ -101,9 +103,66 @@ if COACHES_PATH.exists():
 # ── Normalize country name variants ──────────────────────────────────────────
 BIRTH_COUNTRY_ALIASES = {
     "Democratic Republic of the Congo": "DR Congo",
+    "Zaire (now DR Congo)":             "DR Congo",
+    "U.S.":                             "United States",
+    "West Germany":                     "Germany",
+    "Soviet Union":                     "Uzbekistan",   # all current cases are Uzbek-born players
+    "Netherlands Antilles":             "Curaçao",
 }
+# Wikidata occasionally returns "]" as a malformed country — discard it.
+INVALID_COUNTRIES = {"]"}
 for p in players:
     p["birth_country"] = BIRTH_COUNTRY_ALIASES.get(p["birth_country"], p["birth_country"])
+    if p["birth_country"] in INVALID_COUNTRIES:
+        p["birth_country"] = ""
+
+# ── Fix known-wrong birth cities, then resolve "United Kingdom" → home nation ─
+# Wikidata sometimes returns a country/region name instead of a city.
+BIRTH_CITY_OVERRIDES = {
+    "Aaron Hickey":  ("Glasgow",     "Scotland"),   # Wikidata returned "Scotland"
+    "Callan Elliot": ("Kilmarnock",  "Scotland"),   # Wikidata returned "Scotland"
+}
+# Maps cities (incl. Greater London boroughs and towns) to UK home nations.
+UK_CITY_TO_NATION = {
+    # Scotland
+    "Glasgow": "Scotland", "Edinburgh": "Scotland", "Aberdeen": "Scotland",
+    "Inverness": "Scotland", "Dumfries": "Scotland", "Irvine": "Scotland",
+    "Rutherglen": "Scotland", "Leuchars": "Scotland", "Dalry": "Scotland",
+    "Balfron": "Scotland", "Kirriemuir": "Scotland", "Saltcoats": "Scotland",
+    "Kilmarnock": "Scotland",
+    # Wales
+    "Cardiff": "Wales", "Swansea": "Wales",
+    # Northern Ireland
+    "Belfast": "Northern Ireland",
+    # England — Greater London
+    "London": "England", "Croydon": "England", "Ealing": "England",
+    "Walthamstow": "England", "Barnet": "England", "Greenwich": "England",
+    "Mitcham": "England", "Harold Wood": "England",
+    "London Borough of Newham": "England",
+    # England — North West
+    "Manchester": "England", "Liverpool": "England", "Stockport": "England",
+    "Warrington": "England", "Macclesfield": "England", "Lancaster": "England",
+    # England — North East
+    "Sunderland": "England", "Blyth": "England", "Whitley Bay": "England",
+    "Washington": "England",
+    # England — Yorkshire
+    "Leeds": "England", "Sheffield": "England", "Barnsley": "England",
+    # England — Midlands
+    "Birmingham": "England", "Solihull": "England", "Northampton": "England",
+    "Leicester": "England", "Stourbridge": "England",
+    # England — East / South / South West
+    "Milton Keynes": "England", "Cockermouth": "England", "Torquay": "England",
+}
+for p in players:
+    city, country = p["birth_city"], p["birth_country"]
+    if p["name"] in BIRTH_CITY_OVERRIDES:
+        p["birth_city"], p["birth_country"] = BIRTH_CITY_OVERRIDES[p["name"]]
+    elif country == "United Kingdom":
+        resolved = UK_CITY_TO_NATION.get(city)
+        if resolved:
+            p["birth_country"] = resolved
+        else:
+            print(f"  ⚠ UK city not mapped: {city!r} ({p['name']} / {p['nation']})")
 
 # ── Build data["data"] — exports (birth_country ≠ nation) ────────────────────
 by_birth = defaultdict(list)
