@@ -36,7 +36,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.MUNDIAL_DISPATCH_TOKEN }}@github.com/born-in-plays-for/mundial-data.git
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add wc2026_elo_rank.json
+          git add elo_rank.json
           if git diff --quiet --cached; then
             echo "No data changes"
             exit 0
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data pipeline/wc2026_elo_rank.tsv pipeline/fifa_members_cache.json
+          git add data pipeline/elo_rank.tsv pipeline/fifa_members_cache.json
           if git diff --quiet --cached; then
             echo "No pipeline changes"
             exit 0
