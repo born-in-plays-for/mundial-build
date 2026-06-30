@@ -1,15 +1,18 @@
 # uk-nations.geojson — origin
 
+**Update cadence: never. This file is permanently static.**
+
 ```mermaid
 flowchart TD
     SRC["Manual source\n(GeoJSON for England, Scotland, Wales, Northern Ireland)"]
     OUT["data/uk-nations.geojson"]
 
-    SRC -->|"committed once, static"| OUT
+    SRC -->|"committed once, never regenerated"| OUT
 ```
 
 `uk-nations.geojson` is a **static file** — it has no pipeline script and is not
-regenerated automatically. It was committed once in the initial data import.
+regenerated automatically. It was committed once in the initial data import and the
+geometry of the UK home nations does not change.
 
 The four UK home nations use synthetic IDs (8260–8263) and subdivision alpha2 codes
 (`gb-eng`, `gb-sct`, `gb-wls`, `gb-nir`) because they are absent from standard
