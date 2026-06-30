@@ -58,7 +58,7 @@ for entry in payload[1]:
 print(f"Fetched {len(gdp)} countries")
 
 # ── 2. Coverage report ────────────────────────────────────────────────────────
-pop = json.load(open(DATA_DIR / 'wc2026_map_data.json', encoding='utf-8'))['pop']
+pop = json.load(open(DATA_DIR / 'map_data.json', encoding='utf-8'))['pop']
 missing = [k for k in pop if k not in gdp]
 if missing:
     print(f"No GDP for {len(missing)} pop countries (expected for UK home nations):")
@@ -68,7 +68,7 @@ else:
     print("All pop countries covered.")
 
 # ── 3. Write standalone JSON ──────────────────────────────────────────────────
-out_path = EXTRAS_DIR / 'wc2026_gdp.json'
+out_path = EXTRAS_DIR / 'gdp.json'
 with open(out_path, 'w', encoding='utf-8') as f:
     json.dump(gdp, f, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
 print(f"Done → {out_path.name}")

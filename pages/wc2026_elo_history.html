@@ -155,7 +155,7 @@ function applyLayout(lNew) {
 
 // ── Load data ─────────────────────────────────────────────────────────
 // (top-level await; everything after runs once data is ready)
-const data = await fetch('../extras/wc2026_elo_history.json').then(r => r.json());
+const data = await fetch('../extras/elo_history.json').then(r => r.json());
 
 const totalFrames = data.snapshots.length;   // one snapshot per month from pipeline
 const startOff    = data.start_year * 12 + ((data.start_month || 1) - 1);

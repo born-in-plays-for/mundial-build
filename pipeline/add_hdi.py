@@ -77,7 +77,7 @@ for _, row in df.iterrows():
 
 print(f'Extracted HDI for {len(hdi)} countries')
 
-pop = json.load(open(DATA_DIR / 'wc2026_map_data.json', encoding='utf-8'))['pop']
+pop = json.load(open(DATA_DIR / 'map_data.json', encoding='utf-8'))['pop']
 missing = [k for k in pop if k not in hdi]
 if missing:
     print(f'No HDI for {len(missing)} countries:')
@@ -86,7 +86,7 @@ if missing:
 else:
     print('All pop countries covered.')
 
-out_path = EXTRAS_DIR / 'wc2026_hdi.json'
+out_path = EXTRAS_DIR / 'hdi.json'
 with open(out_path, 'w', encoding='utf-8') as f:
     json.dump(hdi, f, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
 print(f'Done → {out_path.name}')

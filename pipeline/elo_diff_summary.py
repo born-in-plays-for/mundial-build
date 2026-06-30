@@ -1,5 +1,5 @@
 """
-Compares old vs new wc2026_elo_rank.json and prints a git commit message
+Compares old vs new elo_rank.json and prints a git commit message
 with a human-readable summary of ranking and points changes.
 
 Usage:
@@ -15,7 +15,7 @@ import subprocess
 def load_old(ref='HEAD'):
     try:
         raw = subprocess.check_output(
-            ['git', 'show', f'{ref}:wc2026_elo_rank.json'],
+            ['git', 'show', f'{ref}:elo_rank.json'],
             stderr=subprocess.DEVNULL,
         )
         return json.loads(raw)
@@ -24,7 +24,7 @@ def load_old(ref='HEAD'):
 
 
 def main(old_ref='HEAD'):
-    with open('wc2026_elo_rank.json', encoding='utf-8') as f:
+    with open('elo_rank.json', encoding='utf-8') as f:
         new = json.load(f)
 
     date = new.get('updated', '')

@@ -30,7 +30,7 @@ try:
 except ImportError:
     sys.exit('pip install requests')
 
-OUT     = Path(__file__).parent.parent / "extras" / 'wc2026_elo_history.json'
+OUT     = Path(__file__).parent.parent / "extras" / 'elo_history.json'
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; mundial-bot/1.0)'}
 
 # UK home nations use non-ISO codes on eloratings.net

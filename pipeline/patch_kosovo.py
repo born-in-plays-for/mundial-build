@@ -70,7 +70,7 @@ else:
     print("countries.json: Kosovo already present — skipped.")
 
 # ── Patch wc2026_elo_rank.json ────────────────────────────────────────────────
-elo_path = DATA_DIR / "wc2026_elo_rank.json"
+elo_path = DATA_DIR / "elo_rank.json"
 with open(elo_path, encoding="utf-8") as f:
     elo = json.load(f)
 

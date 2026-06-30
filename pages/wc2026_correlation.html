@@ -90,11 +90,11 @@ input[type=range] { width: 110px; accent-color: #3b82f6; }
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.8.5/+esm';
 
 const [raw, eloData, gdpData, gdpPcData, hdiData] = await Promise.all([
-  fetch('../data/wc2026_map_data.json').then(r => r.json()),
-  fetch('../data/wc2026_elo_rank.json').then(r => r.json()),
-  fetch('../extras/wc2026_gdp.json').then(r => r.json()),
-  fetch('../extras/wc2026_gdp_pc_ppp.json').then(r => r.json()),
-  fetch('../extras/wc2026_hdi.json').then(r => r.json()),
+  fetch('../data/map_data.json').then(r => r.json()),
+  fetch('../data/elo_rank.json').then(r => r.json()),
+  fetch('../extras/gdp.json').then(r => r.json()),
+  fetch('../extras/gdp_pc_ppp.json').then(r => r.json()),
+  fetch('../extras/hdi.json').then(r => r.json()),
 ]);
 
 /* ── Build dataset ─────────────────────────────────────────────────── */

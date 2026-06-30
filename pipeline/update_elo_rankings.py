@@ -30,8 +30,8 @@ except ImportError:
     sys.exit(1)
 
 ROOT    = Path(__file__).parent.parent / "data"
-OUT     = ROOT / 'wc2026_elo_rank.json'
-OUT_TSV = Path(__file__).parent / 'wc2026_elo_rank.tsv'
+OUT     = ROOT / 'elo_rank.json'
+OUT_TSV = Path(__file__).parent / 'elo_rank.tsv'
 
 ELO_URL           = 'https://www.eloratings.net/World.tsv'
 FIFA_WIKI_URL     = 'https://en.wikipedia.org/wiki/List_of_FIFA_country_codes'
