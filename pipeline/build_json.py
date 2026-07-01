@@ -98,6 +98,10 @@ for p in players:
 BIRTH_CITY_OVERRIDES = {
     "Aaron Hickey":  ("Glasgow",     "Scotland"),   # Wikidata returned "Scotland"
     "Callan Elliot": ("Kilmarnock",  "Scotland"),   # Wikidata returned "Scotland"
+    "Tarek Alaa":    ("Cairo",       "Egypt"),      # neither Wikidata nor his Wikipedia infobox
+                                                     # records a birthplace at all; source:
+                                                     # national-football-teams.com/player/103845
+                                                     # ("Place of Birth: Al-Qahirah (Egypt)")
 }
 # Maps cities (incl. Greater London boroughs and towns) to UK home nations.
 UK_CITY_TO_NATION = {
