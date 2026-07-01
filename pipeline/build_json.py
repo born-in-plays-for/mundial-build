@@ -11,13 +11,15 @@ so this script is safe to re-run after the CSV is updated without losing the
 Wikipedia enrichment produced by add_wiki_urls.py.
 
 Population data (pop) is derived from countries.json (World Bank via fetch_countries.py).
-Country → topojson numeric ID mapping is seeded from the existing JSON too;
-new birth countries not yet in the JSON get id=null (rendered but not interactive
-on the map — a subsequent data release can add the correct numeric ID).
+Every nation / birth_country name is resolved to a canonical iso2 via
+country_registry.py before being written out — an unrecognized name fails the
+build loudly instead of silently writing id: null.
 """
-import json, csv
+import json, csv, sys
 from pathlib import Path
 from collections import defaultdict
+
+import country_registry as reg
 
 DATA_DIR       = Path(__file__).parent.parent / "data"
 CSV_PATH       = Path(__file__).parent / "wc2026_players.csv"
@@ -29,18 +31,6 @@ COUNTRIES_PATH = Path(__file__).parent / "countries.json"
 with open(COUNTRIES_PATH, encoding="utf-8") as f:
     countries_raw = json.load(f)
 
-# Aliases: CSV birth-country names that differ from mledoze common names
-CSV_TO_MLEDOZE = {
-    "Czech Republic":             "Czechia",
-    "Turkey":                     "Türkiye",
-    "U.S.":                       "United States",
-    "Kingdom of the Netherlands": "Netherlands",
-}
-
-# mledoze name → lowercase alpha2  /  mledoze name → numeric id
-name_to_alpha2 = {v["name"]: v["alpha2"].lower() for v in countries_raw.values()}
-name_to_id     = {v["name"]: int(k)              for k, v in countries_raw.items()}
-
 # lowercase alpha2 → population in millions
 alpha2_to_pop_M = {v["alpha2"].lower(): v["population"] / 1_000_000
                    for v in countries_raw.values() if v.get("population")}
@@ -51,16 +41,9 @@ pop_updated = max(
     default="",
 )
 
-# ── Load existing JSON (for id overrides, wiki_langs) ────────────────────────
+# ── Load existing JSON (for wiki_langs) ──────────────────────────────────────
 with open(JSON_PATH, encoding="utf-8") as f:
     existing = json.load(f)
-
-# Seed country → numeric id from existing JSON, then fill gaps from countries.json
-country_id = {r["country"]: r.get("id") for r in existing.get("data", [])}
-for name in list(country_id):
-    if country_id[name] is None:
-        lookup = CSV_TO_MLEDOZE.get(name, name)
-        country_id[name] = name_to_id.get(lookup)  # stays None if unknown
 
 # Build name → wiki_langs cache from existing players (exports + natives)
 wiki_cache = {}
@@ -101,19 +84,13 @@ if COACHES_PATH.exists():
             })
 
 # ── Normalize country name variants ──────────────────────────────────────────
-BIRTH_COUNTRY_ALIASES = {
-    "Democratic Republic of the Congo": "DR Congo",
-    "Zaire (now DR Congo)":             "DR Congo",
-    "U.S.":                             "United States",
-    "West Germany":                     "Germany",
-    "Soviet Union":                     "Uzbekistan",   # all current cases are Uzbek-born players
-    "Netherlands Antilles":             "Curaçao",
-}
-# Wikidata occasionally returns "]" as a malformed country — discard it.
-INVALID_COUNTRIES = {"]"}
+# Historical-entity judgment calls (Soviet Union, West Germany, ...) live in
+# country_registry — they're dataset interpretation, not universal country
+# identity, so resolve_iso2() doesn't apply them automatically.
 for p in players:
-    p["birth_country"] = BIRTH_COUNTRY_ALIASES.get(p["birth_country"], p["birth_country"])
-    if p["birth_country"] in INVALID_COUNTRIES:
+    p["birth_country"] = reg.HISTORICAL_BIRTH_COUNTRY_ALIASES.get(
+        p["birth_country"], p["birth_country"])
+    if p["birth_country"] in reg.INVALID_BIRTH_COUNTRY_VALUES:
         p["birth_country"] = ""
 
 # ── Fix known-wrong birth cities, then resolve "United Kingdom" → home nation ─
@@ -164,6 +141,38 @@ for p in players:
         else:
             print(f"  ⚠ UK city not mapped: {city!r} ({p['name']} / {p['nation']})")
 
+# ── Resolve every nation / birth_country to a canonical iso2 + display name ──
+# A name that doesn't resolve is a new upstream spelling variant — fail the
+# build instead of silently writing id: null (see pipeline/country_registry.py).
+# Rewriting to display_name(iso2) here (not just recording the iso2) matters:
+# two raw spellings of the same country ("U.S." vs "United States") must
+# collapse to one identical grouping key, or they silently form two records.
+raw_to_iso2 = {}
+resolution_errors = []
+for p in players:
+    for field in ("nation", "birth_country"):
+        name = p[field]
+        if not name or name in raw_to_iso2:
+            continue
+        try:
+            raw_to_iso2[name] = reg.resolve_iso2(name)
+        except reg.UnknownCountryError as e:
+            resolution_errors.append(str(e))
+
+if resolution_errors:
+    print("Country resolution failed:", file=sys.stderr)
+    for err in sorted(set(resolution_errors)):
+        print(f"  {err}", file=sys.stderr)
+    sys.exit(1)
+
+country_iso2 = {}  # display name -> iso2, built while normalizing below
+for p in players:
+    for field in ("nation", "birth_country"):
+        if p[field]:
+            iso2 = raw_to_iso2[p[field]]
+            p[field] = reg.display_name(iso2)
+            country_iso2[p[field]] = iso2
+
 # ── Build data["data"] — exports (birth_country ≠ nation) ────────────────────
 by_birth = defaultdict(list)
 for p in players:
@@ -189,9 +198,12 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
 
     top5 = enriched_players[:5]
 
+    iso2 = country_iso2.get(country)
+
     data_records.append({
         "country": country,
-        "id":      country_id.get(country),
+        "id":      reg.canonical_id(iso2) if iso2 else None,
+        "iso2":    iso2,
         "count":   len(group),
         "nations": sorted([[n, c] for n, c in nations_map.items()], key=lambda x: -x[1]),
         "top":     top5,

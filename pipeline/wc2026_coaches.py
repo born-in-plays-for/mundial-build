@@ -20,11 +20,14 @@ Sortie :
 import re
 import sys
 import time
+from pathlib import Path
 from urllib.parse import unquote
 
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+
+import country_registry as reg
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
@@ -47,22 +50,13 @@ SPARQL_HEADERS = {
     "User-Agent": "WC2026CoachBot/1.0 (research; christophe.t60@gmail.com)",
 }
 
-QUALIFIED_NATIONS = frozenset({
-    'Algeria', 'Argentina', 'Australia', 'Austria',
-    'Belgium', 'Bosnia and Herzegovina', 'Brazil', 'Canada',
-    'Cape Verde', 'Colombia', 'Croatia', 'Curaçao',
-    'Czech Republic', 'DR Congo', 'Ecuador', 'Egypt', 'England',
-    'France', 'Germany', 'Ghana', 'Haiti',
-    'Iran', 'Iraq', 'Ivory Coast', 'Japan',
-    'Jordan', 'Mexico', 'Morocco', 'Netherlands',
-    'New Zealand', 'Norway', 'Panama', 'Paraguay',
-    'Portugal', 'Qatar', 'Saudi Arabia', 'Scotland',
-    'Senegal', 'South Africa', 'South Korea', 'Spain',
-    'Sweden', 'Switzerland', 'Tunisia', 'Turkey',
-    'United States', 'Uruguay', 'Uzbekistan',
-})
+# Exact nation names as they appear on the Wikipedia squads page. Only these
+# 48 nations qualified for WC 2026 — any other heading is rejected. Sourced
+# from pipeline/country_aliases.json (single source of truth, shared with
+# wc2026_birthplaces.py) instead of a locally hardcoded, easy-to-drift copy.
+QUALIFIED_NATIONS = reg.wc2026_nations()
 
-OUT_CSV = "wc2026_coaches.csv"
+OUT_CSV = Path(__file__).parent / "wc2026_coaches.csv"
 
 # Cities in the UK → home nation. Wikidata often returns "United Kingdom" as
 # birth country; we resolve to the specific home nation using the birth city.

@@ -1,0 +1,72 @@
+{
+  "_comment": "Canonical country identity — join key is iso2 (lowercase, matching countries.json's alpha2). wc2026_nations lists the current 48-team field by iso2. wc2026_display_overrides covers the rare case where this project's established display convention (Wikipedia squad-page headings, CSV nation values) differs from countries.json's mledoze-derived canonical name. aliases lists every raw spelling variant this project has observed from an upstream source for a country whose countries.json `name` doesn't already match. See pipeline/country_registry.py.",
+  "wc2026_nations": [
+    "ar", "at", "au", "ba", "be", "br", "ca", "cd", "ch", "ci",
+    "co", "cv", "cw", "cz", "de", "dz", "ec", "eg", "es", "fr",
+    "gb-eng", "gb-sct", "gh", "hr", "ht", "iq", "ir", "jo", "jp", "kr",
+    "ma", "mx", "nl", "no", "nz", "pa", "pt", "py", "qa", "sa",
+    "se", "sn", "tn", "tr", "us", "uy", "uz", "za"
+  ],
+  "wc2026_display_overrides": {
+    "cz": "Czech Republic",
+    "tr": "Turkey"
+  },
+  "aliases": {
+    "cd": [
+      "Congo, The Democratic Republic of the",
+      "Congo DR",
+      "Congo, Dem. Rep.",
+      "Congo, Dem. Rep. of the",
+      "Congo (Democratic Republic of the)",
+      "Democratic Republic of the Congo",
+      "Zaire (now DR Congo)"
+    ],
+    "cg": [
+      "Congo, Rep.",
+      "Congo, Republic of",
+      "Republic of the Congo"
+    ],
+    "cv": [
+      "Cabo Verde",
+      "Cape Verde Islands"
+    ],
+    "cw": [
+      "Curacao"
+    ],
+    "cz": [
+      "Czech Republic"
+    ],
+    "tr": [
+      "Turkey"
+    ],
+    "us": [
+      "U.S.",
+      "United States of America",
+      "USA"
+    ],
+    "nl": [
+      "Kingdom of the Netherlands"
+    ],
+    "ci": [
+      "Côte d'Ivoire"
+    ],
+    "kr": [
+      "Korea, Republic of"
+    ],
+    "ie": [
+      "Republic of Ireland"
+    ],
+    "tw": [
+      "Chinese Taipei"
+    ],
+    "vi": [
+      "U.S. Virgin Islands"
+    ],
+    "ba": [
+      "Bosnia & Herzegovina"
+    ],
+    "pf": [
+      "Tahiti"
+    ]
+  }
+}

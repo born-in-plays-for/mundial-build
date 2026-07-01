@@ -29,6 +29,8 @@ except ImportError:
     print("Missing deps. Run: pip install requests pycountry beautifulsoup4", file=sys.stderr)
     sys.exit(1)
 
+import country_registry as reg
+
 ROOT    = Path(__file__).parent.parent / "data"
 OUT     = ROOT / 'elo_rank.json'
 OUT_TSV = Path(__file__).parent / 'elo_rank.tsv'
@@ -62,18 +64,10 @@ ELO_OVERRIDES = {
 
 # Non-sovereign entities with no ISO 3166-1 alpha-2 code → weirdo=True
 # No further lookup is attempted for these.
-# Wikipedia FIFA member names that pycountry cannot resolve automatically
-# (FIFA uses non-ISO common names for these countries)
-WIKI_FIFA_NAME_OVERRIDES = {
-    'Cape Verde':          'cv',
-    'Chinese Taipei':      'tw',
-    'DR Congo':            'cd',
-    'Ivory Coast':         'ci',
-    'Macau':               'mo',
-    'Republic of Ireland': 'ie',
-    'Turkey':              'tr',
-    'U.S. Virgin Islands': 'vi',
-}
+# FIFA member names that pycountry cannot resolve automatically (FIFA uses
+# non-ISO common names for some countries) are resolved via the shared
+# pipeline/country_aliases.json table (country_registry.resolve_iso2) instead
+# of a local override dict.
 
 WEIRDO_NAMES = {
     'NS': 'Northern Cyprus',
@@ -145,10 +139,12 @@ def fetch_fifa_members_iso2():
         if not name:
             continue
 
-        # Hardcoded override for FIFA names that pycountry can't auto-resolve
-        if name in WIKI_FIFA_NAME_OVERRIDES:
-            members.add(WIKI_FIFA_NAME_OVERRIDES[name])
+        # Shared alias table for FIFA names that pycountry can't auto-resolve
+        try:
+            members.add(reg.resolve_iso2(name))
             continue
+        except reg.UnknownCountryError:
+            pass
 
         country = (pycountry.countries.get(name=name) or
                    pycountry.countries.get(common_name=name) or
@@ -258,9 +254,19 @@ def parse(tsv_text, fifa_members_iso2):
         if num_id is not None:
             seen_ids.add(num_id)
 
+        try:
+            name = reg.canonical_name(iso2.lower())
+        except reg.UnknownCountryError:
+            # Not expected — countries.json is built from the same ISO data
+            # pycountry uses — but don't let a display-name nicety crash the
+            # whole ratings update over it.
+            print(f'  Warning: iso2 {iso2.lower()!r} not in countries.json, '
+                  f'falling back to pycountry name {country.name!r}', file=sys.stderr)
+            name = country.name
+
         rankings.append({
             'rank': rank, 'id': num_id, 'iso2': iso2.lower(),
-            'name': country.name, 'pts': pts,
+            'name': name, 'pts': pts,
             'fifaMember': iso2.lower() in fifa_members_iso2,
             'weirdo': False,
         })

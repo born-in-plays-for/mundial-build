@@ -28,6 +28,8 @@ except ImportError:
     print("Missing dep. Run: pip install requests", file=sys.stderr)
     sys.exit(1)
 
+import country_registry as reg
+
 # Auto-load .env from the project root (two levels up from this script)
 _env = Path(__file__).parent.parent / ".env"
 if _env.exists():
@@ -126,14 +128,6 @@ def fetch_country_codes(base: str, headers: dict) -> dict[str, str]:
     return result
 
 
-# Fixture names that don't match any /countries entry even after normalisation.
-# Values are the ISO alpha-2 codes (from api-football's own /countries data).
-_FIXTURE_ALIASES: dict[str, str] = {
-    "cape verde islands": "cv",  # listed as "Cape Verde" in /countries (absent here)
-    "bosnia & herzegovina": "ba",  # listed as "Bosnia" only
-}
-
-
 def extract_teams(fixtures: list[dict], iso_map: dict[str, str]) -> list[dict]:
     seen = {}
     for fix in fixtures:
@@ -143,7 +137,16 @@ def extract_teams(fixtures: list[dict], iso_map: dict[str, str]) -> list[dict]:
             if tid not in seen:
                 name = team["name"]
                 key  = name.lower()
-                iso2 = iso_map.get(key) or _FIXTURE_ALIASES.get(key)
+                iso2 = iso_map.get(key)
+                if not iso2:
+                    # Fixture names that don't match any /countries entry even
+                    # after normalisation — fall back to the shared alias
+                    # table (pipeline/country_aliases.json) instead of a
+                    # local override dict.
+                    try:
+                        iso2 = reg.resolve_iso2(name)
+                    except reg.UnknownCountryError:
+                        iso2 = None
                 seen[tid] = {"id": tid, "name": name, "iso2": iso2}
     return sorted(seen.values(), key=lambda t: t["name"])
 
