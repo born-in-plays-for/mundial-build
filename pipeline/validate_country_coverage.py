@@ -38,6 +38,28 @@ def check_names(source: str, names, failures: list):
             failures.append(f"[{source}] {e}")
 
 
+def check_iso2(source: str, entries, failures: list):
+    """Verify a stored iso2 field actually matches what the shared resolver
+    would independently compute from the name it's paired with. Catches a
+    file's own iso2 silently disagreeing with the canonical resolver (e.g. an
+    upstream API's own country-code table being wrong) — resolvability alone
+    (check_names) doesn't catch this, since the name can resolve fine while
+    the stored iso2 next to it is simply a different, also-valid-looking
+    code."""
+    for name, stored_iso2 in entries:
+        if not name or not stored_iso2:
+            continue
+        try:
+            expected = reg.resolve_iso2(name)
+        except reg.UnknownCountryError:
+            continue  # already reported by check_names on the same field
+        if expected != stored_iso2.lower():
+            failures.append(
+                f"[{source}] {name!r} has iso2 {stored_iso2!r}, "
+                f"resolver says {expected!r}"
+            )
+
+
 def check_birth_countries(source: str, names, failures: list):
     """Like check_names, but applies the same historical-entity pre-pass
     build_json.py applies to birth_country values before resolving."""
@@ -76,19 +98,23 @@ def main():
     if MAP_DATA.exists():
         map_data = json.loads(MAP_DATA.read_text(encoding="utf-8"))
         check_names("map_data.json:data[].country", (r["country"] for r in map_data.get("data", [])), failures)
+        check_iso2("map_data.json:data[]", ((r["country"], r.get("iso2")) for r in map_data.get("data", [])), failures)
     else:
         print(f"  (skipping {MAP_DATA.name} — not found)", file=sys.stderr)
 
     if ELO_RANK.exists():
         elo = json.loads(ELO_RANK.read_text(encoding="utf-8"))
-        names = (r["name"] for r in elo.get("rankings", []) if not r.get("weirdo"))
-        check_names("elo_rank.json:rankings[].name", names, failures)
+        rankings = [r for r in elo.get("rankings", []) if not r.get("weirdo")]
+        check_names("elo_rank.json:rankings[].name", (r["name"] for r in rankings), failures)
+        check_iso2("elo_rank.json:rankings[]", ((r["name"], r.get("iso2")) for r in rankings), failures)
     else:
         print(f"  (skipping {ELO_RANK.name} — not found)", file=sys.stderr)
 
     if R32_TEAMS.exists():
         r32 = json.loads(R32_TEAMS.read_text(encoding="utf-8"))
-        check_names("r32_teams.json:teams[].name", (t["name"] for t in r32.get("teams", [])), failures)
+        teams = r32.get("teams", [])
+        check_names("r32_teams.json:teams[].name", (t["name"] for t in teams), failures)
+        check_iso2("r32_teams.json:teams[]", ((t["name"], t.get("iso2")) for t in teams), failures)
     else:
         print(f"  (skipping {R32_TEAMS.name} — not found)", file=sys.stderr)
 
