@@ -187,6 +187,14 @@ def fetch_tsv():
     resp = requests.get(ELO_URL, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     text = resp.text
+
+    # eloratings.net occasionally answers bot-looking requests with an HTML
+    # interstitial ("One moment, please...") instead of the TSV. Detect that
+    # before persisting anything, so a transient block can't stomp good data.
+    first_line = text.strip().splitlines()[0] if text.strip() else ''
+    if not re.match(r'^\d+\t', first_line):
+        raise ValueError(f'Unexpected response from {ELO_URL} (not TSV): {first_line[:80]!r}')
+
     OUT_TSV.write_text(text, encoding='utf-8')
     return text
 
