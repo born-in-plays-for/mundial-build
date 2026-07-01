@@ -375,9 +375,16 @@ def enrich_with_wikidata(players: list) -> None:
         if not qid:
             continue
         city, country = qid_to_birth.get(qid, ('', ''))
-        if city and city != country:
-            p['birth_city']    = city
+        # Wikidata's P19 (place of birth) sometimes points directly at a
+        # country entity rather than a city (no specific city recorded) —
+        # city == country in that case. Still record the country: it's true
+        # and useful (e.g. lets a native-born player show up in map_data.json's
+        # natives), just don't fabricate a "city" that's really the country
+        # name again.
+        if country:
             p['birth_country'] = country
+            if city != country:
+                p['birth_city'] = city
             enriched += 1
     print(f"   ✓ {enriched} joueurs enrichis")
 
@@ -397,6 +404,14 @@ def _parse_wikipedia_birthplace(soup: BeautifulSoup) -> tuple:
             if 'place of birth' in th_text or th_text.strip() == 'birthplace':
                 td = row.find('td')
                 if td:
+                    # Citation footnotes (<sup class="reference">...[1]</sup>)
+                    # sit right after the country name; get_text's separator
+                    # inserts a comma before each of the footnote's own child
+                    # spans too ("[", "1", "]"), so the trailing "]" ends up
+                    # as parts[-1] instead of the real country. Strip them
+                    # before extracting text.
+                    for sup in td.find_all('sup'):
+                        sup.decompose()
                     text = td.get_text(separator=', ', strip=True)
                     text = re.sub(r'\s+', ' ', text).strip()
                     parts = [p.strip() for p in text.split(',') if p.strip()]
@@ -408,6 +423,8 @@ def _parse_wikipedia_birthplace(soup: BeautifulSoup) -> tuple:
     # Fallback : anciens formats avec <span class="birthplace">
     bp = soup.find('span', class_='birthplace') or soup.find('span', class_='place-of-birth')
     if bp:
+        for sup in bp.find_all('sup'):
+            sup.decompose()
         text = bp.get_text(', ', strip=True)
         parts = [p.strip() for p in text.split(',') if p.strip()]
         if len(parts) >= 2:
