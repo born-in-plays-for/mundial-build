@@ -137,16 +137,17 @@ def extract_teams(fixtures: list[dict], iso_map: dict[str, str]) -> list[dict]:
             if tid not in seen:
                 name = team["name"]
                 key  = name.lower()
-                iso2 = iso_map.get(key)
-                if not iso2:
-                    # Fixture names that don't match any /countries entry even
-                    # after normalisation — fall back to the shared alias
-                    # table (pipeline/country_aliases.json) instead of a
-                    # local override dict.
-                    try:
-                        iso2 = reg.resolve_iso2(name)
-                    except reg.UnknownCountryError:
-                        iso2 = None
+                # Try the shared, hand-curated alias table first: api-football's
+                # own /countries data is not authoritative for country identity
+                # (it has been observed to swap Congo / Congo-DR's codes — "Congo"
+                # -> CD and "Congo-DR" -> CG, backwards from the real ISO codes).
+                # Fall back to /countries only for names our table doesn't
+                # recognize at all (a genuinely new spelling, not a known bad
+                # upstream code).
+                try:
+                    iso2 = reg.resolve_iso2(name)
+                except reg.UnknownCountryError:
+                    iso2 = iso_map.get(key)
                 seen[tid] = {"id": tid, "name": name, "iso2": iso2}
     return sorted(seen.values(), key=lambda t: t["name"])
 
