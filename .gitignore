@@ -3,3 +3,4 @@ __pycache__/
 .DS_Store
 .env
 pipeline/mundial.db
+pipeline/country_codes_cache.json

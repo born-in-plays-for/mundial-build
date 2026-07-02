@@ -28,6 +28,7 @@ Usage:
     export API_FOOTBALL_KEY=your_key_here
     python3 pipeline/fetch_team_status.py
 """
+import argparse
 import json
 import os
 import sys
@@ -41,6 +42,7 @@ except ImportError:
     sys.exit(1)
 
 import country_registry as reg
+from api_football_countries import fetch_country_codes
 
 _env = Path(__file__).parent.parent / ".env"
 if _env.exists():
@@ -85,20 +87,6 @@ def classify_round(round_name):
     return None
 
 
-def fetch_country_codes(headers):
-    """Same normalised-name -> ISO-alpha-2 fallback map as fetch_r32_teams.py
-    — country_registry is tried first; this only covers names it doesn't
-    recognize at all."""
-    data = fetch_json(f"{API_BASE}/countries", {}, headers)
-    result = {}
-    for c in data.get("response", []):
-        if not c.get("code"):
-            continue
-        result[c["name"].lower()] = c["code"].lower()
-        result[c["name"].lower().replace("-", " ")] = c["code"].lower()
-    return result
-
-
 def team_iso2(name, iso_map):
     try:
         return reg.resolve_iso2(name)
@@ -107,6 +95,11 @@ def team_iso2(name, iso_map):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--refresh-countries", action="store_true",
+                        help="Refetch api-football's /countries list instead of using the cache")
+    args = parser.parse_args()
+
     key = os.environ.get("API_FOOTBALL_KEY")
     if not key:
         print("Error: API_FOOTBALL_KEY required (.env or env var).", file=sys.stderr)
@@ -119,7 +112,7 @@ def main():
     fixtures = data["response"]
     print(f"  {len(fixtures)} fixtures", flush=True)
 
-    iso_map = fetch_country_codes(headers)
+    iso_map = fetch_country_codes(fetch_json, API_BASE, headers, refresh=args.refresh_countries)
 
     by_stage = {}
     for f in fixtures:

@@ -29,6 +29,7 @@ except ImportError:
     sys.exit(1)
 
 import country_registry as reg
+from api_football_countries import fetch_country_codes
 
 # Auto-load .env from the project root (two levels up from this script)
 _env = Path(__file__).parent.parent / ".env"
@@ -110,24 +111,6 @@ def find_r32_round(rounds: list[str]) -> str | None:
     return None
 
 
-def fetch_country_codes(base: str, headers: dict) -> dict[str, str]:
-    """Return a normalised-name→ISO-alpha-2 map from api-football /countries.
-
-    api-football uses hyphenated names in /countries ("South-Africa") but
-    spaced names in /fixtures ("South Africa"). We index both forms.
-    """
-    data = get(f"{base}/countries", {}, headers)
-    result = {}
-    for c in data.get("response", []):
-        if not c.get("code"):
-            continue
-        code = c["code"].lower()
-        name = c["name"]
-        result[name.lower()] = code
-        result[name.lower().replace("-", " ")] = code
-    return result
-
-
 def extract_teams(fixtures: list[dict], iso_map: dict[str, str]) -> list[dict]:
     seen = {}
     for fix in fixtures:
@@ -156,6 +139,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--key",     default=os.environ.get("API_FOOTBALL_KEY"), help="api-football key")
     parser.add_argument("--rapidapi", action="store_true", help="Use RapidAPI host instead of direct api-sports.io")
+    parser.add_argument("--refresh-countries", action="store_true",
+                        help="Refetch api-football's /countries list instead of using the cache")
     args = parser.parse_args()
 
     if not args.key:
@@ -184,7 +169,7 @@ def main():
         sys.exit(1)
 
     print(f"Fetching country ISO codes…", flush=True)
-    iso_map = fetch_country_codes(base, headers)
+    iso_map = fetch_country_codes(get, base, headers, refresh=args.refresh_countries)
 
     print(f"\nFetching fixtures for round: '{round_name}'…", flush=True)
     fixtures = fetch_fixtures_for_round(base, headers, round_name)

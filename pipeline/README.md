@@ -38,6 +38,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `build_json.py` | `pipeline/map_data.json` | Rebuilds the main data file from the CSVs + `countries.json` |
 | `add_wiki_urls.py` | `pipeline/map_data.json` (in-place) + `pipeline/wiki_<lang>.json` ×5 | Resolves Wikipedia identity (players + coaches) — see "Wiki data" below |
 | `validate_country_coverage.py` | _(stdout, exit code)_ | Coverage gate — run after the pipeline, before committing |
+| `api_football_countries.py` | `country_codes_cache.json` (gitignored) | _(module)_ Cached api-football `/countries` fallback map — see "Country identity" below |
 | `fetch_r32_teams.py` | `data/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
@@ -232,6 +233,18 @@ rather than adding another local override dict. `build_json.py`,
 `wc2026_coaches.py` all resolve through this module. `extras/` scripts
 (GDP/HDI/elo_history) still use their own independent name maps — not yet
 migrated.
+
+`fetch_r32_teams.py` and `fetch_team_status.py` also each carry a fallback
+name → iso2 map for the rare name `country_registry.py` doesn't recognize at
+all (raw api-football strings, not our alias data — and known unreliable on
+some entries, e.g. api-football has been observed to swap Congo /
+Congo-DR's codes). That map comes from api-football's `/countries` endpoint,
+which is static reference data, so `api_football_countries.py` caches it to
+`pipeline/country_codes_cache.json` (gitignored) instead of spending an API
+credit on it every run — both scripts share this one cached fetch instead of
+each hitting `/countries` themselves. Pass `--refresh-countries` to either
+script (or delete the cache file) to force a refetch, e.g. if api-football
+adds a country it didn't previously have.
 
 Run `python3 pipeline/validate_country_coverage.py` after the pipeline: it
 resolves every raw country string currently in the CSVs and in

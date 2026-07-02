@@ -57,6 +57,20 @@ This is the canonical command sequence — `pipeline/README.md`'s "Core
 pipeline" section points back here rather than repeating it, so keep this
 one copy current when a script's invocation or output path changes.
 
+### Team status refresh only
+
+Re-running the full sequence above isn't necessary just to pick up newly
+finished fixtures — squads, wiki identity, and Elo don't change between
+matches. This subset is enough (needs `API_FOOTBALL_KEY`):
+
+```bash
+python3 pipeline/fetch_team_status.py   # → pipeline/team_status.json (re-fetches fixtures, recomputes eliminations)
+python3 pipeline/load.py                # → pipeline/mundial.db (rebuilds from current intermediates)
+python3 pipeline/export.py              # → data/v2/*.json, incl. status.json — the frontend-facing output
+```
+
+Then follow "Commit workflow" below.
+
 ## UK home nations & Kosovo
 
 Standard ISO tables don't include UK home nations (ids 8260–8263, alpha2 `gb-eng/gb-sct/gb-wls/gb-nir`) or Kosovo (id 383, `xk`). They are injected by patch scripts:
