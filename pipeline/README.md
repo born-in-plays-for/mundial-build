@@ -37,6 +37,120 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `fetch_r32_teams.py` | `data/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
 | `build_player_wiki.py` | `data/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
+| `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build — see "Relational model" below |
+| `export.py` | `data/v2/` (7 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
+
+---
+
+## Relational model (`schema.sql` → `mundial.db` → `data/v2/`)
+
+The normalized canonical model of the whole dataset. Runs **after** the
+existing scripts, reading their outputs as-is — nothing upstream changes:
+
+```bash
+python3 pipeline/load.py     # inputs -> pipeline/mundial.db (rebuildable, gitignored)
+python3 pipeline/export.py   # mundial.db -> data/v2/{map,live,wiki_<lang>}.json, atomically
+```
+
+`schema.sql` holds the entities with real FK/UNIQUE constraints — data
+inconsistencies fail the load instead of shipping — plus the `view_*`
+views that `export.py` serializes.
+
+```mermaid
+erDiagram
+    country {
+        INTEGER id PK "ISO 3166-1 numeric + patch ids (383 Kosovo, 8260-63 UK nations)"
+        TEXT    iso2 UK "lowercase; the pipeline-wide join key"
+        TEXT    iso3 UK "NULL for UK home nations"
+        TEXT    name UK "canonical EN display name"
+        INTEGER population "NULL = no data"
+        TEXT    pop_year
+        INTEGER is_wc2026 "in the 48-team field"
+        INTEGER squad_size_override "injury-shrunk squads; NULL = 26"
+    }
+    person {
+        INTEGER pid PK "proprietary; pinned in person_registry.csv"
+        TEXT    name "display name, stored once"
+        TEXT    role "player | coach"
+        INTEGER nation FK "plays for / coaches"
+        INTEGER birth FK "NULL = unresolved"
+        INTEGER caps "0 for coaches"
+        TEXT    en_title "EN wiki title ONLY when it differs from name"
+    }
+    af_person {
+        INTEGER af_id PK "api-football person id (external)"
+        TEXT    role PK "coach/player id spaces collide numerically"
+        INTEGER pid FK
+    }
+    wiki_title {
+        INTEGER pid PK, FK
+        TEXT    lang PK "en fr de it es"
+        TEXT    title "URL-ready; UNIQUE per (lang, title): one article, one person"
+    }
+    capital_name {
+        INTEGER country PK, FK
+        TEXT    lang PK
+        TEXT    name
+    }
+    elo_ranking {
+        INTEGER country FK "NULL for non-ISO entrants (Zanzibar, Tibet, ...)"
+        TEXT    name "only when country IS NULL"
+        INTEGER rank "ties exist; NULL with pts = unrated (Kosovo)"
+        INTEGER pts
+        INTEGER fifa_member
+        INTEGER weirdo
+    }
+    af_team {
+        INTEGER country PK, FK
+        INTEGER af_team_id UK "api-football team id (external)"
+    }
+    round_team {
+        TEXT    round PK "knockout progression"
+        INTEGER country PK, FK
+    }
+    provenance {
+        TEXT dataset PK "elo | r32 | population"
+        TEXT source
+        TEXT updated
+    }
+
+    country ||--o{ person       : "nation (plays for)"
+    country |o--o{ person       : "birth (born in)"
+    country ||--o{ capital_name : "localized capital"
+    country |o--o| elo_ranking  : "Elo entry"
+    country ||--o| af_team      : "api-football team id"
+    country ||--o{ round_team   : "reached round"
+    person  ||--o{ af_person    : "api-football id(s), 1:n (duplicate-id records)"
+    person  ||--o{ wiki_title   : "article per language"
+```
+
+Facts the schema encodes that the JSON files never enforced: api-football coach and player ids are separate id
+spaces that collide numerically; one person can hold several api-football
+ids (duplicate-id records); Elo ranks have ties; a Wikipedia article
+belongs to exactly one person.
+
+Every person gets a **`pid`** — a small integer that replaces the
+`wikiTitle` string as the cross-file join key in the `data/v2/` files
+(`map.json` mirrors `map_data.json` with `pid` instead of `wikiTitle`;
+`live.json` maps `iso2 → af_id → {pid, birthCountry}`; each
+`wiki_<lang>.json` holds a `titles` array indexed by pid). Roughly 44%
+smaller live-page payload gzipped. pids are pinned forever in
+`person_registry.csv` (committed): matched by `(role, api-football id)`
+first, then `(nation iso2, name)`; new persons append, pids are never
+reused. All 7 exports are written together from one DB state, so pids
+can't disagree across files.
+
+The old-format files stay untouched (they're `load.py`'s inputs and what
+the current frontend reads) until the `mundial` frontend migrates to pid
+lookups.
+
+Known tolerated defect: two persons currently share the EN title
+"Emiliano Martínez" (Argentina's keeper owns the article; Uruguay's
+Emiliano Martínez is mislinked in the source data). `load.py` warns and
+ships the later pid without a wiki link until the matcher/aliases are
+fixed. `export.py`'s `live.json` also corrects his `birthCountry` to
+Uruguay (map_data is right, `player_wiki.json` scraped it from the wrong
+article).
 
 ---
 

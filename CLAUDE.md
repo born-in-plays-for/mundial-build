@@ -55,6 +55,10 @@ python3 pipeline/validate_country_coverage.py
 python3 pipeline/fetch_r32_teams.py     # → data/r32_teams.json
 python3 pipeline/build_player_wiki.py   # → data/player_wiki.json
 
+# Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
+python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + person_registry.csv
+python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically
+
 # Extras (only needed for pages/ standalone charts)
 python3 extras/build_elo_history.py  # → extras/elo_history.json  (for pages/wc2026_elo_history.html)
 python3 extras/add_gdp.py            # → extras/gdp.json                   (for pages/wc2026_correlation.html)
