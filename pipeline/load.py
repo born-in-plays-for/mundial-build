@@ -223,9 +223,10 @@ def main():
     for row in db.execute("SELECT id FROM country WHERE is_wc2026 = 1"):
         db.execute("INSERT INTO team_status (country) VALUES (?)", (row[0],))
     for iso2, info in team_status["eliminated"].items():
+        lost_to = info.get("lostTo")
         db.execute("""UPDATE team_status SET status='eliminated', eliminated_round=?,
-                     eliminated_date=? WHERE country=?""",
-                   (info["round"], info["date"], cid(iso2)))
+                     eliminated_date=?, eliminated_by=? WHERE country=?""",
+                   (info["round"], info["date"], cid(lost_to) if lost_to else None, cid(iso2)))
 
     # ── provenance ──────────────────────────────────────────────────────
     pop_updated = max((c["pop_year"] for c in countries.values() if c.get("pop_year")),

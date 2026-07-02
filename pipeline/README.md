@@ -164,23 +164,36 @@ fixture results:
 - **Knockout rounds** (Round of 32 onward) — every fixture eventually has a
   decisive winner (extra time / penalties resolve draws), so a finished
   fixture's loser is unambiguously eliminated at that round, dated to the
-  fixture's kickoff date.
+  fixture's kickoff date, with `lostTo` recording who beat them.
 - **Group stage** — WC2026's format (12 groups of 4, top 2 + 8 best
   third-place teams advance) has real tie-break rules `fetch_team_status.py`
   does **not** replicate. Instead, once every group-stage fixture is
   finished, any WC2026 team that doesn't appear in a Round of 32 fixture is
   eliminated — non-appearance in the round of 32 bracket *is* the tie-break
   result, already computed by whoever seeds that round, so there's nothing
-  left to derive. Tagged `"Group Stage"`, undated (no single fixture decided
-  it, unlike a knockout loss).
+  left to derive. Tagged `"Group Stage"`, undated, no `lostTo` (round-robin,
+  no single deciding opponent — same condition as the missing date).
 
 `data/v2/status.json` carries **only eliminated teams** — `{iso2: {round,
-date?}}`. A team absent from the file is still alive; the client never
-needs a positive "still in it" list, since the alternative (listing all 48
-minus eliminated) grows the payload as the tournament empties out, exactly
-backwards from what you'd want. Verified against the live API mid-build:
-group stage fully finished (48 → 32) plus 10 of 16 Round of 32 fixtures
-decided produced 26 eliminated teams, `status.json` at 186 bytes gzipped.
+date?, lostTo?}}`. A team absent from the file is still alive; the client
+never needs a positive "still in it" list, since the alternative (listing
+all 48 minus eliminated) grows the payload as the tournament empties out,
+exactly backwards from what you'd want. Verified against the live API
+mid-build: group stage fully finished (48 → 32) plus 10 of 16 Round of 32
+fixtures decided produced 26 eliminated teams, `status.json` at ~200 bytes
+gzipped.
+
+**`lostTo` isn't just record-keeping** — a team that appears as someone
+else's `lostTo` has thereby proven it *won* that round and is now playing
+the next one. That derives every **alive** team's current round too, from
+this same eliminated-only data, with no separate field or export needed:
+walk the furthest round any team is recorded as having won; its current
+round is the one after that. `schema.sql`'s `view_current_round` implements
+exactly this (debug/verification only, not exported) — reproduced against
+the live state above: `{'Round of 16': 10, 'Round of 32': 12}`, i.e. 10
+teams who've already won their Round of 32 fixture and are now contesting
+Round of 16, and 12 still mid–Round of 32 — a distinction `status.json`'s
+eliminated-only rows can't otherwise make (both groups are simply absent).
 
 Same living-dataset caveat as `build_player_wiki.py` / `update_elo_rankings.py`
 — re-run whenever fixtures finish, not once. `KNOCKOUT_STAGES` in

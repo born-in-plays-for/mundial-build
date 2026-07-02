@@ -80,12 +80,22 @@ CREATE TABLE af_team (
 -- tie-break isn't recomputed here — non-appearance in the round of 32
 -- bracket, once every group fixture is finished, IS the tie-break result,
 -- so there's no single fixture that "decided" it the way a knockout loss has.
+-- eliminated_by (who beat them) matters beyond record-keeping: a team that
+-- appears as someone else's eliminated_by has thereby proven it WON that
+-- round and is now playing the next one. That derives every ALIVE team's
+-- current round too, with no separate field or concept — walk the chain
+-- of eliminated_by values to find the furthest round any team is known to
+-- have won, and its current round is one past that (see view_current_round).
+-- NULL for Group Stage exits (round-robin, no single deciding opponent —
+-- same condition as eliminated_date being NULL) or an unresolved name.
 CREATE TABLE team_status (
     country          INTEGER PRIMARY KEY REFERENCES country(id),
     status           TEXT NOT NULL DEFAULT 'alive' CHECK (status IN ('alive', 'eliminated')),
     eliminated_round TEXT,
     eliminated_date  TEXT,
-    CHECK ((status = 'alive') = (eliminated_round IS NULL))
+    eliminated_by    INTEGER REFERENCES country(id),
+    CHECK ((status = 'alive') = (eliminated_round IS NULL)),
+    CHECK (eliminated_by IS NULL OR eliminated_round <> 'Group Stage')
 );
 
 -- ── person ──────────────────────────────────────────────────────────────
@@ -209,9 +219,37 @@ SELECT lang, pid, title FROM wiki_title;
 -- Eliminated teams only (source of data/v2/status.json — absence from this
 -- view is the client-facing "still alive" signal, not a NULL/'alive' row).
 CREATE VIEW view_eliminated AS
-SELECT c.iso2, t.eliminated_round, t.eliminated_date
-FROM team_status t JOIN country c ON c.id = t.country
+SELECT c.iso2, t.eliminated_round, t.eliminated_date, w.iso2 AS lost_to_iso2
+FROM team_status t
+JOIN country c ON c.id = t.country
+LEFT JOIN country w ON w.id = t.eliminated_by
 WHERE t.status = 'eliminated';
+
+-- Debug/verification view only — NOT exported. Proves eliminated_by alone
+-- is enough to derive every alive team's current round: walk the furthest
+-- round any team is recorded as having WON (i.e. appears as someone's
+-- eliminated_by), current round = the one after that. A team with no win
+-- yet is still contesting Round of 32 (assumes group stage has concluded).
+CREATE VIEW view_current_round AS
+WITH round_order(round, ord) AS (
+    VALUES ('Round of 32', 1), ('Round of 16', 2), ('Quarter-finals', 3),
+           ('Semi-finals', 4), ('Final', 5)
+),
+furthest_won AS (
+    SELECT t.eliminated_by AS country, MAX(ro.ord) AS max_ord
+    FROM team_status t JOIN round_order ro ON ro.round = t.eliminated_round
+    WHERE t.eliminated_by IS NOT NULL
+    GROUP BY t.eliminated_by
+)
+SELECT c.iso2,
+       CASE WHEN fw.max_ord IS NULL THEN 'Round of 32'
+            WHEN fw.max_ord = 5    THEN 'Champion'
+            ELSE (SELECT round FROM round_order WHERE ord = fw.max_ord + 1)
+       END AS current_round
+FROM team_status t
+JOIN country c ON c.id = t.country
+LEFT JOIN furthest_won fw ON fw.country = t.country
+WHERE t.status = 'alive';
 
 -- Integrity checks that go beyond per-row constraints; the load phase
 -- fails if this view returns any rows.

@@ -117,12 +117,16 @@ def build_live(db):
 
 def build_status(db):
     """Eliminated teams only — absence from this file IS the "still alive"
-    signal (see schema.sql's view_eliminated / team_status comments)."""
+    signal (see schema.sql's view_eliminated / team_status comments).
+    lostTo (who beat them) also derives every ALIVE team's current round —
+    see schema.sql's view_current_round for the walk-the-chain logic."""
     status = {}
-    for iso2, rnd, dt in db.execute("SELECT * FROM view_eliminated ORDER BY iso2"):
+    for iso2, rnd, dt, lost_to in db.execute("SELECT * FROM view_eliminated ORDER BY iso2"):
         entry = {"round": rnd}
         if dt is not None:
             entry["date"] = dt
+        if lost_to is not None:
+            entry["lostTo"] = lost_to
         status[iso2] = entry
     return status
 

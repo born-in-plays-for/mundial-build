@@ -7,14 +7,19 @@ results, and write pipeline/team_status.json for pipeline/load.py.
 Elimination logic:
   - Knockout rounds (Round of 32 onward): a finished fixture (status FT/
     AET/PEN) carries a boolean "winner" on each side; the loser is
-    eliminated at that round, dated to the fixture's kickoff date.
+    eliminated at that round, dated to the fixture's kickoff date, with
+    "lostTo" recording who beat them. lostTo isn't just record-keeping: a
+    team that appears as someone's lostTo has thereby proven it WON that
+    round and is now playing the next one — which derives every ALIVE
+    team's current round too, from this same eliminated-only data, with no
+    separate field or concept needed (see schema.sql's view_current_round).
   - Group stage: WC2026's format (12 groups of 4, top 2 + 8 best thirds
     advance) has real tie-break rules this script does not replicate.
     Instead, once every group-stage fixture is finished, any WC2026 team
     NOT among the round-of-32 fixtures' participants is eliminated —
     absence from the round of 32 bracket IS the tie-break outcome, already
-    computed by whoever seeds that round. Tagged "Group Stage", undated
-    (no single fixture decided it).
+    computed by whoever seeds that round. Tagged "Group Stage", undated,
+    no lostTo (round-robin, no single deciding opponent).
 
 This is a living dataset, same cadence as build_player_wiki.py /
 update_elo_rankings.py — re-run whenever fixtures finish.
@@ -126,7 +131,7 @@ def main():
         print(f"  Warning: unrecognized round name(s), ignored: {unrecognized}",
               file=sys.stderr)
 
-    eliminated = {}  # iso2 -> {"round": ..., "date": <ISO date> | None}
+    eliminated = {}  # iso2 -> {"round": ..., "date": <ISO date> | None, "lostTo": <iso2> | None}
 
     # ── Group stage: decide only once every group fixture is finished ────
     group_fixtures = by_stage.get("group", [])
@@ -143,7 +148,7 @@ def main():
                         r32_iso2.add(iso2)
             wc2026_iso2 = {reg.resolve_iso2(n) for n in reg.wc2026_nations()}
             for iso2 in sorted(wc2026_iso2 - r32_iso2):
-                eliminated[iso2] = {"round": "Group Stage", "date": None}
+                eliminated[iso2] = {"round": "Group Stage", "date": None, "lostTo": None}
         else:
             print("  Group stage finished but Round of 32 isn't scheduled/known "
                   "yet — skipping group-stage elimination for now", file=sys.stderr)
@@ -156,13 +161,19 @@ def main():
             home, away = f["teams"]["home"], f["teams"]["away"]
             if home["winner"] is None:
                 continue  # finished but no winner recorded — shouldn't happen, guard anyway
-            loser = away if home["winner"] else home
+            loser, winner = (away, home) if home["winner"] else (home, away)
             iso2 = team_iso2(loser["name"], iso_map)
             if not iso2:
                 print(f"  Warning: could not resolve country for eliminated "
                       f"team {loser['name']!r}", file=sys.stderr)
                 continue
-            eliminated[iso2] = {"round": stage, "date": f["fixture"]["date"][:10]}
+            winner_iso2 = team_iso2(winner["name"], iso_map)
+            if not winner_iso2:
+                print(f"  Warning: could not resolve country for winning "
+                      f"team {winner['name']!r} — {loser['name']}'s lostTo omitted",
+                      file=sys.stderr)
+            eliminated[iso2] = {"round": stage, "date": f["fixture"]["date"][:10],
+                                "lostTo": winner_iso2}
 
     payload = {
         "source":     "api-football.com",
@@ -173,7 +184,7 @@ def main():
 
     print(f"\n{len(eliminated)} team(s) eliminated so far:")
     for iso2, info in sorted(eliminated.items(), key=lambda kv: (kv[1]["round"], kv[0])):
-        suffix = f" ({info['date']})" if info["date"] else ""
+        suffix = f" ({info['date']}, lost to {info['lostTo']})" if info["date"] else ""
         print(f"  {iso2}: {info['round']}{suffix}")
     print(f"\nWrote {OUT}", flush=True)
 
