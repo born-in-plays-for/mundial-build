@@ -234,12 +234,18 @@ def parse_coaches(soup: BeautifulSoup) -> list:
                 if alt in FLAG_ALT_TO_NATION:
                     coach_nationality = FLAG_ALT_TO_NATION[alt]
                 continue
-            # This should be the coach name link
+            # This should be the coach name link. Don't stop at the first
+            # match: a team that fired its coach mid-tournament gets a
+            # "Coach: A (first match) / B (remaining matches)" line with two
+            # name links — Wikipedia lists the former coach first and the
+            # current one last, so keep overwriting and end up with the
+            # last (most current) one. For the common single-coach case
+            # this loop only ever finds one match anyway, so behavior is
+            # unchanged.
             name = a.get_text(strip=True)
             if name and len(name) > 1 and not re.match(r'^(Coach|Manager|Head coach)$', name, re.I):
                 coach_name = clean(name)
                 wiki_title = link_title
-                break
 
         if not coach_name:
             # Fallback: extract name from text after "Coach:" label

@@ -1,0 +1,66 @@
+{
+  "_comment": "Manually confirmed api_football_id -> wikipedia_name pairs for residual cases the automated matcher (pipeline/build_player_wiki.py) couldn't resolve by rule. Keyed by api_football_id (not name) so a future fixture rendering this same person under yet another name string still resolves correctly — the id is the stable identity, not the string. Confirmed by cross-referencing api-football's /players endpoint (firstname/lastname/birth date) against pipeline/wc2026_players.csv's birth_date, or by web search where noted.",
+  "Argentina": [
+    { "api_football_id": 2467, "api_football_name": "L. Martinez", "wikipedia_name": "Lisandro Martínez", "confidence": "confirmed", "type": "duplicate-name", "note": "Two different Argentina players both render as the identical string 'L. Martinez' in lineups (this one + Lautaro Martínez below) — no textual signal distinguishes them, so build_player_wiki.py now routes exact-duplicate api names straight to manual review instead of risking a silent wrong guess. Confirmed via /players id 2467: born 1998-01-18, Gualeguay — exact match against the CSV." },
+    { "api_football_id": 217, "api_football_name": "L. Martinez", "wikipedia_name": "Lautaro Martínez", "confidence": "confirmed", "type": "duplicate-name", "note": "See id 2467 above — same 'L. Martinez' collision. Confirmed via /players id 217: born 1997-08-22, Bahía Blanca — exact match against the CSV." }
+  ],
+  "Brazil": [
+    { "api_football_id": 617, "api_football_name": "Ederson", "wikipedia_name": "Ederson Moraes", "confidence": "confirmed", "type": "duplicate-name", "note": "Two different Brazil goalkeepers both render as the identical string 'Ederson' in lineups. Full name Ederson Santana de Moraes, born 1993-08-17 Osasco — exact match against the CSV." },
+    { "api_football_id": 10097, "api_football_name": "Ederson", "wikipedia_name": "Éderson Silva", "confidence": "confirmed", "type": "duplicate-name", "note": "See id 617 above — same 'Ederson' collision. Full name Éderson José dos Santos Lourenço da Silva, born 1999-07-07 Campo Grande — exact match against the CSV." }
+  ],
+  "Cape Verde": [
+    { "api_football_id": 69260, "api_football_name": "R. Lopes", "wikipedia_name": "Pico", "confidence": "confirmed", "note": "Roberto Carlos 'Pico' Lopes, born 17 June 1992 Crumlin/Dublin" },
+    { "api_football_id": 96512, "api_football_name": "K. Lenini", "wikipedia_name": "Kevin Pina", "confidence": "confirmed", "note": "Kevin Lenini Gonçalves Pereira de Pina, born 27 January 1997 (exact match)" },
+    { "api_football_id": 41608, "api_football_name": "D. Borges", "wikipedia_name": "Diney", "confidence": "confirmed", "note": "Diney's full name: Edilson Alberto Monteiro Sanches Borges" },
+    { "api_football_id": 163200, "api_football_name": "dos Santos CJ", "wikipedia_name": "CJ dos Santos", "confidence": "confirmed", "note": "same tokens, reversed order" },
+    { "api_football_id": 28722, "api_football_name": "Pedro Leitao Brito", "wikipedia_name": "Bubista", "confidence": "confirmed", "type": "coach", "note": "Coach nickname, same pattern as Diney/Pico — real name Pedro Leitão Brito, confirmed via web search (FIFA.com, CAFOnline)" }
+  ],
+  "Croatia": [
+    { "api_football_id": 2763, "api_football_name": "M. Pasalic", "wikipedia_name": "Mario Pašalić", "confidence": "confirmed", "type": "duplicate-name", "note": "Two different Croatia players both render as the identical string 'M. Pasalic' in lineups. Born 1995-02-09 Mainz — exact match against the CSV." },
+    { "api_football_id": 260865, "api_football_name": "M. Pasalic", "wikipedia_name": "Marco Pašalić", "confidence": "confirmed", "type": "duplicate-name", "note": "See id 2763 above — same 'M. Pasalic' collision. Born 2000-09-14 Karlsruhe — exact match against the CSV." }
+  ],
+  "Egypt": [
+    { "api_football_id": 269174, "api_football_name": "O. Shobeir", "wikipedia_name": "Mostafa Shobeir", "confidence": "confirmed", "note": "born 2000-05-15 Giza, exact match; also known as 'Oufa Shobeir'" },
+    { "api_football_id": 2660, "api_football_name": "N. Dunga", "wikipedia_name": "Nabil Emad", "confidence": "confirmed", "note": "full name Nabil Emad Al El Mahdy, born 1996-04-06, exact match" }
+  ],
+  "Ghana": [
+    { "api_football_id": 303467, "api_football_name": "I. Fatawu", "wikipedia_name": "Abdul Fatawu", "confidence": "confirmed", "note": "firstname 'Issahaku Abdul', born 2004-03-08 Tamale, exact match" }
+  ],
+  "Iran": [
+    { "api_football_id": 2687, "api_football_name": "H. Kanaani", "wikipedia_name": "Hossein Kanaanizadegan", "confidence": "confirmed", "note": "born 1994-03-23 Mahshahr, exact match" }
+  ],
+  "Iraq": [
+    { "api_football_id": 665478, "api_football_name": "A. Al Reeshawee", "wikipedia_name": "Ahmed Maknzi", "confidence": "confirmed", "type": "duplicate-id", "note": "api-football has TWO player ids for this one real person, both #15 defender in different Iraq fixtures. His Wikipedia page gives the full name 'Ahmed Hassan Maknzi Salman Al-Lami Al-Reeshawee' — 'Al-Reeshawee' is a trailing tribal/family name component of the same person, not a different player." },
+    { "api_football_id": 292253, "api_football_name": "A. Maknzi", "wikipedia_name": "Ahmed Maknzi", "confidence": "confirmed", "type": "duplicate-id", "note": "Second id for the same person as 665478 above — see that entry. Listed explicitly here (even though this exact name string would auto-match on its own) because a 1:1 bipartite matcher can only ever pair one api id to Wikipedia's single 'Ahmed Maknzi' entry; without this entry, whichever id resolves first via the confirmed list steals the only available wiki slot and strands the other." }
+  ],
+  "Jordan": [
+    { "api_football_id": 53902, "api_football_name": "E. Haddad", "wikipedia_name": "Ihsan Haddad", "confidence": "confirmed", "note": "firstname 'Ehsan Nabil Farhan' — Ehsan/Ihsan transliteration variant, born 1994-02-05 Irbid, exact match" },
+    { "api_football_id": 72142, "api_football_name": "Shararh", "wikipedia_name": "Mohammad Abu Zrayq", "confidence": "confirmed", "note": "'Shararh' is a nickname unrelated to his real name (Mohammed Abu Zurayq); born 1997-12-30, exact match" },
+    { "api_football_id": 601853, "api_football_name": "M. Abu Ghoush", "wikipedia_name": "Mohammad Taha", "confidence": "confirmed", "note": "different surname entirely, but birth date matches exactly (2005-07-13) — only signal available, no birthplace on record" }
+  ],
+  "Morocco": [
+    { "api_football_id": 2701, "api_football_name": "Bono", "wikipedia_name": "Yassine Bounou", "confidence": "confirmed", "note": "well-known stage name; born 1991-04-05 Montreal, exact match" }
+  ],
+  "Paraguay": [
+    { "api_football_id": 535737, "api_football_name": "R. Fernandez", "wikipedia_name": "Gatito Fernández", "confidence": "confirmed", "note": "Roberto 'Gatito' Fernández Torres — confirmed by web search, no birth date available via api-football's /players endpoint for this id" }
+  ],
+  "Qatar": [
+    { "api_football_id": 175439, "api_football_name": "H. Al Amin", "wikipedia_name": "Homam Ahmed", "confidence": "confirmed", "note": "firstname 'Homam Elamin Mohamed', lastname 'Ahmed' — born 1999-08-25 Doha, exact match" }
+  ],
+  "Senegal": [
+    { "api_football_id": 17636, "api_football_name": "Bouna Thiaw Pape", "wikipedia_name": "Pape Thiaw", "confidence": "confirmed", "type": "coach", "note": "api-football's /coachs profile for this id gives firstname 'Pape Bouna', lastname 'Thiaw', born 1981-02-05 Dakar — exact match against the CSV. The lineup-rendered name ('Bouna Thiaw Pape') has its tokens scrambled relative to both the /coachs profile ('P. Thiaw') and the wiki name — yet another instance of api-football's own data being inconsistent about a person's name across its own endpoints/fixtures." }
+  ],
+  "South Africa": [
+    { "api_football_id": 158433, "api_football_name": "Y. Sithole", "wikipedia_name": "Sphephelo Sithole", "confidence": "confirmed", "note": "firstname \"Sphephelo S'Miso\" — born 1999-03-03 Durban, exact match" }
+  ],
+  "South Korea": [
+    { "api_football_id": 10461, "api_football_name": "Myung-Bo Hong", "wikipedia_name": "Hong Myung-bo", "confidence": "confirmed", "type": "coach", "note": "Korean name order (family name first) vs api-football's Western order (given name first) — born 1969-02-12 Seoul, exact match via /coachs profile" }
+  ],
+  "Tunisia": [
+    { "api_football_id": 533394, "api_football_name": "A. Chamakh", "wikipedia_name": "Mouhib Chamakh", "confidence": "medium", "note": "api-football's own /players/profiles lookup for this id returns a different rendering ('C. Abdelmouhib') with no birth date — accepted by elimination (only remaining Tunisia candidate, and 'Abdelmouhib' contains 'mouhib'), not birthdate-confirmed like the others in this file" },
+    { "api_football_id": 67195, "api_football_name": "M. Belhadj", "wikipedia_name": "Hadj Mahmoud", "confidence": "confirmed", "note": "full name 'Mohamed Belhadj Mahmoud' — each source renders a different substring of the compound surname; born 2000-04-24, exact match" }
+  ],
+  "Uzbekistan": [
+    { "api_football_id": 53835, "api_football_name": "O. Khamrobekov", "wikipedia_name": "Odiljon Hamrobekov", "confidence": "confirmed", "note": "kh/h transliteration variant, born 1996-02-13, exact match" }
+  ]
+}

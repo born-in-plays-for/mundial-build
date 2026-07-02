@@ -1,0 +1,16 @@
+{
+  "Belgium": {
+    "api_football": [],
+    "wikipedia": [
+      "Zeno Debast"
+    ],
+    "_note": "Genuine roster gap, not a name mismatch: Debast hasn't appeared in any finished Belgium fixture's lineup yet (only 25 of 26 squad members have, per api-football's lineup data as of this check). Nothing to map him to yet."
+  },
+  "New Zealand": {
+    "api_football": [],
+    "wikipedia": [
+      "Darren Bazeley"
+    ],
+    "_note": "Genuine api-football data gap, not a name mismatch: all 3 of New Zealand's finished fixtures have coach:{id:null,name:null} in the lineup data — api-football simply hasn't recorded who their coach is. Nothing to map him to; not fixable from our side."
+  }
+}
