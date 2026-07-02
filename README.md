@@ -10,6 +10,8 @@ This repo scrapes player data, Elo ratings, and economic indicators, then writes
 |---|---|
 | `pipeline/` | Data acquisition scripts and source CSVs — see `pipeline/README.md` |
 | `data/` | Git submodule → [mundial-data](https://github.com/born-in-plays-for/mundial-data) (pipeline output) |
+| `extras/` | GDP/HDI/Elo-history scripts feeding the standalone `pages/` charts (not the main map) |
+| `pages/` | Self-contained HTML pages hosted from this repo |
 | `infographics/` | Infographic HTML sources (social cards) |
 | `screenshots/` | App screenshots for documentation |
 | `quotes_proposals.yaml` | Candidate quotes for the rotating header |
@@ -17,17 +19,17 @@ This repo scrapes player data, Elo ratings, and economic indicators, then writes
 ## Setup
 
 ```bash
-pip install requests beautifulsoup4 pandas lxml matplotlib pycountry
+pip install requests beautifulsoup4 pandas lxml matplotlib pycountry jellyfish
 git submodule update --init
 ```
 
 ## Usage
 
-Pipeline scripts read from external sources and write to the `data/` submodule:
-
-```bash
-python3 pipeline/orchestrator.py
-```
+There's no single entry-point script for the squad/country pipeline — it's a
+sequence of steps (scrape → build → enrich → validate) documented in
+`CLAUDE.md` and, in more detail, `pipeline/README.md`. `extras/orchestrator.py`
+is narrower: it just merges the GDP/HDI economic sources for
+`pages/wc2026_correlation.html`.
 
 After running the pipeline, commit and push the data:
 

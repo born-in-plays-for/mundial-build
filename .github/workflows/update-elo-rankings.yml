@@ -28,6 +28,9 @@ jobs:
       - name: Fetch and update Elo rankings
         run: python3 pipeline/update_elo_rankings.py
 
+      - name: Validate country-name coverage
+        run: python3 pipeline/validate_country_coverage.py
+
       - name: Commit and push data if changed
         run: |
           cd data

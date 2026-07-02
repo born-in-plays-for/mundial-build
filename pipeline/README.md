@@ -1,22 +1,22 @@
 # Data pipeline
 
-Scripts and source data for the Mundial 2026 choropleth map.
+Scripts and source data for the Mundial 2026 choropleth map and live-match page.
 
 All scripts resolve paths relative to `__file__`, so `python3 pipeline/foo.py`
 and `cd pipeline && python3 foo.py` are equivalent.
+
+Output that the `mundial` frontend actually fetches lives in the `data/`
+submodule (see `../CLAUDE.md` for the commit workflow — data changes commit
+in the submodule first, then the pointer is bumped here). `extras/` scripts
+(GDP/HDI/Elo history, feeding only the standalone `pages/` charts) are
+documented in `../CLAUDE.md`, not here.
 
 ---
 
 ## Prerequisites
 
 ```bash
-pip install requests beautifulsoup4 pandas lxml matplotlib pycountry
-```
-
-Some scripts (`orchestrator.py`, `add_hdi.py`) also need:
-
-```bash
-pip install openpyxl
+pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 ```
 
 ---
@@ -25,180 +25,193 @@ pip install openpyxl
 
 | Script | Output | Notes |
 |--------|--------|-------|
-| `wc2026_birthplaces.py` | `pipeline/wc2026_players.csv` | Scraper: Wikipedia squad page + Wikidata birth lookup |
-| `wc2026_coaches.py` | `pipeline/wc2026_coaches.csv` | Scraper: coaches from Wikipedia squad page + Wikidata birth lookup |
-| `build_json.py` | `wc2026_map_data.json` | Rebuilds the main data file from CSV + countries.json + coaches CSV |
-| `add_wiki_urls.py` | `wc2026_map_data.json` (in-place) | Enriches with per-language Wikipedia links (players + coaches) |
-| `fetch_countries.py` | `countries.json` | Population + multilingual capital from mledoze + World Bank + Wikidata |
+| `fetch_countries.py` | `countries.json` | Population + multilingual capital from mledoze + World Bank + Wikidata. Auto-runs `patch_uk_nations.py` + `patch_kosovo.py` at the end. |
 | `patch_uk_nations.py` | `countries.json` (in-place) | Adds UK home nations (ids 8260–8263) |
-| `patch_kosovo.py` | `countries.json`, `wc2026_elo_rank.json` (in-place) | Adds Kosovo (id 383) |
-| `update_elo_rankings.py` | `wc2026_elo_rank.json` | Fetches current Elo ratings from eloratings.net |
-| `elo_diff_summary.py` | _(stdout)_ | Compares old vs new Elo JSON, prints a git commit message with ranking/points changes |
-| `build_elo_history.py` | `wc2026_elo_history.json` | Parses eloratings.net graph.tsv for animated bar chart race |
-| `add_gdp.py` | `wc2026_gdp.json` | World Bank GDP (current USD billions) |
-| `add_gdp_pc_ppp.py` | `wc2026_gdp_pc_ppp.json` | World Bank GDP per capita PPP |
-| `add_hdi.py` | `wc2026_hdi.json` | UNDP Human Development Index |
-| `add_uk_regional_gdp.py` | enriches GDP/GDHI for UK home nations | ONS regional data |
-| `wc2026_make_ratio_chart.py` | `wc2026_export_ratio.png` | Bar chart: players exported per million population |
-| `orchestrator.py` | `triadic_profile_world.csv`, `triadic_profile_latest.csv` | Merges GDP/HDI data for correlation page |
+| `patch_kosovo.py` | `countries.json`, `data/elo_rank.json` (in-place) | Adds Kosovo (id 383) |
+| `country_registry.py` | _(module, no output)_ | Canonical country-identity resolver — see below. Run directly (`python3 pipeline/country_registry.py`) for a self-test. |
+| `wc2026_birthplaces.py` | `wc2026_players.csv` | Scraper: Wikipedia squad page + Wikidata birth lookup |
+| `wc2026_coaches.py` | `wc2026_coaches.csv` | Scraper: coaches from Wikipedia squad page + Wikidata birth lookup |
+| `build_json.py` | `data/map_data.json` | Rebuilds the main data file from the CSVs + `countries.json` |
+| `add_wiki_urls.py` | `data/map_data.json` (in-place) + `data/wiki_<lang>.json` ×5 | Resolves Wikipedia identity (players + coaches) — see "Wiki data" below |
+| `validate_country_coverage.py` | _(stdout, exit code)_ | Coverage gate — run after the pipeline, before committing |
+| `fetch_r32_teams.py` | `data/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
+| `build_player_wiki.py` | `data/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
+| `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 
 ---
 
-## Core pipeline (squad data)
-
-### Step 1 — Scrape Wikipedia squads
+## Core pipeline (squad + country data)
 
 ```bash
-python3 pipeline/wc2026_birthplaces.py
+# Countries (run when rebuilding from scratch)
+python3 pipeline/fetch_countries.py      # → countries.json (patches run automatically)
+
+# Squad data
+python3 pipeline/wc2026_birthplaces.py   # → wc2026_players.csv
+python3 pipeline/wc2026_coaches.py       # → wc2026_coaches.csv
+python3 pipeline/build_json.py           # → data/map_data.json
+
+# Enrich Wikipedia identity (slow, ~5 min — one API call per language per batch of 50 titles)
+python3 pipeline/add_wiki_urls.py        # → data/map_data.json (in-place) + data/wiki_<lang>.json
+
+# Coverage gate — run after the pipeline, before committing.
+python3 pipeline/validate_country_coverage.py
+
+# Elo ratings + Round of 32 teams
+python3 pipeline/update_elo_rankings.py  # → data/elo_rank.json (re-patches Kosovo automatically)
+python3 pipeline/fetch_r32_teams.py --key YOUR_API_FOOTBALL_KEY   # → data/r32_teams.json
+
+# Player/coach identity for the live-match page (needs API_FOOTBALL_KEY)
+python3 pipeline/build_player_wiki.py    # → data/player_wiki.json
 ```
 
-Fetches player rosters from the Wikipedia page
-[2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads)
-plus Wikidata for birth city/country lookup.
-
-Outputs:
-- `pipeline/wc2026_players.csv` — full squad roster (1 row per player)
-
-**Known issue:** a small number of players (~20) may have `birth_country` set to
-`]`, `[a]` (Wikipedia footnote markers) or `NaN` (missing data). See
-*Fixing missing birth countries* below.
+`fetch_r32_teams.py` and `build_player_wiki.py` both need an api-football key —
+set `API_FOOTBALL_KEY` in `.env` (auto-loaded) or pass `--key`.
 
 ---
 
-### Step 1b — Scrape coaches
+## Country identity (iso2 is the join key)
 
-```bash
-python3 pipeline/wc2026_coaches.py
-```
+The same country shows up under different free-text spellings across upstream
+sources (Wikipedia, Wikidata, eloratings.net, api-football, World Bank, …) —
+e.g. DR Congo alone appears as `"DR Congo"`, `"Congo, The Democratic Republic
+of the"`, and `"Congo DR"` depending on the source. `country_registry.py` is
+the single place that resolves a raw name to a canonical lowercase iso2
+(`resolve_iso2()`), and the single place output scripts get a display name
+from (`canonical_name()` / `display_name()`). Its data lives in
+`country_aliases.json` (known spelling variants, keyed by iso2, plus the
+current 48-team WC2026 field).
 
-Extracts all 48 head coaches from the same Wikipedia squad page, with nationality
-(flag detection for foreign coaches) and birthplace via Wikidata SPARQL.
+An unrecognized name raises `UnknownCountryError` instead of silently falling
+through to a heuristic — add the missing spelling to `country_aliases.json`
+rather than adding another local override dict. `build_json.py`,
+`update_elo_rankings.py`, `fetch_r32_teams.py`, `wc2026_birthplaces.py`, and
+`wc2026_coaches.py` all resolve through this module. `extras/` scripts
+(GDP/HDI/elo_history) still use their own independent name maps — not yet
+migrated.
 
-Outputs `pipeline/wc2026_coaches.csv` — 1 row per coach with birth city/country.
-
-Coaches born in the UK get their `birth_country` resolved to the specific home
-nation (England, Scotland, Wales, Northern Ireland) via the `UK_CITY_TO_NATION`
-map in the script. If a new UK-born coach appears and their city is not in the
-map, the script prints a warning — add the city manually.
-
-**⚠ Mid-tournament coaching changes:** The scraper pulls coaches from the Wikipedia
-squad page at scrape time. If a coach is replaced mid-tournament (as happened with
-Tunisia: Sabri Lamouchi → Hervé Renard after matchday 1), the CSV may need a
-manual edit if Wikipedia hasn't been updated yet. Always verify
-`pipeline/wc2026_coaches.csv` after a re-scrape during the tournament.
-
----
-
-### Step 2 — Rebuild the main JSON
-
-```bash
-python3 pipeline/build_json.py
-```
-
-Reads `pipeline/wc2026_players.csv` + `pipeline/wc2026_coaches.csv` (optional) +
-`countries.json`, writes `wc2026_map_data.json`.
-
-- `data` array: players/coaches born in one country who play for/coach another
-- `natives`: players/coaches born in the country they play for/coach
-- Coaches carry `"role":"coach"` in the JSON — the frontend badges them distinctly
-- Preserves existing `wiki_langs` / `wiki` fields (safe to re-run after `add_wiki_urls.py`)
-- Reads population + multilingual capital from `countries.json` (keyed by lowercase alpha2)
+Run `python3 pipeline/validate_country_coverage.py` after the pipeline: it
+resolves every raw country string currently in the CSVs and in
+`map_data.json`/`elo_rank.json`/`r32_teams.json`, and checks every current
+WC2026 nation actually has rows in both CSVs. A new upstream spelling variant
+shows up here as a failed build, not a silent wrong-flag bug weeks later.
 
 ---
 
-### Step 3 — Enrich with Wikipedia URLs
+## Player/coach identity (`build_player_wiki.py`)
 
-```bash
-python3 pipeline/add_wiki_urls.py
-```
+Same root problem as country identity, one level down: a player's name from
+Wikipedia (`wc2026_players.csv`/`wc2026_coaches.csv`) often doesn't match the
+name api-football renders for the same person in live lineup data —
+abbreviated initials ("L. Martinez"), transliteration variants, dropped
+middle names, stage names (Bono = Yassine Bounou), even different names for
+the same api-football id across different fixtures. `build_player_wiki.py`
+resolves this once, at build time, for everyone who's appeared in a finished
+WC2026 fixture, via a 7-tier rule-based matcher (`norm` → `initials+tail` →
+`prefix` → `middle-optional` → `phonetic` → `mononym` → `soundex`, in that
+order of confidence) plus `player_aliases_confirmed.json` (hand-verified
+pairs the matcher can't resolve on its own, keyed by api-football's numeric
+id so a future name-string change for the same person doesn't break it).
 
-Fetches langlinks (FR / DE / IT / ES) from the Wikipedia API for every player
-in `wc2026_map_data.json` (both `data` and `natives` sections).
+Exports `data/player_wiki.json`, keyed by iso2 then by api-football's numeric
+player/coach id — **id, not name**, since api-football has been observed to
+render the same person differently across fixtures/endpoints. `mundial`'s
+`wc2026_live.html` looks this up directly by `player.id`/`coach.id`; no name
+matching happens client-side at all anymore.
 
-Writes `wiki_langs: {en, fr?, de?, it?, es?}` onto every player object.
+Two safety nets worth knowing about:
+- If 2+ different people in the same team render with the *exact same*
+  string (e.g. Argentina's two "L. Martinez"), the matcher can't
+  disambiguate from text alone and routes both straight to manual review
+  instead of guessing via a similarity-ratio tiebreak — this caught a case
+  where the ratio tiebreak had silently picked the wrong one.
+- Residual unresolved names go to `player_aliases_manual.json` with a
+  `_note` where the reason is a genuine non-issue (injury, api-football
+  missing data entirely) rather than something to fix. **Check the note
+  before treating an entry as a bug** — e.g. a coaching change mid-tournament
+  (Tunisia: Lamouchi → Renard) showed up here once as a false "mismatch";
+  it wasn't a name problem, `wc2026_coaches.py` just needed a re-scrape.
 
-Typical run time: ~5 minutes (one API call per language per batch of 50 titles,
-with 1-second sleep between batches).
-
----
-
-## Population and capital data (`countries.json`)
-
-`countries.json` (project root) is the canonical source for population and
-multilingual capital city names, keyed by ISO numeric id (string):
-
-```json
-{
-  "250": {
-    "id": 250, "alpha2": "fr", "alpha3": "fra", "name": "France",
-    "capital": {"en":"Paris","fr":"Paris","de":"Paris","it":"Parigi","es":"París"},
-    "population": 68374591
-  }
-}
-```
-
-`build_json.py` reads from this file (indexed by lowercase alpha2). Never edit it
-manually — regenerate with the scripts below.
-
-### Rebuilding `countries.json` from scratch
-
-```bash
-python3 pipeline/fetch_countries.py   # ~5 min — mledoze + World Bank + Wikidata
-python3 pipeline/patch_uk_nations.py  # adds England/Scotland/Wales/NI (ids 8260–8263)
-python3 pipeline/patch_kosovo.py      # adds Kosovo (id 383) + updates elo rank
-```
-
-**UK home nations** (synthetic ids 8260–8263, alpha2 codes `gb-eng` / `gb-sct` /
-`gb-wls` / `gb-nir`) are not in any standard ISO table — they must be patched in
-after `fetch_countries.py`. Population from 2021/22 census; capitals from Wikidata.
-
-**Kosovo** (user-assigned id 383, alpha2 `xk`) is not in the `iso-3166-1` package's
-numeric table and may be absent from `Intl.DisplayNames`. The patch script also moves
-Kosovo from `fifaAbsences` to `rankings` in `wc2026_elo_rank.json` with
-`rank: null, pts: null`.
+This is a living dataset, not a one-time export — new fixtures introduce ids
+never seen before (Round of 16 onward, injury returns), so re-run it on the
+same cadence as `update_elo_rankings.py`/`fetch_r32_teams.py`, not once.
 
 ---
 
-## Elo rankings
+## Wiki data: `wikiTitle` + per-language files
 
-### Update current Elo ratings
+`add_wiki_urls.py` does **not** write full Wikipedia URLs onto player
+objects anymore. Instead:
 
-```bash
-pip install pycountry
-python3 pipeline/update_elo_rankings.py
-# Then immediately re-patch Kosovo (update_elo_rankings may overwrite it):
-python3 pipeline/patch_kosovo.py
-```
+- Every player/coach in `map_data.json` (and every entry in
+  `player_wiki.json`) carries a single `wikiTitle` field — the EN Wikipedia
+  title, e.g. `"Lionel Mpasi"` — not a URL.
+- 5 files, `data/wiki_en.json` / `wiki_fr.json` / `wiki_de.json` /
+  `wiki_it.json` / `wiki_es.json`, each `{"urlTemplate": "https://<lang>.
+  wikipedia.org/wiki/{title}", "titles": {<EN title>: <url-ready title for
+  that language>}}` — keyed by the same `wikiTitle` string.
 
-Fetches `eloratings.net/World.tsv`, rewrites `wc2026_elo_rank.json`. Adds
-`weirdo` (non-sovereign / no ISO alpha-2) and `fifaMember` flags per entry.
+This exists because the old `wiki_langs: {en,fr,de,it,es}` blob was over
+half of `map_data.json`'s size, duplicated again in `player_wiki.json`, and
+~80% of it was languages any single user never touches. A client fetches
+**one** of the 5 language files (matching its active locale) and does a
+plain string substitution — `urlTemplate.replace('{title}', titles[wikiTitle])`
+— no URL-building or encoding logic needed client-side, and the other 4
+languages are never downloaded.
 
-### Rebuild Elo rating history (for animated bar chart race)
-
-```bash
-python3 pipeline/build_elo_history.py
-```
-
-Parses `eloratings.net/graph.tsv` → `wc2026_elo_history.json`. Used by
-`wc2026_elo_history.html`.
+`build_json.py`'s wiki-preservation cache (so re-running it after a fresh
+CSV doesn't lose Wikipedia identity already resolved) keys on `wikiTitle` —
+if you're re-running `add_wiki_urls.py` from scratch anyway, this doesn't
+matter, but it means partial pipeline re-runs stay safe.
 
 ---
 
-## Economic / development data (correlation page)
+## UK home nations & Kosovo
 
-These feeds power `wc2026_correlation.html` (scatter plot of economy vs. player
-migration). Each writes a standalone JSON to the project root.
+Standard ISO tables don't include UK home nations (ids 8260–8263, alpha2
+`gb-eng`/`gb-sct`/`gb-wls`/`gb-nir`) or Kosovo (id 383, `xk`). They're
+injected by `patch_uk_nations.py` / `patch_kosovo.py`, both auto-called at
+the end of `fetch_countries.py`. `update_elo_rankings.py` re-fetches from
+eloratings.net (which doesn't have Kosovo), so re-run `patch_kosovo.py`
+afterward if you ever call `update_elo_rankings.py` outside the documented
+order above.
 
-```bash
-python3 pipeline/add_gdp.py          # World Bank GDP → wc2026_gdp.json
-python3 pipeline/add_gdp_pc_ppp.py   # World Bank GDP/cap PPP → wc2026_gdp_pc_ppp.json
-python3 pipeline/add_hdi.py          # UNDP HDI → wc2026_hdi.json
-python3 pipeline/add_uk_regional_gdp.py  # ONS GDHI for UK home nations
-```
+---
 
-The `orchestrator.py` script merges all economic sources with source-priority
-rules (UNDP > World Bank > IMF; ONS for UK sub-nations) and outputs CSV files
-for further analysis — not required for the web app.
+## Squad-scrape data-quality notes
+
+Two scraping bugs that used to require **manual CSV edits** are now fixed at
+the root cause in `wc2026_birthplaces.py` — a plain re-scrape resolves them,
+no hand-editing needed anymore:
+
+- **Citation footnotes corrupting `birth_country`**: a player's Wikipedia
+  infobox sometimes has a footnote marker (`[1]`) right after the country
+  name; the old scraper didn't strip it before parsing, so the parsed
+  country ended up as a stray `]` instead of the real country (silently
+  dropped by `build_json.py`'s malformed-value guard — the player just
+  vanished from the map). Fixed by stripping `<sup class="reference">` tags
+  before extracting text.
+- **Country-only Wikidata birthplaces discarding the country too**: when
+  Wikidata only records a birthplace at country granularity (no specific
+  city — `P19` points directly at the country entity), the old code's guard
+  against writing a bogus "city" equal to the country threw away the country
+  as well, dropping the player from both `natives` and exports. Fixed to set
+  `birth_country` independently of whether a distinct `birth_city` exists.
+
+If a player is *still* missing a birthplace after a re-scrape, neither
+Wikidata nor their Wikipedia infobox has it recorded at all (verify by
+checking both directly before assuming it's a bug) — add a one-off entry to
+`BIRTH_CITY_OVERRIDES` in `build_json.py` with a cited external source (see
+the existing entries, e.g. Tarek Alaa, for the pattern), rather than editing
+the CSV directly (`wc2026_birthplaces.py` regenerates it from scratch on
+every run, so a raw CSV edit is lost on the next scrape).
+
+**Mid-tournament coaching changes**: `wc2026_coaches.py` now keeps the
+*last* coach-name link found in a "Coach:" element rather than the first,
+since Wikipedia lists former-then-current when a coach is replaced
+mid-tournament ("Coach: A (first match) / B (remaining matches)"). Still
+worth spot-checking `wc2026_coaches.csv` after a re-scrape during the
+tournament in case Wikipedia itself hasn't been updated yet.
 
 ---
 
@@ -209,86 +222,18 @@ for further analysis — not required for the web app.
 ```bash
 python3 pipeline/wc2026_birthplaces.py
 python3 pipeline/build_json.py
-python3 pipeline/add_wiki_urls.py    # only new players need new API calls
+python3 pipeline/add_wiki_urls.py       # only new/changed players need new API calls
+python3 pipeline/validate_country_coverage.py
 ```
 
-### Fixing country name mismatches
-
-Some scraped `birth_country` values use the full formal country name while
-`nation` uses a short form — breaking the `birth_country == nation` check.
-`build_json.py` applies normalizations via `BIRTH_COUNTRY_ALIASES`.
-
-Known case:
-
-| `birth_country` (scraped) | `nation` | Fix |
-|---|---|---|
-| `Democratic Republic of the Congo` | `DR Congo` | → `DR Congo` |
-
-Add new mismatches to `BIRTH_COUNTRY_ALIASES` in `build_json.py`.
-
-To verify manually after step 1:
+### Player/coach identity after new fixtures are played
 
 ```bash
-python3 - <<'EOF'
-import pandas as pd
-df = pd.read_csv('pipeline/wc2026_players.csv')
-print(df[df['birth_country'].isna() | df['birth_country'].isin([']', '[a]'])])
-EOF
+python3 pipeline/build_player_wiki.py
 ```
 
-Every squad should have exactly 26 players (Austria and Canada are known
-exceptions at 25 due to injuries/late withdrawals).
-
-### Fixing missing birth countries
-
-For each player with a bad `birth_country`:
-1. Look up their birth city/country on Wikipedia or Wikidata.
-2. Edit `pipeline/wc2026_players.csv` directly.
-3. Re-run steps 2–3.
-
-### Birth-city quality: `birth_city == birth_country`
-
-Wikidata sometimes returns only the country (or a vague region name) instead of
-a proper city for `P19` (place of birth), resulting in `birth_city` equal to
-`birth_country` (e.g. `birth_city=France, birth_country=France`).
-
-`wc2026_birthplaces.py` now treats `birth_city == birth_country` as "missing" in
-both enrichment passes (Wikidata SPARQL and Wikipedia page fallback), so
-**re-running the scraper** should resolve most of these automatically.
-
-If some still remain after a scrape (e.g. when Wikipedia's infobox also lacks the
-city), edit `pipeline/wc2026_players.csv` directly and re-run steps 2–3.
-
-Previously patched manually:
-
-| Player | Scraped `birth_city` | Correct `birth_city` | Source |
-|--------|---------------------|----------------------|--------|
-| Callan Elliot | `Scotland` | `Dumfries` | [BBC](https://www.bbc.com/news/articles/czx8pllvpv7o) |
-| Lenny Joseph | `France` | `Paris` | [Wikipedia](https://en.wikipedia.org/wiki/Lenny_Joseph) |
-| Ahmed Qasem | `Sweden` | `Motala` | [MLS](https://www.mlssoccer.com/players/ahmed-qasem/) |
-| Simon Banza | `France` | `Creil` | [Wikipedia](https://en.wikipedia.org/wiki/Simon_Banza) |
-| Igor Matanović | `Germany` | `Hamburg` | [Wikipedia](https://en.wikipedia.org/wiki/Igor_Matanovi%C4%87) |
-
----
-
-## Generating the birth country ratio chart
-
-```bash
-python3 pipeline/wc2026_make_ratio_chart.py              # Curaçao excluded (default)
-python3 pipeline/wc2026_make_ratio_chart.py --with-curacao
-```
-
-Outputs `wc2026_export_ratio.png` in the project root. Requires `matplotlib`.
-
----
-
-## Source files
-
-| File | Description |
-|------|-------------|
-| `wc2026_players.csv` | Full squad roster — **source of truth** for squad data |
-| `uk_regional_gdp.csv` | ONS regional GDP/GDHI data for UK home nations (used by `add_uk_regional_gdp.py`) |
-
-The generated files (`wc2026_map_data.json`, `countries.json`, `wc2026_elo_rank.json`,
-`wc2026_gdp.json`, etc.) live in the project root because they are served directly
-by the web app.
+Check `player_aliases_manual.json` afterward — resolve genuine name
+mismatches by adding an entry to `player_aliases_confirmed.json` (see its
+`_comment` field for the exact format and how entries have been confirmed so
+far: birth-date cross-reference against api-football's `/players`/`/coachs`
+endpoints, or a cited web search for stage names/nicknames).
