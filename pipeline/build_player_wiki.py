@@ -334,13 +334,16 @@ def main():
                     wiki_by_nation.setdefault(row['nation'], []).append(row['coach'])
 
     map_data = json.loads(MAP_DATA.read_text(encoding='utf-8'))
+    # Keyed by (nation, name), not name alone: two players on different
+    # teams can share a display name (both WC2026 Emiliano Martínezes), and
+    # a flat name key hands one of them the other's identity.
     name_to_record = {}
     for rec in map_data.get('data', []):
         for p in rec['players']:
-            name_to_record[p['name']] = {'wiki_title': p.get('wikiTitle'), 'birth_country': rec['country']}
+            name_to_record[(p['nation'], p['name'])] = {'wiki_title': p.get('wikiTitle'), 'birth_country': rec['country']}
     for nation, players in map_data.get('natives', {}).items():
         for p in players:
-            name_to_record[p['name']] = {'wiki_title': p.get('wikiTitle'), 'birth_country': nation}
+            name_to_record[(nation, p['name'])] = {'wiki_title': p.get('wikiTitle'), 'birth_country': nation}
 
     confirmed_raw = json.loads(CONFIRMED_JSON.read_text(encoding='utf-8'))
     confirmed_ids = {}
@@ -366,7 +369,7 @@ def main():
 
         team_out = {}
         for aid, wiki_name in matched.items():
-            rec = name_to_record.get(wiki_name)
+            rec = name_to_record.get((nation, wiki_name))
             if not rec:
                 continue
             team_out[str(aid)] = {

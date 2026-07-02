@@ -38,8 +38,16 @@
     { "api_football_id": 72142, "api_football_name": "Shararh", "wikipedia_name": "Mohammad Abu Zrayq", "confidence": "confirmed", "note": "'Shararh' is a nickname unrelated to his real name (Mohammed Abu Zurayq); born 1997-12-30, exact match" },
     { "api_football_id": 601853, "api_football_name": "M. Abu Ghoush", "wikipedia_name": "Mohammad Taha", "confidence": "confirmed", "note": "different surname entirely, but birth date matches exactly (2005-07-13) — only signal available, no birthplace on record" }
   ],
+  "Mexico": [
+    { "api_football_id": 36111, "api_football_name": "C. S. Huerta Valera", "wikipedia_name": "César Huerta", "confidence": "confirmed", "type": "render-variant", "note": "A newer fixture renders this id under a fuller name form ('C. S. Huerta Valera') than the 7-tier matcher bridges; previously rule-matched to the same wikipedia_name in earlier builds. Pinned by id per this file's convention." }
+  ],
   "Morocco": [
     { "api_football_id": 2701, "api_football_name": "Bono", "wikipedia_name": "Yassine Bounou", "confidence": "confirmed", "note": "well-known stage name; born 1991-04-05 Montreal, exact match" }
+  ],
+  "Norway": [
+    { "api_football_id": 18967, "api_football_name": "L. Ostigard", "wikipedia_name": "Leo Østigård", "confidence": "confirmed", "type": "render-variant", "note": "A newer fixture renders this id under a form ('L. Ostigard') the 7-tier matcher can't bridge to the ø-spelled wiki name; previously rule-matched in earlier builds. Pinned by id per this file's convention." },
+    { "api_football_id": 37127, "api_football_name": "M. Odegaard", "wikipedia_name": "Martin Ødegaard", "confidence": "confirmed", "type": "render-variant", "note": "Same as id 18967 above — 'Odegaard' render vs ø-spelled wiki name." },
+    { "api_football_id": 19172, "api_football_name": "O. Nyland", "wikipedia_name": "Ørjan Nyland", "confidence": "confirmed", "type": "render-variant", "note": "Same as id 18967 above — 'O. Nyland' render vs ø-spelled wiki name." }
   ],
   "Paraguay": [
     { "api_football_id": 535737, "api_football_name": "R. Fernandez", "wikipedia_name": "Gatito Fernández", "confidence": "confirmed", "note": "Roberto 'Gatito' Fernández Torres — confirmed by web search, no birth date available via api-football's /players endpoint for this id" }
@@ -59,6 +67,13 @@
   "Tunisia": [
     { "api_football_id": 533394, "api_football_name": "A. Chamakh", "wikipedia_name": "Mouhib Chamakh", "confidence": "medium", "note": "api-football's own /players/profiles lookup for this id returns a different rendering ('C. Abdelmouhib') with no birth date — accepted by elimination (only remaining Tunisia candidate, and 'Abdelmouhib' contains 'mouhib'), not birthdate-confirmed like the others in this file" },
     { "api_football_id": 67195, "api_football_name": "M. Belhadj", "wikipedia_name": "Hadj Mahmoud", "confidence": "confirmed", "note": "full name 'Mohamed Belhadj Mahmoud' — each source renders a different substring of the compound surname; born 2000-04-24, exact match" }
+  ],
+  "United States": [
+    { "api_football_id": 35885, "api_football_name": "Alex Zendejas", "wikipedia_name": "Alejandro Zendejas", "confidence": "confirmed", "type": "render-variant", "note": "A newer fixture renders this id under an anglicized first name ('Alex') the 7-tier matcher can't bridge to the wiki name 'Alejandro'; previously rule-matched in earlier builds. Pinned by id per this file's convention." },
+    { "api_football_id": 355994, "api_football_name": "Alexander Freeman", "wikipedia_name": "Alex Freeman", "confidence": "confirmed", "type": "render-variant", "note": "Same pattern as id 35885 above — 'Alexander' render vs shortened wiki name 'Alex'." },
+    { "api_football_id": 50728, "api_football_name": "Matthew Freese", "wikipedia_name": "Matt Freese", "confidence": "confirmed", "type": "render-variant", "note": "Same pattern as id 35885 above — 'Matthew' render vs shortened wiki name 'Matt'." },
+    { "api_football_id": 362400, "api_football_name": "Maximilian Arfsten", "wikipedia_name": "Max Arfsten", "confidence": "confirmed", "type": "render-variant", "note": "Same pattern as id 35885 above — 'Maximilian' render vs shortened wiki name 'Max'." },
+    { "api_football_id": 1138, "api_football_name": "Tim Weah", "wikipedia_name": "Timothy Weah", "confidence": "confirmed", "type": "render-variant", "note": "Same pattern as id 35885 above — shortened 'Tim' render vs full wiki name 'Timothy'." }
   ],
   "Uzbekistan": [
     { "api_football_id": 53835, "api_football_name": "O. Khamrobekov", "wikipedia_name": "Odiljon Hamrobekov", "confidence": "confirmed", "note": "kh/h transliteration variant, born 1996-02-13, exact match" }

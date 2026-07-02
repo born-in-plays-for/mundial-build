@@ -22,6 +22,8 @@ from pathlib import Path
 from urllib.parse import unquote, quote
 from bs4 import BeautifulSoup
 
+import country_registry as reg
+
 ROOT      = Path(__file__).parent.parent / "data"
 JSON_PATH = ROOT / "map_data.json"
 
@@ -40,21 +42,37 @@ def url_ready_title(title):
     return quote(title.replace(' ', '_'), safe=":@!$&'()*+,;=/")
 
 
-# ── Step 1: squad page → name → EN title ─────────────────────────────────────
+# ── Step 1: squad page → (nation, name) → EN title ───────────────────────────
+# Keyed by (nation, name), NOT by name alone: two different players can share
+# a display name (Argentina's and Uruguay's Emiliano Martínez both did at
+# WC2026), and a flat name key silently gives one of them the other's
+# article. Each squad table's country comes from its preceding heading; a
+# heading that doesn't resolve to a country is one of the statistics tables
+# at the bottom of the page, not a squad — skipped.
 print("Step 1 — fetching Wikipedia squad page…")
 r = requests.get(WIKI_URL, headers=HEADERS, timeout=30)
 r.raise_for_status()
 soup = BeautifulSoup(r.text, "lxml")
 
-name_to_title = {}
+name_to_title = {}   # (nation display name, linked name) -> EN title
+squad_tables = 0
 for table in soup.find_all("table", class_=re.compile(r"wikitable")):
+    heading = table.find_previous(["h2", "h3"])
+    try:
+        nation = reg.display_name(reg.resolve_iso2(heading.get_text(strip=True))) \
+                 if heading else None
+    except reg.UnknownCountryError:
+        continue
+    if nation is None:
+        continue
+    squad_tables += 1
     for a in table.find_all("a", href=True):
         href = a["href"]
         if href.startswith("/wiki/") and ":" not in href:
             title = unquote(href[6:]).replace("_", " ")
             name  = a.get_text(strip=True)
             if name and title:
-                name_to_title[name] = title
+                name_to_title[(nation, name)] = title
 
 # Also load coach wiki titles from coaches CSV
 import csv
@@ -63,17 +81,20 @@ if COACHES_CSV.exists():
     with open(COACHES_CSV, encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if row.get("wiki_title") and row.get("coach"):
-                name_to_title[row["coach"]] = row["wiki_title"]
+                nation = reg.display_name(reg.resolve_iso2(row["nation"]))
+                name_to_title[(nation, row["coach"])] = row["wiki_title"]
 
-print(f"  {len(name_to_title)} linked names found (incl. coaches)")
+print(f"  {len(name_to_title)} linked names found across {squad_tables} squads (incl. coaches)")
 
 # ── Step 2: load JSON, collect titles used by actual players ──────────────────
 with open(JSON_PATH, encoding="utf-8") as f:
     data = json.load(f)
 
-all_players  = [p for rec in data["data"] for p in rec["players"]]
-all_players += [p for players in data.get("natives", {}).values() for p in players]
-needed_titles = list({name_to_title[p["name"]] for p in all_players if p["name"] in name_to_title})
+all_players  = [(p["nation"], p) for rec in data["data"] for p in rec["players"]]
+all_players += [(nation, p) for nation, players in data.get("natives", {}).items()
+                for p in players]
+needed_titles = list({name_to_title[(n, p["name"])] for n, p in all_players
+                      if (n, p["name"]) in name_to_title})
 print(f"  {len(needed_titles)} unique EN titles to query for langlinks")
 
 # ── Step 3: batch-fetch langlinks (one language at a time) ────────────────────
@@ -132,8 +153,8 @@ for lang in ALL_LANGS:
 
 print("Step 4 — enriching player objects with wikiTitle…")
 matched = unmatched = 0
-for p in all_players:
-    en_title = name_to_title.get(p["name"])
+for nation, p in all_players:
+    en_title = name_to_title.get((nation, p["name"]))
     p.pop("wiki", None)
     p.pop("wiki_langs", None)
     if not en_title:
