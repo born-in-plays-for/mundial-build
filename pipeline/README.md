@@ -6,14 +6,14 @@ All scripts resolve paths relative to `__file__`, so `python3 pipeline/foo.py`
 and `cd pipeline && python3 foo.py` are equivalent.
 
 Output that the `mundial` frontend actually fetches lives in the `data/`
-submodule (see `../CLAUDE.md` for the commit workflow — data changes commit
+submodule (see `CLAUDE.md` for the commit workflow — data changes commit
 in the submodule first, then the pointer is bumped here). As of the July
 2026 frontend migration that's `data/elo_rank.json`, `data/r32_teams.json`,
 `data/uk-nations.geojson`, and the pid-keyed `data/v2/` files — **not**
 `map_data.json`/`player_wiki.json`/`wiki_<lang>.json`, which now live in
 `pipeline/` as build-internal intermediates (see "Relational model" below).
 `extras/` scripts (GDP/HDI/Elo history, feeding only the standalone `pages/`
-charts) are documented in `../CLAUDE.md`, not here.
+charts) have their commands in `CLAUDE.md`'s build sequence, not here.
 
 ---
 
@@ -207,38 +207,9 @@ tournament edition" precedent this follows).
 
 ## Core pipeline (squad + country data)
 
-```bash
-# Countries (run when rebuilding from scratch)
-python3 pipeline/fetch_countries.py      # → countries.json (patches run automatically)
-
-# Squad data
-python3 pipeline/wc2026_birthplaces.py   # → wc2026_players.csv
-python3 pipeline/wc2026_coaches.py       # → wc2026_coaches.csv
-python3 pipeline/build_json.py           # → pipeline/map_data.json
-
-# Enrich Wikipedia identity (slow, ~5 min — one API call per language per batch of 50 titles)
-python3 pipeline/add_wiki_urls.py        # → pipeline/map_data.json (in-place) + pipeline/wiki_<lang>.json
-
-# Coverage gate — run after the pipeline, before committing.
-python3 pipeline/validate_country_coverage.py
-
-# Elo ratings + Round of 32 teams
-python3 pipeline/update_elo_rankings.py  # → data/elo_rank.json (re-patches Kosovo automatically)
-python3 pipeline/fetch_r32_teams.py --key YOUR_API_FOOTBALL_KEY   # → data/r32_teams.json
-
-# Player/coach identity for the live-match page (needs API_FOOTBALL_KEY)
-python3 pipeline/build_player_wiki.py    # → pipeline/player_wiki.json
-
-# Tournament elimination status (needs API_FOOTBALL_KEY)
-python3 pipeline/fetch_team_status.py    # → pipeline/team_status.json
-
-# Relational model — turns all of the above into the frontend-facing data/v2/ files
-python3 pipeline/load.py
-python3 pipeline/export.py
-```
-
-`fetch_r32_teams.py` and `build_player_wiki.py` both need an api-football key —
-set `API_FOOTBALL_KEY` in `.env` (auto-loaded) or pass `--key`.
+See [`pipeline/CLAUDE.md`](CLAUDE.md)'s "Core pipeline" section for the
+exact, canonical command sequence — kept in one place so it can't drift out
+of sync with what's documented here.
 
 ---
 
@@ -438,7 +409,7 @@ Same cadence as the identity refresh above — run both together whenever
 fixtures finish, since they both read the same `/fixtures` state.
 
 Any of these ends with `git -C data add v2 && git -C data commit && git -C
-data push`, then bump the submodule pointer here — see `../CLAUDE.md`'s
+data push`, then bump the submodule pointer here — see `CLAUDE.md`'s
 commit workflow. `pipeline/map_data.json`, `player_wiki.json`, and
 `wiki_<lang>.json` are ordinary tracked files in this repo now (not the
 submodule), so they commit with the rest of your `pipeline/` changes.

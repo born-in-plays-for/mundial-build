@@ -27,9 +27,9 @@ git submodule update --init
 
 There's no single entry-point script for the squad/country pipeline — it's a
 sequence of steps (scrape → build → enrich → validate) documented in
-`CLAUDE.md` and, in more detail, `pipeline/README.md`. `extras/orchestrator.py`
-is narrower: it just merges the GDP/HDI economic sources for
-`pages/wc2026_correlation.html`.
+`pipeline/CLAUDE.md` and, in more detail, `pipeline/README.md`.
+`extras/orchestrator.py` is narrower: it just merges the GDP/HDI economic
+sources for `pages/wc2026_correlation.html`.
 
 After running the pipeline, commit and push the data:
 
