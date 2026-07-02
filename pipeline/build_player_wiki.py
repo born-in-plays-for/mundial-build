@@ -11,11 +11,16 @@ render time via a fragile 3-tier name-matching heuristic that silently
 dropped enrichment on a miss (e.g. "Lionel Mpasi" vs "Lionel Mpasi Nzau").
 
 This script does that resolution here instead, and exports a static
-id -> {wiki, birthCountry} lookup so the frontend does a plain dictionary
-lookup by api-football's numeric player id — no string matching at render
-time at all. Keyed by id, not name, because the same person's rendered name
-has been observed to change between fixtures (abbreviated in some, full in
-others) — the id is the stable identity, the name string isn't.
+id -> {wikiTitle, birthCountry} lookup so the frontend does a plain
+dictionary lookup by api-football's numeric player id — no string matching
+at render time at all. Keyed by id, not name, because the same person's
+rendered name has been observed to change between fixtures (abbreviated in
+some, full in others) — the id is the stable identity, the name string isn't.
+
+wikiTitle is the EN Wikipedia title — the same join key map_data.json's
+players carry — used to look up a localized title in whichever single
+data/wiki_<lang>.json file the frontend actually needs (see
+add_wiki_urls.py), rather than embedding all 5 languages' URLs here too.
 
 Resolution order per (still-unmatched) api id within a team:
   1. pipeline/player_aliases_confirmed.json (manually verified, keyed by id)
@@ -332,10 +337,10 @@ def main():
     name_to_record = {}
     for rec in map_data.get('data', []):
         for p in rec['players']:
-            name_to_record[p['name']] = {'wiki_langs': p.get('wiki_langs'), 'birth_country': rec['country']}
+            name_to_record[p['name']] = {'wiki_title': p.get('wikiTitle'), 'birth_country': rec['country']}
     for nation, players in map_data.get('natives', {}).items():
         for p in players:
-            name_to_record[p['name']] = {'wiki_langs': p.get('wiki_langs'), 'birth_country': nation}
+            name_to_record[p['name']] = {'wiki_title': p.get('wikiTitle'), 'birth_country': nation}
 
     confirmed_raw = json.loads(CONFIRMED_JSON.read_text(encoding='utf-8'))
     confirmed_ids = {}
@@ -365,7 +370,7 @@ def main():
             if not rec:
                 continue
             team_out[str(aid)] = {
-                'wiki': rec['wiki_langs'],
+                'wikiTitle': rec['wiki_title'],
                 'birthCountry': rec['birth_country'],
             }
         if team_out:

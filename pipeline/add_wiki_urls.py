@@ -1,26 +1,44 @@
 """
-Enriches wc2026_map_data.json with per-language Wikipedia URLs.
+Enriches wc2026_map_data.json with Wikipedia identity, and writes one
+per-language title file per language so a client only ever has to fetch the
+single language it actually needs (not all 5, as the old wiki_langs blob
+required).
 
 Step 1 — fetch the WC2026 squads page, extract player name → EN wiki title.
 Step 2 — batch-query the Wikipedia API (prop=langlinks) for FR/DE/IT/ES titles.
-Step 3 — write wiki_langs: {en, fr?, de?, it?, es?} onto every player object.
+Step 3 — write data/wiki_<lang>.json for each of en/fr/de/it/es:
+            {"urlTemplate": "https://<lang>.wikipedia.org/wiki/{title}",
+             "titles": {<EN title>: <url-ready title fragment for <lang>>}}
+          keyed by the EN title, since that's the one identity every player
+          object (in map_data.json and player_wiki.json) already carries —
+          the client fetches one file, looks up the EN title, and does a
+          plain string substitution into urlTemplate. No URL-building logic
+          needed client-side.
+Step 4 — set player["wikiTitle"] = <EN title> on every player object
+         (replaces the old wiki/wiki_langs full-URL fields).
 """
 import json, re, time, requests
 from pathlib import Path
 from urllib.parse import unquote, quote
 from bs4 import BeautifulSoup
 
-ROOT = Path(__file__).parent.parent / "data"
+ROOT      = Path(__file__).parent.parent / "data"
 JSON_PATH = ROOT / "map_data.json"
 
 WIKI_URL  = "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads"
 WIKI_API  = "https://en.wikipedia.org/w/api.php"
 HEADERS   = {"User-Agent": "mundial-build/1.0 (github.com/born-in-plays-for)"}
 LANGS     = ["fr", "de", "it", "es"]
+ALL_LANGS = ["en"] + LANGS
 BATCH     = 50  # max titles per API call
 
-def wiki_url(lang, title):
-    return f"https://{lang}.wikipedia.org/wiki/{quote(title.replace(' ', '_'), safe=':@!$&\'()*+,;=/')}"
+
+def url_ready_title(title):
+    """MediaWiki title -> the exact path fragment used in a wiki URL (same
+    escaping the old wiki_url() helper produced, e.g. spaces->underscores,
+    parens/commas left unescaped to match Wikipedia's own URLs)."""
+    return quote(title.replace(' ', '_'), safe=":@!$&'()*+,;=/")
+
 
 # ── Step 1: squad page → name → EN title ─────────────────────────────────────
 print("Step 1 — fetching Wikipedia squad page…")
@@ -92,31 +110,42 @@ for lang in LANGS:
                 title_to_langs[page["title"]][lang] = lls[0]["*"]
         time.sleep(1.0)
 
-# ── Step 4: enrich player objects ─────────────────────────────────────────────
-print("Step 3 — enriching player objects…")
-matched = unmatched = 0
-lang_counts = {l: 0 for l in LANGS}
+# ── Step 4: write per-language title files + set wikiTitle on players ────────
+print("Step 3 — writing per-language title files…")
+lang_titles = {lang: {} for lang in ALL_LANGS}
+for en_title in needed_titles:
+    lang_titles["en"][en_title] = url_ready_title(en_title)
+    for lang in LANGS:
+        t = title_to_langs.get(en_title, {}).get(lang)
+        if t:
+            lang_titles[lang][en_title] = url_ready_title(t)
 
+for lang in ALL_LANGS:
+    out_path = ROOT / f"wiki_{lang}.json"
+    payload = {
+        "urlTemplate": f"https://{lang}.wikipedia.org/wiki/{{title}}",
+        "titles": lang_titles[lang],
+    }
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"  {out_path.name}: {len(lang_titles[lang])} titles")
+
+print("Step 4 — enriching player objects with wikiTitle…")
+matched = unmatched = 0
 for p in all_players:
     en_title = name_to_title.get(p["name"])
+    p.pop("wiki", None)
+    p.pop("wiki_langs", None)
     if not en_title:
         unmatched += 1
-        p.pop("wiki", None)
-        p.pop("wiki_langs", None)
+        p.pop("wikiTitle", None)
         continue
     matched += 1
-    langs = title_to_langs.get(en_title, {})
-    wiki_langs = {"en": wiki_url("en", en_title)}
-    for l in LANGS:
-        if l in langs:
-            wiki_langs[l] = wiki_url(l, langs[l])
-            lang_counts[l] += 1
-    p["wiki"]       = wiki_langs["en"]   # backward compat
-    p["wiki_langs"] = wiki_langs
+    p["wikiTitle"] = en_title
 
 print(f"  Matched: {matched}/{len(all_players)}  |  unmatched: {unmatched}")
-for l in LANGS:
-    print(f"  {l}: {lang_counts[l]} players have a {l}.wikipedia.org page")
+for lang in LANGS:
+    print(f"  {lang}: {len(lang_titles[lang])} players have a {lang}.wikipedia.org page")
 
 with open(JSON_PATH, "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
