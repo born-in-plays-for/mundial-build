@@ -229,7 +229,12 @@ WHERE t.status = 'eliminated';
 -- is enough to derive every alive team's current round: walk the furthest
 -- round any team is recorded as having WON (i.e. appears as someone's
 -- eliminated_by), current round = the one after that. A team with no win
--- yet is still contesting Round of 32 (assumes group stage has concluded).
+-- yet is either still in the group stage, or contesting Round of 32 if the
+-- group stage has concluded — distinguished by whether any 'Group Stage'
+-- elimination has been recorded at all: fetch_team_status.py only ever
+-- writes those once every group fixture is finished AND Round of 32 is
+-- scheduled, and WC2026's format always eliminates exactly 16 teams there
+-- (never zero), so that existence check is a reliable signal, not a guess.
 CREATE VIEW view_current_round AS
 WITH round_order(round, ord) AS (
     VALUES ('Round of 32', 1), ('Round of 16', 2), ('Quarter-finals', 3),
@@ -242,8 +247,10 @@ furthest_won AS (
     GROUP BY t.eliminated_by
 )
 SELECT c.iso2,
-       CASE WHEN fw.max_ord IS NULL THEN 'Round of 32'
-            WHEN fw.max_ord = 5    THEN 'Champion'
+       CASE WHEN NOT EXISTS (SELECT 1 FROM team_status WHERE eliminated_round = 'Group Stage')
+                                   THEN 'Group Stage'
+            WHEN fw.max_ord IS NULL THEN 'Round of 32'
+            WHEN fw.max_ord = 5     THEN 'Champion'
             ELSE (SELECT round FROM round_order WHERE ord = fw.max_ord + 1)
        END AS current_round
 FROM team_status t

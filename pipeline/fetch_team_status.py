@@ -126,10 +126,24 @@ def main():
         stage = classify_round(f["league"]["round"])
         by_stage.setdefault(stage, []).append(f)
 
-    unrecognized = sorted({f["league"]["round"] for f in by_stage.get(None, [])})
-    if unrecognized:
-        print(f"  Warning: unrecognized round name(s), ignored: {unrecognized}",
+    # An unrecognized round with a FINISHED fixture in it means real
+    # elimination data would be silently dropped — fail loudly instead
+    # (same "fail loudly, don't fall through to a heuristic" philosophy as
+    # country_registry.UnknownCountryError). An unrecognized round with
+    # nothing decided yet is harmless forward-looking noise — warn only.
+    unrecognized = by_stage.get(None, [])
+    decided_unrecognized = [f for f in unrecognized if f["fixture"]["status"]["short"] in FINISHED]
+    if decided_unrecognized:
+        names = sorted({f["league"]["round"] for f in decided_unrecognized})
+        print(f"FATAL: {len(decided_unrecognized)} finished fixture(s) in unrecognized "
+              f"round(s) {names} — their eliminations would be silently dropped. Add the "
+              f"round name to KNOCKOUT_STAGES (or the group-stage prefix check) and re-run.",
               file=sys.stderr)
+        sys.exit(1)
+    if unrecognized:
+        names = sorted({f["league"]["round"] for f in unrecognized})
+        print(f"  Warning: unrecognized round name(s) with nothing decided yet, ignored: "
+              f"{names}", file=sys.stderr)
 
     eliminated = {}  # iso2 -> {"round": ..., "date": <ISO date> | None, "lostTo": <iso2> | None}
 
