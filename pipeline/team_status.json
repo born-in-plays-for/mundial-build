@@ -1,0 +1,110 @@
+{
+  "source": "api-football.com",
+  "updated": "2026-07-02",
+  "eliminated": {
+    "ba": {
+      "round": "Round of 32",
+      "date": "2026-07-02"
+    },
+    "cd": {
+      "round": "Round of 32",
+      "date": "2026-07-01"
+    },
+    "ci": {
+      "round": "Round of 32",
+      "date": "2026-06-30"
+    },
+    "cw": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "cz": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "de": {
+      "round": "Round of 32",
+      "date": "2026-06-29"
+    },
+    "ec": {
+      "round": "Round of 32",
+      "date": "2026-07-01"
+    },
+    "gb-sct": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "ht": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "iq": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "ir": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "jo": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "jp": {
+      "round": "Round of 32",
+      "date": "2026-06-29"
+    },
+    "kr": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "nl": {
+      "round": "Round of 32",
+      "date": "2026-06-30"
+    },
+    "nz": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "pa": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "qa": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "sa": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "se": {
+      "round": "Round of 32",
+      "date": "2026-06-30"
+    },
+    "sn": {
+      "round": "Round of 32",
+      "date": "2026-07-01"
+    },
+    "tn": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "tr": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "uy": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "uz": {
+      "round": "Group Stage",
+      "date": null
+    },
+    "za": {
+      "round": "Round of 32",
+      "date": "2026-06-28"
+    }
+  }
+}

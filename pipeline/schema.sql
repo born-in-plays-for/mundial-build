@@ -60,7 +60,7 @@ CREATE TABLE elo_ranking (
     CHECK ((rank IS NULL) = (pts IS NULL))
 );
 
--- ── api-football team identity + knockout progression ─────────────────
+-- ── api-football team identity ──────────────────────────────────────────
 -- af_team_id is api-football's team id (external key), distinct from both
 -- country.id and person.af_id id spaces.
 CREATE TABLE af_team (
@@ -68,12 +68,24 @@ CREATE TABLE af_team (
     af_team_id INTEGER NOT NULL UNIQUE
 );
 
--- Which teams reached which round (source of r32_teams.json and its
--- successors as the tournament progresses).
-CREATE TABLE round_team (
-    round   TEXT    NOT NULL,             -- 'R32', 'R16', 'QF', 'SF', 'F'
-    country INTEGER NOT NULL REFERENCES country(id),
-    PRIMARY KEY (round, country)
+-- Tournament elimination status, one row per WC2026 team (fetch_team_status.py
+-- seeds all 48 as 'alive'; a loss updates the row to 'eliminated'). A team
+-- absent from this table is a load bug, not "still alive" — absence-means-
+-- alive is a data/v2/status.json export-time convention, not a DB one.
+--
+-- eliminated_round is the API's own round-name string for a knockout exit
+-- ('Round of 32', 'Round of 16', 'Quarter-finals', 'Semi-finals', 'Final')
+-- or the literal 'Group Stage' when a team misses the round-of-32 cut.
+-- eliminated_date is NULL for a Group Stage exit: WC2026's 8-best-thirds
+-- tie-break isn't recomputed here — non-appearance in the round of 32
+-- bracket, once every group fixture is finished, IS the tie-break result,
+-- so there's no single fixture that "decided" it the way a knockout loss has.
+CREATE TABLE team_status (
+    country          INTEGER PRIMARY KEY REFERENCES country(id),
+    status           TEXT NOT NULL DEFAULT 'alive' CHECK (status IN ('alive', 'eliminated')),
+    eliminated_round TEXT,
+    eliminated_date  TEXT,
+    CHECK ((status = 'alive') = (eliminated_round IS NULL))
 );
 
 -- ── person ──────────────────────────────────────────────────────────────
@@ -194,6 +206,13 @@ LEFT JOIN country b ON b.id = p.birth;
 CREATE VIEW view_wiki AS
 SELECT lang, pid, title FROM wiki_title;
 
+-- Eliminated teams only (source of data/v2/status.json — absence from this
+-- view is the client-facing "still alive" signal, not a NULL/'alive' row).
+CREATE VIEW view_eliminated AS
+SELECT c.iso2, t.eliminated_round, t.eliminated_date
+FROM team_status t JOIN country c ON c.id = t.country
+WHERE t.status = 'eliminated';
+
 -- Integrity checks that go beyond per-row constraints; the load phase
 -- fails if this view returns any rows.
 CREATE VIEW view_anomalies AS
@@ -219,4 +238,9 @@ UNION ALL
 -- coach of the SAME team sharing a numeric id would silently merge there.
 SELECT 'af_id collision within one team', c.name || ' / af_id ' || a.af_id
 FROM af_person a JOIN person p ON p.pid = a.pid JOIN country c ON c.id = p.nation
-GROUP BY p.nation, a.af_id HAVING COUNT(DISTINCT a.pid) > 1;
+GROUP BY p.nation, a.af_id HAVING COUNT(DISTINCT a.pid) > 1
+UNION ALL
+SELECT 'wc2026 nation with no team_status row', c.name
+FROM country c
+WHERE c.is_wc2026 = 1
+  AND NOT EXISTS (SELECT 1 FROM team_status t WHERE t.country = c.id);

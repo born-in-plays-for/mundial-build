@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+"""
+fetch_team_status.py — determine each WC2026 team's tournament status
+(alive, or eliminated + at which round + when) from api-football fixture
+results, and write pipeline/team_status.json for pipeline/load.py.
+
+Elimination logic:
+  - Knockout rounds (Round of 32 onward): a finished fixture (status FT/
+    AET/PEN) carries a boolean "winner" on each side; the loser is
+    eliminated at that round, dated to the fixture's kickoff date.
+  - Group stage: WC2026's format (12 groups of 4, top 2 + 8 best thirds
+    advance) has real tie-break rules this script does not replicate.
+    Instead, once every group-stage fixture is finished, any WC2026 team
+    NOT among the round-of-32 fixtures' participants is eliminated —
+    absence from the round of 32 bracket IS the tie-break outcome, already
+    computed by whoever seeds that round. Tagged "Group Stage", undated
+    (no single fixture decided it).
+
+This is a living dataset, same cadence as build_player_wiki.py /
+update_elo_rankings.py — re-run whenever fixtures finish.
+
+Usage:
+    export API_FOOTBALL_KEY=your_key_here
+    python3 pipeline/fetch_team_status.py
+"""
+import json
+import os
+import sys
+from datetime import date
+from pathlib import Path
+
+try:
+    import requests
+except ImportError:
+    print("Missing dep. Run: pip install requests", file=sys.stderr)
+    sys.exit(1)
+
+import country_registry as reg
+
+_env = Path(__file__).parent.parent / ".env"
+if _env.exists():
+    for _line in _env.read_text().splitlines():
+        if _line.startswith("#") or "=" not in _line:
+            continue
+        _k, _, _v = _line.partition("=")
+        os.environ.setdefault(_k.strip(), _v.strip())
+
+WC2026_LEAGUE_ID = 1
+WC2026_SEASON = 2026
+API_BASE = "https://v3.football.api-sports.io"
+FINISHED = {"FT", "AET", "PEN"}
+
+# Knockout stage names as api-football actually returns them for this
+# league/season (verified live — see fetch_r32_teams.py's find_r32_round
+# for the naming-varies-by-edition caveat; add fallbacks here if a future
+# re-run reports an unrecognized round name for a knockout fixture).
+KNOCKOUT_STAGES = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals", "Final"]
+
+ROOT = Path(__file__).parent
+OUT = ROOT / "team_status.json"
+
+
+def fetch_json(url, params, headers):
+    resp = requests.get(url, params=params, headers=headers, timeout=30)
+    resp.raise_for_status()
+    data = resp.json()
+    if data.get("errors"):
+        print(f"API error: {data['errors']}", file=sys.stderr)
+        sys.exit(1)
+    return data
+
+
+def classify_round(round_name):
+    """-> 'group' | one of KNOCKOUT_STAGES | None (unrecognized)."""
+    if round_name.lower().startswith("group stage"):
+        return "group"
+    for stage in KNOCKOUT_STAGES:
+        if stage.lower() == round_name.lower():
+            return stage
+    return None
+
+
+def fetch_country_codes(headers):
+    """Same normalised-name -> ISO-alpha-2 fallback map as fetch_r32_teams.py
+    — country_registry is tried first; this only covers names it doesn't
+    recognize at all."""
+    data = fetch_json(f"{API_BASE}/countries", {}, headers)
+    result = {}
+    for c in data.get("response", []):
+        if not c.get("code"):
+            continue
+        result[c["name"].lower()] = c["code"].lower()
+        result[c["name"].lower().replace("-", " ")] = c["code"].lower()
+    return result
+
+
+def team_iso2(name, iso_map):
+    try:
+        return reg.resolve_iso2(name)
+    except reg.UnknownCountryError:
+        return iso_map.get(name.lower())
+
+
+def main():
+    key = os.environ.get("API_FOOTBALL_KEY")
+    if not key:
+        print("Error: API_FOOTBALL_KEY required (.env or env var).", file=sys.stderr)
+        sys.exit(1)
+    headers = {"x-apisports-key": key}
+
+    print(f"Fetching all WC{WC2026_SEASON} fixtures…", flush=True)
+    data = fetch_json(f"{API_BASE}/fixtures",
+                      {"league": WC2026_LEAGUE_ID, "season": WC2026_SEASON}, headers)
+    fixtures = data["response"]
+    print(f"  {len(fixtures)} fixtures", flush=True)
+
+    iso_map = fetch_country_codes(headers)
+
+    by_stage = {}
+    for f in fixtures:
+        stage = classify_round(f["league"]["round"])
+        by_stage.setdefault(stage, []).append(f)
+
+    unrecognized = sorted({f["league"]["round"] for f in by_stage.get(None, [])})
+    if unrecognized:
+        print(f"  Warning: unrecognized round name(s), ignored: {unrecognized}",
+              file=sys.stderr)
+
+    eliminated = {}  # iso2 -> {"round": ..., "date": <ISO date> | None}
+
+    # ── Group stage: decide only once every group fixture is finished ────
+    group_fixtures = by_stage.get("group", [])
+    group_done = bool(group_fixtures) and all(
+        f["fixture"]["status"]["short"] in FINISHED for f in group_fixtures)
+    r32_fixtures = by_stage.get("Round of 32", [])
+    if group_done:
+        if r32_fixtures:
+            r32_iso2 = set()
+            for f in r32_fixtures:
+                for side in ("home", "away"):
+                    iso2 = team_iso2(f["teams"][side]["name"], iso_map)
+                    if iso2:
+                        r32_iso2.add(iso2)
+            wc2026_iso2 = {reg.resolve_iso2(n) for n in reg.wc2026_nations()}
+            for iso2 in sorted(wc2026_iso2 - r32_iso2):
+                eliminated[iso2] = {"round": "Group Stage", "date": None}
+        else:
+            print("  Group stage finished but Round of 32 isn't scheduled/known "
+                  "yet — skipping group-stage elimination for now", file=sys.stderr)
+
+    # ── Knockout rounds: each finished fixture's loser is eliminated ─────
+    for stage in KNOCKOUT_STAGES:
+        for f in by_stage.get(stage, []):
+            if f["fixture"]["status"]["short"] not in FINISHED:
+                continue
+            home, away = f["teams"]["home"], f["teams"]["away"]
+            if home["winner"] is None:
+                continue  # finished but no winner recorded — shouldn't happen, guard anyway
+            loser = away if home["winner"] else home
+            iso2 = team_iso2(loser["name"], iso_map)
+            if not iso2:
+                print(f"  Warning: could not resolve country for eliminated "
+                      f"team {loser['name']!r}", file=sys.stderr)
+                continue
+            eliminated[iso2] = {"round": stage, "date": f["fixture"]["date"][:10]}
+
+    payload = {
+        "source":     "api-football.com",
+        "updated":    date.today().isoformat(),
+        "eliminated": dict(sorted(eliminated.items())),
+    }
+    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    print(f"\n{len(eliminated)} team(s) eliminated so far:")
+    for iso2, info in sorted(eliminated.items(), key=lambda kv: (kv[1]["round"], kv[0])):
+        suffix = f" ({info['date']})" if info["date"] else ""
+        print(f"  {iso2}: {info['round']}{suffix}")
+    print(f"\nWrote {OUT}", flush=True)
+
+
+if __name__ == "__main__":
+    main()

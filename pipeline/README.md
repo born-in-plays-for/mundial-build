@@ -41,8 +41,9 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `fetch_r32_teams.py` | `data/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
+| `fetch_team_status.py` | `pipeline/team_status.json` | Tournament elimination status from api-football fixtures — see "Team status" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build — see "Relational model" below |
-| `export.py` | `data/v2/` (7 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
+| `export.py` | `data/v2/` (8 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
 ---
 
@@ -108,12 +109,14 @@ erDiagram
         INTEGER country PK, FK
         INTEGER af_team_id UK "api-football team id (external)"
     }
-    round_team {
-        TEXT    round PK "knockout progression"
+    team_status {
         INTEGER country PK, FK
+        TEXT    status "alive | eliminated"
+        TEXT    eliminated_round "Group Stage | Round of 32 | ... | Final"
+        TEXT    eliminated_date "NULL for Group Stage (no single decisive fixture)"
     }
     provenance {
-        TEXT dataset PK "elo | r32 | population"
+        TEXT dataset PK "elo | r32 | population | team_status"
         TEXT source
         TEXT updated
     }
@@ -123,7 +126,7 @@ erDiagram
     country ||--o{ capital_name : "localized capital"
     country |o--o| elo_ranking  : "Elo entry"
     country ||--o| af_team      : "api-football team id"
-    country ||--o{ round_team   : "reached round"
+    country ||--o| team_status  : "alive / eliminated"
     person  ||--o{ af_person    : "api-football id(s), 1:n (duplicate-id records)"
     person  ||--o{ wiki_title   : "article per language"
 ```
@@ -141,7 +144,7 @@ Every person gets a **`pid`** — a small integer that replaces the
 smaller live-page payload gzipped. pids are pinned forever in
 `person_registry.csv` (committed): matched by `(role, api-football id)`
 first, then `(nation iso2, name)`; new persons append, pids are never
-reused. All 7 exports are written together from one DB state, so pids
+reused. All 8 exports are written together from one DB state, so pids
 can't disagree across files.
 
 **`data/v2/` is what the `mundial` frontend fetches** (migrated July 2026).
@@ -150,6 +153,42 @@ can't disagree across files.
 now, committed in `pipeline/` (not the submodule, not gitignored: producing
 them hits live external APIs, so they're not cheap to regenerate on a
 whim — same reasoning as the committed CSVs).
+
+---
+
+## Team status (`fetch_team_status.py` → `team_status` table → `data/v2/status.json`)
+
+Elimination status, one row per WC2026 team, fetched from api-football
+fixture results:
+
+- **Knockout rounds** (Round of 32 onward) — every fixture eventually has a
+  decisive winner (extra time / penalties resolve draws), so a finished
+  fixture's loser is unambiguously eliminated at that round, dated to the
+  fixture's kickoff date.
+- **Group stage** — WC2026's format (12 groups of 4, top 2 + 8 best
+  third-place teams advance) has real tie-break rules `fetch_team_status.py`
+  does **not** replicate. Instead, once every group-stage fixture is
+  finished, any WC2026 team that doesn't appear in a Round of 32 fixture is
+  eliminated — non-appearance in the round of 32 bracket *is* the tie-break
+  result, already computed by whoever seeds that round, so there's nothing
+  left to derive. Tagged `"Group Stage"`, undated (no single fixture decided
+  it, unlike a knockout loss).
+
+`data/v2/status.json` carries **only eliminated teams** — `{iso2: {round,
+date?}}`. A team absent from the file is still alive; the client never
+needs a positive "still in it" list, since the alternative (listing all 48
+minus eliminated) grows the payload as the tournament empties out, exactly
+backwards from what you'd want. Verified against the live API mid-build:
+group stage fully finished (48 → 32) plus 10 of 16 Round of 32 fixtures
+decided produced 26 eliminated teams, `status.json` at 186 bytes gzipped.
+
+Same living-dataset caveat as `build_player_wiki.py` / `update_elo_rankings.py`
+— re-run whenever fixtures finish, not once. `KNOCKOUT_STAGES` in
+`fetch_team_status.py` hardcodes the round-name strings api-football
+returned when this was verified against the live API; if a future re-run
+warns about an unrecognized round name, add it there (see
+`fetch_r32_teams.py`'s `find_r32_round` for the "naming varies by
+tournament edition" precedent this follows).
 
 ---
 
@@ -176,6 +215,9 @@ python3 pipeline/fetch_r32_teams.py --key YOUR_API_FOOTBALL_KEY   # → data/r32
 
 # Player/coach identity for the live-match page (needs API_FOOTBALL_KEY)
 python3 pipeline/build_player_wiki.py    # → pipeline/player_wiki.json
+
+# Tournament elimination status (needs API_FOOTBALL_KEY)
+python3 pipeline/fetch_team_status.py    # → pipeline/team_status.json
 
 # Relational model — turns all of the above into the frontend-facing data/v2/ files
 python3 pipeline/load.py
@@ -371,6 +413,16 @@ mismatches by adding an entry to `player_aliases_confirmed.json` (see its
 `_comment` field for the exact format and how entries have been confirmed so
 far: birth-date cross-reference against api-football's `/players`/`/coachs`
 endpoints, or a cited web search for stage names/nicknames).
+
+### Team status after new fixtures are played
+
+```bash
+python3 pipeline/fetch_team_status.py
+python3 pipeline/load.py && python3 pipeline/export.py   # re-export data/v2/status.json
+```
+
+Same cadence as the identity refresh above — run both together whenever
+fixtures finish, since they both read the same `/fixtures` state.
 
 Any of these ends with `git -C data add v2 && git -C data commit && git -C
 data push`, then bump the submodule pointer here — see `../CLAUDE.md`'s

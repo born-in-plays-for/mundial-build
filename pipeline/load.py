@@ -13,6 +13,7 @@ nothing upstream changes:
   pipeline/wiki_<lang>.json x5    (add_wiki_urls.py)
   data/elo_rank.json              (update_elo_rankings.py)
   data/r32_teams.json             (fetch_r32_teams.py)
+  pipeline/team_status.json       (fetch_team_status.py)
 
 The first five are pipeline-internal intermediates now, not frontend-facing
 — only this script reads them. They live in pipeline/, committed (not
@@ -139,6 +140,7 @@ def main():
     player_wiki = read_json(PIPELINE / "player_wiki.json")
     elo         = read_json(DATA / "elo_rank.json")
     r32         = read_json(DATA / "r32_teams.json")
+    team_status = read_json(PIPELINE / "team_status.json")
     wiki        = {lang: read_json(PIPELINE / f"wiki_{lang}.json")["titles"] for lang in LANGS}
 
     DB_PATH.unlink(missing_ok=True)
@@ -213,10 +215,17 @@ def main():
                    (country, None if country else r["name"],
                     r["rank"], r["pts"], r["fifaMember"], r["weirdo"]))
 
-    # ── af_team + round_team ────────────────────────────────────────────
+    # ── af_team ─────────────────────────────────────────────────────────
     for t in r32["teams"]:
         db.execute("INSERT INTO af_team VALUES (?,?)", (cid(t["iso2"]), t["id"]))
-        db.execute("INSERT INTO round_team VALUES (?,?)", (r32["round"], cid(t["iso2"])))
+
+    # ── team_status: every WC2026 team starts 'alive', a loss updates it ─
+    for row in db.execute("SELECT id FROM country WHERE is_wc2026 = 1"):
+        db.execute("INSERT INTO team_status (country) VALUES (?)", (row[0],))
+    for iso2, info in team_status["eliminated"].items():
+        db.execute("""UPDATE team_status SET status='eliminated', eliminated_round=?,
+                     eliminated_date=? WHERE country=?""",
+                   (info["round"], info["date"], cid(iso2)))
 
     # ── provenance ──────────────────────────────────────────────────────
     pop_updated = max((c["pop_year"] for c in countries.values() if c.get("pop_year")),
@@ -224,6 +233,8 @@ def main():
     db.execute("INSERT INTO provenance VALUES ('elo',?,?)", (elo["source"], elo["updated"]))
     db.execute("INSERT INTO provenance VALUES ('r32',?,?)", (r32["source"], r32["updated"]))
     db.execute("INSERT INTO provenance VALUES ('population',?,?)", (POP_SOURCE, pop_updated))
+    db.execute("INSERT INTO provenance VALUES ('team_status',?,?)",
+               (team_status["source"], team_status["updated"]))
 
     # ── anomaly gate ────────────────────────────────────────────────────
     # The only tolerated anomaly is the missing-EN-title consequence of a
@@ -238,9 +249,11 @@ def main():
     db.commit()
     n = lambda t: db.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
     print(f"Wrote {DB_PATH}")
+    eliminated_n = db.execute("SELECT COUNT(*) FROM team_status WHERE status='eliminated'").fetchone()[0]
     print(f"  {n('country')} countries, {n('person')} persons ({added} new pids), "
           f"{n('af_person')} af ids, {n('wiki_title')} wiki titles, "
-          f"{n('elo_ranking')} elo entries, {n('round_team')} round teams")
+          f"{n('elo_ranking')} elo entries, {n('team_status')} teams tracked "
+          f"({eliminated_n} eliminated)")
     db.close()
 
 

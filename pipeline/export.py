@@ -9,11 +9,12 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             {iso2: {af_id: {pid, birthCountry}}}
   data/v2/wiki_<lang>.json  {urlTemplate, titles: [...]} — array indexed
                             by pid (null = no article in that language)
+  data/v2/status.json       {iso2: {round, date?}} — ELIMINATED teams only.
+                            A team absent from this file is still alive;
+                            the client never needs a positive "alive" list.
 
 All files are written together, atomically from one DB state — pids can
-never disagree across them. The old-format files stay untouched (they are
-load.py's inputs and what the current frontend reads) until the mundial
-frontend migrates to pid lookups.
+never disagree across them.
 """
 import gzip
 import json
@@ -114,6 +115,18 @@ def build_live(db):
     return live
 
 
+def build_status(db):
+    """Eliminated teams only — absence from this file IS the "still alive"
+    signal (see schema.sql's view_eliminated / team_status comments)."""
+    status = {}
+    for iso2, rnd, dt in db.execute("SELECT * FROM view_eliminated ORDER BY iso2"):
+        entry = {"round": rnd}
+        if dt is not None:
+            entry["date"] = dt
+        status[iso2] = entry
+    return status
+
+
 def build_wiki(db, lang):
     size = db.execute("SELECT MAX(pid) + 1 FROM person").fetchone()[0]
     titles = [None] * size
@@ -136,7 +149,8 @@ def main():
             print(f"  ANOMALY: {a}: {d}", file=sys.stderr)
         sys.exit(1)
 
-    files = {"map.json": build_map(db), "live.json": build_live(db)}
+    files = {"map.json": build_map(db), "live.json": build_live(db),
+              "status.json": build_status(db)}
     for lang in LANGS:
         files[f"wiki_{lang}.json"] = build_wiki(db, lang)
     db.close()

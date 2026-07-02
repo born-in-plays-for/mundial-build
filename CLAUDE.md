@@ -18,8 +18,10 @@
 
 Only files consumed directly by the `mundial` frontend belong in the submodule:
 `elo_rank.json`, `elo_history.json`, `r32_teams.json`, `uk-nations.geojson`, and the
-pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/wiki_en.json`/`wiki_fr.json`/
-`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see "Relational model" below.
+pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
+`v2/wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see
+"Relational model" below. `v2/status.json` carries **eliminated teams only**
+(`{iso2: {round, date?}}`) — a team absent from it is still alive.
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.
@@ -62,9 +64,12 @@ python3 pipeline/validate_country_coverage.py
 python3 pipeline/fetch_r32_teams.py     # → data/r32_teams.json
 python3 pipeline/build_player_wiki.py   # → pipeline/player_wiki.json
 
+# Tournament elimination status (needs API_FOOTBALL_KEY) — re-run whenever fixtures finish
+python3 pipeline/fetch_team_status.py   # → pipeline/team_status.json
+
 # Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
-# map_data.json / player_wiki.json / wiki_<lang>.json above are this step's inputs —
-# pipeline-internal, not what the frontend fetches.
+# map_data.json / player_wiki.json / wiki_<lang>.json / team_status.json above are this
+# step's inputs — pipeline-internal, not what the frontend fetches.
 python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + person_registry.csv
 python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically — THE
                              # frontend-facing output of this whole pipeline
