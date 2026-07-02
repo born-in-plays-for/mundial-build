@@ -11,16 +11,19 @@ render time via a fragile 3-tier name-matching heuristic that silently
 dropped enrichment on a miss (e.g. "Lionel Mpasi" vs "Lionel Mpasi Nzau").
 
 This script does that resolution here instead, and exports a static
-id -> {wikiTitle, birthCountry} lookup so the frontend does a plain
-dictionary lookup by api-football's numeric player id — no string matching
-at render time at all. Keyed by id, not name, because the same person's
-rendered name has been observed to change between fixtures (abbreviated in
-some, full in others) — the id is the stable identity, the name string isn't.
+id -> {wikiTitle, birthCountry} lookup, pipeline/player_wiki.json — a
+pipeline-internal intermediate now; pipeline/load.py is its only consumer,
+re-keying it by pid into the frontend-facing data/v2/live.json (see
+pipeline/export.py), which the frontend looks up by api-football's numeric
+player id — no string matching at render time at all. Keyed by id, not
+name, because the same person's rendered name has been observed to change
+between fixtures (abbreviated in some, full in others) — the id is the
+stable identity, the name string isn't.
 
 wikiTitle is the EN Wikipedia title — the same join key map_data.json's
-players carry — used to look up a localized title in whichever single
-data/wiki_<lang>.json file the frontend actually needs (see
-add_wiki_urls.py), rather than embedding all 5 languages' URLs here too.
+players carry — used by load.py to look up a localized title from each
+pipeline/wiki_<lang>.json file and fold it into data/v2/wiki_<lang>.json,
+pid-indexed, so the frontend fetches only the one language it needs.
 
 Resolution order per (still-unmatched) api id within a team:
   1. pipeline/player_aliases_confirmed.json (manually verified, keyed by id)
@@ -74,10 +77,10 @@ API_BASE = "https://v3.football.api-sports.io"
 ROOT = Path(__file__).parent
 PLAYERS_CSV = ROOT / "wc2026_players.csv"
 COACHES_CSV = ROOT / "wc2026_coaches.csv"
-MAP_DATA = ROOT.parent / "data" / "map_data.json"
+MAP_DATA = ROOT / "map_data.json"
 CONFIRMED_JSON = ROOT / "player_aliases_confirmed.json"
 MANUAL_JSON = ROOT / "player_aliases_manual.json"
-OUT_JSON = ROOT.parent / "data" / "player_wiki.json"
+OUT_JSON = ROOT / "player_wiki.json"
 
 
 # ── Matching rules (unchanged from the prototype) ────────────────────────

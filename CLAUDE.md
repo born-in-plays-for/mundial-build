@@ -17,11 +17,18 @@
 ### `data/` submodule — what belongs there
 
 Only files consumed directly by the `mundial` frontend belong in the submodule:
-`map_data.json`, `elo_rank.json`, `elo_history.json`, `r32_teams.json`, `uk-nations.geojson`,
-`player_wiki.json`, and `wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`.
+`elo_rank.json`, `elo_history.json`, `r32_teams.json`, `uk-nations.geojson`, and the
+pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/wiki_en.json`/`wiki_fr.json`/
+`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see "Relational model" below.
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.
+
+The older `map_data.json`, `player_wiki.json`, and non-`v2` `wiki_<lang>.json` files are
+**pipeline-internal intermediates now, not frontend-facing** — the frontend migrated to
+`v2/` in July 2026. They live in `pipeline/`, not the submodule, and are committed there
+(not gitignored) because producing them hits live external APIs (Wikipedia, api-football)
+and isn't cheap to redo casually — same reasoning as the committed `wc2026_players.csv`.
 
 ## Related repos
 
@@ -40,10 +47,10 @@ python3 pipeline/fetch_countries.py      # → pipeline/countries.json (includes
 # Squad data
 python3 pipeline/wc2026_birthplaces.py  # → pipeline/wc2026_players.csv
 python3 pipeline/wc2026_coaches.py      # → pipeline/wc2026_coaches.csv
-python3 pipeline/build_json.py          # → data/map_data.json
+python3 pipeline/build_json.py          # → pipeline/map_data.json
 
 # Enrich Wikipedia identity (slow, ~5 min)
-python3 pipeline/add_wiki_urls.py       # → data/map_data.json (in-place) + data/wiki_<lang>.json ×5
+python3 pipeline/add_wiki_urls.py       # → pipeline/map_data.json (in-place) + pipeline/wiki_<lang>.json ×5
 
 # Coverage gate — run after the pipeline, before committing.
 # Fails loudly if any upstream country name/spelling variant doesn't resolve
@@ -53,11 +60,14 @@ python3 pipeline/validate_country_coverage.py
 
 # Round of 32 teams + player/coach identity for the live-match page (need API_FOOTBALL_KEY)
 python3 pipeline/fetch_r32_teams.py     # → data/r32_teams.json
-python3 pipeline/build_player_wiki.py   # → data/player_wiki.json
+python3 pipeline/build_player_wiki.py   # → pipeline/player_wiki.json
 
 # Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
+# map_data.json / player_wiki.json / wiki_<lang>.json above are this step's inputs —
+# pipeline-internal, not what the frontend fetches.
 python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + person_registry.csv
-python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically
+python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically — THE
+                             # frontend-facing output of this whole pipeline
 
 # Extras (only needed for pages/ standalone charts)
 python3 extras/build_elo_history.py  # → extras/elo_history.json  (for pages/wc2026_elo_history.html)
@@ -103,21 +113,24 @@ api-football itself isn't even consistent about it across fixtures).
 `pipeline/build_player_wiki.py` resolves this once, at build time, via a
 7-tier matcher plus `pipeline/player_aliases_confirmed.json` (hand-verified
 pairs, keyed by api-football's numeric id so a future name-string change
-doesn't break it) — exporting `data/player_wiki.json`, keyed by iso2 then by
-that numeric id. `mundial/wc2026_live.html` looks players/coaches up
-directly by `player.id`/`coach.id` — no name matching client-side. Residual
-unresolved names land in `pipeline/player_aliases_manual.json`; check its
-`_note` field before assuming an entry is a bug (some are genuine non-issues
-— an injured player who hasn't played, a coaching change mid-tournament).
-Full details, including the duplicate-name safety net, in
-`pipeline/README.md`.
+doesn't break it) — exporting `pipeline/player_wiki.json`, keyed by iso2 then
+by that numeric id. `pipeline/load.py` re-keys this by `pid` (see "Relational
+model" below) into `data/v2/live.json`, which `mundial/wc2026_live.html`
+looks players/coaches up in directly by `player.id`/`coach.id` — no name
+matching client-side. Residual unresolved names land in
+`pipeline/player_aliases_manual.json`; check its `_note` field before
+assuming an entry is a bug (some are genuine non-issues — an injured player
+who hasn't played, a coaching change mid-tournament). Full details, including
+the duplicate-name safety net, in `pipeline/README.md`.
 
 Wikipedia links themselves are resolved via a shared `wikiTitle` (EN title)
-field on every player/coach in `map_data.json` and `player_wiki.json`, joined
-against 5 per-language files (`data/wiki_en.json` etc., each
-`{urlTemplate, titles}`) — a client fetches only the one language it needs,
-not all 5. See `pipeline/README.md`'s "Wiki data" section for the exact
-shape.
+field on every player/coach in `pipeline/map_data.json` and
+`pipeline/player_wiki.json`, joined against 5 per-language files
+(`pipeline/wiki_en.json` etc., each `{urlTemplate, titles}`, keyed by
+`wikiTitle`). `pipeline/load.py` re-keys this by `pid` into
+`data/v2/wiki_<lang>.json` (`titles` as a pid-indexed array) — a client
+fetches only the one language it needs, not all 5. See `pipeline/README.md`'s
+"Wiki data" and "Relational model" sections for the exact shapes.
 
 ## Commit workflow
 

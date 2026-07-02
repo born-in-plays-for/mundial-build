@@ -7,9 +7,13 @@ and `cd pipeline && python3 foo.py` are equivalent.
 
 Output that the `mundial` frontend actually fetches lives in the `data/`
 submodule (see `../CLAUDE.md` for the commit workflow — data changes commit
-in the submodule first, then the pointer is bumped here). `extras/` scripts
-(GDP/HDI/Elo history, feeding only the standalone `pages/` charts) are
-documented in `../CLAUDE.md`, not here.
+in the submodule first, then the pointer is bumped here). As of the July
+2026 frontend migration that's `data/elo_rank.json`, `data/r32_teams.json`,
+`data/uk-nations.geojson`, and the pid-keyed `data/v2/` files — **not**
+`map_data.json`/`player_wiki.json`/`wiki_<lang>.json`, which now live in
+`pipeline/` as build-internal intermediates (see "Relational model" below).
+`extras/` scripts (GDP/HDI/Elo history, feeding only the standalone `pages/`
+charts) are documented in `../CLAUDE.md`, not here.
 
 ---
 
@@ -31,11 +35,11 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `country_registry.py` | _(module, no output)_ | Canonical country-identity resolver — see below. Run directly (`python3 pipeline/country_registry.py`) for a self-test. |
 | `wc2026_birthplaces.py` | `wc2026_players.csv` | Scraper: Wikipedia squad page + Wikidata birth lookup |
 | `wc2026_coaches.py` | `wc2026_coaches.csv` | Scraper: coaches from Wikipedia squad page + Wikidata birth lookup |
-| `build_json.py` | `data/map_data.json` | Rebuilds the main data file from the CSVs + `countries.json` |
-| `add_wiki_urls.py` | `data/map_data.json` (in-place) + `data/wiki_<lang>.json` ×5 | Resolves Wikipedia identity (players + coaches) — see "Wiki data" below |
+| `build_json.py` | `pipeline/map_data.json` | Rebuilds the main data file from the CSVs + `countries.json` |
+| `add_wiki_urls.py` | `pipeline/map_data.json` (in-place) + `pipeline/wiki_<lang>.json` ×5 | Resolves Wikipedia identity (players + coaches) — see "Wiki data" below |
 | `validate_country_coverage.py` | _(stdout, exit code)_ | Coverage gate — run after the pipeline, before committing |
 | `fetch_r32_teams.py` | `data/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
-| `build_player_wiki.py` | `data/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
+| `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build — see "Relational model" below |
 | `export.py` | `data/v2/` (7 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
@@ -140,17 +144,12 @@ first, then `(nation iso2, name)`; new persons append, pids are never
 reused. All 7 exports are written together from one DB state, so pids
 can't disagree across files.
 
-The old-format files stay untouched (they're `load.py`'s inputs and what
-the current frontend reads) until the `mundial` frontend migrates to pid
-lookups.
-
-Known tolerated defect: two persons currently share the EN title
-"Emiliano Martínez" (Argentina's keeper owns the article; Uruguay's
-Emiliano Martínez is mislinked in the source data). `load.py` warns and
-ships the later pid without a wiki link until the matcher/aliases are
-fixed. `export.py`'s `live.json` also corrects his `birthCountry` to
-Uruguay (map_data is right, `player_wiki.json` scraped it from the wrong
-article).
+**`data/v2/` is what the `mundial` frontend fetches** (migrated July 2026).
+`pipeline/map_data.json`, `pipeline/player_wiki.json`, and
+`pipeline/wiki_<lang>.json` are `load.py`'s inputs only — pipeline-internal
+now, committed in `pipeline/` (not the submodule, not gitignored: producing
+them hits live external APIs, so they're not cheap to regenerate on a
+whim — same reasoning as the committed CSVs).
 
 ---
 
@@ -163,10 +162,10 @@ python3 pipeline/fetch_countries.py      # → countries.json (patches run autom
 # Squad data
 python3 pipeline/wc2026_birthplaces.py   # → wc2026_players.csv
 python3 pipeline/wc2026_coaches.py       # → wc2026_coaches.csv
-python3 pipeline/build_json.py           # → data/map_data.json
+python3 pipeline/build_json.py           # → pipeline/map_data.json
 
 # Enrich Wikipedia identity (slow, ~5 min — one API call per language per batch of 50 titles)
-python3 pipeline/add_wiki_urls.py        # → data/map_data.json (in-place) + data/wiki_<lang>.json
+python3 pipeline/add_wiki_urls.py        # → pipeline/map_data.json (in-place) + pipeline/wiki_<lang>.json
 
 # Coverage gate — run after the pipeline, before committing.
 python3 pipeline/validate_country_coverage.py
@@ -176,7 +175,11 @@ python3 pipeline/update_elo_rankings.py  # → data/elo_rank.json (re-patches Ko
 python3 pipeline/fetch_r32_teams.py --key YOUR_API_FOOTBALL_KEY   # → data/r32_teams.json
 
 # Player/coach identity for the live-match page (needs API_FOOTBALL_KEY)
-python3 pipeline/build_player_wiki.py    # → data/player_wiki.json
+python3 pipeline/build_player_wiki.py    # → pipeline/player_wiki.json
+
+# Relational model — turns all of the above into the frontend-facing data/v2/ files
+python3 pipeline/load.py
+python3 pipeline/export.py
 ```
 
 `fetch_r32_teams.py` and `build_player_wiki.py` both need an api-football key —
@@ -206,9 +209,10 @@ migrated.
 
 Run `python3 pipeline/validate_country_coverage.py` after the pipeline: it
 resolves every raw country string currently in the CSVs and in
-`map_data.json`/`elo_rank.json`/`r32_teams.json`, and checks every current
-WC2026 nation actually has rows in both CSVs. A new upstream spelling variant
-shows up here as a failed build, not a silent wrong-flag bug weeks later.
+`pipeline/map_data.json`/`data/elo_rank.json`/`data/r32_teams.json`, and
+checks every current WC2026 nation actually has rows in both CSVs. A new
+upstream spelling variant shows up here as a failed build, not a silent
+wrong-flag bug weeks later.
 
 ---
 
@@ -227,11 +231,12 @@ order of confidence) plus `player_aliases_confirmed.json` (hand-verified
 pairs the matcher can't resolve on its own, keyed by api-football's numeric
 id so a future name-string change for the same person doesn't break it).
 
-Exports `data/player_wiki.json`, keyed by iso2 then by api-football's numeric
-player/coach id — **id, not name**, since api-football has been observed to
-render the same person differently across fixtures/endpoints. `mundial`'s
-`wc2026_live.html` looks this up directly by `player.id`/`coach.id`; no name
-matching happens client-side at all anymore.
+Exports `pipeline/player_wiki.json`, keyed by iso2 then by api-football's
+numeric player/coach id — **id, not name**, since api-football has been
+observed to render the same person differently across fixtures/endpoints.
+`pipeline/load.py` re-keys this by `pid` into `data/v2/live.json`, which
+`mundial`'s `wc2026_live.html` looks up directly by `player.id`/`coach.id`;
+no name matching happens client-side at all anymore.
 
 Two safety nets worth knowing about:
 - If 2+ different people in the same team render with the *exact same*
@@ -257,21 +262,34 @@ same cadence as `update_elo_rankings.py`/`fetch_r32_teams.py`, not once.
 `add_wiki_urls.py` does **not** write full Wikipedia URLs onto player
 objects anymore. Instead:
 
-- Every player/coach in `map_data.json` (and every entry in
-  `player_wiki.json`) carries a single `wikiTitle` field — the EN Wikipedia
-  title, e.g. `"Lionel Mpasi"` — not a URL.
-- 5 files, `data/wiki_en.json` / `wiki_fr.json` / `wiki_de.json` /
+- Every player/coach in `pipeline/map_data.json` (and every entry in
+  `pipeline/player_wiki.json`) carries a single `wikiTitle` field — the EN
+  Wikipedia title, e.g. `"Lionel Mpasi"` — not a URL.
+- 5 files, `pipeline/wiki_en.json` / `wiki_fr.json` / `wiki_de.json` /
   `wiki_it.json` / `wiki_es.json`, each `{"urlTemplate": "https://<lang>.
   wikipedia.org/wiki/{title}", "titles": {<EN title>: <url-ready title for
   that language>}}` — keyed by the same `wikiTitle` string.
 
+`name_to_title` (the map from a linked Wikipedia name to its EN title) is
+keyed by **`(nation, name)`, not name alone** — two different players can
+share a display name across different squads (WC2026 has exactly this case:
+Argentina's and Uruguay's squads each have an "Emiliano Martínez"), and a
+flat name key would silently hand one of them the other's article. Each
+squad table's country comes from the heading immediately before it on the
+Wikipedia squads page; a heading that doesn't resolve to a country (the
+statistics tables at the bottom of the page) is skipped.
+`build_player_wiki.py`'s own `map_data.json` lookup is scoped the same way,
+for the same reason.
+
+pipeline/load.py re-keys `wikiTitle` by `pid` into `data/v2/wiki_<lang>.json`
+(`titles` as a pid-indexed array instead of a dict keyed by title) — a
+client fetches **one** of the 5 language files (matching its active locale)
+and does a plain array lookup + string substitution —
+`urlTemplate.replace('{title}', titles[pid])` — no URL-building or encoding
+logic needed client-side, and the other 4 languages are never downloaded.
 This exists because the old `wiki_langs: {en,fr,de,it,es}` blob was over
 half of `map_data.json`'s size, duplicated again in `player_wiki.json`, and
-~80% of it was languages any single user never touches. A client fetches
-**one** of the 5 language files (matching its active locale) and does a
-plain string substitution — `urlTemplate.replace('{title}', titles[wikiTitle])`
-— no URL-building or encoding logic needed client-side, and the other 4
-languages are never downloaded.
+~80% of it was languages any single user never touches.
 
 `build_json.py`'s wiki-preservation cache (so re-running it after a fresh
 CSV doesn't lose Wikipedia identity already resolved) keys on `wikiTitle` —
@@ -338,12 +356,14 @@ python3 pipeline/wc2026_birthplaces.py
 python3 pipeline/build_json.py
 python3 pipeline/add_wiki_urls.py       # only new/changed players need new API calls
 python3 pipeline/validate_country_coverage.py
+python3 pipeline/load.py && python3 pipeline/export.py   # re-export data/v2/
 ```
 
 ### Player/coach identity after new fixtures are played
 
 ```bash
 python3 pipeline/build_player_wiki.py
+python3 pipeline/load.py && python3 pipeline/export.py   # re-export data/v2/
 ```
 
 Check `player_aliases_manual.json` afterward — resolve genuine name
@@ -351,3 +371,9 @@ mismatches by adding an entry to `player_aliases_confirmed.json` (see its
 `_comment` field for the exact format and how entries have been confirmed so
 far: birth-date cross-reference against api-football's `/players`/`/coachs`
 endpoints, or a cited web search for stage names/nicknames).
+
+Any of these ends with `git -C data add v2 && git -C data commit && git -C
+data push`, then bump the submodule pointer here — see `../CLAUDE.md`'s
+commit workflow. `pipeline/map_data.json`, `player_wiki.json`, and
+`wiki_<lang>.json` are ordinary tracked files in this repo now (not the
+submodule), so they commit with the rest of your `pipeline/` changes.

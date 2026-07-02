@@ -4,13 +4,20 @@
 but not required** — the squad data and birthplace enrichment are stable for the
 duration of WC 2026.
 
+`pipeline/map_data.json` is a pipeline-internal intermediate as of the July
+2026 relational-model build (`pipeline/schema.sql` → `pipeline/load.py` →
+`pipeline/export.py`) — only `load.py` reads it now. The frontend-facing
+successor is `data/v2/map.json`. See `pipeline/README.md`'s "Relational
+model" section for the full picture; this diagram covers only how
+`map_data.json` itself gets built.
+
 ```mermaid
 flowchart TD
     WP["Wikipedia\n2026 FIFA World Cup squads"]
     WD["Wikidata\nSPARQL API (P19)"]
     WPP["Wikipedia\nindividual player pages"]
     WPA["Wikipedia API\nlanglinks (FR/DE/IT/ES)"]
-    EJ["data/map_data.json\n(existing — preserves wiki_langs & IDs)"]
+    EJ["pipeline/map_data.json\n(existing — preserves wikiTitle & IDs)"]
 
     subgraph countries ["pipeline/countries.json provenance"]
         ML["mledoze/countries\n(npm package — population, ISO codes)"]
@@ -35,7 +42,8 @@ flowchart TD
     PC["pipeline/wc2026_players.csv"]
     CC["pipeline/wc2026_coaches.csv"]
 
-    OUT["data/map_data.json"]
+    OUT["pipeline/map_data.json"]
+    V2["data/v2/map.json\n(via load.py + export.py —\nthe frontend-facing output)"]
 
     WP --> BP
     WD --> BP
@@ -50,11 +58,12 @@ flowchart TD
     PC --> BJ
     CC --> BJ
     CJ --> BJ
-    EJ -.->|id & wiki_langs seed| BJ
+    EJ -.->|id & wikiTitle seed| BJ
     BJ --> OUT
 
     WP --> WU
     WPA --> WU
     OUT -.->|read + overwrite| WU
     WU --> OUT
+    OUT --> V2
 ```

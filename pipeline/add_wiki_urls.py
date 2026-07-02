@@ -1,19 +1,23 @@
 """
-Enriches wc2026_map_data.json with Wikipedia identity, and writes one
+Enriches pipeline/map_data.json with Wikipedia identity, and writes one
 per-language title file per language so a client only ever has to fetch the
 single language it actually needs (not all 5, as the old wiki_langs blob
 required).
 
+map_data.json and wiki_<lang>.json are pipeline-internal intermediates —
+pipeline/load.py is their only consumer. The frontend-facing successors are
+data/v2/map.json and data/v2/wiki_<lang>.json, exported from
+pipeline/mundial.db by pipeline/export.py.
+
 Step 1 — fetch the WC2026 squads page, extract player name → EN wiki title.
 Step 2 — batch-query the Wikipedia API (prop=langlinks) for FR/DE/IT/ES titles.
-Step 3 — write data/wiki_<lang>.json for each of en/fr/de/it/es:
+Step 3 — write pipeline/wiki_<lang>.json for each of en/fr/de/it/es:
             {"urlTemplate": "https://<lang>.wikipedia.org/wiki/{title}",
              "titles": {<EN title>: <url-ready title fragment for <lang>>}}
           keyed by the EN title, since that's the one identity every player
           object (in map_data.json and player_wiki.json) already carries —
-          the client fetches one file, looks up the EN title, and does a
-          plain string substitution into urlTemplate. No URL-building logic
-          needed client-side.
+          load.py looks up the EN title per pid and re-keys it by pid for
+          the frontend-facing export.
 Step 4 — set player["wikiTitle"] = <EN title> on every player object
          (replaces the old wiki/wiki_langs full-URL fields).
 """
@@ -24,7 +28,7 @@ from bs4 import BeautifulSoup
 
 import country_registry as reg
 
-ROOT      = Path(__file__).parent.parent / "data"
+ROOT      = Path(__file__).parent
 JSON_PATH = ROOT / "map_data.json"
 
 WIKI_URL  = "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads"

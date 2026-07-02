@@ -7,12 +7,18 @@ run this any time an input below changes, then pipeline/export.py.
 Sits AFTER the existing pipeline scripts and reads their outputs as-is —
 nothing upstream changes:
 
-  pipeline/countries.json     (fetch_countries.py)
-  data/map_data.json          (build_json.py + add_wiki_urls.py)
-  data/player_wiki.json       (build_player_wiki.py)
-  data/wiki_<lang>.json x5    (add_wiki_urls.py)
-  data/elo_rank.json          (update_elo_rankings.py)
-  data/r32_teams.json         (fetch_r32_teams.py)
+  pipeline/countries.json         (fetch_countries.py)
+  pipeline/map_data.json          (build_json.py + add_wiki_urls.py)
+  pipeline/player_wiki.json       (build_player_wiki.py)
+  pipeline/wiki_<lang>.json x5    (add_wiki_urls.py)
+  data/elo_rank.json              (update_elo_rankings.py)
+  data/r32_teams.json             (fetch_r32_teams.py)
+
+The first five are pipeline-internal intermediates now, not frontend-facing
+— only this script reads them. They live in pipeline/, committed (not
+gitignored), because add_wiki_urls.py/build_player_wiki.py hit live
+external APIs to produce them and aren't cheap to regenerate on a whim,
+same as wc2026_players.csv/wc2026_coaches.csv.
 
 pid stability: pipeline/person_registry.csv (committed) pins every person
 ever seen to a pid, matched by api-football id first, then by
@@ -33,7 +39,7 @@ from pathlib import Path
 import country_registry as reg
 
 PIPELINE = Path(__file__).parent
-DATA     = PIPELINE.parent / "data"
+DATA     = PIPELINE.parent / "data"  # still-submodule outputs: elo_rank.json, r32_teams.json
 
 DB_PATH       = PIPELINE / "mundial.db"
 SCHEMA_PATH   = PIPELINE / "schema.sql"
@@ -129,11 +135,11 @@ def assign_pids(persons, af_ids_of):
 
 def main():
     countries   = read_json(PIPELINE / "countries.json")
-    map_data    = read_json(DATA / "map_data.json")
-    player_wiki = read_json(DATA / "player_wiki.json")
+    map_data    = read_json(PIPELINE / "map_data.json")
+    player_wiki = read_json(PIPELINE / "player_wiki.json")
     elo         = read_json(DATA / "elo_rank.json")
     r32         = read_json(DATA / "r32_teams.json")
-    wiki        = {lang: read_json(DATA / f"wiki_{lang}.json")["titles"] for lang in LANGS}
+    wiki        = {lang: read_json(PIPELINE / f"wiki_{lang}.json")["titles"] for lang in LANGS}
 
     DB_PATH.unlink(missing_ok=True)
     db = sqlite3.connect(DB_PATH)
