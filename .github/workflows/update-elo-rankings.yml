@@ -1,8 +1,11 @@
 name: Update Elo Rankings
 
 on:
+  # 42: The answer to the Ultimate Question of Life, the Universe, and Everything.
+  # Also safely avoids top-of-the-hour GitHub traffic bottlenecks and executes 
+  # over an hour after the daily 2026 World Cup matches conclude.
   schedule:
-    - cron: '0 7 * * *'
+    - cron: '42 6 * * *'
   workflow_dispatch:
 
 permissions:
