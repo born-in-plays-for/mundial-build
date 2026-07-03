@@ -1,0 +1,167 @@
+{
+  "source": "api-football.com",
+  "updated": "2026-07-01",
+  "round": "Round of 32",
+  "teams": [
+    {
+      "id": 1532,
+      "name": "Algeria",
+      "iso2": "dz"
+    },
+    {
+      "id": 26,
+      "name": "Argentina",
+      "iso2": "ar"
+    },
+    {
+      "id": 20,
+      "name": "Australia",
+      "iso2": "au"
+    },
+    {
+      "id": 775,
+      "name": "Austria",
+      "iso2": "at"
+    },
+    {
+      "id": 1,
+      "name": "Belgium",
+      "iso2": "be"
+    },
+    {
+      "id": 1113,
+      "name": "Bosnia & Herzegovina",
+      "iso2": "ba"
+    },
+    {
+      "id": 6,
+      "name": "Brazil",
+      "iso2": "br"
+    },
+    {
+      "id": 5529,
+      "name": "Canada",
+      "iso2": "ca"
+    },
+    {
+      "id": 1533,
+      "name": "Cape Verde Islands",
+      "iso2": "cv"
+    },
+    {
+      "id": 8,
+      "name": "Colombia",
+      "iso2": "co"
+    },
+    {
+      "id": 1508,
+      "name": "Congo DR",
+      "iso2": "cd"
+    },
+    {
+      "id": 3,
+      "name": "Croatia",
+      "iso2": "hr"
+    },
+    {
+      "id": 2382,
+      "name": "Ecuador",
+      "iso2": "ec"
+    },
+    {
+      "id": 32,
+      "name": "Egypt",
+      "iso2": "eg"
+    },
+    {
+      "id": 10,
+      "name": "England",
+      "iso2": "gb-eng"
+    },
+    {
+      "id": 2,
+      "name": "France",
+      "iso2": "fr"
+    },
+    {
+      "id": 25,
+      "name": "Germany",
+      "iso2": "de"
+    },
+    {
+      "id": 1504,
+      "name": "Ghana",
+      "iso2": "gh"
+    },
+    {
+      "id": 1501,
+      "name": "Ivory Coast",
+      "iso2": "ci"
+    },
+    {
+      "id": 12,
+      "name": "Japan",
+      "iso2": "jp"
+    },
+    {
+      "id": 16,
+      "name": "Mexico",
+      "iso2": "mx"
+    },
+    {
+      "id": 31,
+      "name": "Morocco",
+      "iso2": "ma"
+    },
+    {
+      "id": 1118,
+      "name": "Netherlands",
+      "iso2": "nl"
+    },
+    {
+      "id": 1090,
+      "name": "Norway",
+      "iso2": "no"
+    },
+    {
+      "id": 2380,
+      "name": "Paraguay",
+      "iso2": "py"
+    },
+    {
+      "id": 27,
+      "name": "Portugal",
+      "iso2": "pt"
+    },
+    {
+      "id": 13,
+      "name": "Senegal",
+      "iso2": "sn"
+    },
+    {
+      "id": 1531,
+      "name": "South Africa",
+      "iso2": "za"
+    },
+    {
+      "id": 9,
+      "name": "Spain",
+      "iso2": "es"
+    },
+    {
+      "id": 5,
+      "name": "Sweden",
+      "iso2": "se"
+    },
+    {
+      "id": 15,
+      "name": "Switzerland",
+      "iso2": "ch"
+    },
+    {
+      "id": 2384,
+      "name": "USA",
+      "iso2": "us"
+    }
+  ]
+}

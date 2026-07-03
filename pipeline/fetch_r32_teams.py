@@ -43,7 +43,7 @@ if _env.exists():
 WC2026_LEAGUE_ID = 1
 WC2026_SEASON    = 2026
 
-ROOT = Path(__file__).parent.parent / "data"
+ROOT = Path(__file__).parent
 OUT  = ROOT / "r32_teams.json"
 
 DIRECT_BASE  = "https://v3.football.api-sports.io"

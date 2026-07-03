@@ -8,12 +8,21 @@ flowchart TD
     KEY["API key\n(env var or .env file)"]
 
     FR["pipeline/fetch_r32_teams.py"]
-    OUT["data/r32_teams.json"]
+    OUT["pipeline/r32_teams.json"]
+    LOAD["pipeline/load.py"]
+    LIVE["data/v2/live.json (teams key)"]
 
     KEY --> FR
     API --> FR
     FR --> OUT
+    OUT --> LOAD
+    LOAD --> LIVE
 ```
+
+`pipeline/r32_teams.json` is a pipeline-internal intermediate, not fetched
+directly by the frontend — `pipeline/load.py` folds its api-football
+team-id -> iso2 mapping into `data/v2/live.json`'s `teams` key (July 2026;
+previously the frontend fetched `data/r32_teams.json` directly).
 
 ## When to regenerate
 

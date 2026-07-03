@@ -27,7 +27,7 @@ PLAYERS_CSV  = ROOT / "wc2026_players.csv"
 COACHES_CSV  = ROOT / "wc2026_coaches.csv"
 MAP_DATA     = ROOT / "map_data.json"
 ELO_RANK     = DATA_DIR / "elo_rank.json"
-R32_TEAMS    = DATA_DIR / "r32_teams.json"
+R32_TEAMS    = ROOT / "r32_teams.json"
 
 
 def check_names(source: str, names, failures: list):

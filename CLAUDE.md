@@ -17,20 +17,23 @@
 ### `data/` submodule — what belongs there
 
 Only files consumed directly by the `mundial` frontend belong in the submodule:
-`elo_rank.json`, `elo_history.json`, `r32_teams.json`, `uk-nations.geojson`, and the
+`elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, and the
 pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
 `v2/wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see
 `pipeline/README.md`'s "Relational model" section for how these are built.
 `v2/status.json` carries **eliminated teams only** (`{iso2: {round, date?}}`)
-— a team absent from it is still alive.
+— a team absent from it is still alive. `v2/live.json` also carries a `teams`
+key (`{af_team_id: iso2}`, api-football's numeric team id) — this replaced
+the standalone `r32_teams.json` frontend fetch in July 2026.
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.
 
-The older `map_data.json`, `player_wiki.json`, and non-`v2` `wiki_<lang>.json` files are
-**pipeline-internal intermediates now, not frontend-facing** — the frontend migrated to
-`v2/` in July 2026. They live in `pipeline/`, not the submodule, and are committed there
-(not gitignored) because producing them hits live external APIs (Wikipedia, api-football)
+The older `map_data.json`, `player_wiki.json`, non-`v2` `wiki_<lang>.json`, and
+`r32_teams.json` files are **pipeline-internal intermediates now, not
+frontend-facing** — the frontend migrated to `v2/` in July 2026. They live in
+`pipeline/`, not the submodule, and are committed there (not gitignored)
+because producing them hits live external APIs (Wikipedia, api-football)
 and isn't cheap to redo casually — same reasoning as the committed `wc2026_players.csv`.
 
 ## Related repos

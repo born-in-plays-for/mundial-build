@@ -29,7 +29,7 @@ python3 pipeline/validate_country_coverage.py
 python3 pipeline/update_elo_rankings.py  # → data/elo_rank.json
 
 # Round of 32 teams + player/coach identity for the live-match page (need API_FOOTBALL_KEY)
-python3 pipeline/fetch_r32_teams.py     # → data/r32_teams.json
+python3 pipeline/fetch_r32_teams.py     # → pipeline/r32_teams.json
 python3 pipeline/build_player_wiki.py   # → pipeline/player_wiki.json
 
 # Tournament elimination status (needs API_FOOTBALL_KEY) — re-run whenever fixtures finish

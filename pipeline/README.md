@@ -8,10 +8,12 @@ and `cd pipeline && python3 foo.py` are equivalent.
 Output that the `mundial` frontend actually fetches lives in the `data/`
 submodule (see `CLAUDE.md` for the commit workflow — data changes commit
 in the submodule first, then the pointer is bumped here). As of the July
-2026 frontend migration that's `data/elo_rank.json`, `data/r32_teams.json`,
+2026 frontend migration that's `data/elo_rank.json`,
 `data/uk-nations.geojson`, and the pid-keyed `data/v2/` files — **not**
-`map_data.json`/`player_wiki.json`/`wiki_<lang>.json`, which now live in
-`pipeline/` as build-internal intermediates (see "Relational model" below).
+`map_data.json`/`player_wiki.json`/`wiki_<lang>.json`/`r32_teams.json`, which
+now live in `pipeline/` as build-internal intermediates (see "Relational
+model" below). `r32_teams.json`'s frontend-facing role (api-football team id
+-> iso2) was folded into `data/v2/live.json`'s `teams` key.
 `extras/` scripts (GDP/HDI/Elo history, feeding only the standalone `pages/`
 charts) have their commands in `CLAUDE.md`'s build sequence, not here.
 
@@ -39,7 +41,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `add_wiki_urls.py` | `pipeline/map_data.json` (in-place) + `pipeline/wiki_<lang>.json` ×5 | Resolves Wikipedia identity (players + coaches) — see "Wiki data" below |
 | `validate_country_coverage.py` | _(stdout, exit code)_ | Coverage gate — run after the pipeline, before committing |
 | `api_football_countries.py` | `country_codes_cache.json` (gitignored) | _(module)_ Cached api-football `/countries` fallback map — see "Country identity" below |
-| `fetch_r32_teams.py` | `data/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
+| `fetch_r32_teams.py` | `pipeline/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `fetch_team_status.py` | `pipeline/team_status.json` | Tournament elimination status from api-football fixtures — see "Team status" below |
@@ -248,7 +250,7 @@ adds a country it didn't previously have.
 
 Run `python3 pipeline/validate_country_coverage.py` after the pipeline: it
 resolves every raw country string currently in the CSVs and in
-`pipeline/map_data.json`/`data/elo_rank.json`/`data/r32_teams.json`, and
+`pipeline/map_data.json`/`data/elo_rank.json`/`pipeline/r32_teams.json`, and
 checks every current WC2026 nation actually has rows in both CSVs. A new
 upstream spelling variant shows up here as a failed build, not a silent
 wrong-flag bug weeks later.
