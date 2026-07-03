@@ -1,6 +1,6 @@
 {
   "source": "api-football.com",
-  "updated": "2026-07-02",
+  "updated": "2026-07-03",
   "eliminated": {
     "at": {
       "round": "Round of 32",
@@ -46,6 +46,11 @@
       "round": "Group Stage",
       "date": null,
       "lostTo": null
+    },
+    "hr": {
+      "round": "Round of 32",
+      "date": "2026-07-02",
+      "lostTo": "pt"
     },
     "ht": {
       "round": "Group Stage",
