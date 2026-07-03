@@ -1,11 +1,16 @@
 {
   "source": "api-football.com",
-  "updated": "2026-07-03",
+  "updated": "2026-07-04",
   "eliminated": {
     "at": {
       "round": "Round of 32",
       "date": "2026-07-02",
       "lostTo": "es"
+    },
+    "au": {
+      "round": "Round of 32",
+      "date": "2026-07-03",
+      "lostTo": "eg"
     },
     "ba": {
       "round": "Round of 32",
