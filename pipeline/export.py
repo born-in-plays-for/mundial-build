@@ -6,7 +6,10 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             player/coach carries an integer "pid" instead
                             of the "wikiTitle" string
   data/v2/live.json         player_wiki.json's successor:
-                            {iso2: {af_id: {pid, birthCountry}}}
+                            {iso2: {af_id: {pid, birthCountry}}, teams: {af_team_id: iso2}}
+                            "teams" is api-football's numeric team id -> iso2 (formerly
+                            r32_teams.json, fetched separately by the frontend) — a reserved
+                            key that doesn't collide with any real iso2/gb-nation code.
   data/v2/wiki_<lang>.json  {urlTemplate, titles: [...]} — array indexed
                             by pid (null = no article in that language)
   data/v2/status.json       {iso2: {round, date?}} — ELIMINATED teams only.
@@ -112,6 +115,12 @@ def build_live(db):
         if birth is not None:
             entry["birthCountry"] = birth
         live.setdefault(iso2, {})[str(af_id)] = entry
+
+    teams = {str(af_team_id): iso2 for af_team_id, iso2 in db.execute("""
+            SELECT a.af_team_id, n.iso2
+            FROM af_team a
+            JOIN country n ON n.id = a.country""")}
+    live["teams"] = teams
     return live
 
 
