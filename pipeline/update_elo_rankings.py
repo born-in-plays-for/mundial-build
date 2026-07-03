@@ -18,6 +18,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -179,20 +180,32 @@ def fetch_fifa_members_iso2():
     return frozenset(members)
 
 
+FETCH_RETRIES = 3
+FETCH_RETRY_DELAY_SECONDS = 5
+
+
 def fetch_tsv():
-    resp = requests.get(ELO_URL, headers=HEADERS, timeout=30)
-    resp.raise_for_status()
-    text = resp.text
+    last_error = None
+    for attempt in range(1, FETCH_RETRIES + 1):
+        resp = requests.get(ELO_URL, headers=HEADERS, timeout=30)
+        resp.raise_for_status()
+        text = resp.text
 
-    # eloratings.net occasionally answers bot-looking requests with an HTML
-    # interstitial ("One moment, please...") instead of the TSV. Detect that
-    # before persisting anything, so a transient block can't stomp good data.
-    first_line = text.strip().splitlines()[0] if text.strip() else ''
-    if not re.match(r'^\d+\t', first_line):
-        raise ValueError(f'Unexpected response from {ELO_URL} (not TSV): {first_line[:80]!r}')
+        # eloratings.net occasionally answers bot-looking requests with an HTML
+        # interstitial ("One moment, please...") instead of the TSV. Detect that
+        # before persisting anything, so a transient block can't stomp good data.
+        first_line = text.strip().splitlines()[0] if text.strip() else ''
+        if re.match(r'^\d+\t', first_line):
+            OUT_TSV.write_text(text, encoding='utf-8')
+            return text
 
-    OUT_TSV.write_text(text, encoding='utf-8')
-    return text
+        last_error = f'Unexpected response from {ELO_URL} (not TSV): {first_line[:80]!r}'
+        if attempt < FETCH_RETRIES:
+            print(f'  Attempt {attempt}/{FETCH_RETRIES} failed ({last_error}); '
+                  f'retrying in {FETCH_RETRY_DELAY_SECONDS}s…', file=sys.stderr, flush=True)
+            time.sleep(FETCH_RETRY_DELAY_SECONDS)
+
+    raise ValueError(last_error)
 
 
 def parse(tsv_text, fifa_members_iso2):
