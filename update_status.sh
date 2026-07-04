@@ -4,15 +4,25 @@
 # Runs the "team status refresh only" recipe from pipeline/CLAUDE.md
 # (fetch_team_status.py -> load.py -> export.py), then commits/pushes only
 # if data/v2/status.json actually changed — submodule first, then the
-# pointer bump here, per pipeline/CLAUDE.md's "Commit workflow".
+# pointer bump here, per pipeline/CLAUDE.md's "Commit workflow". Finally
+# pins the sibling `mundial` checkout's data submodule to that exact commit
+# (not the branch tip — a floating `--remote` update could pick up a later,
+# untested mundial-data commit) and pushes it.
 set -euo pipefail
 trap 'echo "update_status.sh: FAILED at line $LINENO" >&2' ERR
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
+MUNDIAL_DIR="$ROOT/../mundial"
+
 if [[ ! -d data/.git ]] && [[ ! -f data/.git ]]; then
     echo "update_status.sh: data/ isn't a checked-out submodule (run 'git submodule update --init')." >&2
+    exit 1
+fi
+
+if [[ ! -d "$MUNDIAL_DIR/.git" ]]; then
+    echo "update_status.sh: sibling mundial checkout not found at $MUNDIAL_DIR." >&2
     exit 1
 fi
 
@@ -44,6 +54,21 @@ git add data pipeline/team_status.json
 git commit -m "chore: bump mundial-data submodule — team status update ${today}"
 
 echo "==> Pushing mundial-build..."
-git push
+git push --no-recurse-submodules
+
+data_commit="$(git -C data rev-parse HEAD)"
+
+echo "==> Pinning mundial's data submodule to ${data_commit}..."
+git -C "$MUNDIAL_DIR/data" fetch --depth 1 origin "$data_commit"
+git -C "$MUNDIAL_DIR/data" checkout --detach "$data_commit"
+if git -C "$MUNDIAL_DIR" diff --quiet -- data; then
+    echo "==> mundial's data pointer already at ${data_commit} — nothing to commit."
+else
+    git -C "$MUNDIAL_DIR" add data
+    git -C "$MUNDIAL_DIR" commit -m "chore: bump mundial-data submodule — team status update ${today}"
+
+    echo "==> Pushing mundial..."
+    git -C "$MUNDIAL_DIR" push --no-recurse-submodules
+fi
 
 echo "==> Done."
