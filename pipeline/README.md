@@ -45,6 +45,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `fetch_team_status.py` | `pipeline/team_status.json` | Tournament elimination status from api-football fixtures — see "Team status" below |
+| `fetch_fixtures.py` | `data/fixtures.json` | Every WC2026 fixture, past and planned — see "Fixtures" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build — see "Relational model" below |
 | `export.py` | `data/v2/` (8 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
@@ -205,6 +206,26 @@ returned when this was verified against the live API; if a future re-run
 warns about an unrecognized round name, add it there (see
 `fetch_r32_teams.py`'s `find_r32_round` for the "naming varies by
 tournament edition" precedent this follows).
+
+---
+
+## Fixtures (`fetch_fixtures.py` → `data/fixtures.json`)
+
+Every WC2026 fixture, played or scheduled, straight from api-football's
+`/fixtures` endpoint: `{id, date, round, status, home, away, goals: {home,
+away}}` per fixture, `home`/`away` resolved to iso2 the same way
+`fetch_team_status.py` does. Unplayed fixtures carry `status: "NS"` and
+`goals: {home: null, away: null}`.
+
+Written directly to `data/fixtures.json` (the submodule), the same way
+`update_elo_rankings.py` writes `data/elo_rank.json` — **not** routed through
+`load.py`/`export.py`. Unlike `team_status.json` (which needs `eliminated_by`
+FK resolution and the derived `view_current_round` logic), fixtures are a
+flat, self-contained list with no person/wiki join and nothing to derive, so
+the relational build buys nothing here.
+
+Same living-dataset cadence as `fetch_team_status.py`/`update_elo_rankings.py`
+— re-run whenever fixtures are added or results come in.
 
 ---
 

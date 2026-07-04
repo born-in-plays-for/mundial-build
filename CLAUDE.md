@@ -17,7 +17,7 @@
 ### `data/` submodule — what belongs there
 
 Only files consumed directly by the `mundial` frontend belong in the submodule:
-`elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, and the
+`elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, `fixtures.json`, and the
 pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
 `v2/wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see
 `pipeline/README.md`'s "Relational model" section for how these are built.
@@ -28,6 +28,11 @@ the standalone `r32_teams.json` frontend fetch in July 2026.
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.
+
+`fixtures.json` (`pipeline/fetch_fixtures.py`) is every WC2026 fixture, past and
+planned — raw match-level data (kickoff date, round, teams, score, status), written
+straight to the submodule like `elo_rank.json`, not routed through the `v2/`
+relational build: nothing in it needs a pid or a person/wiki join.
 
 The older `map_data.json`, `player_wiki.json`, non-`v2` `wiki_<lang>.json`, and
 `r32_teams.json` files are **pipeline-internal intermediates now, not

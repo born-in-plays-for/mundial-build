@@ -35,6 +35,10 @@ python3 pipeline/build_player_wiki.py   # → pipeline/player_wiki.json
 # Tournament elimination status (needs API_FOOTBALL_KEY) — re-run whenever fixtures finish
 python3 pipeline/fetch_team_status.py   # → pipeline/team_status.json
 
+# Every WC2026 fixture, past and planned (needs API_FOOTBALL_KEY) — re-run whenever
+# fixtures are added or results come in. Writes straight to data/, no load.py/export.py step.
+python3 pipeline/fetch_fixtures.py      # → data/fixtures.json
+
 # Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
 # map_data.json / player_wiki.json / wiki_<lang>.json / team_status.json above are this
 # step's inputs — pipeline-internal, not what the frontend fetches.
@@ -49,9 +53,9 @@ python3 extras/add_gdp_pc_ppp.py     # → extras/gdp_pc_ppp.json            (fo
 python3 extras/add_hdi.py            # → extras/hdi.json                   (for pages/wc2026_correlation.html)
 ```
 
-`fetch_r32_teams.py`, `build_player_wiki.py`, and `fetch_team_status.py` all
-need an api-football key — set `API_FOOTBALL_KEY` in `.env` (auto-loaded) or
-pass `--key` to `fetch_r32_teams.py`.
+`fetch_r32_teams.py`, `build_player_wiki.py`, `fetch_team_status.py`, and
+`fetch_fixtures.py` all need an api-football key — set `API_FOOTBALL_KEY` in
+`.env` (auto-loaded) or pass `--key` to `fetch_r32_teams.py`.
 
 This is the canonical command sequence — `pipeline/README.md`'s "Core
 pipeline" section points back here rather than repeating it, so keep this
@@ -70,6 +74,16 @@ python3 pipeline/export.py              # → data/v2/*.json, incl. status.json 
 ```
 
 Then follow "Commit workflow" below.
+
+### Fixtures refresh only
+
+```bash
+python3 pipeline/fetch_fixtures.py   # → data/fixtures.json (re-fetches every fixture, scores + status)
+```
+
+Writes directly to `data/fixtures.json` — no `load.py`/`export.py` step needed
+(see `pipeline/README.md`'s "Fixtures" section for why). Then follow "Commit
+workflow" below.
 
 ## UK home nations & Kosovo
 
