@@ -32,16 +32,16 @@ python3 pipeline/update_elo_rankings.py  # → data/elo_rank.json
 python3 pipeline/fetch_r32_teams.py     # → pipeline/r32_teams.json
 python3 pipeline/build_player_wiki.py   # → pipeline/player_wiki.json
 
-# Tournament elimination status (needs API_FOOTBALL_KEY) — re-run whenever fixtures finish
-python3 pipeline/fetch_team_status.py   # → pipeline/team_status.json
-
 # Every WC2026 fixture, past and planned (needs API_FOOTBALL_KEY) — re-run whenever
 # fixtures are added or results come in. Writes straight to data/, no load.py/export.py step.
+# load.py also derives tournament elimination status (data/v2/status.json) from this
+# file directly, so there's no separate team-status fetch.
 python3 pipeline/fetch_fixtures.py      # → data/fixtures.json
 
 # Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
-# map_data.json / player_wiki.json / wiki_<lang>.json / team_status.json above are this
-# step's inputs — pipeline-internal, not what the frontend fetches.
+# map_data.json / player_wiki.json / wiki_<lang>.json / data/fixtures.json above are this
+# step's inputs — pipeline-internal (except data/fixtures.json, which is also
+# frontend-facing on its own), not what the frontend fetches from the DB side.
 python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + person_registry.csv
 python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically — THE
                              # frontend-facing output of this whole pipeline
@@ -53,37 +53,29 @@ python3 extras/add_gdp_pc_ppp.py     # → extras/gdp_pc_ppp.json            (fo
 python3 extras/add_hdi.py            # → extras/hdi.json                   (for pages/wc2026_correlation.html)
 ```
 
-`fetch_r32_teams.py`, `build_player_wiki.py`, `fetch_team_status.py`, and
-`fetch_fixtures.py` all need an api-football key — set `API_FOOTBALL_KEY` in
-`.env` (auto-loaded) or pass `--key` to `fetch_r32_teams.py`.
+`fetch_r32_teams.py`, `build_player_wiki.py`, and `fetch_fixtures.py` all
+need an api-football key — set `API_FOOTBALL_KEY` in `.env` (auto-loaded) or
+pass `--key` to `fetch_r32_teams.py`.
 
 This is the canonical command sequence — `pipeline/README.md`'s "Core
 pipeline" section points back here rather than repeating it, so keep this
 one copy current when a script's invocation or output path changes.
 
-### Team status refresh only
+### Fixtures refresh only (also picks up new eliminations)
 
 Re-running the full sequence above isn't necessary just to pick up newly
 finished fixtures — squads, wiki identity, and Elo don't change between
-matches. This subset is enough (needs `API_FOOTBALL_KEY`):
-
-```bash
-python3 pipeline/fetch_team_status.py   # → pipeline/team_status.json (re-fetches fixtures, recomputes eliminations)
-python3 pipeline/load.py                # → pipeline/mundial.db (rebuilds from current intermediates)
-python3 pipeline/export.py              # → data/v2/*.json, incl. status.json — the frontend-facing output
-```
-
-Then follow "Commit workflow" below.
-
-### Fixtures refresh only
+matches. This subset is enough (needs `API_FOOTBALL_KEY`); `update_fixtures.sh`
+automates it end to end, including the commit workflow below:
 
 ```bash
 python3 pipeline/fetch_fixtures.py   # → data/fixtures.json (re-fetches every fixture, scores + status)
+python3 pipeline/load.py             # → pipeline/mundial.db (also derives eliminations from fixtures.json)
+python3 pipeline/export.py           # → data/v2/*.json, incl. status.json — the frontend-facing output
 ```
 
-Writes directly to `data/fixtures.json` — no `load.py`/`export.py` step needed
-(see `pipeline/README.md`'s "Fixtures" section for why). Then follow "Commit
-workflow" below.
+Then follow "Commit workflow" below — commit `data/fixtures.json` and
+`data/v2/status.json` together, since both come from this one fetch.
 
 ## UK home nations & Kosovo
 

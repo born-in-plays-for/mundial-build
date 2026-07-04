@@ -44,9 +44,8 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `fetch_r32_teams.py` | `pipeline/r32_teams.json` | Round-of-32 teams from api-football, resolved through `country_registry.py` |
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
-| `fetch_team_status.py` | `pipeline/team_status.json` | Tournament elimination status from api-football fixtures — see "Team status" below |
 | `fetch_fixtures.py` | `data/fixtures.json` | Every WC2026 fixture, past and planned — see "Fixtures" below |
-| `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build — see "Relational model" below |
+| `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build; also derives tournament elimination status from `data/fixtures.json` — see "Relational model" and "Team status" below |
 | `export.py` | `data/v2/` (8 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
 ---
@@ -160,17 +159,19 @@ whim — same reasoning as the committed CSVs).
 
 ---
 
-## Team status (`fetch_team_status.py` → `team_status` table → `data/v2/status.json`)
+## Team status (`load.py`'s `compute_eliminated()` → `team_status` table → `data/v2/status.json`)
 
-Elimination status, one row per WC2026 team, fetched from api-football
-fixture results:
+Elimination status, one row per WC2026 team, derived from `data/fixtures.json`
+(itself fetched by `fetch_fixtures.py` — no separate api-football call):
 
 - **Knockout rounds** (Round of 32 onward) — every fixture eventually has a
-  decisive winner (extra time / penalties resolve draws), so a finished
-  fixture's loser is unambiguously eliminated at that round, dated to the
-  fixture's kickoff date, with `lostTo` recording who beat them.
+  decisive winner (extra time / penalties resolve draws; `fixtures.json`'s
+  `winner` field carries api-football's own home/away/null judgement rather
+  than being recomputed from goals), so a finished fixture's loser is
+  unambiguously eliminated at that round, dated to the fixture's kickoff
+  date, with `lostTo` recording who beat them.
 - **Group stage** — WC2026's format (12 groups of 4, top 2 + 8 best
-  third-place teams advance) has real tie-break rules `fetch_team_status.py`
+  third-place teams advance) has real tie-break rules `compute_eliminated()`
   does **not** replicate. Instead, once every group-stage fixture is
   finished, any WC2026 team that doesn't appear in a Round of 32 fixture is
   eliminated — non-appearance in the round of 32 bracket *is* the tie-break
@@ -200,12 +201,12 @@ Round of 16, and 12 still mid–Round of 32 — a distinction `status.json`'s
 eliminated-only rows can't otherwise make (both groups are simply absent).
 
 Same living-dataset caveat as `build_player_wiki.py` / `update_elo_rankings.py`
-— re-run whenever fixtures finish, not once. `KNOCKOUT_STAGES` in
-`fetch_team_status.py` hardcodes the round-name strings api-football
-returned when this was verified against the live API; if a future re-run
-warns about an unrecognized round name, add it there (see
-`fetch_r32_teams.py`'s `find_r32_round` for the "naming varies by
-tournament edition" precedent this follows).
+— re-run whenever fixtures finish, not once. `KNOCKOUT_STAGES` in `load.py`
+hardcodes the round-name strings api-football returned when this was
+verified against the live API; if a future re-run warns about an
+unrecognized round name, add it there (see `fetch_r32_teams.py`'s
+`find_r32_round` for the "naming varies by tournament edition" precedent
+this follows).
 
 ---
 
@@ -213,19 +214,21 @@ tournament edition" precedent this follows).
 
 Every WC2026 fixture, played or scheduled, straight from api-football's
 `/fixtures` endpoint: `{id, date, round, status, home, away, goals: {home,
-away}}` per fixture, `home`/`away` resolved to iso2 the same way
-`fetch_team_status.py` does. Unplayed fixtures carry `status: "NS"` and
-`goals: {home: null, away: null}`.
+away}, winner}` per fixture, `home`/`away` resolved to iso2. Unplayed
+fixtures carry `status: "NS"`, `goals: {home: null, away: null}`, and
+`winner: null`.
 
 Written directly to `data/fixtures.json` (the submodule), the same way
 `update_elo_rankings.py` writes `data/elo_rank.json` — **not** routed through
-`load.py`/`export.py`. Unlike `team_status.json` (which needs `eliminated_by`
-FK resolution and the derived `view_current_round` logic), fixtures are a
-flat, self-contained list with no person/wiki join and nothing to derive, so
-the relational build buys nothing here.
+`load.py`/`export.py` for its own shape. `load.py` does read it, though: it's
+the sole input to `compute_eliminated()` (see "Team status" above), so a
+single fetch here now covers both the raw client-facing fixture list and
+the derived elimination status — no second api-football call, and no way
+for the two to drift out of sync the way a separate fetch script could.
 
-Same living-dataset cadence as `fetch_team_status.py`/`update_elo_rankings.py`
-— re-run whenever fixtures are added or results come in.
+Same living-dataset cadence as `update_elo_rankings.py` — re-run whenever
+fixtures are added or results come in (`update_fixtures.sh` automates the
+full refresh + commit).
 
 ---
 
@@ -257,7 +260,7 @@ rather than adding another local override dict. `build_json.py`,
 (GDP/HDI/elo_history) still use their own independent name maps — not yet
 migrated.
 
-`fetch_r32_teams.py` and `fetch_team_status.py` also each carry a fallback
+`fetch_r32_teams.py` and `fetch_fixtures.py` also each carry a fallback
 name → iso2 map for the rare name `country_registry.py` doesn't recognize at
 all (raw api-football strings, not our alias data — and known unreliable on
 some entries, e.g. api-football has been observed to swap Congo /
@@ -434,15 +437,15 @@ mismatches by adding an entry to `player_aliases_confirmed.json` (see its
 far: birth-date cross-reference against api-football's `/players`/`/coachs`
 endpoints, or a cited web search for stage names/nicknames).
 
-### Team status after new fixtures are played
+### Fixtures + team status after new fixtures are played
 
 ```bash
-python3 pipeline/fetch_team_status.py
+python3 pipeline/fetch_fixtures.py
 python3 pipeline/load.py && python3 pipeline/export.py   # re-export data/v2/status.json
 ```
 
-Same cadence as the identity refresh above — run both together whenever
-fixtures finish, since they both read the same `/fixtures` state.
+`update_fixtures.sh` automates this recipe plus the commit workflow below.
+Same cadence as the identity refresh above — run whenever fixtures finish.
 
 Any of these ends with `git -C data add v2 && git -C data commit && git -C
 data push`, then bump the submodule pointer here — see `CLAUDE.md`'s

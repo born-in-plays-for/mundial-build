@@ -13,14 +13,20 @@ nothing upstream changes:
   pipeline/wiki_<lang>.json x5    (add_wiki_urls.py)
   pipeline/r32_teams.json         (fetch_r32_teams.py)
   data/elo_rank.json              (update_elo_rankings.py)
-  pipeline/team_status.json       (fetch_team_status.py)
+  data/fixtures.json              (fetch_fixtures.py)
 
-All but data/elo_rank.json are pipeline-internal intermediates now, not
-frontend-facing — only this script reads them (r32_teams.json's iso2 map
-moved to data/v2/live.json's "teams" key). They live in pipeline/, committed
-(not gitignored), because add_wiki_urls.py/build_player_wiki.py/
-fetch_r32_teams.py hit live external APIs to produce them and aren't cheap
-to regenerate on a whim, same as wc2026_players.csv/wc2026_coaches.csv.
+All but data/elo_rank.json and data/fixtures.json are pipeline-internal
+intermediates now, not frontend-facing — only this script reads them
+(r32_teams.json's iso2 map moved to data/v2/live.json's "teams" key). They
+live in pipeline/, committed (not gitignored), because add_wiki_urls.py/
+build_player_wiki.py/fetch_r32_teams.py hit live external APIs to produce
+them and aren't cheap to regenerate on a whim, same as
+wc2026_players.csv/wc2026_coaches.csv.
+
+Team elimination status (the team_status table / data/v2/status.json) is
+derived here from data/fixtures.json's round/status/winner fields — a pure
+classification (see classify_round/compute_eliminated below), not a
+separate api-football fetch.
 
 pid stability: pipeline/person_registry.csv (committed) pins every person
 ever seen to a pid, matched by api-football id first, then by
@@ -57,10 +63,92 @@ SQUAD_SIZE_OVERRIDES = {"at": 25, "ca": 25}
 
 POP_SOURCE = "data.worldbank.org/indicator/SP.POP.TOTL"
 
+FINISHED = {"FT", "AET", "PEN"}
+
+# Knockout stage names as api-football actually returns them for this
+# league/season (verified live — see fetch_r32_teams.py's find_r32_round
+# for the naming-varies-by-edition caveat; add fallbacks here if a future
+# re-run reports an unrecognized round name for a knockout fixture).
+KNOCKOUT_STAGES = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals", "Final"]
+
 
 def read_json(path):
     with open(path, encoding="utf-8") as f:
         return json.load(f)
+
+
+def classify_round(round_name):
+    """-> 'group' | one of KNOCKOUT_STAGES | None (unrecognized)."""
+    if round_name.lower().startswith("group stage"):
+        return "group"
+    for stage in KNOCKOUT_STAGES:
+        if stage.lower() == round_name.lower():
+            return stage
+    return None
+
+
+def compute_eliminated(fixtures):
+    """-> {iso2: {"round", "date", "lostTo"}}, from data/fixtures.json's
+    fixture list. See fetch_team_status.py's former docstring (git history)
+    for the elimination-logic rationale this ports verbatim:
+
+      - Knockout rounds: a finished fixture's loser is eliminated at that
+        round, dated to kickoff, with lostTo recording the winner.
+      - Group stage: decided only once every group fixture is finished, by
+        checking which WC2026 teams are absent from the Round of 32 field —
+        that absence IS the tie-break result, already computed by whoever
+        seeded that round.
+    """
+    by_stage = {}
+    for f in fixtures:
+        by_stage.setdefault(classify_round(f["round"]), []).append(f)
+
+    # An unrecognized round with a FINISHED fixture in it means real
+    # elimination data would be silently dropped — fail loudly instead.
+    # An unrecognized round with nothing decided yet is harmless
+    # forward-looking noise — warn only.
+    unrecognized = by_stage.get(None, [])
+    decided_unrecognized = [f for f in unrecognized if f["status"] in FINISHED]
+    if decided_unrecognized:
+        names = sorted({f["round"] for f in decided_unrecognized})
+        sys.exit(f"FATAL: {len(decided_unrecognized)} finished fixture(s) in unrecognized "
+                 f"round(s) {names} — their eliminations would be silently dropped. Add the "
+                 f"round name to KNOCKOUT_STAGES (or the group-stage prefix check) and re-run.")
+    if unrecognized:
+        names = sorted({f["round"] for f in unrecognized})
+        print(f"  Warning: unrecognized round name(s) with nothing decided yet, ignored: "
+              f"{names}", file=sys.stderr)
+
+    eliminated = {}
+
+    # ── Group stage: decide only once every group fixture is finished ────
+    group_fixtures = by_stage.get("group", [])
+    group_done = bool(group_fixtures) and all(f["status"] in FINISHED for f in group_fixtures)
+    r32_fixtures = by_stage.get("Round of 32", [])
+    if group_done:
+        if r32_fixtures:
+            r32_iso2 = {f[side] for f in r32_fixtures for side in ("home", "away") if f[side]}
+            wc2026_iso2 = {reg.resolve_iso2(n) for n in reg.wc2026_nations()}
+            for iso2 in sorted(wc2026_iso2 - r32_iso2):
+                eliminated[iso2] = {"round": "Group Stage", "date": None, "lostTo": None}
+        else:
+            print("  Group stage finished but Round of 32 isn't scheduled/known "
+                  "yet — skipping group-stage elimination for now", file=sys.stderr)
+
+    # ── Knockout rounds: each finished fixture's loser is eliminated ─────
+    for stage in KNOCKOUT_STAGES:
+        for f in by_stage.get(stage, []):
+            if f["status"] not in FINISHED or f["winner"] is None:
+                continue
+            loser_side = "away" if f["winner"] == "home" else "home"
+            iso2, winner_iso2 = f[loser_side], f[f["winner"]]
+            if not iso2:
+                print(f"  Warning: could not resolve country for eliminated "
+                      f"team in fixture {f['id']}", file=sys.stderr)
+                continue
+            eliminated[iso2] = {"round": stage, "date": f["date"][:10], "lostTo": winner_iso2}
+
+    return eliminated
 
 
 def collect_persons(map_data):
@@ -141,7 +229,7 @@ def main():
     player_wiki = read_json(PIPELINE / "player_wiki.json")
     elo         = read_json(DATA / "elo_rank.json")
     r32         = read_json(PIPELINE / "r32_teams.json")
-    team_status = read_json(PIPELINE / "team_status.json")
+    fixtures    = read_json(DATA / "fixtures.json")
     wiki        = {lang: read_json(PIPELINE / f"wiki_{lang}.json")["titles"] for lang in LANGS}
 
     DB_PATH.unlink(missing_ok=True)
@@ -221,9 +309,10 @@ def main():
         db.execute("INSERT INTO af_team VALUES (?,?)", (cid(t["iso2"]), t["id"]))
 
     # ── team_status: every WC2026 team starts 'alive', a loss updates it ─
+    eliminated = compute_eliminated(fixtures["fixtures"])
     for row in db.execute("SELECT id FROM country WHERE is_wc2026 = 1"):
         db.execute("INSERT INTO team_status (country) VALUES (?)", (row[0],))
-    for iso2, info in team_status["eliminated"].items():
+    for iso2, info in eliminated.items():
         lost_to = info.get("lostTo")
         db.execute("""UPDATE team_status SET status='eliminated', eliminated_round=?,
                      eliminated_date=?, eliminated_by=? WHERE country=?""",
@@ -236,7 +325,7 @@ def main():
     db.execute("INSERT INTO provenance VALUES ('r32',?,?)", (r32["source"], r32["updated"]))
     db.execute("INSERT INTO provenance VALUES ('population',?,?)", (POP_SOURCE, pop_updated))
     db.execute("INSERT INTO provenance VALUES ('team_status',?,?)",
-               (team_status["source"], team_status["updated"]))
+               (fixtures["source"], fixtures["updated"]))
 
     # ── anomaly gate ────────────────────────────────────────────────────
     # The only tolerated anomaly is the missing-EN-title consequence of a

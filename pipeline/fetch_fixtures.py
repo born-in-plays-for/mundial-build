@@ -4,11 +4,19 @@ fetch_fixtures.py — fetch every WC2026 fixture (played and scheduled) from
 api-football and write data/fixtures.json.
 
 Frontend-facing, same as data/elo_rank.json: raw match-level data (kickoff
-date, round, teams, score, status) written straight to the submodule, not
-routed through the load.py/export.py relational build — nothing here needs
-a pid or a person/wiki join, so the DB gains nothing over a passthrough
-list. Same living-dataset cadence as fetch_team_status.py — re-run whenever
-fixtures are added or results come in.
+date, round, teams, score, status, winner) written straight to the
+submodule, not routed through the load.py/export.py relational build —
+nothing here needs a pid or a person/wiki join, so the DB gains nothing
+over a passthrough list.
+
+load.py also reads this file directly to derive each team's tournament
+elimination status (data/v2/status.json) — a pure function of round/status/
+winner, so no second api-football fetch is needed for that. The "winner"
+field carries api-football's own home/away/null judgement (extra time and
+penalties already resolved) rather than being recomputed from goals here,
+so knockout tie-break edge cases aren't reinvented downstream.
+
+Living dataset — re-run whenever fixtures are added or results come in.
 
 Usage:
     export API_FOOTBALL_KEY=your_key_here
@@ -94,6 +102,8 @@ def main():
             unresolved.add(home_name)
         if not away_iso2:
             unresolved.add(away_name)
+        home_winner, away_winner = f["teams"]["home"]["winner"], f["teams"]["away"]["winner"]
+        winner = "home" if home_winner else ("away" if away_winner else None)
         entry = {
             "id": f["fixture"]["id"],
             "date": f["fixture"]["date"],
@@ -102,6 +112,7 @@ def main():
             "home": home_iso2,
             "away": away_iso2,
             "goals": {"home": f["goals"]["home"], "away": f["goals"]["away"]},
+            "winner": winner,
         }
         penalty = f["score"]["penalty"]
         if penalty["home"] is not None:
