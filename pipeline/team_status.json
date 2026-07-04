@@ -27,6 +27,11 @@
       "date": "2026-06-30",
       "lostTo": "no"
     },
+    "cv": {
+      "round": "Round of 32",
+      "date": "2026-07-03",
+      "lostTo": "ar"
+    },
     "cw": {
       "round": "Group Stage",
       "date": null,
@@ -56,6 +61,11 @@
       "round": "Group Stage",
       "date": null,
       "lostTo": null
+    },
+    "gh": {
+      "round": "Round of 32",
+      "date": "2026-07-04",
+      "lostTo": "co"
     },
     "hr": {
       "round": "Round of 32",
