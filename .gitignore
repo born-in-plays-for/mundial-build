@@ -4,3 +4,4 @@ __pycache__/
 .env
 pipeline/mundial.db
 pipeline/country_codes_cache.json
+videos/
