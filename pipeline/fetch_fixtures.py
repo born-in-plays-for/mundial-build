@@ -94,7 +94,7 @@ def main():
             unresolved.add(home_name)
         if not away_iso2:
             unresolved.add(away_name)
-        fixtures.append({
+        entry = {
             "id": f["fixture"]["id"],
             "date": f["fixture"]["date"],
             "round": f["league"]["round"],
@@ -102,7 +102,11 @@ def main():
             "home": home_iso2,
             "away": away_iso2,
             "goals": {"home": f["goals"]["home"], "away": f["goals"]["away"]},
-        })
+        }
+        penalty = f["score"]["penalty"]
+        if penalty["home"] is not None:
+            entry["score"] = {"penalty": penalty}
+        fixtures.append(entry)
 
     if unresolved:
         print(f"  Warning: could not resolve country for: {sorted(unresolved)}", file=sys.stderr)
