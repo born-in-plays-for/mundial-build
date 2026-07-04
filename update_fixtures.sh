@@ -39,38 +39,83 @@ python3 pipeline/export.py
 
 if git -C data diff --quiet -- fixtures.json v2/status.json; then
     echo "==> No change in data/fixtures.json or data/v2/status.json — nothing to commit."
-    exit 0
+else
+    today="$(date +%Y-%m-%d)"
+
+    echo "==> Committing in the data submodule..."
+    git -C data add fixtures.json v2/status.json
+    git -C data commit -m "Update fixtures — ${today}"
+
+    echo "==> Pushing data submodule..."
+    git -C data push
+
+    echo "==> Bumping submodule pointer..."
+    git add data
+    git commit -m "chore: bump mundial-data submodule — fixtures update ${today}"
+
+    echo "==> Pushing mundial-build..."
+    git push --no-recurse-submodules
+
+    data_commit="$(git -C data rev-parse HEAD)"
+
+    echo "==> Pinning mundial's data submodule to ${data_commit}..."
+    git -C "$MUNDIAL_DIR/data" fetch --depth 1 origin "$data_commit"
+    git -C "$MUNDIAL_DIR/data" checkout --detach "$data_commit"
+    if git -C "$MUNDIAL_DIR" diff --quiet -- data; then
+        echo "==> mundial's data pointer already at ${data_commit} — nothing to commit."
+    else
+        git -C "$MUNDIAL_DIR" add data
+        git -C "$MUNDIAL_DIR" commit -m "chore: bump mundial-data submodule — fixtures update ${today}"
+
+        echo "==> Pushing mundial..."
+        git -C "$MUNDIAL_DIR" push --no-recurse-submodules
+    fi
 fi
 
-today="$(date +%Y-%m-%d)"
+# ── Sanity check: this repo's data submodule vs what mundial is pinned to.
+# The whole point of this script is that these two never silently drift
+# apart — so prove it on every run, not just the ones that pushed something.
+build_head="$(git -C data rev-parse HEAD)"
+mundial_pin="$(git -C "$MUNDIAL_DIR/data" rev-parse HEAD)"
 
-echo "==> Committing in the data submodule..."
-git -C data add fixtures.json v2/status.json
-git -C data commit -m "Update fixtures — ${today}"
+if [[ "$build_head" == "$mundial_pin" ]]; then
+cat <<'EOF'
 
-echo "==> Pushing data submodule..."
-git -C data push
+           _____________________
+          /                     \
+         |    ALL REPOS IN SYNC   |
+          \_____________________/
+                  \   ^__^
+                   \  (oo)\_______
+                      (__)\       )\/\
+                          ||----w |
+                          ||     ||
 
-echo "==> Bumping submodule pointer..."
-git add data
-git commit -m "chore: bump mundial-data submodule — fixtures update ${today}"
+   ______     ______     ______     ______     ______
+  /\  __ \   /\  ___\   /\  == \   /\  ___\   /\  ___\
+  \ \  __ \  \ \___  \  \ \  __<  \ \  __\   \ \___  \
+   \ \_\ \_\  \/\_____\  \ \_\ \_\ \ \_____\  \/\_____\
+    \/_/\/_/   \/_____/   \/_/ /_/  \/_____/   \/_____/
 
-echo "==> Pushing mundial-build..."
-git push --no-recurse-submodules
-
-data_commit="$(git -C data rev-parse HEAD)"
-
-echo "==> Pinning mundial's data submodule to ${data_commit}..."
-git -C "$MUNDIAL_DIR/data" fetch --depth 1 origin "$data_commit"
-git -C "$MUNDIAL_DIR/data" checkout --detach "$data_commit"
-if git -C "$MUNDIAL_DIR" diff --quiet -- data; then
-    echo "==> mundial's data pointer already at ${data_commit} — nothing to commit."
+EOF
+    echo "   mundial-build/data : ${build_head}"
+    echo "   mundial/data        : ${mundial_pin}"
 else
-    git -C "$MUNDIAL_DIR" add data
-    git -C "$MUNDIAL_DIR" commit -m "chore: bump mundial-data submodule — fixtures update ${today}"
+cat <<'EOF'
 
-    echo "==> Pushing mundial..."
-    git -C "$MUNDIAL_DIR" push --no-recurse-submodules
+   #     # ###  #####  #     #    #    ####### #### #  #  #
+   ##   ## #  # #      ##   ##   # #      #      #   #  #  #
+   # # # # #    ##     # # # #  #####     #      #   #  #  #
+   #  #  # #  # #      #  #  # #     #    #      #   #  #  #
+   #     # ###  ##### #     # #     #    #     ####  #  #  #
+
+   MISMATCH — mundial's data pointer does NOT match mundial-build/data.
+EOF
+    echo "   mundial-build/data : ${build_head}"
+    echo "   mundial/data        : ${mundial_pin}"
+    echo
+    echo "   Re-run this script, or check for a sibling mundial checkout issue."
+    exit 1
 fi
 
 echo "==> Done."
