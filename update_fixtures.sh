@@ -2,6 +2,11 @@
 # update_fixtures.sh — refresh fixture results + tournament elimination
 # status, and publish both.
 #
+# Pulls data, mundial-build, and mundial up to date first — other jobs
+# (e.g. the scheduled Elo refresh) push to these same branches between
+# runs, and starting from a stale HEAD is what turns that into a rejected,
+# non-fast-forward push instead of a clean one.
+#
 # Runs the "Fixtures refresh only" recipe from pipeline/CLAUDE.md
 # (fetch_fixtures.py -> load.py -> export.py — one api-football fetch feeds
 # both data/fixtures.json and the derived data/v2/status.json), then
@@ -27,6 +32,25 @@ if [[ ! -d "$MUNDIAL_DIR/.git" ]]; then
     echo "update_fixtures.sh: sibling mundial checkout not found at $MUNDIAL_DIR." >&2
     exit 1
 fi
+
+# Other things push to these branches between runs — a scheduled Elo-refresh
+# job, for one. Pull before touching anything so our later pushes land as
+# fast-forwards instead of racing whatever landed since the last run.
+#
+# Root first: with submodule.recurse on, pulling mundial-build also fast
+# -forwards data/ to whatever commit mundial-build's own history records
+# — but leaves it detached at that commit rather than on main. Pulling
+# data/ directly first instead (before root) would leave it ahead of that
+# recorded pointer, an unstaged diff in the parent tree that a
+# pull.rebase=true config (as here) then refuses to touch. So: root, then
+# reattach data to main (a no-op if recurse already landed it there),
+# then pull data the rest of the way in case its remote is ahead of what
+# mundial-build's history has recorded.
+echo "==> Pulling latest..."
+git pull --ff-only
+git -C data checkout main
+git -C data pull --ff-only
+git -C "$MUNDIAL_DIR" pull --ff-only
 
 echo "==> Fetching fixture results..."
 python3 pipeline/fetch_fixtures.py
