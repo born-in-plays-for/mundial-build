@@ -49,18 +49,22 @@ pop_updated = max(
 with open(JSON_PATH, encoding="utf-8") as f:
     existing = json.load(f)
 
-# Build name → wikiTitle cache from existing players (exports + natives), so
-# re-running this script doesn't lose the Wikipedia identity add_wiki_urls.py
-# already resolved.
+# Build (name, nation) → wikiTitle cache from existing players (exports +
+# natives), so re-running this script doesn't lose the Wikipedia identity
+# add_wiki_urls.py already resolved. Keying by name alone would collide two
+# different people who share a name on different national teams (e.g. two
+# "Emiliano Martínez"s, Argentina and Uruguay) — one would silently steal the
+# other's wikiTitle on every rebuild.
 wiki_cache = {}
 for rec in existing.get("data", []):
     for p in rec.get("players", []):
         if p.get("wikiTitle"):
-            wiki_cache[p["name"]] = {"wikiTitle": p["wikiTitle"]}
-for players in existing.get("natives", {}).values():
+            wiki_cache[(p["name"], p["nation"])] = {"wikiTitle": p["wikiTitle"]}
+for nation, players in existing.get("natives", {}).items():
     for p in players:
-        if p.get("wikiTitle") and p["name"] not in wiki_cache:
-            wiki_cache[p["name"]] = {"wikiTitle": p["wikiTitle"]}
+        key = (p["name"], nation)
+        if p.get("wikiTitle") and key not in wiki_cache:
+            wiki_cache[key] = {"wikiTitle": p["wikiTitle"]}
 
 # ── Read CSV ──────────────────────────────────────────────────────────────────
 players = []
@@ -109,47 +113,27 @@ BIRTH_CITY_OVERRIDES = {
                                                      # national-football-teams.com/player/103845
                                                      # ("Place of Birth: Al-Qahirah (Egypt)")
 }
-# Maps cities (incl. Greater London boroughs and towns) to UK home nations.
-UK_CITY_TO_NATION = {
-    # Scotland
-    "Glasgow": "Scotland", "Edinburgh": "Scotland", "Aberdeen": "Scotland",
-    "Inverness": "Scotland", "Dumfries": "Scotland", "Irvine": "Scotland",
-    "Rutherglen": "Scotland", "Leuchars": "Scotland", "Dalry": "Scotland",
-    "Balfron": "Scotland", "Kirriemuir": "Scotland", "Saltcoats": "Scotland",
-    "Kilmarnock": "Scotland",
-    # Wales
-    "Cardiff": "Wales", "Swansea": "Wales",
-    # Northern Ireland
-    "Belfast": "Northern Ireland",
-    # England — Greater London
-    "London": "England", "Croydon": "England", "Ealing": "England",
-    "Walthamstow": "England", "Barnet": "England", "Greenwich": "England",
-    "Mitcham": "England", "Harold Wood": "England",
-    "London Borough of Newham": "England",
-    # England — North West
-    "Manchester": "England", "Liverpool": "England", "Stockport": "England",
-    "Warrington": "England", "Macclesfield": "England", "Lancaster": "England",
-    # England — North East
-    "Sunderland": "England", "Blyth": "England", "Whitley Bay": "England",
-    "Washington": "England",
-    # England — Yorkshire
-    "Leeds": "England", "Sheffield": "England", "Barnsley": "England",
-    # England — Midlands
-    "Birmingham": "England", "Solihull": "England", "Northampton": "England",
-    "Leicester": "England", "Stourbridge": "England",
-    # England — East / South / South West
-    "Milton Keynes": "England", "Cockermouth": "England", "Torquay": "England",
-}
+# UK city -> home nation table lives in country_registry.py (shared with
+# wc2026_coaches.py, which faces the same "United Kingdom" ambiguity).
+uk_unresolved = []
 for p in players:
     city, country = p["birth_city"], p["birth_country"]
     if p["name"] in BIRTH_CITY_OVERRIDES:
         p["birth_city"], p["birth_country"] = BIRTH_CITY_OVERRIDES[p["name"]]
     elif country == "United Kingdom":
-        resolved = UK_CITY_TO_NATION.get(city)
+        resolved = reg.resolve_uk_home_nation(city)
         if resolved:
             p["birth_country"] = resolved
         else:
-            print(f"  ⚠ UK city not mapped: {city!r} ({p['name']} / {p['nation']})")
+            uk_unresolved.append(f"{city!r} ({p['name']} / {p['nation']})")
+
+if uk_unresolved:
+    print("UK city -> home nation resolution failed:", file=sys.stderr)
+    for entry in sorted(set(uk_unresolved)):
+        print(f"  {entry}", file=sys.stderr)
+    print("  Add these cities to UK_CITY_TO_NATION in pipeline/country_registry.py",
+          file=sys.stderr)
+    sys.exit(1)
 
 # ── Resolve every nation / birth_country to a canonical iso2 + display name ──
 # A name that doesn't resolve is a new upstream spelling variant — fail the
@@ -201,8 +185,9 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
         obj = {"name": p["name"], "nation": p["nation"], "caps": p["caps"]}
         if p.get("role"):
             obj["role"] = p["role"]
-        if p["name"] in wiki_cache:
-            obj.update(wiki_cache[p["name"]])
+        key = (p["name"], p["nation"])
+        if key in wiki_cache:
+            obj.update(wiki_cache[key])
         enriched_players.append(obj)
     enriched_players.sort(key=lambda p: (0 if p.get("role") != "coach" else 1, -p["caps"]))
 
@@ -229,8 +214,9 @@ for p in players:
         obj = {"name": p["name"], "caps": p["caps"]}
         if p.get("role"):
             obj["role"] = p["role"]
-        if p["name"] in wiki_cache:
-            obj.update(wiki_cache[p["name"]])
+        key = (p["name"], p["nation"])
+        if key in wiki_cache:
+            obj.update(wiki_cache[key])
         natives[p["nation"]].append(obj)
 
 for nation in natives:

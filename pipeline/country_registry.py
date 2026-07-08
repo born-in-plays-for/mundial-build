@@ -43,6 +43,61 @@ HISTORICAL_BIRTH_COUNTRY_ALIASES = {
 # Wikidata occasionally returns malformed birth-country values.
 INVALID_BIRTH_COUNTRY_VALUES = {"]"}
 
+# Cities in the UK -> home nation. Upstream sources (Wikidata P17, Wikipedia
+# infoboxes) resolve a UK birthplace to the country-level "United Kingdom" —
+# they don't distinguish England/Scotland/Wales/Northern Ireland. This is the
+# single shared table both wc2026_birthplaces.py (via build_json.py) and
+# wc2026_coaches.py resolve a UK birth city against; previously each script
+# kept its own hand-maintained copy, so a city added to one silently stayed
+# missing from the other. A city missing from this table must be treated as
+# a build failure by the caller (see resolve_uk_home_nation) — not a warning
+# that's easy to miss — otherwise a person birth-city-only-in-the-UK ships as
+# country-level "United Kingdom" (id 826) instead of one of the four home
+# nations (ids 8260-8263).
+UK_CITY_TO_NATION = {
+    # Scotland
+    "Glasgow": "Scotland", "Edinburgh": "Scotland", "Aberdeen": "Scotland",
+    "Inverness": "Scotland", "Dumfries": "Scotland", "Irvine": "Scotland",
+    "Rutherglen": "Scotland", "Leuchars": "Scotland", "Dalry": "Scotland",
+    "Balfron": "Scotland", "Kirriemuir": "Scotland", "Saltcoats": "Scotland",
+    "Kilmarnock": "Scotland", "Hamilton": "Scotland",
+    # Wales
+    "Cardiff": "Wales", "Swansea": "Wales",
+    # Northern Ireland
+    "Belfast": "Northern Ireland",
+    # England — Greater London
+    "London": "England", "Croydon": "England", "Ealing": "England",
+    "Walthamstow": "England", "Barnet": "England", "Greenwich": "England",
+    "Mitcham": "England", "Harold Wood": "England",
+    "London Borough of Newham": "England", "Kingston upon Thames": "England",
+    "Redbridge": "England",
+    # England — North West
+    "Manchester": "England", "Liverpool": "England", "Stockport": "England",
+    "Warrington": "England", "Macclesfield": "England", "Lancaster": "England",
+    # England — North East
+    "Sunderland": "England", "Blyth": "England", "Whitley Bay": "England",
+    "Washington": "England", "Whitehaven": "England",
+    # England — Yorkshire
+    "Leeds": "England", "Sheffield": "England", "Barnsley": "England",
+    # England — Midlands
+    "Birmingham": "England", "Solihull": "England", "Northampton": "England",
+    "Leicester": "England", "Stourbridge": "England", "Halesowen": "England",
+    # England — East / South / South West
+    "Milton Keynes": "England", "Cockermouth": "England", "Torquay": "England",
+    "Bristol": "England", "Norwich": "England",
+}
+
+
+def resolve_uk_home_nation(city: str):
+    """UK birth city -> home nation display name (England/Scotland/Wales/
+    Northern Ireland), or None if city isn't in UK_CITY_TO_NATION yet.
+
+    Callers resolving a birth_country of "United Kingdom" must treat None as
+    a build failure (add the missing city to UK_CITY_TO_NATION above), not a
+    silent pass-through — "United Kingdom" resolves fine via resolve_iso2()
+    on its own, so nothing else catches an unresolved home nation."""
+    return UK_CITY_TO_NATION.get(city)
+
 
 def _load():
     countries = json.loads(_COUNTRIES_PATH.read_text(encoding="utf-8"))

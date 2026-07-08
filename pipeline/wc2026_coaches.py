@@ -58,24 +58,8 @@ QUALIFIED_NATIONS = reg.wc2026_nations()
 
 OUT_CSV = Path(__file__).parent / "wc2026_coaches.csv"
 
-# Cities in the UK → home nation. Wikidata often returns "United Kingdom" as
-# birth country; we resolve to the specific home nation using the birth city.
-UK_CITY_TO_NATION = {
-    "Saltcoats":    "Scotland",
-    "Solihull":     "England",
-    "Northampton":  "England",
-    "London":       "England",
-    "Birmingham":   "England",
-    "Manchester":   "England",
-    "Liverpool":    "England",
-    "Leeds":        "England",
-    "Glasgow":      "Scotland",
-    "Edinburgh":    "Scotland",
-    "Aberdeen":     "Scotland",
-    "Cardiff":      "Wales",
-    "Swansea":      "Wales",
-    "Belfast":      "Northern Ireland",
-}
+# UK city -> home nation table lives in country_registry.py (shared with
+# wc2026_birthplaces.py, via build_json.py, which faces the same ambiguity).
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -421,7 +405,7 @@ def enrich_birthplaces(coaches: list) -> None:
     unresolved = []
     for c in coaches:
         if c['birth_country'] == 'United Kingdom':
-            nation = UK_CITY_TO_NATION.get(c['birth_city'])
+            nation = reg.resolve_uk_home_nation(c['birth_city'])
             if nation:
                 c['birth_country'] = nation
                 resolved += 1
@@ -430,8 +414,11 @@ def enrich_birthplaces(coaches: list) -> None:
     if resolved:
         print(f"\n🏴 Resolved {resolved} 'United Kingdom' → home nation")
     if unresolved:
-        print(f"   ⚠ Could not resolve: {', '.join(c['birth_city'] for c in unresolved)}")
-        print("     Add these cities to UK_CITY_TO_NATION in the script")
+        print(f"\n❌ Could not resolve: "
+              f"{', '.join(c['birth_city'] for c in unresolved)}", file=sys.stderr)
+        print("   Add these cities to UK_CITY_TO_NATION in pipeline/country_registry.py",
+              file=sys.stderr)
+        sys.exit(1)
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────

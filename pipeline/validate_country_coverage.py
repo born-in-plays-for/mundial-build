@@ -71,6 +71,21 @@ def check_birth_countries(source: str, names, failures: list):
     check_names(source, resolved, failures)
 
 
+def check_no_country_level_uk(source: str, names, failures: list):
+    """"United Kingdom" resolves fine via resolve_iso2() (it's a real,
+    aliased country), so check_names/check_birth_countries never flag it —
+    but every person in this dataset should have been drilled down to one of
+    the 4 home nations by build_json.py's UK_CITY_TO_NATION resolution
+    (country_registry.resolve_uk_home_nation). A raw "United Kingdom" surviving
+    to here means that resolution silently failed or was skipped."""
+    if any(n == "United Kingdom" for n in names):
+        failures.append(
+            f"[{source}] 'United Kingdom' present — should have resolved to "
+            f"England/Scotland/Wales/Northern Ireland via "
+            f"country_registry.resolve_uk_home_nation()"
+        )
+
+
 def main():
     failures = []
 
@@ -90,6 +105,10 @@ def main():
         check_names("wc2026_coaches.csv:nation", (r["nation"] for r in rows), failures)
         check_birth_countries("wc2026_coaches.csv:birth_country", (r["birth_country"] for r in rows), failures)
         check_birth_countries("wc2026_coaches.csv:nationality", (r["nationality"] for r in rows), failures)
+        # wc2026_coaches.py resolves UK cities before writing this CSV (unlike
+        # wc2026_players.csv, resolved later downstream by build_json.py), so
+        # a raw "United Kingdom" surviving here is already a real bug.
+        check_no_country_level_uk("wc2026_coaches.csv:birth_country", (r["birth_country"] for r in rows), failures)
         coach_nations = {r["nation"] for r in rows if r["nation"]}
     else:
         print(f"  (skipping {COACHES_CSV.name} — not found)", file=sys.stderr)
@@ -99,6 +118,7 @@ def main():
         map_data = json.loads(MAP_DATA.read_text(encoding="utf-8"))
         check_names("map_data.json:data[].country", (r["country"] for r in map_data.get("data", [])), failures)
         check_iso2("map_data.json:data[]", ((r["country"], r.get("iso2")) for r in map_data.get("data", [])), failures)
+        check_no_country_level_uk("map_data.json:data[].country", (r["country"] for r in map_data.get("data", [])), failures)
     else:
         print(f"  (skipping {MAP_DATA.name} — not found)", file=sys.stderr)
 
