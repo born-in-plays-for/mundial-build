@@ -1,9 +1,61 @@
 {
+  "South Africa": {
+    "Ime Okon": {
+      "birth_city": "Johannesburg",
+      "_note": "Grew up in Florida, Gauteng (a Johannesburg suburb). Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    }
+  },
+  "Qatar": {
+    "Issa Laye": {
+      "birth_city": "Dakar",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually. Matches existing birth_country=Senegal."
+    },
+    "Ayoub Al-Oui": {
+      "birth_city": "Doha",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    },
+    "Al-Hashmi Al-Hussain": {
+      "birth_city": "Doha",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    }
+  },
   "Egypt": {
     "Tarek Alaa": {
       "birth_city": "Cairo",
       "birth_country": "Egypt",
       "_note": "Neither Wikidata (P19) nor his Wikipedia infobox has a place of birth as of 2026-07; sourced manually from Wikipedia's 'Tarek Alaa (footballer, born 2002)' page."
+    },
+    "Hossam Abdelmaguid": {
+      "birth_city": "Cairo",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    }
+  },
+  "Saudi Arabia": {
+    "Ali Majrashi": {
+      "birth_city": "Jazan",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    }
+  },
+  "Senegal": {
+    "Nicolas Jackson": {
+      "birth_city": "Djibonker",
+      "_note": "Disputed: Wikipedia says Banjul, The Gambia; Chelsea's official profile says Djibonker, Senegal. Using Djibonker per user decision on 2026-07-10 — it matches the existing birth_country=Senegal, whereas Banjul would also require correcting birth_country to Gambia."
+    }
+  },
+  "Jordan": {
+    "Husam Abu Dahab": {
+      "birth_city": "Amman",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    },
+    "Saed Al-Rosan": {
+      "birth_city": "Amman",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    }
+  },
+  "Ghana": {
+    "Benjamin Asare": {
+      "birth_city": "Accra",
+      "_note": "Korle Gonno neighborhood, per manual research. Wikidata/Wikipedia had no place of birth as of 2026-07."
     }
   }
 }

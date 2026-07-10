@@ -71,7 +71,7 @@ South Africa,,4 FW,Evidence Makgopa,5 June 2000,Fetakgomo Local Municipality,Sou
 South Africa,,2 DF,Samukele Kabini,15 March 2004,,South Africa,6,Molde
 South Africa,,2 DF,Nkosinathi Sibisi,22 September 1995,Durban,South Africa,20,Orlando Pirates
 South Africa,,2 DF,Khuliso Mudau,26 April 1995,Musina,South Africa,32,Mamelodi Sundowns
-South Africa,,2 DF,Ime Okon,20 February 2004,,South Africa,8,Hannover 96
+South Africa,,2 DF,Ime Okon,20 February 2004,Johannesburg,South Africa,8,Hannover 96
 South Africa,,1 GK,Ricardo Goss,2 April 1994,Durban,South Africa,5,Siwelele
 South Africa,,3 MF,Jayden Adams,5 May 2001,Cape Town,South Africa,5,Mamelodi Sundowns
 South Africa,,2 DF,Olwethu Makhanya,30 April 2004,Durban,South Africa,1,Philadelphia Union
@@ -158,7 +158,7 @@ Canada,,4 FW,Jayden Nelson,26 September 2002,Brampton,Canada,14,Austin FC
 Qatar,,1 GK,Mahmud Abunada,5 February 2000,Doha,Qatar,6,Al-Rayyan
 Qatar,,2 DF,Pedro Miguel,6 August 1990,Algueirão - Mem Martins,Portugal,105,Al-Sadd
 Qatar,,2 DF,Lucas Mendes,3 July 1990,Curitiba,Brazil,25,Al-Wakrah
-Qatar,,2 DF,Issa Laye,22 December 1997,,Senegal,4,Al-Arabi
+Qatar,,2 DF,Issa Laye,22 December 1997,Dakar,Senegal,4,Al-Arabi
 Qatar,,2 DF,Jassem Gaber,20 February 2002,Doha,Qatar,32,Al-Rayyan
 Qatar,,3 MF,Abdulaziz Hatem,1 January 1990,Doha,Qatar,119,Al-Rayyan
 Qatar,,4 FW,Ahmed Alaaeldin,31 January 1993,Ismailia,Egypt,68,Al-Rayyan
@@ -167,7 +167,7 @@ Qatar,,4 FW,Mohammed Muntari,20 December 1993,Kumasi,Ghana,67,Al-Gharafa
 Qatar,,4 FW,Hassan Al-Haydos,11 December 1990,Doha,Qatar,186,Al-Sadd
 Qatar,,4 FW,Akram Afif,18 November 1996,Doha,Qatar,125,Al-Sadd
 Qatar,,3 MF,Karim Boudiaf,16 September 1990,Rueil-Malmaison,France,118,Al-Duhail
-Qatar,,2 DF,Ayoub Al-Oui,11 March 2005,,Qatar,6,Al-Gharafa
+Qatar,,2 DF,Ayoub Al-Oui,11 March 2005,Doha,Qatar,6,Al-Gharafa
 Qatar,,2 DF,Homam Ahmed,25 August 1999,Doha,Qatar,68,Cultural Leonesa
 Qatar,,4 FW,Yusuf Abdurisag,6 August 1999,Mogadishu,Somalia,39,Al-Wakrah
 Qatar,,2 DF,Boualem Khoukhi,9 July 1990,Bou Ismaïl,Algeria,116,Al-Sadd
@@ -179,7 +179,7 @@ Qatar,,1 GK,Salah Zakaria,24 April 1999,,Qatar,8,Al-Duhail
 Qatar,,1 GK,Meshaal Barsham,14 February 1998,Doha,Qatar,52,Al-Sadd
 Qatar,,3 MF,Assim Madibo,22 October 1996,Khartoum,Sudan,51,Al-Wakrah
 Qatar,,4 FW,Tahsin Jamshid,16 June 2006,Doha,Qatar,3,Al-Duhail
-Qatar,,2 DF,Al-Hashmi Al-Hussain,15 August 2003,,Qatar,8,Al-Arabi
+Qatar,,2 DF,Al-Hashmi Al-Hussain,15 August 2003,Doha,Qatar,8,Al-Arabi
 Qatar,,4 FW,Mohamed Manai,25 October 2002,,Tunisia,10,Al-Shamal
 Switzerland,,1 GK,Gregor Kobel,6 December 1997,Zurich,Switzerland,21,Borussia Dortmund
 Switzerland,,2 DF,Miro Muheim,24 March 1998,Zurich,Switzerland,10,Hamburger SV
@@ -652,7 +652,7 @@ Belgium,,4 FW,Matias Fernandez-Pardo,3 February 2005,Brussels,Belgium,2,Lille
 Egypt,,1 GK,Mohamed El Shenawy,18 December 1988,Kafr el-Sheikh,Egypt,76,Al Ahly
 Egypt,,2 DF,Yasser Ibrahim,10 February 1993,Mansoura,Egypt,17,Al Ahly
 Egypt,,2 DF,Mohamed Hany,2 February 1996,Cairo,Egypt,42,Al Ahly
-Egypt,,2 DF,Hossam Abdelmaguid,30 April 2001,,Egypt,13,Zamalek
+Egypt,,2 DF,Hossam Abdelmaguid,30 April 2001,Cairo,Egypt,13,Zamalek
 Egypt,,2 DF,Ramy Rabia,20 May 1993,Cairo,Egypt,44,Al Ain
 Egypt,,2 DF,Mohamed Abdelmonem,1 February 1999,Zagazig,Egypt,36,Nice
 Egypt,,4 FW,Trézéguet,1 October 1994,Kafr el-Sheikh,Egypt,96,Al Ahly
@@ -754,7 +754,7 @@ Cape Verde,,2 DF,Wagner Pina,3 November 2002,Lisbon,Portugal,14,Trabzonspor
 Cape Verde,,2 DF,Kelvin Pires,5 June 2000,Mindelo,Cape Verde,6,SJK
 Cape Verde,,3 MF,Hélio Varela,3 May 2002,Almada,Portugal,21,Maccabi Tel Aviv
 Saudi Arabia,,1 GK,Nawaf Al-Aqidi,10 May 2000,Riyadh,Saudi Arabia,24,Al-Nassr
-Saudi Arabia,,2 DF,Ali Majrashi,2 October 1999,,Saudi Arabia,21,Al-Ahli
+Saudi Arabia,,2 DF,Ali Majrashi,2 October 1999,Jazan,Saudi Arabia,21,Al-Ahli
 Saudi Arabia,,2 DF,Ali Lajami,24 April 1996,Qatif governorate,Saudi Arabia,24,Al-Hilal
 Saudi Arabia,,2 DF,Abdulelah Al-Amri,15 January 1997,Ta'if,Saudi Arabia,44,Al-Nassr
 Saudi Arabia,,2 DF,Hassan Al-Tambakti,9 February 1999,Riyadh,Saudi Arabia,54,Al-Hilal
@@ -919,7 +919,7 @@ Senegal,,4 FW,Assane Diao,7 September 2005,Ndangane,Senegal,5,Como
 Senegal,,3 MF,Lamine Camara,1 January 2004,Diouloulou,Senegal,33,Monaco
 Senegal,,4 FW,Bamba Dieng,23 March 2000,Pikine,Senegal,23,Lorient
 Senegal,,4 FW,Sadio Mané,10 April 1992,Bambali,Senegal,128,Al-Nassr
-Senegal,,4 FW,Nicolas Jackson,20 June 2001,,Senegal,33,Bayern Munich
+Senegal,,4 FW,Nicolas Jackson,20 June 2001,Djibonker,Senegal,33,Bayern Munich
 Senegal,,4 FW,Cherif Ndiaye,23 January 1996,Dakar,Senegal,19,Samsunspor
 Senegal,,4 FW,Iliman Ndiaye,6 March 2000,Rouen,France,40,Everton
 Senegal,,2 DF,Ismail Jakobs,17 August 1999,Cologne,Germany,30,Galatasaray
@@ -1016,7 +1016,7 @@ Austria,,3 MF,Alessandro Schöpf,7 February 1994,Umhausen,Austria,35,Wolfsberger
 Jordan,,1 GK,Yazeed Abulaila,8 January 1993,Zarqa,Jordan,76,Al-Hussein
 Jordan,,2 DF,Mohammad Abu Hashish,9 May 1995,,Iraq,56,Al-Karma
 Jordan,,2 DF,Abdallah Nasib,25 February 1994,Aqaba,Jordan,65,Al-Zawraa
-Jordan,,2 DF,Husam Abu Dahab,13 May 2000,,Jordan,18,Al-Faisaly
+Jordan,,2 DF,Husam Abu Dahab,13 May 2000,Amman,Jordan,18,Al-Faisaly
 Jordan,,2 DF,Yazan Al-Arab,31 January 1996,Amman,Jordan,80,FC Seoul
 Jordan,,3 MF,Amer Jamous,3 July 2002,,Jordan,19,Al-Zawraa
 Jordan,,4 FW,Mohammad Abu Zrayq,30 December 1997,Ar Ramtha,Jordan,41,Raja Casablanca
@@ -1031,7 +1031,7 @@ Jordan,,3 MF,Ibrahim Sadeh,27 April 2000,Zarqa,Jordan,57,Al-Karma
 Jordan,,2 DF,Mo Abualnadi,8 February 2001,Overland Park,United States,18,Selangor
 Jordan,,2 DF,Salim Obaid,17 January 1992,Amman,Jordan,11,Al-Hussein
 Jordan,,3 MF,Mohammad Taha,13 July 2005,,Jordan,2,Al-Hussein
-Jordan,,2 DF,Saed Al-Rosan,1 February 1997,,Jordan,21,Al-Hussein
+Jordan,,2 DF,Saed Al-Rosan,1 February 1997,Amman,Jordan,21,Al-Hussein
 Jordan,,3 MF,Mohannad Abu Taha,2 February 2003,Amman,Jordan,29,Al-Quwa Al-Jawiya
 Jordan,,3 MF,Nizar Al-Rashdan,23 March 1999,Irbid,Jordan,47,Qatar SC
 Jordan,,1 GK,Abdallah Al-Fakhouri,22 January 2000,Russeifa,Jordan,11,Al-Wehdat
@@ -1210,7 +1210,7 @@ Ghana,,1 GK,Joseph Anang,8 June 2000,Teshie,Ghana,1,St Patrick's Athletic
 Ghana,,4 FW,Christopher Bonsu Baah,14 December 2004,Accra,Ghana,9,Al-Qadsiah
 Ghana,,2 DF,Gideon Mensah,18 July 1998,Accra,Ghana,40,Auxerre
 Ghana,,3 MF,Elisha Owusu,7 November 1997,Montreuil,France,20,Auxerre
-Ghana,,1 GK,Benjamin Asare,13 July 1992,,Ghana,11,Hearts of Oak
+Ghana,,1 GK,Benjamin Asare,13 July 1992,Accra,Ghana,11,Hearts of Oak
 Ghana,,2 DF,Abdul Rahman Baba,2 July 1994,Tamale,Ghana,51,PAOK
 Ghana,,2 DF,Jerome Opoku,14 October 1998,Mitcham,United Kingdom,11,İstanbul Başakşehir
 Ghana,,4 FW,Iñaki Williams,15 June 1994,Bilbao,Spain,26,Athletic Bilbao
