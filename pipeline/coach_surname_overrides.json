@@ -1,0 +1,8 @@
+{
+  "South Korea": {
+    "Hong Myung-bo": {
+      "surname": "Hong",
+      "_note": "Korean names are family-name-first (Hong = surname, Myung-bo = given name) — the opposite of the 'Firstname Surname' order nameparser assumes, so it guessed 'Myung-bo'."
+    }
+  }
+}

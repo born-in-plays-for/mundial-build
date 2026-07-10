@@ -8,7 +8,7 @@ Sources :
   3. Wikipedia (pages individuelles, fallback infobox)
 
 Prérequis :
-    pip install requests beautifulsoup4 pandas lxml
+    pip install requests beautifulsoup4 pandas lxml nameparser
 
 Usage :
     python wc2026_coaches.py
@@ -17,6 +17,7 @@ Sortie :
     wc2026_coaches.csv  — 48 coaches with birth city/country
 """
 
+import json
 import re
 import sys
 import time
@@ -28,6 +29,32 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 import country_registry as reg
+from wc2026_birthplaces import compute_surname
+
+# Hand-corrected surnames for coaches nameparser's "Firstname Surname"
+# assumption gets wrong (e.g. Korean family-name-first order), keyed by
+# nation then exact coach name. A present entry always wins — see
+# wc2026_birthplaces.py's SURNAME_OVERRIDES_PATH docstring for why.
+COACH_SURNAME_OVERRIDES_PATH = Path(__file__).parent / "coach_surname_overrides.json"
+
+
+def apply_coach_surname_overrides(coaches: list) -> None:
+    if not COACH_SURNAME_OVERRIDES_PATH.exists():
+        return
+    overrides = json.loads(COACH_SURNAME_OVERRIDES_PATH.read_text(encoding='utf-8'))
+    by_nation = {c['nation']: c for c in coaches}
+    applied = 0
+    for nation, by_coach in overrides.items():
+        for coach_name, fields in by_coach.items():
+            c = by_nation.get(nation)
+            if c is None or c['coach'] != coach_name:
+                print(f"   ⚠ Coach surname override introuvable : {nation} / {coach_name}")
+                continue
+            if fields.get('surname'):
+                c['surname'] = fields['surname']
+                applied += 1
+    if applied:
+        print(f"   ✓ {applied} coach surname override(s) appliqué(s) depuis {COACH_SURNAME_OVERRIDES_PATH.name}")
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
@@ -241,6 +268,7 @@ def parse_coaches(soup: BeautifulSoup) -> list:
             coaches.append({
                 'nation':       current_nation,
                 'coach':        coach_name,
+                'surname':      compute_surname(coach_name),
                 'wiki_title':   wiki_title,
                 'nationality':  coach_nationality,
                 'birth_city':   '',
@@ -447,6 +475,9 @@ def main():
     # 3. Enrich birthplaces
     enrich_birthplaces(coaches)
 
+    # 3b. Surname overrides
+    apply_coach_surname_overrides(coaches)
+
     # 4. Summary
     n_with = sum(1 for c in coaches if c['birth_country'])
     foreign = [c for c in coaches if c['birth_country'] and c['birth_country'] != c['nation']]
@@ -456,7 +487,7 @@ def main():
 
     # 5. Export CSV
     df = pd.DataFrame(coaches)
-    df = df[['nation', 'coach', 'nationality', 'birth_city', 'birth_country', 'wiki_title']]
+    df = df[['nation', 'coach', 'surname', 'nationality', 'birth_city', 'birth_country', 'wiki_title']]
     df.to_csv(OUT_CSV, index=False, encoding='utf-8-sig')
     print(f"\n💾 {OUT_CSV}  ({len(df)} rows)")
 

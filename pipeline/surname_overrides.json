@@ -1,0 +1,14 @@
+{
+  "Tunisia": {
+    "Mohamed Amine Ben Hamida": {
+      "surname": "Ben Hamida",
+      "_note": "nameparser's default prefix list doesn't include 'Ben' (Arabic patronymic, e.g. 'son of'), so it split as just 'Hamida'. Confirmed against FIFA's official squad-list PDF (LAST NAME(S) = 'BEN HMIDA')."
+    }
+  },
+  "Jordan": {
+    "Nour Bani Attiah": {
+      "surname": "Bani Attiah",
+      "_note": "'Bani' (Arabic patronymic prefix) isn't in nameparser's default prefix list, so it split as just 'Attiah'. Confirmed against FIFA's official squad-list PDF (LAST NAME(S) = 'BANI ATEYAH', a transliteration variant of the same compound surname)."
+    }
+  }
+}

@@ -8,7 +8,7 @@ Sources :
   3. Wikipedia (pages joueurs individuelles, fallback infobox pour les données Wikidata manquantes)
 
 Prérequis :
-    pip install requests beautifulsoup4 pandas lxml
+    pip install requests beautifulsoup4 pandas lxml nameparser
 
 Usage :
     python wc2026_birthplaces.py
@@ -28,8 +28,18 @@ from urllib.parse import unquote
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+from nameparser import HumanName
+from nameparser.config import CONSTANTS as NAME_CONSTANTS
 
 import country_registry as reg
+
+# "Abu"/"Al"/"El" are recognized as surname prefixes by nameparser out of the
+# box; "Ben"/"Bani" (Arabic patronymic prefixes, e.g. "Anis Ben Slimane" ->
+# surname "Ben Slimane") aren't, so they're added here. Safe for ordinary
+# two-token Western names too (e.g. "Ben Foster" still splits First=Ben,
+# Last=Foster — prefix-merging only kicks in for a *middle* token).
+NAME_CONSTANTS.prefixes.add('ben')
+NAME_CONSTANTS.prefixes.add('bani')
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
@@ -60,6 +70,13 @@ OUT_PLAYERS = Path(__file__).parent / "wc2026_players.csv"
 # squads page. Applied as a final patch after all automated enrichment so it
 # survives a from-scratch rerun of this script.
 OVERRIDES_PATH = Path(__file__).parent / "birthplace_overrides.json"
+
+# Hand-corrected sortable surnames for players nameparser's automatic
+# "Firstname Surname" split gets wrong (transliteration quirks, a nickname
+# that diverges from the display name), keyed by nation then exact player
+# name. Unlike OVERRIDES_PATH, nameparser never returns a blank, so there's
+# no "only fill blanks" rule here — a present entry always wins.
+SURNAME_OVERRIDES_PATH = Path(__file__).parent / "surname_overrides.json"
 
 # Exact nation names as they appear on the Wikipedia squads page. Only these
 # 48 nations qualified for WC 2026 — any other heading is rejected. Sourced
@@ -162,12 +179,13 @@ def parse_wikipedia(soup: BeautifulSoup) -> list:
                         return i
             return None
 
-        idx_name  = find_col('player', 'name')
-        idx_pos   = find_col('pos')
-        idx_dob   = find_col('date of birth', 'born')
-        idx_place = find_col('place of birth', 'birthplace', 'birth place', 'birth city')
-        idx_caps  = find_col('caps', 'cap')
-        idx_club  = find_col('club')
+        idx_name   = find_col('player', 'name')
+        idx_pos    = find_col('pos')
+        idx_dob    = find_col('date of birth', 'born')
+        idx_place  = find_col('place of birth', 'birthplace', 'birth place', 'birth city')
+        idx_caps   = find_col('caps', 'cap')
+        idx_club   = find_col('club')
+        idx_number = find_col('no.', 'no')
 
         # Exiger au moins 2 colonnes de support pour distinguer une vraie table joueurs
         # des tables de stats comme "Player representation by league system"
@@ -202,6 +220,7 @@ def parse_wikipedia(soup: BeautifulSoup) -> list:
             players.append({
                 'nation':        current_nation,
                 'nation_code':   current_code or '',
+                'number':        get(idx_number),
                 'pos':           get(idx_pos),
                 'player':        name,
                 'wiki_title':    wiki_title,
@@ -236,6 +255,7 @@ def parse_wikipedia_pandas(soup: BeautifulSoup) -> list:
         dob_col    = next((c for c in df.columns if 'birth' in cols_str[c] and 'date' in cols_str[c]), None)
         club_col   = next((c for c in df.columns if 'club' in cols_str[c]), None)
         caps_col   = next((c for c in df.columns if 'cap' in cols_str[c]), None)
+        number_col = next((c for c in df.columns if str(c).lower().strip() in ('no.', 'no')), None)
 
         for _, row in df.iterrows():
             name = str(row.get(player_col, '')).strip()
@@ -247,6 +267,7 @@ def parse_wikipedia_pandas(soup: BeautifulSoup) -> list:
             players.append({
                 'nation':        'Unknown',
                 'nation_code':   '',
+                'number':        str(row.get(number_col, '')) if number_col else '',
                 'pos':           str(row.get(pos_col, '')) if pos_col else '',
                 'player':        clean(name),
                 'wiki_title':    '',
@@ -511,6 +532,41 @@ def apply_manual_overrides(players: list) -> None:
         print(f"   ✓ {applied} champ(s) comblé(s) depuis {OVERRIDES_PATH.name}")
 
 
+# ── Surname (sortable) ──────────────────────────────────────────────────────────
+
+def compute_surname(full_name: str) -> str:
+    """Best-effort sortable surname from a 'Firstname Surname' display name,
+    via nameparser. Mononyms (Zizo, Neymar, ...) have no last name to
+    extract — the full name is used as-is."""
+    return HumanName(full_name).last or full_name
+
+
+def apply_surname_overrides(players: list) -> None:
+    """Applies pipeline/surname_overrides.json — hand-corrected surnames for
+    cases nameparser gets wrong, keyed by nation then exact player name.
+    A present entry always wins (see SURNAME_OVERRIDES_PATH docstring)."""
+    if not SURNAME_OVERRIDES_PATH.exists():
+        return
+    overrides = json.loads(SURNAME_OVERRIDES_PATH.read_text(encoding='utf-8'))
+
+    by_nation = {}
+    for p in players:
+        by_nation.setdefault(p['nation'], {})[p['player']] = p
+
+    applied = 0
+    for nation, by_player in overrides.items():
+        for player_name, fields in by_player.items():
+            p = by_nation.get(nation, {}).get(player_name)
+            if p is None:
+                print(f"   ⚠ Surname override introuvable dans les données : {nation} / {player_name}")
+                continue
+            if fields.get('surname'):
+                p['surname'] = fields['surname']
+                applied += 1
+    if applied:
+        print(f"   ✓ {applied} surname override(s) appliqué(s) depuis {SURNAME_OVERRIDES_PATH.name}")
+
+
 # ── Classement ────────────────────────────────────────────────────────────────
 
 
@@ -547,6 +603,11 @@ def main():
 
     # 3b. Overrides manuelles (lieux introuvables ou erronés côté Wikidata/Wikipedia)
     apply_manual_overrides(players)
+
+    # 3c. Nom de famille triable (dérivé de 'player', pas de FIFA — voir surname_overrides.json)
+    for p in players:
+        p['surname'] = compute_surname(p['player'])
+    apply_surname_overrides(players)
 
     # 4. DataFrame
     df = pd.DataFrame(players)

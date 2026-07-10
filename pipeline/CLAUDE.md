@@ -144,14 +144,56 @@ diagnostic, not part of the core build sequence — run it manually:
 python3 pipeline/check_fifa_pdf_consistency.py
 ```
 
-The PDF carries `HEIGHT (CM)`, `GOALS`, shirt number, and "name on shirt" —
-none of which this pipeline tracks today. It does **not** carry place of
-birth, so it can't help fill `birth_city` gaps. As of 2026-07-10: nation
-coverage and squad sizes match exactly; ~17 players only match by name
-(nicknames/legal-name differences like Rodri ↔ Rodrigo Hernández Cascante,
-or shared DOBs within a squad defeating the DOB-based matcher) rather than
-by DOB; caps and a few clubs differ because the PDF is dated after our CSV
-scrape.
+The PDF carries `HEIGHT (CM)`, `GOALS`, and "name on shirt" — none of which
+this pipeline tracks today. It does **not** carry place of birth, so it
+can't help fill `birth_city` gaps. As of 2026-07-10: nation coverage and
+squad sizes match exactly; ~17 players only match by name (nicknames/legal-
+name differences like Rodri ↔ Rodrigo Hernández Cascante, or shared DOBs
+within a squad defeating the DOB-based matcher) rather than by DOB; caps and
+a few clubs differ because the PDF is dated after our CSV scrape.
+
+**Its `LAST NAME(S)`/`FIRST NAME(S)` columns are legal/passport names, not
+football identity** — e.g. Mohamed Salah's `LAST NAME(S)` is "GHALY"; Ali
+Al-Hamadi's is "ALZUBAIDI" (coincidentally a real but unrelated Saudi
+player's surname). Its `PLAYER NAME` column (the commonly-known name) is
+closer, but its own word order isn't consistent either — "SURNAME Firstname"
+for most squads, "Firstname Commonname" for others (confirmed for Iraq,
+Saudi Arabia, and most of Egypt/Jordan/Qatar) — and it ASCII-transliterates
+diacritics inconsistently with its own other columns (Rüdiger → "RUEDIGER"
+in `PLAYER NAME` but "RÜDIGER" in `LAST NAME(S)`/`NAME ON SHIRT`). No single
+FIFA column is a clean ground truth — see `surname` below, which is derived
+from our own data instead and only spot-checked against this PDF.
+
+## Sortable surname (`wc2026_birthplaces.py`) and shirt number
+
+`wc2026_players.csv`'s `surname` column is derived purely from `player`
+(our own Wikipedia-scraped display name) via the `nameparser` library
+(`pip install nameparser`) — never copied from FIFA's PDF, which sidesteps
+both the "which FIFA column is trustworthy" problem above and the
+redistribution-of-official-data question. `HumanName(player).last` handles
+Western names and particles ("van", "de", "Al-"/"El-" are recognized by
+default); `wc2026_birthplaces.py` additionally registers "Ben"/"Bani" as
+prefixes (Arabic patronymics, e.g. "Anis Ben Slimane" → "Ben Slimane") since
+nameparser doesn't include them by default. Mononyms (Zizo, Neymar, Rodri,
+Casemiro, ...) have nothing to split — `player` is used as `surname` as-is.
+
+`pipeline/surname_overrides.json` follows the same shape as
+`birthplace_overrides.json` (keyed by nation → player name) for the rare
+case nameparser's guess is wrong, but the override semantics differ: since
+nameparser never returns blank, a present entry always wins outright rather
+than only filling gaps. `wc2026_coaches.py` does the same via
+`compute_surname()` (imported from `wc2026_birthplaces.py`) and its own
+`pipeline/coach_surname_overrides.json` — e.g. Hong Myung-bo (South Korea):
+Korean names are family-name-first, so nameparser's "Firstname Surname"
+assumption guesses "Myung-bo" instead of "Hong".
+
+Shirt number (`wc2026_players.csv`'s `number` column) comes from the same
+Wikipedia squads page already scraped for everything else — its table has a
+`No.` column `wc2026_birthplaces.py` wasn't previously extracting. Not from
+FIFA either. Coaches have no shirt number — that field doesn't apply to them.
+
+Both flow through `build_json.py` into `map_data.json`: `surname` on every
+player and coach object, `shirtNumber` on players only.
 
 ## Player/coach identity (api-football id is the join key)
 

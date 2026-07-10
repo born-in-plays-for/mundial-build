@@ -72,6 +72,8 @@ with open(CSV_PATH, encoding="utf-8-sig") as f:
     for row in csv.DictReader(f):
         players.append({
             "name":          row["player"],
+            "surname":       row["surname"],
+            "shirtNumber":   int(row["number"]) if row["number"] else None,
             "nation":        row["nation"],
             "birth_city":    row["birth_city"],
             "birth_country": row["birth_country"],
@@ -86,6 +88,7 @@ if COACHES_PATH.exists():
                 continue
             players.append({
                 "name":          row["coach"],
+                "surname":       row.get("surname", ""),
                 "nation":        row["nation"],
                 "birth_city":    row.get("birth_city", ""),
                 "birth_country": row["birth_country"],
@@ -108,10 +111,6 @@ for p in players:
 BIRTH_CITY_OVERRIDES = {
     "Aaron Hickey":  ("Glasgow",     "Scotland"),   # Wikidata returned "Scotland"
     "Callan Elliot": ("Kilmarnock",  "Scotland"),   # Wikidata returned "Scotland"
-    "Tarek Alaa":    ("Cairo",       "Egypt"),      # neither Wikidata nor his Wikipedia infobox
-                                                     # records a birthplace at all; source:
-                                                     # national-football-teams.com/player/103845
-                                                     # ("Place of Birth: Al-Qahirah (Egypt)")
 }
 # UK city -> home nation table lives in country_registry.py (shared with
 # wc2026_coaches.py, which faces the same "United Kingdom" ambiguity).
@@ -185,6 +184,10 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
         obj = {"name": p["name"], "nation": p["nation"], "caps": p["caps"]}
         if p.get("role"):
             obj["role"] = p["role"]
+        if p.get("surname"):
+            obj["surname"] = p["surname"]
+        if p.get("shirtNumber") is not None:
+            obj["shirtNumber"] = p["shirtNumber"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])
@@ -214,6 +217,10 @@ for p in players:
         obj = {"name": p["name"], "caps": p["caps"]}
         if p.get("role"):
             obj["role"] = p["role"]
+        if p.get("surname"):
+            obj["surname"] = p["surname"]
+        if p.get("shirtNumber") is not None:
+            obj["shirtNumber"] = p["shirtNumber"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])
