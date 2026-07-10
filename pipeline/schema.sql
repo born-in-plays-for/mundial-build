@@ -108,14 +108,23 @@ CREATE TABLE team_status (
 -- and only allocates fresh pids for genuinely new persons, appending them
 -- to the registry.
 CREATE TABLE person (
-    pid      INTEGER PRIMARY KEY,
-    name     TEXT    NOT NULL,            -- display name (EN-Wikipedia-derived)
-    role     TEXT    NOT NULL DEFAULT 'player' CHECK (role IN ('player', 'coach')),
-    nation   INTEGER NOT NULL REFERENCES country(id),  -- plays for / coaches
-    birth    INTEGER REFERENCES country(id),           -- NULL = birthplace unresolved (kept, not dropped)
-    caps     INTEGER NOT NULL DEFAULT 0 CHECK (caps >= 0),  -- 0 for coaches
-    en_title TEXT,                        -- EN Wikipedia title ONLY when it differs from name
+    pid          INTEGER PRIMARY KEY,
+    name         TEXT    NOT NULL,        -- display name (EN-Wikipedia-derived)
+    role         TEXT    NOT NULL DEFAULT 'player' CHECK (role IN ('player', 'coach')),
+    nation       INTEGER NOT NULL REFERENCES country(id),  -- plays for / coaches
+    birth        INTEGER REFERENCES country(id),           -- NULL = birthplace unresolved (kept, not dropped)
+    caps         INTEGER NOT NULL DEFAULT 0 CHECK (caps >= 0),  -- 0 for coaches
+    en_title     TEXT,                    -- EN Wikipedia title ONLY when it differs from name
                                           -- (disambiguated articles etc.); NULL = same as name
+    -- Sortable surname, derived from `name` via nameparser (never copied
+    -- from FIFA's official squad-list PDF — see pipeline/CLAUDE.md's
+    -- "Sortable surname" section for why no single FIFA column is trustworthy
+    -- enough to source this from instead). Mononyms (Zizo, Neymar, Rodri,
+    -- ...) have name = surname; never NULL.
+    surname      TEXT    NOT NULL,
+    -- Tournament shirt number, from the Wikipedia squads table's "No."
+    -- column — NULL for coaches (not applicable) or an unresolved player.
+    shirt_number INTEGER CHECK (shirt_number IS NULL OR shirt_number BETWEEN 1 AND 99),
     -- duplicate-name safety net: two same-named people may exist across the
     -- tournament, never inside one squad
     UNIQUE (nation, name),
@@ -174,7 +183,7 @@ CREATE TABLE provenance (
 -- Foreign-born players ("exports" from birth country to nation) — the map
 -- arcs and the birth-country grouping of map_data.
 CREATE VIEW view_export_player AS
-SELECT p.pid, p.name, p.role, p.caps,
+SELECT p.pid, p.name, p.surname, p.shirt_number, p.role, p.caps,
        b.id AS birth_id,  b.name AS birth_country,
        n.id AS nation_id, n.name AS nation
 FROM person p
@@ -184,7 +193,7 @@ WHERE p.birth <> p.nation;
 
 -- Home-born players, grouped by nation ("natives" in map_data).
 CREATE VIEW view_native_player AS
-SELECT p.pid, p.name, p.role, p.caps,
+SELECT p.pid, p.name, p.surname, p.shirt_number, p.role, p.caps,
        n.id AS nation_id, n.name AS nation
 FROM person p
 JOIN country n ON n.id = p.nation

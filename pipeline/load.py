@@ -154,19 +154,23 @@ def compute_eliminated(fixtures):
 def collect_persons(map_data):
     """One tuple per person, in map_data file order (this order feeds pid
     assignment for new persons, and export re-derives the file's sort
-    orders stably from it)."""
+    orders stably from it). surname/shirt_number are appended last so the
+    existing (name, role, nation, birth, caps, title) positions — the ones
+    assign_pids() and the wiki-title pass key off — stay unchanged."""
     persons = []
     for rec in map_data["data"]:
         birth_iso2 = reg.resolve_iso2(rec["country"])
         for p in rec["players"]:
             persons.append((p["name"], p.get("role", "player"),
                             reg.resolve_iso2(p["nation"]), birth_iso2,
-                            p["caps"], p["wikiTitle"]))
+                            p["caps"], p["wikiTitle"],
+                            p.get("surname") or p["name"], p.get("shirtNumber")))
     for nation, players in map_data["natives"].items():
         iso2 = reg.resolve_iso2(nation)
         for p in players:
             persons.append((p["name"], p.get("role", "player"),
-                            iso2, iso2, p["caps"], p["wikiTitle"]))
+                            iso2, iso2, p["caps"], p["wikiTitle"],
+                            p.get("surname") or p["name"], p.get("shirtNumber")))
     return persons
 
 
@@ -194,7 +198,7 @@ def assign_pids(persons, af_ids_of):
     (iso2, name)), allocate fresh pids for new ones, rewrite the registry."""
     rows, af_to_pid, key_to_pid, next_pid = load_registry()
     pids, added = [], 0
-    for name, role, nation, birth, caps, title in persons:
+    for name, role, nation, birth, caps, title, surname, shirt_number in persons:
         af_ids = af_ids_of.get((nation, title), [])
         pid = next((af_to_pid[(role, a)] for a in af_ids if (role, a) in af_to_pid), None)
         if pid is None:
@@ -266,10 +270,10 @@ def main():
 
     cid = reg.canonical_id
     af_used = 0
-    for pid, (name, role, nation, birth, caps, title) in zip(pids, persons):
-        db.execute("INSERT INTO person VALUES (?,?,?,?,?,?,?)",
+    for pid, (name, role, nation, birth, caps, title, surname, shirt_number) in zip(pids, persons):
+        db.execute("INSERT INTO person VALUES (?,?,?,?,?,?,?,?,?)",
                    (pid, name, role, cid(nation), cid(birth), caps,
-                    title if title != name else None))
+                    title if title != name else None, surname, shirt_number))
         for af in af_ids_of.get((nation, title), []):
             db.execute("INSERT INTO af_person VALUES (?,?,?)", (af, role, pid))
             af_used += 1
