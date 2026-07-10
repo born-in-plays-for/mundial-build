@@ -106,6 +106,29 @@ rather than adding another local override dict. `pipeline/build_json.py`,
 through this module. `extras/` scripts (GDP/HDI/elo_history, which only feed
 `pages/` charts) still use their own independent name maps — not yet migrated.
 
+## Birthplace overrides (`wc2026_birthplaces.py`)
+
+`wc2026_birthplaces.py` regenerates `wc2026_players.csv` from scratch every
+run (Wikipedia squads table → Wikidata P19 → per-player Wikipedia infobox
+fallback), so any hand-edit made directly on the CSV gets clobbered on the
+next rebuild. For players none of those three sources have a birthplace for,
+add an entry to `pipeline/birthplace_overrides.json`, keyed by nation then
+exact player name as it appears on the WC2026 squads page:
+
+```json
+{ "Egypt": { "Tarek Alaa": { "birth_city": "Cairo", "birth_country": "Egypt", "_note": "..." } } }
+```
+
+`apply_manual_overrides()` applies it as the last step before the CSV is
+written, and only *fills blanks* — the automated scrape always wins if it
+already found a value. If a later rerun's scrape disagrees with an override
+(rather than just being empty), that's a signal the override may be stale
+(or genuinely wrong), so it's left as a printed warning to resolve by hand
+rather than silently overwritten either direction. Same pattern as
+`player_aliases_manual.json` below. A name in the overrides file with no
+matching row in that run's scrape also prints a warning instead of failing
+silently.
+
 ## Player/coach identity (api-football id is the join key)
 
 Same problem one level down: a player's Wikipedia name doesn't always match

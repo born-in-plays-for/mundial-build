@@ -18,6 +18,7 @@ Sortie :
 """
 
 import io
+import json
 import re
 import sys
 import time
@@ -53,6 +54,12 @@ SPARQL_HEADERS = {
 
 
 OUT_PLAYERS = Path(__file__).parent / "wc2026_players.csv"
+
+# Hand-verified birthplaces for players Wikidata/Wikipedia don't have (or get
+# wrong), keyed by nation then exact player name as they appear on the WC2026
+# squads page. Applied as a final patch after all automated enrichment so it
+# survives a from-scratch rerun of this script.
+OVERRIDES_PATH = Path(__file__).parent / "birthplace_overrides.json"
 
 # Exact nation names as they appear on the Wikipedia squads page. Only these
 # 48 nations qualified for WC 2026 — any other heading is rejected. Sourced
@@ -465,6 +472,45 @@ def enrich_with_wikipedia_pages(players: list) -> None:
     print(f"   ✓ {enriched} joueurs enrichis via Wikipedia")
 
 
+# ── Overrides manuelles ────────────────────────────────────────────────────────
+
+def apply_manual_overrides(players: list) -> None:
+    """Applique pipeline/birthplace_overrides.json (lieux introuvables via
+    Wikidata/Wikipedia, vérifiés à la main). Ne comble que les champs vides
+    (birth_city / birth_country) — n'écrase jamais une valeur déjà trouvée
+    par le scrape automatisé ; si les deux divergent, avertit sans modifier
+    (ça veut dire que la source automatisée a rattrapé le retard, ou qu'il y
+    a un vrai désaccord à trancher à la main)."""
+    if not OVERRIDES_PATH.exists():
+        return
+    overrides = json.loads(OVERRIDES_PATH.read_text(encoding='utf-8'))
+
+    by_nation = {}
+    for p in players:
+        by_nation.setdefault(p['nation'], {})[p['player']] = p
+
+    applied = 0
+    for nation, by_player in overrides.items():
+        for player_name, fields in by_player.items():
+            p = by_nation.get(nation, {}).get(player_name)
+            if p is None:
+                print(f"   ⚠ Override introuvable dans les données : {nation} / {player_name}")
+                continue
+            for field in ('birth_city', 'birth_country'):
+                override_val = fields.get(field)
+                if not override_val:
+                    continue
+                current_val = p.get(field, '')
+                if not current_val:
+                    p[field] = override_val
+                    applied += 1
+                elif current_val != override_val:
+                    print(f"   ⚠ Divergence {field} pour {nation} / {player_name} : "
+                          f"source auto = {current_val!r}, override = {override_val!r} — override ignoré")
+    if applied:
+        print(f"   ✓ {applied} champ(s) comblé(s) depuis {OVERRIDES_PATH.name}")
+
+
 # ── Classement ────────────────────────────────────────────────────────────────
 
 
@@ -498,6 +544,9 @@ def main():
     # 3. Enrichir via Wikidata, puis FBref pour les joueurs restants
     enrich_with_wikidata(players)
     enrich_with_wikipedia_pages(players)
+
+    # 3b. Overrides manuelles (lieux introuvables ou erronés côté Wikidata/Wikipedia)
+    apply_manual_overrides(players)
 
     # 4. DataFrame
     df = pd.DataFrame(players)
