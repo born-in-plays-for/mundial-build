@@ -19,12 +19,19 @@
 Only files consumed directly by the `mundial` frontend belong in the submodule:
 `elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, `fixtures.json`, and the
 pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
+`v2/discipline.json`,
 `v2/wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see
 `pipeline/README.md`'s "Relational model" section for how these are built.
 `v2/status.json` carries **eliminated teams only** (`{iso2: {round, date?}}`)
 — a team absent from it is still alive. `v2/live.json` also carries a `teams`
 key (`{af_team_id: iso2}`, api-football's numeric team id) — this replaced
-the standalone `r32_teams.json` frontend fetch in July 2026.
+the standalone `r32_teams.json` frontend fetch in July 2026. `v2/discipline.json`
+(`{iso2: {matchesPlayed, foulsCommitted, foulsSuffered, avgFoulsCommitted,
+avgFoulsSuffered, yellowCards, redCards, foulsPerCard, stage, eliminated}}`,
+one entry per WC2026 team) is per-team foul/card totals from api-football's
+fixture statistics — see `pipeline/README.md`'s "Discipline stats" section.
+**Not yet wired into `update_fixtures.sh`** — stays stale between manual
+`pipeline/fetch_discipline_stats.py` runs even as fixtures/status auto-refresh.
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.

@@ -45,8 +45,9 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `fetch_fixtures.py` | `data/fixtures.json` | Every WC2026 fixture, past and planned — see "Fixtures" below |
+| `fetch_discipline_stats.py` | `pipeline/discipline_stats.json` | Per-team foul/card totals from api-football's fixture statistics — see "Discipline stats" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build; also derives tournament elimination status from `data/fixtures.json` — see "Relational model" and "Team status" below |
-| `export.py` | `data/v2/` (8 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
+| `export.py` | `data/v2/` (9 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
 ---
 
@@ -118,20 +119,29 @@ erDiagram
         TEXT    eliminated_round "Group Stage | Round of 32 | ... | Final"
         TEXT    eliminated_date "NULL for Group Stage (no single decisive fixture)"
     }
+    team_discipline {
+        INTEGER country PK, FK
+        INTEGER matches_played
+        INTEGER fouls_committed
+        INTEGER fouls_suffered "opponent's Fouls stat in the same fixture, summed"
+        INTEGER yellow_cards
+        INTEGER red_cards
+    }
     provenance {
-        TEXT dataset PK "elo | r32 | population | team_status"
+        TEXT dataset PK "elo | r32 | population | team_status | discipline"
         TEXT source
         TEXT updated
     }
 
-    country ||--o{ person       : "nation (plays for)"
-    country |o--o{ person       : "birth (born in)"
-    country ||--o{ capital_name : "localized capital"
-    country |o--o| elo_ranking  : "Elo entry"
-    country ||--o| af_team      : "api-football team id"
-    country ||--o| team_status  : "alive / eliminated"
-    person  ||--o{ af_person    : "api-football id(s), 1:n (duplicate-id records)"
-    person  ||--o{ wiki_title   : "article per language"
+    country ||--o{ person          : "nation (plays for)"
+    country |o--o{ person          : "birth (born in)"
+    country ||--o{ capital_name    : "localized capital"
+    country |o--o| elo_ranking     : "Elo entry"
+    country ||--o| af_team         : "api-football team id"
+    country ||--o| team_status     : "alive / eliminated"
+    country ||--o| team_discipline : "fouls/cards"
+    person  ||--o{ af_person       : "api-football id(s), 1:n (duplicate-id records)"
+    person  ||--o{ wiki_title      : "article per language"
 ```
 
 Facts the schema encodes that the JSON files never enforced: api-football coach and player ids are separate id
@@ -147,7 +157,7 @@ Every person gets a **`pid`** — a small integer that replaces the
 smaller live-page payload gzipped. pids are pinned forever in
 `person_registry.csv` (committed): matched by `(role, api-football id)`
 first, then `(nation iso2, name)`; new persons append, pids are never
-reused. All 8 exports are written together from one DB state, so pids
+reused. All 9 exports are written together from one DB state, so pids
 can't disagree across files.
 
 **`data/v2/` is what the `mundial` frontend fetches** (migrated July 2026).
@@ -229,6 +239,45 @@ for the two to drift out of sync the way a separate fetch script could.
 Same living-dataset cadence as `update_elo_rankings.py` — re-run whenever
 fixtures are added or results come in (`update_fixtures.sh` automates the
 full refresh + commit).
+
+---
+
+## Discipline stats (`fetch_discipline_stats.py` → `team_discipline` table → `data/v2/discipline.json`)
+
+Per-team foul/card totals, aggregated from api-football's
+`/fixtures/statistics` across every **finished** (`FT`/`AET`/`PEN`) fixture
+in `data/fixtures.json` — no separate `/fixtures` call. `"Fouls suffered"`
+isn't a field api-football exposes: it's derived per fixture as the
+*opponent's* `Fouls` value in that same match, summed across the tournament.
+
+`fetch_discipline_stats.py` writes only the raw counts (`matches`,
+`foulsCommitted`, `foulsSuffered`, `yellowCards`, `redCards`) to
+`pipeline/discipline_stats.json`, keyed by iso2 — pipeline-internal,
+committed (same "hits a live API, not cheap to redo" reasoning as
+`r32_teams.json`). Per-fixture API responses are cached in
+`pipeline/discipline_stats_cache.json` (also committed), so a re-run after
+new fixtures finish only fetches the new ones.
+
+Everything derived — per-match averages, fouls-per-card, and each team's
+current stage — lives in `schema.sql`'s `view_discipline`, not in the JSON:
+same division of labour as `view_squad_size` computing squad size from
+`person` rows instead of storing it. `stage`/`eliminated` reuse `team_status`
+and `view_current_round` directly (see "Team status" above) rather than
+recomputing elimination logic a second time — a team's discipline `stage`
+and its `status.json` elimination round can never drift apart, because
+they're the same underlying columns.
+
+`data/v2/discipline.json` is `{iso2: {matchesPlayed, foulsCommitted,
+foulsSuffered, avgFoulsCommitted, avgFoulsSuffered, yellowCards, redCards,
+foulsPerCard, stage, eliminated}}`, one entry per WC2026 team.
+`foulsPerCard` is `null` for a team with zero cards so far (not `0` or
+`Infinity`).
+
+**Not yet wired into `update_fixtures.sh`** — that script only re-runs
+`fetch_fixtures.py`, so `data/v2/discipline.json` goes stale between manual
+`fetch_discipline_stats.py` runs even as fixtures/status stay current. Fold
+it in (and add `v2/discipline.json` to the script's commit-diff check)
+before relying on this data staying fresh automatically.
 
 ---
 

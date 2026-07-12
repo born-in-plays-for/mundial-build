@@ -1,0 +1,342 @@
+{
+  "source": "api-football.com",
+  "updated": "2026-07-12",
+  "teams": {
+    "ar": {
+      "matches": 6,
+      "foulsCommitted": 73,
+      "foulsSuffered": 75,
+      "yellowCards": 6,
+      "redCards": 0
+    },
+    "at": {
+      "matches": 4,
+      "foulsCommitted": 47,
+      "foulsSuffered": 31,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "au": {
+      "matches": 4,
+      "foulsCommitted": 46,
+      "foulsSuffered": 39,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "ba": {
+      "matches": 4,
+      "foulsCommitted": 60,
+      "foulsSuffered": 38,
+      "yellowCards": 7,
+      "redCards": 1
+    },
+    "be": {
+      "matches": 6,
+      "foulsCommitted": 78,
+      "foulsSuffered": 70,
+      "yellowCards": 6,
+      "redCards": 1
+    },
+    "br": {
+      "matches": 5,
+      "foulsCommitted": 51,
+      "foulsSuffered": 57,
+      "yellowCards": 8,
+      "redCards": 0
+    },
+    "ca": {
+      "matches": 5,
+      "foulsCommitted": 72,
+      "foulsSuffered": 73,
+      "yellowCards": 11,
+      "redCards": 0
+    },
+    "cd": {
+      "matches": 4,
+      "foulsCommitted": 44,
+      "foulsSuffered": 47,
+      "yellowCards": 6,
+      "redCards": 0
+    },
+    "ch": {
+      "matches": 6,
+      "foulsCommitted": 87,
+      "foulsSuffered": 90,
+      "yellowCards": 8,
+      "redCards": 1
+    },
+    "ci": {
+      "matches": 4,
+      "foulsCommitted": 29,
+      "foulsSuffered": 36,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "co": {
+      "matches": 5,
+      "foulsCommitted": 70,
+      "foulsSuffered": 68,
+      "yellowCards": 8,
+      "redCards": 0
+    },
+    "cv": {
+      "matches": 4,
+      "foulsCommitted": 27,
+      "foulsSuffered": 50,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "cw": {
+      "matches": 3,
+      "foulsCommitted": 32,
+      "foulsSuffered": 31,
+      "yellowCards": 7,
+      "redCards": 0
+    },
+    "cz": {
+      "matches": 3,
+      "foulsCommitted": 37,
+      "foulsSuffered": 32,
+      "yellowCards": 1,
+      "redCards": 0
+    },
+    "de": {
+      "matches": 4,
+      "foulsCommitted": 51,
+      "foulsSuffered": 45,
+      "yellowCards": 3,
+      "redCards": 0
+    },
+    "dz": {
+      "matches": 4,
+      "foulsCommitted": 29,
+      "foulsSuffered": 41,
+      "yellowCards": 3,
+      "redCards": 0
+    },
+    "ec": {
+      "matches": 4,
+      "foulsCommitted": 49,
+      "foulsSuffered": 40,
+      "yellowCards": 8,
+      "redCards": 1
+    },
+    "eg": {
+      "matches": 5,
+      "foulsCommitted": 59,
+      "foulsSuffered": 70,
+      "yellowCards": 12,
+      "redCards": 0
+    },
+    "es": {
+      "matches": 6,
+      "foulsCommitted": 68,
+      "foulsSuffered": 59,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "fr": {
+      "matches": 6,
+      "foulsCommitted": 59,
+      "foulsSuffered": 58,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "gb-eng": {
+      "matches": 6,
+      "foulsCommitted": 62,
+      "foulsSuffered": 88,
+      "yellowCards": 7,
+      "redCards": 1
+    },
+    "gb-sct": {
+      "matches": 3,
+      "foulsCommitted": 42,
+      "foulsSuffered": 42,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "gh": {
+      "matches": 4,
+      "foulsCommitted": 56,
+      "foulsSuffered": 48,
+      "yellowCards": 6,
+      "redCards": 0
+    },
+    "hr": {
+      "matches": 4,
+      "foulsCommitted": 45,
+      "foulsSuffered": 48,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "ht": {
+      "matches": 3,
+      "foulsCommitted": 55,
+      "foulsSuffered": 44,
+      "yellowCards": 7,
+      "redCards": 0
+    },
+    "iq": {
+      "matches": 3,
+      "foulsCommitted": 27,
+      "foulsSuffered": 31,
+      "yellowCards": 4,
+      "redCards": 1
+    },
+    "ir": {
+      "matches": 3,
+      "foulsCommitted": 35,
+      "foulsSuffered": 26,
+      "yellowCards": 6,
+      "redCards": 0
+    },
+    "jo": {
+      "matches": 3,
+      "foulsCommitted": 31,
+      "foulsSuffered": 25,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "jp": {
+      "matches": 4,
+      "foulsCommitted": 55,
+      "foulsSuffered": 30,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "kr": {
+      "matches": 3,
+      "foulsCommitted": 25,
+      "foulsSuffered": 32,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "ma": {
+      "matches": 6,
+      "foulsCommitted": 74,
+      "foulsSuffered": 97,
+      "yellowCards": 7,
+      "redCards": 0
+    },
+    "mx": {
+      "matches": 5,
+      "foulsCommitted": 58,
+      "foulsSuffered": 48,
+      "yellowCards": 4,
+      "redCards": 1
+    },
+    "nl": {
+      "matches": 4,
+      "foulsCommitted": 44,
+      "foulsSuffered": 45,
+      "yellowCards": 3,
+      "redCards": 0
+    },
+    "no": {
+      "matches": 6,
+      "foulsCommitted": 58,
+      "foulsSuffered": 49,
+      "yellowCards": 3,
+      "redCards": 0
+    },
+    "nz": {
+      "matches": 3,
+      "foulsCommitted": 32,
+      "foulsSuffered": 25,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "pa": {
+      "matches": 3,
+      "foulsCommitted": 46,
+      "foulsSuffered": 34,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "pt": {
+      "matches": 5,
+      "foulsCommitted": 44,
+      "foulsSuffered": 62,
+      "yellowCards": 7,
+      "redCards": 0
+    },
+    "py": {
+      "matches": 5,
+      "foulsCommitted": 66,
+      "foulsSuffered": 62,
+      "yellowCards": 9,
+      "redCards": 1
+    },
+    "qa": {
+      "matches": 3,
+      "foulsCommitted": 36,
+      "foulsSuffered": 29,
+      "yellowCards": 4,
+      "redCards": 2
+    },
+    "sa": {
+      "matches": 3,
+      "foulsCommitted": 29,
+      "foulsSuffered": 26,
+      "yellowCards": 6,
+      "redCards": 0
+    },
+    "se": {
+      "matches": 4,
+      "foulsCommitted": 43,
+      "foulsSuffered": 51,
+      "yellowCards": 5,
+      "redCards": 0
+    },
+    "sn": {
+      "matches": 4,
+      "foulsCommitted": 36,
+      "foulsSuffered": 51,
+      "yellowCards": 3,
+      "redCards": 0
+    },
+    "tn": {
+      "matches": 3,
+      "foulsCommitted": 27,
+      "foulsSuffered": 35,
+      "yellowCards": 1,
+      "redCards": 0
+    },
+    "tr": {
+      "matches": 3,
+      "foulsCommitted": 31,
+      "foulsSuffered": 40,
+      "yellowCards": 2,
+      "redCards": 0
+    },
+    "us": {
+      "matches": 5,
+      "foulsCommitted": 56,
+      "foulsSuffered": 68,
+      "yellowCards": 7,
+      "redCards": 1
+    },
+    "uy": {
+      "matches": 3,
+      "foulsCommitted": 31,
+      "foulsSuffered": 29,
+      "yellowCards": 5,
+      "redCards": 1
+    },
+    "uz": {
+      "matches": 3,
+      "foulsCommitted": 45,
+      "foulsSuffered": 31,
+      "yellowCards": 4,
+      "redCards": 0
+    },
+    "za": {
+      "matches": 4,
+      "foulsCommitted": 38,
+      "foulsSuffered": 49,
+      "yellowCards": 5,
+      "redCards": 2
+    }
+  }
+}

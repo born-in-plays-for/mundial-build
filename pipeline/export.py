@@ -15,6 +15,15 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
   data/v2/status.json       {iso2: {round, date?}} — ELIMINATED teams only.
                             A team absent from this file is still alive;
                             the client never needs a positive "alive" list.
+  data/v2/discipline.json   {iso2: {matchesPlayed, foulsCommitted, foulsSuffered,
+                            avgFoulsCommitted, avgFoulsSuffered, yellowCards,
+                            redCards, foulsPerCard, stage, eliminated}} — one
+                            entry per WC2026 team, from view_discipline.
+                            foulsPerCard is null for a team with zero cards
+                            so far. stage/eliminated mirror status.json's
+                            round/absence convention rather than duplicating
+                            a second file the client would have to cross-
+                            reference.
 
 All files are written together, atomically from one DB state — pids can
 never disagree across them.
@@ -143,6 +152,25 @@ def build_status(db):
     return status
 
 
+def build_discipline(db):
+    discipline = {}
+    for (iso2, matches, fc, fs, afc, afs, yc, rc, fpc, stage, eliminated) in db.execute(
+            "SELECT * FROM view_discipline ORDER BY iso2"):
+        discipline[iso2] = {
+            "matchesPlayed": matches,
+            "foulsCommitted": fc,
+            "foulsSuffered": fs,
+            "avgFoulsCommitted": afc,
+            "avgFoulsSuffered": afs,
+            "yellowCards": yc,
+            "redCards": rc,
+            "foulsPerCard": fpc,
+            "stage": stage,
+            "eliminated": bool(eliminated),
+        }
+    return discipline
+
+
 def build_wiki(db, lang):
     size = db.execute("SELECT MAX(pid) + 1 FROM person").fetchone()[0]
     titles = [None] * size
@@ -166,7 +194,7 @@ def main():
         sys.exit(1)
 
     files = {"map.json": build_map(db), "live.json": build_live(db),
-              "status.json": build_status(db)}
+              "status.json": build_status(db), "discipline.json": build_discipline(db)}
     for lang in LANGS:
         files[f"wiki_{lang}.json"] = build_wiki(db, lang)
     db.close()

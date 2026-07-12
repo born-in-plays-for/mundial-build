@@ -98,6 +98,23 @@ CREATE TABLE team_status (
     CHECK (eliminated_by IS NULL OR eliminated_round <> 'Group Stage')
 );
 
+-- ── Discipline (fouls/cards) ────────────────────────────────────────────
+-- One row per WC2026 team, aggregated by fetch_discipline_stats.py across
+-- every FINISHED fixture so far (api-football's /fixtures/statistics).
+-- Raw counts only — per-match averages, fouls-per-card, and current stage
+-- are derived in view_discipline below, same division of labour as
+-- view_squad_size deriving squad size from person rows instead of storing it.
+-- fouls_suffered isn't an api-football field: it's the opponent's Fouls
+-- value in that same fixture, summed per team across the tournament.
+CREATE TABLE team_discipline (
+    country          INTEGER PRIMARY KEY REFERENCES country(id),
+    matches_played   INTEGER NOT NULL CHECK (matches_played >= 0),
+    fouls_committed  INTEGER NOT NULL CHECK (fouls_committed >= 0),
+    fouls_suffered   INTEGER NOT NULL CHECK (fouls_suffered >= 0),
+    yellow_cards     INTEGER NOT NULL CHECK (yellow_cards >= 0),
+    red_cards        INTEGER NOT NULL CHECK (red_cards >= 0)
+);
+
 -- ── person ──────────────────────────────────────────────────────────────
 -- Players and coaches, one row per human, stored exactly once.
 --
@@ -267,6 +284,26 @@ JOIN country c ON c.id = t.country
 LEFT JOIN furthest_won fw ON fw.country = t.country
 WHERE t.status = 'alive';
 
+-- Discipline stats + each team's current stage in one row (source of
+-- data/v2/discipline.json). stage/eliminated reuse the exact same logic as
+-- data/v2/status.json / view_current_round above rather than recomputing
+-- it: eliminated_round for a knocked-out team, otherwise view_current_round's
+-- walk-the-win-chain result for a team still alive.
+CREATE VIEW view_discipline AS
+SELECT c.iso2,
+       d.matches_played,
+       d.fouls_committed, d.fouls_suffered,
+       ROUND(d.fouls_committed * 1.0 / NULLIF(d.matches_played, 0), 2) AS avg_fouls_committed,
+       ROUND(d.fouls_suffered * 1.0 / NULLIF(d.matches_played, 0), 2) AS avg_fouls_suffered,
+       d.yellow_cards, d.red_cards,
+       ROUND(d.fouls_committed * 1.0 / NULLIF(d.yellow_cards + d.red_cards, 0), 2) AS fouls_per_card,
+       CASE WHEN t.status = 'eliminated' THEN t.eliminated_round ELSE cr.current_round END AS stage,
+       (t.status = 'eliminated') AS eliminated
+FROM team_discipline d
+JOIN country c ON c.id = d.country
+JOIN team_status t ON t.country = d.country
+LEFT JOIN view_current_round cr ON cr.iso2 = c.iso2;
+
 -- Integrity checks that go beyond per-row constraints; the load phase
 -- fails if this view returns any rows.
 CREATE VIEW view_anomalies AS
@@ -297,4 +334,9 @@ UNION ALL
 SELECT 'wc2026 nation with no team_status row', c.name
 FROM country c
 WHERE c.is_wc2026 = 1
-  AND NOT EXISTS (SELECT 1 FROM team_status t WHERE t.country = c.id);
+  AND NOT EXISTS (SELECT 1 FROM team_status t WHERE t.country = c.id)
+UNION ALL
+SELECT 'wc2026 nation with no team_discipline row', c.name
+FROM country c
+WHERE c.is_wc2026 = 1
+  AND NOT EXISTS (SELECT 1 FROM team_discipline d WHERE d.country = c.id);

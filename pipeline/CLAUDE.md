@@ -38,10 +38,16 @@ python3 pipeline/build_player_wiki.py   # → pipeline/player_wiki.json
 # file directly, so there's no separate team-status fetch.
 python3 pipeline/fetch_fixtures.py      # → data/fixtures.json
 
+# Per-team foul/card discipline stats (needs API_FOOTBALL_KEY) — re-run whenever
+# fixtures finish. Cached per-fixture (pipeline/discipline_stats_cache.json), so a
+# rerun only fetches newly-finished fixtures.
+python3 pipeline/fetch_discipline_stats.py  # → pipeline/discipline_stats.json
+
 # Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
-# map_data.json / player_wiki.json / wiki_<lang>.json / data/fixtures.json above are this
-# step's inputs — pipeline-internal (except data/fixtures.json, which is also
-# frontend-facing on its own), not what the frontend fetches from the DB side.
+# map_data.json / player_wiki.json / wiki_<lang>.json / data/fixtures.json /
+# discipline_stats.json above are this step's inputs — pipeline-internal (except
+# data/fixtures.json, which is also frontend-facing on its own), not what the
+# frontend fetches from the DB side.
 python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + person_registry.csv
 python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically — THE
                              # frontend-facing output of this whole pipeline
@@ -53,8 +59,9 @@ python3 extras/add_gdp_pc_ppp.py     # → extras/gdp_pc_ppp.json            (fo
 python3 extras/add_hdi.py            # → extras/hdi.json                   (for pages/wc2026_correlation.html)
 ```
 
-`fetch_r32_teams.py`, `build_player_wiki.py`, and `fetch_fixtures.py` all
-need an api-football key — set `API_FOOTBALL_KEY` in `.env` (auto-loaded) or
+`fetch_r32_teams.py`, `build_player_wiki.py`, `fetch_fixtures.py`, and
+`fetch_discipline_stats.py` all need an api-football key — set
+`API_FOOTBALL_KEY` in `.env` (auto-loaded) or
 pass `--key` to `fetch_r32_teams.py`.
 
 This is the canonical command sequence — `pipeline/README.md`'s "Core

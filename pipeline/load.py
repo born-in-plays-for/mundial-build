@@ -12,6 +12,7 @@ nothing upstream changes:
   pipeline/player_wiki.json       (build_player_wiki.py)
   pipeline/wiki_<lang>.json x5    (add_wiki_urls.py)
   pipeline/r32_teams.json         (fetch_r32_teams.py)
+  pipeline/discipline_stats.json  (fetch_discipline_stats.py)
   data/elo_rank.json              (update_elo_rankings.py)
   data/fixtures.json              (fetch_fixtures.py)
 
@@ -19,9 +20,9 @@ All but data/elo_rank.json and data/fixtures.json are pipeline-internal
 intermediates now, not frontend-facing — only this script reads them
 (r32_teams.json's iso2 map moved to data/v2/live.json's "teams" key). They
 live in pipeline/, committed (not gitignored), because add_wiki_urls.py/
-build_player_wiki.py/fetch_r32_teams.py hit live external APIs to produce
-them and aren't cheap to regenerate on a whim, same as
-wc2026_players.csv/wc2026_coaches.csv.
+build_player_wiki.py/fetch_r32_teams.py/fetch_discipline_stats.py hit live
+external APIs to produce them and aren't cheap to regenerate on a whim,
+same as wc2026_players.csv/wc2026_coaches.csv.
 
 Team elimination status (the team_status table / data/v2/status.json) is
 derived here from data/fixtures.json's round/status/winner fields — a pure
@@ -233,6 +234,7 @@ def main():
     player_wiki = read_json(PIPELINE / "player_wiki.json")
     elo         = read_json(DATA / "elo_rank.json")
     r32         = read_json(PIPELINE / "r32_teams.json")
+    discipline  = read_json(PIPELINE / "discipline_stats.json")
     fixtures    = read_json(DATA / "fixtures.json")
     wiki        = {lang: read_json(PIPELINE / f"wiki_{lang}.json")["titles"] for lang in LANGS}
 
@@ -322,6 +324,12 @@ def main():
                      eliminated_date=?, eliminated_by=? WHERE country=?""",
                    (info["round"], info["date"], cid(lost_to) if lost_to else None, cid(iso2)))
 
+    # ── team_discipline ─────────────────────────────────────────────────
+    for iso2, t in discipline["teams"].items():
+        db.execute("INSERT INTO team_discipline VALUES (?,?,?,?,?,?)",
+                   (cid(iso2), t["matches"], t["foulsCommitted"], t["foulsSuffered"],
+                    t["yellowCards"], t["redCards"]))
+
     # ── provenance ──────────────────────────────────────────────────────
     pop_updated = max((c["pop_year"] for c in countries.values() if c.get("pop_year")),
                       default=None)
@@ -330,6 +338,8 @@ def main():
     db.execute("INSERT INTO provenance VALUES ('population',?,?)", (POP_SOURCE, pop_updated))
     db.execute("INSERT INTO provenance VALUES ('team_status',?,?)",
                (fixtures["source"], fixtures["updated"]))
+    db.execute("INSERT INTO provenance VALUES ('discipline',?,?)",
+               (discipline["source"], discipline["updated"]))
 
     # ── anomaly gate ────────────────────────────────────────────────────
     # The only tolerated anomaly is the missing-EN-title consequence of a
@@ -348,7 +358,7 @@ def main():
     print(f"  {n('country')} countries, {n('person')} persons ({added} new pids), "
           f"{n('af_person')} af ids, {n('wiki_title')} wiki titles, "
           f"{n('elo_ranking')} elo entries, {n('team_status')} teams tracked "
-          f"({eliminated_n} eliminated)")
+          f"({eliminated_n} eliminated), {n('team_discipline')} discipline rows")
     db.close()
 
 
