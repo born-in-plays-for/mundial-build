@@ -45,7 +45,13 @@ GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlati
 `fixtures.json` (`pipeline/fetch_fixtures.py`) is every WC2026 fixture, past and
 planned — raw match-level data (kickoff date, round, teams, score, status), written
 straight to the submodule like `elo_rank.json`, not routed through the `v2/`
-relational build: nothing in it needs a pid or a person/wiki join.
+relational build: nothing in it needs a pid or a person/wiki join. It also carries
+a top-level `groups` map (`{"A": [iso2, ...], ..., "L": [...]}`, 12 groups of 4,
+alphabetical) and a `group` field (the letter) on every `"Group Stage - N"`
+fixture, both sourced from api-football's `/standings` endpoint (the fixtures
+endpoint's own `round` field only carries the matchday, never the letter) —
+fixed at the draw, not standings order, so this doesn't need re-fetching once
+the group stage ends.
 
 The older `map_data.json`, `player_wiki.json`, non-`v2` `wiki_<lang>.json`, and
 `r32_teams.json` files are **pipeline-internal intermediates now, not

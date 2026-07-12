@@ -9,6 +9,13 @@ submodule, not routed through the load.py/export.py relational build —
 nothing here needs a pid or a person/wiki join, so the DB gains nothing
 over a passthrough list.
 
+Also fetches api-football's /standings endpoint once, purely to read each
+team's "Group A".."Group L" label (the fixtures endpoint's own "round" field
+only carries the matchday, e.g. "Group Stage - 1" — never the letter).
+Every group-stage fixture gets a "group" field, and the payload gets a
+top-level "groups" map ({letter: [iso2, ...]}, alphabetical — a structural
+fact fixed at the draw, not standings order, which changes match to match).
+
 load.py also reads this file directly to derive each team's tournament
 elimination status (data/v2/status.json) — a pure function of round/status/
 winner, so no second api-football fetch is needed for that. The "winner"
@@ -71,6 +78,36 @@ def team_iso2(name, iso_map):
         return iso_map.get(name.lower())
 
 
+def fetch_group_letters(fetch_json, iso_map, headers):
+    """Return {iso2: 'A'} from api-football's /standings endpoint."""
+    data = fetch_json(f"{API_BASE}/standings",
+                      {"league": WC2026_LEAGUE_ID, "season": WC2026_SEASON}, headers)
+    response = data["response"]
+    if not response:
+        return {}
+    standings = response[0]["league"]["standings"]
+
+    letters = {}
+    unresolved = set()
+    for group in standings:
+        for row in group:
+            # api-football also emits a synthetic "Group Stage" bucket lumping
+            # together every team eliminated in the group stage (across all
+            # 12 real groups) — not an actual group, skip it.
+            letter = row["group"].removeprefix("Group ")
+            if letter == "Stage":
+                continue
+            name = row["team"]["name"]
+            iso2 = team_iso2(name, iso_map)
+            if not iso2:
+                unresolved.add(name)
+                continue
+            letters[iso2] = letter
+    if unresolved:
+        print(f"  Warning: could not resolve country for standings entries: {sorted(unresolved)}", file=sys.stderr)
+    return letters
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--refresh-countries", action="store_true",
@@ -90,6 +127,9 @@ def main():
     print(f"  {len(raw)} fixtures", flush=True)
 
     iso_map = fetch_country_codes(fetch_json, API_BASE, headers, refresh=args.refresh_countries)
+
+    print("Fetching group standings…", flush=True)
+    group_letters = fetch_group_letters(fetch_json, iso_map, headers)
 
     fixtures = []
     unresolved = set()
@@ -117,6 +157,14 @@ def main():
         penalty = f["score"]["penalty"]
         if penalty["home"] is not None:
             entry["score"] = {"penalty": penalty}
+        if entry["round"].startswith("Group Stage"):
+            home_group = group_letters.get(home_iso2)
+            away_group = group_letters.get(away_iso2)
+            if home_group and home_group == away_group:
+                entry["group"] = home_group
+            else:
+                print(f"  Warning: group mismatch/missing for fixture {entry['id']} "
+                      f"({home_iso2}={home_group!r} vs {away_iso2}={away_group!r})", file=sys.stderr)
         fixtures.append(entry)
 
     if unresolved:
@@ -124,9 +172,17 @@ def main():
 
     fixtures.sort(key=lambda x: x["date"])
 
+    groups = {}
+    for iso2, letter in group_letters.items():
+        groups.setdefault(letter, []).append(iso2)
+    for letter in groups:
+        groups[letter].sort()
+    groups = dict(sorted(groups.items()))
+
     payload = {
         "source": "api-football.com",
         "updated": date.today().isoformat(),
+        "groups": groups,
         "fixtures": fixtures,
     }
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

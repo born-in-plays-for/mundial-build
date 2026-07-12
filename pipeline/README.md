@@ -227,7 +227,23 @@ Every WC2026 fixture, played or scheduled, straight from api-football's
 `/fixtures` endpoint: `{id, date, round, status, home, away, goals: {home,
 away}, winner}` per fixture, `home`/`away` resolved to iso2. Unplayed
 fixtures carry `status: "NS"`, `goals: {home: null, away: null}`, and
-`winner: null`.
+`winner: null`. Every `"Group Stage - N"` fixture additionally carries a
+`group` field (`"A"`–`"L"`).
+
+The payload also carries a top-level `groups` map (`{"A": [iso2, ...], ...}`,
+12 groups of 4, alphabetical within each group) — the 4-team partition is
+technically derivable from the fixture graph alone (each group is a disjoint
+K4 clique in the group-stage rounds), but the **letter** isn't: `/fixtures`'
+own `round` field only ever carries the matchday (`"Group Stage - 1"`), never
+the group name. Both `group` and `groups` come from one extra call to
+api-football's `/standings` endpoint (`fetch_group_letters()`), matched back
+to teams the same way `/fixtures` teams are (`team_iso2()`). That endpoint
+also emits a synthetic 13th bucket literally named `"Group Stage"` — every
+non-qualifying team lumped together regardless of which real group it was
+in — which `fetch_group_letters()` explicitly filters out rather than
+letting it clobber those teams' real letters. Since groups are fixed at the
+draw, `group`/`groups` never need re-fetching once the group stage ends, even
+though `fetch_fixtures.py` re-fetches them (cheaply) on every run.
 
 Written directly to `data/fixtures.json` (the submodule), the same way
 `update_elo_rankings.py` writes `data/elo_rank.json` — **not** routed through
