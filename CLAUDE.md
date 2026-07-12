@@ -51,7 +51,13 @@ alphabetical) and a `group` field (the letter) on every `"Group Stage - N"`
 fixture, both sourced from api-football's `/standings` endpoint (the fixtures
 endpoint's own `round` field only carries the matchday, never the letter) —
 fixed at the draw, not standings order, so this doesn't need re-fetching once
-the group stage ends.
+the group stage ends. The same `/standings` call also fills a top-level
+`standings` map (`{"A": [{iso2, rank, points, played, win, draw, lose,
+goalsFor, goalsAgainst, goalsDiff}, ...], ...}`, rank order) — a full
+classement table per group, sourced from api-football's own `rank` so FIFA's
+tie-break rules (head-to-head, discipline, ...) aren't reimplemented
+client-side. Unlike `groups`, `standings` **does** change match to match, so
+it's re-fetched fresh on every `fetch_fixtures.py` run.
 
 The older `map_data.json`, `player_wiki.json`, non-`v2` `wiki_<lang>.json`, and
 `r32_teams.json` files are **pipeline-internal intermediates now, not

@@ -235,15 +235,27 @@ The payload also carries a top-level `groups` map (`{"A": [iso2, ...], ...}`,
 technically derivable from the fixture graph alone (each group is a disjoint
 K4 clique in the group-stage rounds), but the **letter** isn't: `/fixtures`'
 own `round` field only ever carries the matchday (`"Group Stage - 1"`), never
-the group name. Both `group` and `groups` come from one extra call to
-api-football's `/standings` endpoint (`fetch_group_letters()`), matched back
-to teams the same way `/fixtures` teams are (`team_iso2()`). That endpoint
-also emits a synthetic 13th bucket literally named `"Group Stage"` — every
-non-qualifying team lumped together regardless of which real group it was
-in — which `fetch_group_letters()` explicitly filters out rather than
-letting it clobber those teams' real letters. Since groups are fixed at the
-draw, `group`/`groups` never need re-fetching once the group stage ends, even
-though `fetch_fixtures.py` re-fetches them (cheaply) on every run.
+the group name. `group`, `groups`, and `standings` (below) all come from one
+extra call to api-football's `/standings` endpoint (`fetch_standings()`),
+matched back to teams the same way `/fixtures` teams are (`team_iso2()`).
+That endpoint also emits a synthetic 13th bucket literally named `"Group
+Stage"` — every non-qualifying team lumped together regardless of which real
+group it was in — which `fetch_standings()` explicitly filters out rather
+than letting it clobber those teams' real letters. Since groups are fixed at
+the draw, `group`/`groups` never need re-fetching once the group stage ends,
+even though `fetch_fixtures.py` re-fetches them (cheaply) on every run.
+
+The payload also carries a top-level `standings` map (`{"A": [{iso2, rank,
+points, played, win, draw, lose, goalsFor, goalsAgainst, goalsDiff}, ...],
+...}`, ordered by `rank`) — a full classement table per group, straight from
+the same `/standings` rows `group`/`groups` are built from. `rank` is taken
+as api-football computes it rather than resorted by points here, since it
+already encodes FIFA's actual tie-break rules (head-to-head record,
+discipline, ...) — reimplementing that client-side would risk disagreeing
+with the official standings on exactly the edge cases tie-breaks exist for.
+Unlike `groups`, `standings` changes every time a group-stage fixture
+finishes, so (unlike `group`/`groups`) it's meant to be re-fetched on every
+run, same cadence as fixture scores.
 
 Written directly to `data/fixtures.json` (the submodule), the same way
 `update_elo_rankings.py` writes `data/elo_rank.json` — **not** routed through

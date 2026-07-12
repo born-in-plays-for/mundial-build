@@ -9,12 +9,16 @@ submodule, not routed through the load.py/export.py relational build —
 nothing here needs a pid or a person/wiki join, so the DB gains nothing
 over a passthrough list.
 
-Also fetches api-football's /standings endpoint once, purely to read each
+Also fetches api-football's /standings endpoint once, both to read each
 team's "Group A".."Group L" label (the fixtures endpoint's own "round" field
-only carries the matchday, e.g. "Group Stage - 1" — never the letter).
-Every group-stage fixture gets a "group" field, and the payload gets a
-top-level "groups" map ({letter: [iso2, ...]}, alphabetical — a structural
-fact fixed at the draw, not standings order, which changes match to match).
+only carries the matchday, e.g. "Group Stage - 1" — never the letter) and to
+capture each team's classement row (points, played/win/draw/lose,
+goals for/against/diff, and api-football's own rank, which already encodes
+FIFA's tie-break rules). Every group-stage fixture gets a "group" field; the
+payload gets a top-level "groups" map ({letter: [iso2, ...]}, alphabetical —
+a structural fact fixed at the draw) and a "standings" map ({letter: [row,
+...]}, rank order — unlike "groups" this DOES change match to match, so it's
+re-fetched fresh on every run just like fixture scores are).
 
 load.py also reads this file directly to derive each team's tournament
 elimination status (data/v2/status.json) — a pure function of round/status/
@@ -78,16 +82,23 @@ def team_iso2(name, iso_map):
         return iso_map.get(name.lower())
 
 
-def fetch_group_letters(fetch_json, iso_map, headers):
-    """Return {iso2: 'A'} from api-football's /standings endpoint."""
+def fetch_standings(fetch_json, iso_map, headers):
+    """Return ({iso2: 'A'}, {'A': [row, ...]}) from api-football's /standings.
+
+    Each row is {iso2, rank, points, played, win, draw, lose, goalsFor,
+    goalsAgainst, goalsDiff} in api-football's own rank order — that rank
+    already encodes FIFA's tie-break rules (head-to-head, discipline, ...),
+    not just a naive points sort, so it's taken as-is rather than recomputed.
+    """
     data = fetch_json(f"{API_BASE}/standings",
                       {"league": WC2026_LEAGUE_ID, "season": WC2026_SEASON}, headers)
     response = data["response"]
     if not response:
-        return {}
+        return {}, {}
     standings = response[0]["league"]["standings"]
 
     letters = {}
+    by_group = {}
     unresolved = set()
     for group in standings:
         for row in group:
@@ -103,9 +114,24 @@ def fetch_group_letters(fetch_json, iso_map, headers):
                 unresolved.add(name)
                 continue
             letters[iso2] = letter
+            all_ = row["all"]
+            by_group.setdefault(letter, []).append({
+                "iso2": iso2,
+                "rank": row["rank"],
+                "points": row["points"],
+                "played": all_["played"],
+                "win": all_["win"],
+                "draw": all_["draw"],
+                "lose": all_["lose"],
+                "goalsFor": all_["goals"]["for"],
+                "goalsAgainst": all_["goals"]["against"],
+                "goalsDiff": row["goalsDiff"],
+            })
     if unresolved:
         print(f"  Warning: could not resolve country for standings entries: {sorted(unresolved)}", file=sys.stderr)
-    return letters
+    for letter in by_group:
+        by_group[letter].sort(key=lambda r: r["rank"])
+    return letters, by_group
 
 
 def main():
@@ -129,7 +155,7 @@ def main():
     iso_map = fetch_country_codes(fetch_json, API_BASE, headers, refresh=args.refresh_countries)
 
     print("Fetching group standings…", flush=True)
-    group_letters = fetch_group_letters(fetch_json, iso_map, headers)
+    group_letters, standings_by_group = fetch_standings(fetch_json, iso_map, headers)
 
     fixtures = []
     unresolved = set()
@@ -178,11 +204,13 @@ def main():
     for letter in groups:
         groups[letter].sort()
     groups = dict(sorted(groups.items()))
+    standings = dict(sorted(standings_by_group.items()))
 
     payload = {
         "source": "api-football.com",
         "updated": date.today().isoformat(),
         "groups": groups,
+        "standings": standings,
         "fixtures": fixtures,
     }
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
