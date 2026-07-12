@@ -27,9 +27,15 @@ pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
 key (`{af_team_id: iso2}`, api-football's numeric team id) — this replaced
 the standalone `r32_teams.json` frontend fetch in July 2026. `v2/discipline.json`
 (`{iso2: {matchesPlayed, foulsCommitted, foulsSuffered, avgFoulsCommitted,
-avgFoulsSuffered, yellowCards, redCards, foulsPerCard, stage, eliminated}}`,
-one entry per WC2026 team) is per-team foul/card totals from api-football's
-fixture statistics — see `pipeline/README.md`'s "Discipline stats" section.
+avgFoulsSuffered, yellowCards, redCards, foulsPerCard, stage, eliminated,
+byStage}}`, one entry per WC2026 team) is per-team foul/card totals from
+api-football's fixture statistics — see `pipeline/README.md`'s "Discipline
+stats" section. Top-level fields are the team's latest cumulative totals;
+`byStage` gives the SAME cumulative totals frozen at each earlier stage too
+(`{stage: {...}}`) — so e.g. a Quarter-finals red card is in
+`byStage["Quarter-finals"]` but not `byStage["Round of 16"]`, letting a
+client show "figures as of round X" without doing its own running-total math
+or leaking a later round's cards into an earlier one.
 **Not yet wired into `update_fixtures.sh`** — stays stale between manual
 `pipeline/fetch_discipline_stats.py` runs even as fixtures/status auto-refresh.
 

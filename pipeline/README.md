@@ -45,7 +45,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `build_player_wiki.py` | `pipeline/player_wiki.json`, `player_aliases_manual.json` | Player/coach identity resolver — see "Player identity" below |
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `fetch_fixtures.py` | `data/fixtures.json` | Every WC2026 fixture, past and planned — see "Fixtures" below |
-| `fetch_discipline_stats.py` | `pipeline/discipline_stats.json` | Per-team foul/card totals from api-football's fixture statistics — see "Discipline stats" below |
+| `fetch_discipline_stats.py` | `pipeline/discipline_stats.json` | Per-fixture foul/card counts from api-football's fixture statistics — see "Discipline stats" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build; also derives tournament elimination status from `data/fixtures.json` — see "Relational model" and "Team status" below |
 | `export.py` | `data/v2/` (9 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
@@ -121,6 +121,7 @@ erDiagram
     }
     team_discipline {
         INTEGER country PK, FK
+        TEXT    stage PK "Group Stage | Round of 32 | ... | Final -- that stage's OWN totals, not cumulative"
         INTEGER matches_played
         INTEGER fouls_committed
         INTEGER fouls_suffered "opponent's Fouls stat in the same fixture, summed"
@@ -244,34 +245,49 @@ full refresh + commit).
 
 ## Discipline stats (`fetch_discipline_stats.py` → `team_discipline` table → `data/v2/discipline.json`)
 
-Per-team foul/card totals, aggregated from api-football's
-`/fixtures/statistics` across every **finished** (`FT`/`AET`/`PEN`) fixture
-in `data/fixtures.json` — no separate `/fixtures` call. `"Fouls suffered"`
+Per-fixture foul/card counts from api-football's `/fixtures/statistics`,
+fetched for every **finished** (`FT`/`AET`/`PEN`) fixture in
+`data/fixtures.json` — no separate `/fixtures` call. `"Fouls suffered"`
 isn't a field api-football exposes: it's derived per fixture as the
-*opponent's* `Fouls` value in that same match, summed across the tournament.
+*opponent's* `Fouls` value in that same match.
 
-`fetch_discipline_stats.py` writes only the raw counts (`matches`,
-`foulsCommitted`, `foulsSuffered`, `yellowCards`, `redCards`) to
-`pipeline/discipline_stats.json`, keyed by iso2 — pipeline-internal,
+`fetch_discipline_stats.py` only resolves team identity and writes raw
+per-fixture counts — `{fixture_id: {iso2: {foulsCommitted, yellowCards,
+redCards}}}` — to `pipeline/discipline_stats.json`; it does **not**
+aggregate across fixtures or classify rounds itself. Pipeline-internal,
 committed (same "hits a live API, not cheap to redo" reasoning as
 `r32_teams.json`). Per-fixture API responses are cached in
 `pipeline/discipline_stats_cache.json` (also committed), so a re-run after
 new fixtures finish only fetches the new ones.
 
-Everything derived — per-match averages, fouls-per-card, and each team's
-current stage — lives in `schema.sql`'s `view_discipline`, not in the JSON:
-same division of labour as `view_squad_size` computing squad size from
-`person` rows instead of storing it. `stage`/`eliminated` reuse `team_status`
-and `view_current_round` directly (see "Team status" above) rather than
-recomputing elimination logic a second time — a team's discipline `stage`
-and its `status.json` elimination round can never drift apart, because
-they're the same underlying columns.
+All aggregation happens in `load.py`'s `compute_discipline()`, which
+crosses `discipline_stats.json` against `data/fixtures.json` and buckets
+each fixture into a stage via **the same `classify_round()`**
+`compute_eliminated()` uses for elimination status (see "Team status"
+above) — so a fixture's discipline stage can never disagree with its
+elimination round. Each `team_discipline` row is one (team, stage)'s **own**
+totals, not cumulative; `schema.sql`'s `view_discipline` turns that into a
+running "cumulative through this stage" total per team via a window
+function (`SUM(...) OVER (PARTITION BY team ORDER BY stage)`), the same
+derive-don't-store approach as `view_squad_size`. `view_team_stage` (factored
+out of the old inline `view_discipline` logic) gives each team's *current*
+stage/eliminated flag, reusing `team_status`/`view_current_round` — see
+"Team status" above.
 
-`data/v2/discipline.json` is `{iso2: {matchesPlayed, foulsCommitted,
-foulsSuffered, avgFoulsCommitted, avgFoulsSuffered, yellowCards, redCards,
-foulsPerCard, stage, eliminated}}`, one entry per WC2026 team.
-`foulsPerCard` is `null` for a team with zero cards so far (not `0` or
-`Infinity`).
+This exists specifically so a client can show figures "as of round X"
+without a card from a later round leaking into an earlier one — e.g. a red
+card shown in the Quarter-finals must not appear in that team's Round of 16
+figures. `data/v2/discipline.json` is `{iso2: {matchesPlayed,
+foulsCommitted, foulsSuffered, avgFoulsCommitted, avgFoulsSuffered,
+yellowCards, redCards, foulsPerCard, stage, eliminated, byStage}}`, one
+entry per WC2026 team. The top-level fields are the team's latest
+cumulative totals (through the furthest stage actually played so far);
+`byStage` is `{stage: {same fields minus stage/eliminated}}`, the same
+cumulative totals frozen at each earlier stage too, so a client picks
+`byStage["Round of 16"]` directly instead of doing its own running-total
+math. `foulsPerCard` is `null` for a team/stage with zero cards so far (not
+`0` or `Infinity`). `eliminated` is a plain boolean here — unlike
+`status.json`, which uses absence-from-file instead.
 
 **Not yet wired into `update_fixtures.sh`** — that script only re-runs
 `fetch_fixtures.py`, so `data/v2/discipline.json` goes stale between manual

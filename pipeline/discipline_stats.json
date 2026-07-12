@@ -1,342 +1,1206 @@
 {
   "source": "api-football.com",
   "updated": "2026-07-12",
-  "teams": {
-    "ar": {
-      "matches": 6,
-      "foulsCommitted": 73,
-      "foulsSuffered": 75,
-      "yellowCards": 6,
-      "redCards": 0
+  "fixtures": {
+    "1489369": {
+      "mx": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 1
+      },
+      "za": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 2
+      }
     },
-    "at": {
-      "matches": 4,
-      "foulsCommitted": 47,
-      "foulsSuffered": 31,
-      "yellowCards": 5,
-      "redCards": 0
+    "1538999": {
+      "kr": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "cz": {
+        "foulsCommitted": 16,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "au": {
-      "matches": 4,
-      "foulsCommitted": 46,
-      "foulsSuffered": 39,
-      "yellowCards": 5,
-      "redCards": 0
+    "1539000": {
+      "ca": {
+        "foulsCommitted": 10,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "ba": {
+        "foulsCommitted": 20,
+        "yellowCards": 3,
+        "redCards": 0
+      }
     },
-    "ba": {
-      "matches": 4,
-      "foulsCommitted": 60,
-      "foulsSuffered": 38,
-      "yellowCards": 7,
-      "redCards": 1
+    "1489370": {
+      "us": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "py": {
+        "foulsCommitted": 17,
+        "yellowCards": 5,
+        "redCards": 0
+      }
     },
-    "be": {
-      "matches": 6,
-      "foulsCommitted": 78,
-      "foulsSuffered": 70,
-      "yellowCards": 6,
-      "redCards": 1
+    "1489373": {
+      "qa": {
+        "foulsCommitted": 12,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "ch": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "br": {
-      "matches": 5,
-      "foulsCommitted": 51,
-      "foulsSuffered": 57,
-      "yellowCards": 8,
-      "redCards": 0
+    "1489371": {
+      "br": {
+        "foulsCommitted": 16,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "ma": {
+        "foulsCommitted": 14,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "ca": {
-      "matches": 5,
-      "foulsCommitted": 72,
-      "foulsSuffered": 73,
-      "yellowCards": 11,
-      "redCards": 0
+    "1489372": {
+      "ht": {
+        "foulsCommitted": 23,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "gb-sct": {
+        "foulsCommitted": 21,
+        "yellowCards": 3,
+        "redCards": 0
+      }
     },
-    "cd": {
-      "matches": 4,
-      "foulsCommitted": 44,
-      "foulsSuffered": 47,
-      "yellowCards": 6,
-      "redCards": 0
+    "1539001": {
+      "au": {
+        "foulsCommitted": 12,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "tr": {
+        "foulsCommitted": 4,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "ch": {
-      "matches": 6,
-      "foulsCommitted": 87,
-      "foulsSuffered": 90,
-      "yellowCards": 8,
-      "redCards": 1
+    "1489374": {
+      "de": {
+        "foulsCommitted": 18,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "cw": {
+        "foulsCommitted": 11,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "ci": {
-      "matches": 4,
-      "foulsCommitted": 29,
-      "foulsSuffered": 36,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489376": {
+      "nl": {
+        "foulsCommitted": 7,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "jp": {
+        "foulsCommitted": 7,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "co": {
-      "matches": 5,
-      "foulsCommitted": 70,
-      "foulsSuffered": 68,
-      "yellowCards": 8,
-      "redCards": 0
+    "1489375": {
+      "ci": {
+        "foulsCommitted": 10,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "ec": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "cv": {
-      "matches": 4,
-      "foulsCommitted": 27,
-      "foulsSuffered": 50,
-      "yellowCards": 5,
-      "redCards": 0
+    "1539002": {
+      "se": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "tn": {
+        "foulsCommitted": 8,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "cw": {
-      "matches": 3,
-      "foulsCommitted": 32,
-      "foulsSuffered": 31,
-      "yellowCards": 7,
-      "redCards": 0
+    "1489380": {
+      "es": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "cv": {
+        "foulsCommitted": 1,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "cz": {
-      "matches": 3,
-      "foulsCommitted": 37,
-      "foulsSuffered": 32,
-      "yellowCards": 1,
-      "redCards": 0
+    "1489377": {
+      "be": {
+        "foulsCommitted": 15,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "eg": {
+        "foulsCommitted": 15,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "de": {
-      "matches": 4,
-      "foulsCommitted": 51,
-      "foulsSuffered": 45,
-      "yellowCards": 3,
-      "redCards": 0
+    "1489379": {
+      "sa": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "uy": {
+        "foulsCommitted": 6,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "dz": {
-      "matches": 4,
-      "foulsCommitted": 29,
-      "foulsSuffered": 41,
-      "yellowCards": 3,
-      "redCards": 0
+    "1489378": {
+      "ir": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "nz": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "ec": {
-      "matches": 4,
-      "foulsCommitted": 49,
-      "foulsSuffered": 40,
-      "yellowCards": 8,
-      "redCards": 1
+    "1489383": {
+      "fr": {
+        "foulsCommitted": 5,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "sn": {
+        "foulsCommitted": 9,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "eg": {
-      "matches": 5,
-      "foulsCommitted": 59,
-      "foulsSuffered": 70,
-      "yellowCards": 12,
-      "redCards": 0
+    "1539016": {
+      "iq": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "no": {
+        "foulsCommitted": 13,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "es": {
-      "matches": 6,
-      "foulsCommitted": 68,
-      "foulsSuffered": 59,
-      "yellowCards": 5,
-      "redCards": 0
+    "1489381": {
+      "ar": {
+        "foulsCommitted": 13,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "dz": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "fr": {
-      "matches": 6,
-      "foulsCommitted": 59,
-      "foulsSuffered": 58,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489382": {
+      "at": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "jo": {
+        "foulsCommitted": 7,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "gb-eng": {
-      "matches": 6,
-      "foulsCommitted": 62,
-      "foulsSuffered": 88,
-      "yellowCards": 7,
-      "redCards": 1
+    "1539003": {
+      "pt": {
+        "foulsCommitted": 9,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "cd": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "gb-sct": {
-      "matches": 3,
-      "foulsCommitted": 42,
-      "foulsSuffered": 42,
-      "yellowCards": 5,
-      "redCards": 0
+    "1489384": {
+      "gb-eng": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "hr": {
+        "foulsCommitted": 12,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "gh": {
-      "matches": 4,
-      "foulsCommitted": 56,
-      "foulsSuffered": 48,
-      "yellowCards": 6,
-      "redCards": 0
+    "1489385": {
+      "gh": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "pa": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "hr": {
-      "matches": 4,
-      "foulsCommitted": 45,
-      "foulsSuffered": 48,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489386": {
+      "uz": {
+        "foulsCommitted": 14,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "co": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "ht": {
-      "matches": 3,
-      "foulsCommitted": 55,
-      "foulsSuffered": 44,
-      "yellowCards": 7,
-      "redCards": 0
+    "1539004": {
+      "cz": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "za": {
+        "foulsCommitted": 10,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "iq": {
-      "matches": 3,
-      "foulsCommitted": 27,
-      "foulsSuffered": 31,
-      "yellowCards": 4,
-      "redCards": 1
+    "1539005": {
+      "ch": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "ba": {
+        "foulsCommitted": 18,
+        "yellowCards": 2,
+        "redCards": 1
+      }
     },
-    "ir": {
-      "matches": 3,
-      "foulsCommitted": 35,
-      "foulsSuffered": 26,
-      "yellowCards": 6,
-      "redCards": 0
+    "1489387": {
+      "ca": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "qa": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 2
+      }
     },
-    "jo": {
-      "matches": 3,
-      "foulsCommitted": 31,
-      "foulsSuffered": 25,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489388": {
+      "mx": {
+        "foulsCommitted": 9,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "kr": {
+        "foulsCommitted": 7,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "jp": {
-      "matches": 4,
-      "foulsCommitted": 55,
-      "foulsSuffered": 30,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489391": {
+      "us": {
+        "foulsCommitted": 12,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "au": {
+        "foulsCommitted": 16,
+        "yellowCards": 4,
+        "redCards": 0
+      }
     },
-    "kr": {
-      "matches": 3,
-      "foulsCommitted": 25,
-      "foulsSuffered": 32,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489390": {
+      "gb-sct": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "ma": {
+        "foulsCommitted": 8,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "ma": {
-      "matches": 6,
-      "foulsCommitted": 74,
-      "foulsSuffered": 97,
-      "yellowCards": 7,
-      "redCards": 0
+    "1489389": {
+      "br": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "ht": {
+        "foulsCommitted": 14,
+        "yellowCards": 3,
+        "redCards": 0
+      }
     },
-    "mx": {
-      "matches": 5,
-      "foulsCommitted": 58,
-      "foulsSuffered": 48,
-      "yellowCards": 4,
-      "redCards": 1
+    "1539006": {
+      "tr": {
+        "foulsCommitted": 14,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "py": {
+        "foulsCommitted": 15,
+        "yellowCards": 1,
+        "redCards": 1
+      }
     },
-    "nl": {
-      "matches": 4,
-      "foulsCommitted": 44,
-      "foulsSuffered": 45,
-      "yellowCards": 3,
-      "redCards": 0
+    "1539007": {
+      "nl": {
+        "foulsCommitted": 9,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "se": {
+        "foulsCommitted": 12,
+        "yellowCards": 3,
+        "redCards": 0
+      }
     },
-    "no": {
-      "matches": 6,
-      "foulsCommitted": 58,
-      "foulsSuffered": 49,
-      "yellowCards": 3,
-      "redCards": 0
+    "1489393": {
+      "de": {
+        "foulsCommitted": 5,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ci": {
+        "foulsCommitted": 7,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "nz": {
-      "matches": 3,
-      "foulsCommitted": 32,
-      "foulsSuffered": 25,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489392": {
+      "ec": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "cw": {
+        "foulsCommitted": 10,
+        "yellowCards": 5,
+        "redCards": 0
+      }
     },
-    "pa": {
-      "matches": 3,
-      "foulsCommitted": 46,
-      "foulsSuffered": 34,
-      "yellowCards": 5,
-      "redCards": 0
+    "1489394": {
+      "tn": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "jp": {
+        "foulsCommitted": 15,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "pt": {
-      "matches": 5,
-      "foulsCommitted": 44,
-      "foulsSuffered": 62,
-      "yellowCards": 7,
-      "redCards": 0
+    "1489397": {
+      "es": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "sa": {
+        "foulsCommitted": 2,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "py": {
-      "matches": 5,
-      "foulsCommitted": 66,
-      "foulsSuffered": 62,
-      "yellowCards": 9,
-      "redCards": 1
+    "1489395": {
+      "be": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 1
+      },
+      "ir": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "qa": {
-      "matches": 3,
-      "foulsCommitted": 36,
-      "foulsSuffered": 29,
-      "yellowCards": 4,
-      "redCards": 2
+    "1489398": {
+      "uy": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "cv": {
+        "foulsCommitted": 4,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "sa": {
-      "matches": 3,
-      "foulsCommitted": 29,
-      "foulsSuffered": 26,
-      "yellowCards": 6,
-      "redCards": 0
+    "1489396": {
+      "nz": {
+        "foulsCommitted": 14,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "eg": {
+        "foulsCommitted": 8,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "se": {
-      "matches": 4,
-      "foulsCommitted": 43,
-      "foulsSuffered": 51,
-      "yellowCards": 5,
-      "redCards": 0
+    "1489399": {
+      "ar": {
+        "foulsCommitted": 13,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "at": {
+        "foulsCommitted": 13,
+        "yellowCards": 2,
+        "redCards": 0
+      }
     },
-    "sn": {
-      "matches": 4,
-      "foulsCommitted": 36,
-      "foulsSuffered": 51,
-      "yellowCards": 3,
-      "redCards": 0
+    "1539017": {
+      "fr": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "iq": {
+        "foulsCommitted": 4,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "tn": {
-      "matches": 3,
-      "foulsCommitted": 27,
-      "foulsSuffered": 35,
-      "yellowCards": 1,
-      "redCards": 0
+    "1489401": {
+      "no": {
+        "foulsCommitted": 13,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "sn": {
+        "foulsCommitted": 5,
+        "yellowCards": 0,
+        "redCards": 0
+      }
     },
-    "tr": {
-      "matches": 3,
-      "foulsCommitted": 31,
-      "foulsSuffered": 40,
-      "yellowCards": 2,
-      "redCards": 0
+    "1489400": {
+      "jo": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "dz": {
+        "foulsCommitted": 6,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "us": {
-      "matches": 5,
-      "foulsCommitted": 56,
-      "foulsSuffered": 68,
-      "yellowCards": 7,
-      "redCards": 1
+    "1489404": {
+      "pt": {
+        "foulsCommitted": 14,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "uz": {
+        "foulsCommitted": 15,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "uy": {
-      "matches": 3,
-      "foulsCommitted": 31,
-      "foulsSuffered": 29,
-      "yellowCards": 5,
-      "redCards": 1
+    "1489402": {
+      "gb-eng": {
+        "foulsCommitted": 14,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "gh": {
+        "foulsCommitted": 24,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "uz": {
-      "matches": 3,
-      "foulsCommitted": 45,
-      "foulsSuffered": 31,
-      "yellowCards": 4,
-      "redCards": 0
+    "1489403": {
+      "pa": {
+        "foulsCommitted": 19,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "hr": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      }
     },
-    "za": {
-      "matches": 4,
-      "foulsCommitted": 38,
-      "foulsSuffered": 49,
-      "yellowCards": 5,
-      "redCards": 2
+    "1539008": {
+      "co": {
+        "foulsCommitted": 12,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "cd": {
+        "foulsCommitted": 16,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489408": {
+      "ch": {
+        "foulsCommitted": 19,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "ca": {
+        "foulsCommitted": 13,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1539009": {
+      "ba": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "qa": {
+        "foulsCommitted": 14,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489405": {
+      "ma": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ht": {
+        "foulsCommitted": 18,
+        "yellowCards": 3,
+        "redCards": 0
+      }
+    },
+    "1489406": {
+      "gb-sct": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "br": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1539010": {
+      "cz": {
+        "foulsCommitted": 9,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "mx": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489407": {
+      "za": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "kr": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489410": {
+      "ec": {
+        "foulsCommitted": 15,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "de": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489409": {
+      "cw": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "ci": {
+        "foulsCommitted": 6,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1539011": {
+      "jp": {
+        "foulsCommitted": 20,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "se": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1489412": {
+      "tn": {
+        "foulsCommitted": 11,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "nl": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1539012": {
+      "tr": {
+        "foulsCommitted": 13,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "us": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489411": {
+      "py": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "au": {
+        "foulsCommitted": 6,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1539074": {
+      "sn": {
+        "foulsCommitted": 10,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "iq": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 1
+      }
+    },
+    "1489416": {
+      "no": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "fr": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489417": {
+      "uy": {
+        "foulsCommitted": 14,
+        "yellowCards": 3,
+        "redCards": 1
+      },
+      "es": {
+        "foulsCommitted": 14,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489413": {
+      "cv": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "sa": {
+        "foulsCommitted": 16,
+        "yellowCards": 3,
+        "redCards": 0
+      }
+    },
+    "1489414": {
+      "eg": {
+        "foulsCommitted": 11,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "ir": {
+        "foulsCommitted": 16,
+        "yellowCards": 4,
+        "redCards": 0
+      }
+    },
+    "1489415": {
+      "nz": {
+        "foulsCommitted": 10,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "be": {
+        "foulsCommitted": 7,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1489420": {
+      "hr": {
+        "foulsCommitted": 9,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "gh": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489422": {
+      "pa": {
+        "foulsCommitted": 16,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "gb-eng": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489419": {
+      "co": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "pt": {
+        "foulsCommitted": 6,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1539013": {
+      "cd": {
+        "foulsCommitted": 6,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "uz": {
+        "foulsCommitted": 16,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1489418": {
+      "dz": {
+        "foulsCommitted": 3,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "at": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1489421": {
+      "jo": {
+        "foulsCommitted": 13,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "ar": {
+        "foulsCommitted": 7,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1561329": {
+      "za": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ca": {
+        "foulsCommitted": 16,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1562344": {
+      "br": {
+        "foulsCommitted": 4,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "jp": {
+        "foulsCommitted": 13,
+        "yellowCards": 3,
+        "redCards": 0
+      }
+    },
+    "1565176": {
+      "de": {
+        "foulsCommitted": 18,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "py": {
+        "foulsCommitted": 12,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1562345": {
+      "nl": {
+        "foulsCommitted": 18,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ma": {
+        "foulsCommitted": 15,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1564789": {
+      "ci": {
+        "foulsCommitted": 6,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "no": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1565177": {
+      "fr": {
+        "foulsCommitted": 14,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "se": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1567306": {
+      "mx": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ec": {
+        "foulsCommitted": 14,
+        "yellowCards": 3,
+        "redCards": 1
+      }
+    },
+    "1567307": {
+      "gb-eng": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "cd": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1567308": {
+      "be": {
+        "foulsCommitted": 22,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "sn": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1562586": {
+      "us": {
+        "foulsCommitted": 7,
+        "yellowCards": 0,
+        "redCards": 1
+      },
+      "ba": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1567311": {
+      "es": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "at": {
+        "foulsCommitted": 15,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1567309": {
+      "pt": {
+        "foulsCommitted": 6,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "hr": {
+        "foulsCommitted": 12,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1567312": {
+      "ch": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "dz": {
+        "foulsCommitted": 12,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1565178": {
+      "au": {
+        "foulsCommitted": 12,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "eg": {
+        "foulsCommitted": 14,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1565179": {
+      "ar": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "cv": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1567310": {
+      "co": {
+        "foulsCommitted": 14,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "gh": {
+        "foulsCommitted": 10,
+        "yellowCards": 3,
+        "redCards": 0
+      }
+    },
+    "1567824": {
+      "ca": {
+        "foulsCommitted": 24,
+        "yellowCards": 4,
+        "redCards": 0
+      },
+      "ma": {
+        "foulsCommitted": 14,
+        "yellowCards": 4,
+        "redCards": 0
+      }
+    },
+    "1569870": {
+      "py": {
+        "foulsCommitted": 13,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "fr": {
+        "foulsCommitted": 11,
+        "yellowCards": 3,
+        "redCards": 0
+      }
+    },
+    "1568100": {
+      "br": {
+        "foulsCommitted": 7,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "no": {
+        "foulsCommitted": 6,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1570714": {
+      "mx": {
+        "foulsCommitted": 14,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "gb-eng": {
+        "foulsCommitted": 7,
+        "yellowCards": 4,
+        "redCards": 1
+      }
+    },
+    "1576756": {
+      "pt": {
+        "foulsCommitted": 9,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "es": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1570715": {
+      "us": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "be": {
+        "foulsCommitted": 9,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1576804": {
+      "ar": {
+        "foulsCommitted": 13,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "eg": {
+        "foulsCommitted": 11,
+        "yellowCards": 4,
+        "redCards": 0
+      }
+    },
+    "1576805": {
+      "ch": {
+        "foulsCommitted": 22,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "co": {
+        "foulsCommitted": 21,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1578539": {
+      "fr": {
+        "foulsCommitted": 10,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ma": {
+        "foulsCommitted": 13,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1581821": {
+      "es": {
+        "foulsCommitted": 13,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "be": {
+        "foulsCommitted": 18,
+        "yellowCards": 2,
+        "redCards": 0
+      }
+    },
+    "1581037": {
+      "no": {
+        "foulsCommitted": 10,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "gb-eng": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
+      }
+    },
+    "1582681": {
+      "ar": {
+        "foulsCommitted": 14,
+        "yellowCards": 3,
+        "redCards": 0
+      },
+      "ch": {
+        "foulsCommitted": 18,
+        "yellowCards": 2,
+        "redCards": 1
+      }
     }
   }
 }

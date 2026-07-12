@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """
-fetch_discipline_stats.py — per-team foul/card totals for the 48 WC2026
+fetch_discipline_stats.py — per-fixture foul/card counts for the 48 WC2026
 qualified countries, from api-football's /fixtures/statistics.
 
 Pipeline-internal intermediate (like r32_teams.json/player_wiki.json):
-load.py reads pipeline/discipline_stats.json into the team_discipline table;
-schema.sql's view_discipline derives per-match averages, fouls-per-card, and
-each team's current stage (joining team_status/view_current_round) — nothing
-below computes those itself, same division of labour as squad_size.
+load.py reads pipeline/discipline_stats.json into the team_discipline table,
+bucketing each fixture into a tournament stage via its OWN classify_round()
+— the same function team_status's elimination logic uses — so a fixture's
+discipline stage can never disagree with its elimination round. This script
+deliberately does NOT aggregate across fixtures or resolve rounds: it only
+resolves team identity (iso2), matching schema.sql's stated split between
+identity resolution (here, in Python) and aggregation (in SQL/load.py).
 
 Reuses data/fixtures.json (already fetched by fetch_fixtures.py) for the
 list of fixture ids + status instead of re-hitting /fixtures — only
@@ -18,8 +21,10 @@ same "hits a live API, not cheap to redo" reasoning as r32_teams.json) makes
 reruns free after the first pass over a given fixture, and lets a run
 interrupted by a rate limit resume where it left off.
 
-"Fouls suffered" isn't a field api-football exposes directly — it's derived
-per fixture as the opponent's "Fouls" (committed) value in that same match.
+"Fouls suffered" isn't a field api-football exposes directly — load.py
+derives it per fixture as the opponent's "Fouls" (committed) value in that
+same match (both teams' raw counts are in this file, so that's a same-file
+join, not a second fetch).
 
 Usage:
     export API_FOOTBALL_KEY=your_key_here
@@ -122,14 +127,15 @@ def main():
         json.loads(CACHE_PATH.read_text(encoding="utf-8")) if CACHE_PATH.exists() else {}
     )
 
-    # Seed every WC2026 team with zeros so a team with no finished fixtures
-    # yet still gets a row (load.py's team_discipline is NOT NULL throughout).
+    # Seeded (zeroed) purely for the CLI summary table below — NOT written to
+    # the output file, which is per-fixture/per-team raw counts only.
     wc2026_iso2 = json.loads((ROOT / "country_aliases.json").read_text(encoding="utf-8"))["wc2026_nations"]
     totals = {
         iso2: {"matches": 0, "foulsCommitted": 0, "foulsSuffered": 0, "yellowCards": 0, "redCards": 0}
         for iso2 in wc2026_iso2
     }
 
+    fixtures_out = {}
     unresolved = set()
     n_missing_stats = 0
     for i, f in enumerate(finished, 1):
@@ -138,17 +144,28 @@ def main():
         if len(blocks) != 2:
             n_missing_stats += 1
             continue
+        resolved = {}
         for block in blocks:
             iso2 = team_iso2(block["team"]["name"], iso_map)
             if not iso2 or iso2 not in totals:
                 unresolved.add(block["team"]["name"])
                 continue
-            opponent = blocks[1] if block is blocks[0] else blocks[0]
+            resolved[iso2] = {
+                "foulsCommitted": stat_value(block["statistics"], "Fouls"),
+                "yellowCards": stat_value(block["statistics"], "Yellow Cards"),
+                "redCards": stat_value(block["statistics"], "Red Cards"),
+            }
+        if len(resolved) != 2:
+            continue  # one or both teams unresolved — already recorded above
+        fixtures_out[str(f["id"])] = resolved
+
+        iso_a, iso_b = resolved
+        for iso2, opp_iso2 in ((iso_a, iso_b), (iso_b, iso_a)):
             totals[iso2]["matches"] += 1
-            totals[iso2]["foulsCommitted"] += stat_value(block["statistics"], "Fouls")
-            totals[iso2]["foulsSuffered"] += stat_value(opponent["statistics"], "Fouls")
-            totals[iso2]["yellowCards"] += stat_value(block["statistics"], "Yellow Cards")
-            totals[iso2]["redCards"] += stat_value(block["statistics"], "Red Cards")
+            totals[iso2]["foulsCommitted"] += resolved[iso2]["foulsCommitted"]
+            totals[iso2]["foulsSuffered"] += resolved[opp_iso2]["foulsCommitted"]
+            totals[iso2]["yellowCards"] += resolved[iso2]["yellowCards"]
+            totals[iso2]["redCards"] += resolved[iso2]["redCards"]
     print()
 
     if unresolved:
@@ -167,7 +184,7 @@ def main():
     payload = {
         "source": "api-football.com",
         "updated": date.today().isoformat(),
-        "teams": totals,
+        "fixtures": fixtures_out,
     }
     OUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\nWrote {OUT_PATH}", flush=True)

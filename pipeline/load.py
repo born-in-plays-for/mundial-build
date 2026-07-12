@@ -152,6 +152,49 @@ def compute_eliminated(fixtures):
     return eliminated
 
 
+def compute_discipline(fixtures, fixture_stats):
+    """-> {iso2: {stage: {"matches", "fouls_committed", "fouls_suffered",
+    "yellow_cards", "red_cards"}}}, crossing data/fixtures.json with
+    fetch_discipline_stats.py's pipeline/discipline_stats.json (raw per-
+    fixture, per-team counts). Stage bucketing reuses classify_round() — the
+    same function compute_eliminated() uses — so a fixture's discipline
+    stage can never disagree with its elimination round. A finished fixture
+    missing from fixture_stats (discipline_stats.json not re-run since it
+    finished) is skipped with a warning rather than failing the load:
+    discipline stats are supplementary, unlike elimination status."""
+    totals = {}
+    missing = []
+    for f in fixtures:
+        if f["status"] not in FINISHED:
+            continue
+        stats = fixture_stats.get(str(f["id"]))
+        if stats is None:
+            missing.append(f["id"])
+            continue
+        stage = classify_round(f["round"])
+        if stage is None:
+            continue  # compute_eliminated() already fails loudly on this if it matters
+        if stage == "group":
+            stage = "Group Stage"
+        for iso2, opp_iso2 in ((f["home"], f["away"]), (f["away"], f["home"])):
+            if iso2 not in stats or opp_iso2 not in stats:
+                continue
+            t = totals.setdefault(iso2, {}).setdefault(
+                stage, {"matches": 0, "fouls_committed": 0, "fouls_suffered": 0,
+                        "yellow_cards": 0, "red_cards": 0})
+            t["matches"] += 1
+            t["fouls_committed"] += stats[iso2]["foulsCommitted"]
+            t["fouls_suffered"] += stats[opp_iso2]["foulsCommitted"]
+            t["yellow_cards"] += stats[iso2]["yellowCards"]
+            t["red_cards"] += stats[iso2]["redCards"]
+
+    if missing:
+        print(f"  Warning: {len(missing)} finished fixture(s) missing from "
+              f"discipline_stats.json (re-run fetch_discipline_stats.py): "
+              f"{sorted(missing)}", file=sys.stderr)
+    return totals
+
+
 def collect_persons(map_data):
     """One tuple per person, in map_data file order (this order feeds pid
     assignment for new persons, and export re-derives the file's sort
@@ -324,11 +367,19 @@ def main():
                      eliminated_date=?, eliminated_by=? WHERE country=?""",
                    (info["round"], info["date"], cid(lost_to) if lost_to else None, cid(iso2)))
 
-    # ── team_discipline ─────────────────────────────────────────────────
-    for iso2, t in discipline["teams"].items():
-        db.execute("INSERT INTO team_discipline VALUES (?,?,?,?,?,?)",
-                   (cid(iso2), t["matches"], t["foulsCommitted"], t["foulsSuffered"],
-                    t["yellowCards"], t["redCards"]))
+    # ── team_discipline: bucketed by stage (see compute_discipline). Seed
+    # every wc2026 team with a zero Group Stage row so the anomaly gate
+    # below stays meaningful even before any fixture has finished. ────────
+    discipline_totals = compute_discipline(fixtures["fixtures"], discipline["fixtures"])
+    for row in db.execute("SELECT iso2 FROM country WHERE is_wc2026 = 1"):
+        discipline_totals.setdefault(row[0], {}).setdefault(
+            "Group Stage", {"matches": 0, "fouls_committed": 0, "fouls_suffered": 0,
+                            "yellow_cards": 0, "red_cards": 0})
+    for iso2, stages in discipline_totals.items():
+        for stage, t in stages.items():
+            db.execute("INSERT INTO team_discipline VALUES (?,?,?,?,?,?,?)",
+                       (cid(iso2), stage, t["matches"], t["fouls_committed"],
+                        t["fouls_suffered"], t["yellow_cards"], t["red_cards"]))
 
     # ── provenance ──────────────────────────────────────────────────────
     pop_updated = max((c["pop_year"] for c in countries.values() if c.get("pop_year")),

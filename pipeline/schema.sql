@@ -99,20 +99,28 @@ CREATE TABLE team_status (
 );
 
 -- ── Discipline (fouls/cards) ────────────────────────────────────────────
--- One row per WC2026 team, aggregated by fetch_discipline_stats.py across
--- every FINISHED fixture so far (api-football's /fixtures/statistics).
--- Raw counts only — per-match averages, fouls-per-card, and current stage
--- are derived in view_discipline below, same division of labour as
--- view_squad_size deriving squad size from person rows instead of storing it.
--- fouls_suffered isn't an api-football field: it's the opponent's Fouls
--- value in that same fixture, summed per team across the tournament.
+-- One row per (team, stage) — that stage's OWN totals, not cumulative —
+-- aggregated by load.py from fetch_discipline_stats.py's per-fixture output,
+-- bucketed by fixture round via the same classify_round() team_status's
+-- elimination logic uses (so a discipline stage can never disagree with an
+-- elimination round). "stage" is 'Group Stage' or one of load.py's
+-- KNOCKOUT_STAGES; a fixture in an unrecognized round is dropped here (and
+-- already fails the load loudly elsewhere via compute_eliminated if it
+-- matters — see load.py). Per-match averages, fouls-per-card, and
+-- cumulative "through this stage" totals are ALL derived in view_discipline
+-- below (window function over stage order), same division of labour as
+-- view_squad_size deriving squad size from person rows instead of storing
+-- it. fouls_suffered isn't an api-football field: it's the opponent's Fouls
+-- value in that same fixture.
 CREATE TABLE team_discipline (
-    country          INTEGER PRIMARY KEY REFERENCES country(id),
+    country          INTEGER NOT NULL REFERENCES country(id),
+    stage            TEXT    NOT NULL,
     matches_played   INTEGER NOT NULL CHECK (matches_played >= 0),
     fouls_committed  INTEGER NOT NULL CHECK (fouls_committed >= 0),
     fouls_suffered   INTEGER NOT NULL CHECK (fouls_suffered >= 0),
     yellow_cards     INTEGER NOT NULL CHECK (yellow_cards >= 0),
-    red_cards        INTEGER NOT NULL CHECK (red_cards >= 0)
+    red_cards        INTEGER NOT NULL CHECK (red_cards >= 0),
+    PRIMARY KEY (country, stage)
 );
 
 -- ── person ──────────────────────────────────────────────────────────────
@@ -284,25 +292,55 @@ JOIN country c ON c.id = t.country
 LEFT JOIN furthest_won fw ON fw.country = t.country
 WHERE t.status = 'alive';
 
--- Discipline stats + each team's current stage in one row (source of
--- data/v2/discipline.json). stage/eliminated reuse the exact same logic as
--- data/v2/status.json / view_current_round above rather than recomputing
--- it: eliminated_round for a knocked-out team, otherwise view_current_round's
--- walk-the-win-chain result for a team still alive.
-CREATE VIEW view_discipline AS
+-- Each team's current stage in one row — factored out of view_discipline so
+-- both it and any future consumer share one answer for "what stage is this
+-- team at": eliminated_round for a knocked-out team, otherwise
+-- view_current_round's walk-the-win-chain result for a team still alive.
+CREATE VIEW view_team_stage AS
 SELECT c.iso2,
-       d.matches_played,
-       d.fouls_committed, d.fouls_suffered,
-       ROUND(d.fouls_committed * 1.0 / NULLIF(d.matches_played, 0), 2) AS avg_fouls_committed,
-       ROUND(d.fouls_suffered * 1.0 / NULLIF(d.matches_played, 0), 2) AS avg_fouls_suffered,
-       d.yellow_cards, d.red_cards,
-       ROUND(d.fouls_committed * 1.0 / NULLIF(d.yellow_cards + d.red_cards, 0), 2) AS fouls_per_card,
        CASE WHEN t.status = 'eliminated' THEN t.eliminated_round ELSE cr.current_round END AS stage,
        (t.status = 'eliminated') AS eliminated
-FROM team_discipline d
-JOIN country c ON c.id = d.country
-JOIN team_status t ON t.country = d.country
+FROM team_status t
+JOIN country c ON c.id = t.country
 LEFT JOIN view_current_round cr ON cr.iso2 = c.iso2;
+
+-- Discipline stats, cumulative "through this stage" — one row PER (team,
+-- stage reached so far), not one row per team. A red card in the Quarter-
+-- finals must not show up when a client asks for a team's Round of 32
+-- figures, so each row sums only that team's OWN team_discipline rows up to
+-- and including the given stage (window function, partitioned by team,
+-- ordered by stage_order.ord) rather than exposing one all-tournament total.
+-- export.py's build_discipline() takes the last (highest-ord) row per team
+-- as that team's overall "as of now" totals, and view_team_stage's `stage`
+-- separately for the team's CURRENT stage — the two can differ for a team
+-- still alive whose next round hasn't been played yet (no row exists for it
+-- here until a fixture in it actually finishes).
+CREATE VIEW view_discipline AS
+WITH stage_order(stage, ord) AS (
+    VALUES ('Group Stage', 0), ('Round of 32', 1), ('Round of 16', 2),
+           ('Quarter-finals', 3), ('Semi-finals', 4), ('Final', 5)
+),
+cumulative AS (
+    SELECT d.country, so.stage, so.ord,
+           SUM(d.matches_played)  OVER w AS matches_played,
+           SUM(d.fouls_committed) OVER w AS fouls_committed,
+           SUM(d.fouls_suffered)  OVER w AS fouls_suffered,
+           SUM(d.yellow_cards)    OVER w AS yellow_cards,
+           SUM(d.red_cards)       OVER w AS red_cards
+    FROM team_discipline d
+    JOIN stage_order so ON so.stage = d.stage
+    WINDOW w AS (PARTITION BY d.country ORDER BY so.ord
+                 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+)
+SELECT c.iso2, cu.stage, cu.ord,
+       cu.matches_played,
+       cu.fouls_committed, cu.fouls_suffered,
+       ROUND(cu.fouls_committed * 1.0 / NULLIF(cu.matches_played, 0), 2) AS avg_fouls_committed,
+       ROUND(cu.fouls_suffered * 1.0 / NULLIF(cu.matches_played, 0), 2) AS avg_fouls_suffered,
+       cu.yellow_cards, cu.red_cards,
+       ROUND(cu.fouls_committed * 1.0 / NULLIF(cu.yellow_cards + cu.red_cards, 0), 2) AS fouls_per_card
+FROM cumulative cu
+JOIN country c ON c.id = cu.country;
 
 -- Integrity checks that go beyond per-row constraints; the load phase
 -- fails if this view returns any rows.

@@ -17,13 +17,24 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             the client never needs a positive "alive" list.
   data/v2/discipline.json   {iso2: {matchesPlayed, foulsCommitted, foulsSuffered,
                             avgFoulsCommitted, avgFoulsSuffered, yellowCards,
-                            redCards, foulsPerCard, stage, eliminated}} — one
-                            entry per WC2026 team, from view_discipline.
-                            foulsPerCard is null for a team with zero cards
-                            so far. stage/eliminated mirror status.json's
-                            round/absence convention rather than duplicating
-                            a second file the client would have to cross-
-                            reference.
+                            redCards, foulsPerCard, stage, eliminated, byStage}}
+                            — one entry per WC2026 team, from view_discipline
+                            + view_team_stage. Top-level fields are the
+                            team's latest cumulative totals (through the
+                            furthest stage that's actually been played);
+                            byStage is {stage: {same fields minus stage/
+                            eliminated}} giving the SAME cumulative totals
+                            frozen at each earlier stage too — e.g. a red
+                            card from the Quarter-finals is included in
+                            byStage["Quarter-finals"] but not in
+                            byStage["Round of 16"], so a client showing
+                            "figures as of round X" doesn't need to do its
+                            own cumulative math or risk leaking a later
+                            round's cards into an earlier one. foulsPerCard
+                            is null for a team/stage with zero cards so far.
+                            eliminated is a plain boolean here — unlike
+                            status.json, which uses absence-from-file
+                            instead of an explicit flag.
 
 All files are written together, atomically from one DB state — pids can
 never disagree across them.
@@ -153,21 +164,35 @@ def build_status(db):
 
 
 def build_discipline(db):
-    discipline = {}
-    for (iso2, matches, fc, fs, afc, afs, yc, rc, fpc, stage, eliminated) in db.execute(
-            "SELECT * FROM view_discipline ORDER BY iso2"):
-        discipline[iso2] = {
-            "matchesPlayed": matches,
-            "foulsCommitted": fc,
-            "foulsSuffered": fs,
-            "avgFoulsCommitted": afc,
-            "avgFoulsSuffered": afs,
-            "yellowCards": yc,
-            "redCards": rc,
-            "foulsPerCard": fpc,
-            "stage": stage,
-            "eliminated": bool(eliminated),
+    """view_discipline has one row per (team, stage reached so far), each
+    already cumulative through that stage (see its window-function comment
+    in schema.sql) — rows arrive in stage order, so byStage preserves that
+    order and the LAST row written per team is its latest "as of now" total,
+    reused as that team's top-level fields."""
+    by_stage = {}
+    for iso2, stage, mp, fc, fs, afc, afs, yc, rc, fpc in db.execute("""
+            SELECT iso2, stage, matches_played, fouls_committed, fouls_suffered,
+                   avg_fouls_committed, avg_fouls_suffered, yellow_cards, red_cards, fouls_per_card
+            FROM view_discipline ORDER BY iso2, ord"""):
+        by_stage.setdefault(iso2, {})[stage] = {
+            "matchesPlayed": mp, "foulsCommitted": fc, "foulsSuffered": fs,
+            "avgFoulsCommitted": afc, "avgFoulsSuffered": afs,
+            "yellowCards": yc, "redCards": rc, "foulsPerCard": fpc,
         }
+
+    discipline = {}
+    for iso2, stage, eliminated in db.execute("SELECT iso2, stage, eliminated FROM view_team_stage"):
+        stages = by_stage.get(iso2, {})
+        latest = next(reversed(stages.values()), None)
+        entry = dict(latest) if latest else {
+            "matchesPlayed": 0, "foulsCommitted": 0, "foulsSuffered": 0,
+            "avgFoulsCommitted": 0.0, "avgFoulsSuffered": 0.0,
+            "yellowCards": 0, "redCards": 0, "foulsPerCard": None,
+        }
+        entry["stage"] = stage
+        entry["eliminated"] = bool(eliminated)
+        entry["byStage"] = stages
+        discipline[iso2] = entry
     return discipline
 
 
