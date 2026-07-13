@@ -21,17 +21,21 @@ reasoning as pipeline/discipline_stats_cache.json, and likewise committed
 it isn't retried every run either; pass --retry-misses to re-attempt just
 those (e.g. after a FALLBACK_PATTERNS improvement) without re-fetching
 everything already resolved, or --refresh-cache to force a full re-geocode
-(e.g. if a ranking-logic change like BLOCKED_ADDRESS_TYPES could also affect
-previously "resolved" pairs, not just misses).
+(e.g. if a ranking-logic change like REGION_ADDRESS_TYPES/_contains could
+also affect previously "resolved" pairs, not just misses).
 
 A scraped birth city that's actually a sub-city administrative unit ("12th
 arrondissement of Paris", "Bodø Municipality") often has no direct Nominatim
 match — see FALLBACK_PATTERNS, which strips the qualifier and retries with
 just the city name, keeping the original string as the label. The remaining
 unresolvable minority (corrupted source strings, small villages/parishes
-Nominatim doesn't have under that name) isn't handled here — same "add a
-hand-verified entry to an overrides file" pattern as
-pipeline/birthplace_overrides.json, not yet built for geocoding.
+Nominatim doesn't have under that name, or a case needing real research to
+identify at all) is handled by pipeline/geocode_overrides.json — same
+hand-verified, cited-source, only-fills-gaps pattern as
+pipeline/birthplace_overrides.json, one level down the pipeline. Checked
+only when both the direct query and the FALLBACK_PATTERNS retry come back
+empty; a later Nominatim/logic improvement that resolves one of these
+directly always wins over the override.
 
 Usage:
     python3 pipeline/geocode_birthplaces.py
@@ -48,9 +52,18 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
-PIPELINE   = Path(__file__).parent
-MAP_DATA   = PIPELINE / "map_data.json"
-CACHE_PATH = PIPELINE / "geocode_cache.json"
+PIPELINE     = Path(__file__).parent
+MAP_DATA     = PIPELINE / "map_data.json"
+CACHE_PATH   = PIPELINE / "geocode_cache.json"
+OVERRIDES_PATH = PIPELINE / "geocode_overrides.json"
+
+
+def load_overrides():
+    """-> {"City, Country": {"lat", "lon"}}, the hand-verified fallback for
+    pairs Nominatim can't resolve on its own — see geocode_overrides.json's
+    _comment and this module's docstring."""
+    with open(OVERRIDES_PATH, encoding="utf-8") as f:
+        return json.load(f)["overrides"]
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 # Nominatim's usage policy requires an identifying User-Agent and caps public
@@ -183,24 +196,28 @@ def _query_nominatim(query):
     return top
 
 
-def geocode(city, country):
-    """-> {"city", "lat", "lon"} or None if Nominatim has no match, even
-    after retrying with an admin-qualifier stripped from `city` (see
-    strip_admin_qualifier). `city` in the result is always the ORIGINAL
-    scraped name, even when a stripped fallback query is what resolved it —
-    the fallback only changes what's sent to Nominatim, not the label a
-    client displays."""
+def geocode(city, country, overrides):
+    """-> {"city", "lat", "lon"} or None if nothing resolves it, even after
+    retrying with an admin-qualifier stripped from `city` (see
+    strip_admin_qualifier) and checking geocode_overrides.json. `city` in the
+    result is always the ORIGINAL scraped name, even when a stripped
+    fallback query is what resolved it — the fallback only changes what's
+    sent to Nominatim, not the label a client displays."""
     r = _query_nominatim(f"{city}, {country}")
     if r is None:
         plain = strip_admin_qualifier(city)
         if plain is not None:
             r = _query_nominatim(f"{plain}, {country}")
-    if r is None:
-        return None
-    # addresstype is diagnostic only (not consumed by load.py) — kept so a
-    # future audit can spot-check without re-querying Nominatim from scratch.
-    return {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
-            "addresstype": r.get("addresstype")}
+    if r is not None:
+        # addresstype is diagnostic only (not consumed by load.py) — kept so
+        # a future audit can spot-check without re-querying Nominatim.
+        return {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
+                "addresstype": r.get("addresstype")}
+    override = overrides.get(f"{city}, {country}")
+    if override is not None:
+        return {"city": city, "lat": override["lat"], "lon": override["lon"],
+                "addresstype": "override"}
+    return None
 
 
 def main():
@@ -215,6 +232,7 @@ def main():
     with open(MAP_DATA, encoding="utf-8") as f:
         map_data = json.load(f)
     pairs = collect_city_country_pairs(map_data)
+    overrides = load_overrides()
 
     cache = {}
     if CACHE_PATH.exists() and not args.refresh_cache:
@@ -231,7 +249,7 @@ def main():
     resolved = sum(1 for v in cache.values() if v is not None)
     for i, (city, country) in enumerate(todo, 1):
         query = f"{city}, {country}"
-        result = geocode(city, country)
+        result = geocode(city, country, overrides)
         cache[query] = result
         if result is not None:
             resolved += 1

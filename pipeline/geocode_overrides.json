@@ -1,0 +1,80 @@
+{
+  "_comment": "Manual geocoding fallback for birth_city/birth_country pairs Nominatim couldn't resolve after geocode_birthplaces.py's automated pass (direct query + FALLBACK_PATTERNS qualifier-stripping) — same pattern as pipeline/birthplace_overrides.json, one level down the pipeline. Keyed by the exact 'City, Country' cache-query string (pipeline/geocode_cache.json's own keys). Only consulted when the automated pass has no result for that key; a later automated fix that resolves one of these directly wins (same only-fills-gaps semantics as birthplace_overrides.json). Each entry cites the real place identified and a source — never a guess presented as fact.",
+  "overrides": {
+    "Nagrig, Egypt": {
+      "lat": 30.9725, "lon": 30.8669,
+      "_note": "Mohamed Salah's home village, Gharbia Governorate, near Basyoun. Coordinates from Nagrig's own Wikipedia infobox (30°58'21\"N 30°52'01\"E)."
+    },
+    "Kafr el-Dawwar, Egypt": {
+      "lat": 31.1328304, "lon": 30.1335334,
+      "_note": "Industrial city (~145k population) in Beheira Governorate — not the smaller same-named village in Kafr el-Sheikh Governorate. Marwan Attia's birthplace."
+    },
+    "Wieringen, Netherlands": {
+      "lat": 52.913916, "lon": 4.9909934,
+      "_note": "Former municipality / island in Noord-Holland (now part of Hollands Kroon) — Donyell Malen's birth_city is recorded at island granularity, not a specific town on it, so this is the island's own centroid."
+    },
+    "Rosa Zárate, Ecuador": {
+      "lat": 0.328723, "lon": -79.4726416,
+      "_note": "Urban parish that is the seat of Quinindé Canton, Esmeraldas Province — Willian Pacho's birthplace. Nominatim's plain-text search on 'Rosa Zárate' alone matches unrelated street segments elsewhere in Ecuador; resolved instead via the canton's more distinctive name 'Quinindé'."
+    },
+    "Sallent de Llobregat, Spain": {
+      "lat": 41.8390397, "lon": 1.9081612,
+      "_note": "Joan García's birthplace — the town is officially just 'Sallent' (Bages comarca, Barcelona province); 'de Llobregat' is a common but non-official disambiguator (river the town sits on), which is why the plain-text Nominatim query for the exact scraped string failed."
+    },
+    "Djibonker, Senegal": {
+      "lat": 12.5272, "lon": -16.3518,
+      "_note": "Village west of Ziguinchor, Lower Casamance — Nicolas Jackson's birthplace per Chelsea/Bayern's official profiles (his exact birthplace has some source disagreement with Banjul, Gambia, but this matches what wc2026_birthplaces.py's own scrape already recorded). Coordinates from Wikidata Q3032925."
+    },
+    "Fuerte Apache, Argentina": {
+      "lat": -34.633603, "lon": -58.5426528,
+      "_note": "Thiago Almada's home neighborhood (officially 'Ejército de los Andes'), in Ciudadela, Partido de Tres de Febrero, Buenos Aires Province — same neighborhood Carlos Tevez is also known for. Point is Ciudadela's own town centroid, the closest resolvable settlement."
+    },
+    "Al-Ahsa Oasis, Saudi Arabia": {
+      "lat": 25.3696585, "lon": 49.5865224,
+      "_note": "Mohammed Al-Owais's birth_city names the oasis region, not a specific town within it — this is Hofuf (Al-Hofuf), the oasis's largest city and administrative center, as a best-effort proxy for the named region."
+    },
+    "Jarkurghon, Uzbekistan": {
+      "lat": 37.5091604, "lon": 67.4206492,
+      "_note": "Eldor Shomurodov's birthplace — standard Uzbek Latin spelling 'Jarqo'rg'on', Surxondaryo Region; the scraped transliteration without apostrophes doesn't match Nominatim's indexed name directly."
+    },
+    "Shorqorgon, Uzbekistan": {
+      "lat": 40.9250426, "lon": 71.731648,
+      "_note": "Odiljon Hamrobekov's birthplace, Namangan Region — standard spelling 'Sho'rqo'rg'on'. Confirmed via Wikipedia (born 13 Feb 1996 in Shorqorgon, Namangan Region)."
+    },
+    "Ķürgontepa, Uzbekistan": {
+      "lat": 40.733957, "lon": 72.7628617,
+      "_note": "Abdulla Abdullaev's birthplace — administrative center of Qo'rg'ontepa District, Andijan Region (scraped spelling has a corrupted diacritic: 'Ķ' for 'Q''). Confirmed via Wikipedia."
+    },
+    "Sarab-e Yas, Iran": {
+      "lat": 33.43063, "lon": 48.34377,
+      "_note": "Alireza Beiranvand's birth village, Koregah-e Gharbi Rural District, Khorramabad County, Lorestan Province."
+    },
+    "Villa monica alritmo, Paraguay": {
+      "lat": -25.3947318, "lon": -57.3532892,
+      "_note": "Shared by two players (Braian Ojeda, José Canale) — the scraped string looks corrupted/garbled, but both players are independently reported by multiple sources as born in Itaugua, Central Department, Paraguay, which strongly corroborates that identification despite the odd source string."
+    },
+    "Hägerstens församling, Sweden": {
+      "lat": 59.3039831, "lon": 17.9671408,
+      "_note": "Viktor Gyökeres's birthplace — a Church of Sweden parish (försämling) corresponding to the Hägersten district of Stockholm."
+    },
+    "Spånga-Kista församling, Sweden": {
+      "lat": 59.403311, "lon": 17.9442849,
+      "_note": "Taha Ali's birthplace — a parish spanning the Spånga and Kista districts of Stockholm; point is Kista's own suburb centroid (Spånga alone has no clean standalone Nominatim match in Stockholm)."
+    },
+    "Spånga-Tensta city district, Sweden": {
+      "lat": 59.3957349, "lon": 17.9032284,
+      "_note": "Benjamin Tahirović's birthplace — Stockholm city district covering Spånga and Tensta; point is Tensta's own suburb centroid."
+    },
+    "Norrköping Matteus church parish, Sweden": {
+      "lat": 58.5909124, "lon": 16.1903511,
+      "_note": "Ken Sema's birthplace — Matteus is a Church of Sweden parish within Norrköping; point is Norrköping city itself."
+    }
+  },
+  "_known_unresolved": {
+    "_comment": "Researched and deliberately left WITHOUT an override, rather than guessing — see each note.",
+    "Cape Verde, Cape Verde": "Bubista's birth_city as scraped is literally the country name — no specific city is known, so this is left absent rather than guessing at the capital (Praia).",
+    "Curaçao, Netherlands": "Tyrick Bodak's birth_city as scraped is literally the constituent country's name (Curaçao), not a specific city — same reasoning as Cape Verde above; not overridden to the capital (Willemstad) since that's a guess, not a sourced fact.",
+    "Corgi, Iraq": "Mustafa Saadoon's own Wikipedia infobox says 'Corgi, Iraq' verbatim, and Wikidata's P19 only has country-level 'Iraq' with zero references. Arabic sources render it 'الكورجي' (Al-Kurji) — this may actually be a family/tribal-origin name (matches his own surname 'Al-Korji') rather than a distinct place, and one Arabic-language source ties his background to Al-Nahrawan instead. Insufficient confidence to assign coordinates to either candidate.",
+    "Piranshahr Sugar Factory, Iran": "Very likely a Wikidata data-quality error, not a hard-to-geocode place: Saman Ghoddos's own club profiles and multiple independent sources report he was born and raised in Malmö, Sweden (to Iranian parents from Ahvaz) and only later switched football allegiance to Iran — Wikidata's P19 for him appears to have been mis-set to an Iranian location unrelated to his actual birth. Not something geocoding can fix; worth a birth_country/city correction in wc2026_birthplaces.py's own override file instead, separate from this file's job."
+  }
+}

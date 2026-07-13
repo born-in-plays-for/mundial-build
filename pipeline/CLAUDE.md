@@ -176,6 +176,35 @@ in `PLAYER NAME` but "RÜDIGER" in `LAST NAME(S)`/`NAME ON SHIRT`). No single
 FIFA column is a clean ground truth — see `surname` below, which is derived
 from our own data instead and only spot-checked against this PDF.
 
+## Birthplace geocoding overrides (`geocode_birthplaces.py`)
+
+Same pattern one step further down the pipeline: `geocode_birthplaces.py`
+regenerates `pipeline/geocode_cache.json` from Nominatim, so a hand-edit
+directly on that file is a **cache**, not a source of truth, and gets
+overwritten by a `--refresh-cache`/`--retry-misses` run. For a `(city,
+country)` pair Nominatim can't resolve — a corrupted/garbled scraped string,
+a small village or Church-of-Sweden parish it doesn't index under that name,
+or a case ambiguous enough to need actual research — add an entry to
+`pipeline/geocode_overrides.json`'s `overrides` object, keyed by the exact
+`"City, Country"` string (same key format as `geocode_cache.json`):
+
+```json
+{ "overrides": { "Djibonker, Senegal": {"lat": 12.5272, "lon": -16.3518, "_note": "..."} } }
+```
+
+Only consulted when both the direct Nominatim query and the
+`FALLBACK_PATTERNS` qualifier-stripped retry come back empty — a later
+Nominatim/logic improvement that resolves the pair directly always wins over
+the override, same only-fills-gaps semantics as `birthplace_overrides.json`
+above. `_note` should cite how the real place was identified (a source, not
+just an assertion) — see the existing entries for the pattern. A pair
+researched and found to have **no** confident answer (an ambiguous
+transliteration, a `birth_city` that's literally the birth country's own
+name with no specific city ever known) goes in the file's
+`_known_unresolved` object instead, documenting *why* it was deliberately
+left unresolved rather than guessed — so a future pass doesn't mistake the
+gap for "nobody's looked at this yet."
+
 ## Sortable surname (`wc2026_birthplaces.py`) and shirt number
 
 `wc2026_players.csv`'s `surname` column is derived purely from `player`

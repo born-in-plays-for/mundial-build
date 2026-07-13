@@ -46,7 +46,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `fetch_fixtures.py` | `data/fixtures.json` | Every WC2026 fixture, past and planned — see "Fixtures" below |
 | `fetch_discipline_stats.py` | `pipeline/discipline_stats.json` | Per-fixture foul/card counts from api-football's fixture statistics — see "Discipline stats" below |
-| `geocode_birthplaces.py` | `pipeline/geocode_cache.json` | Geocodes each player/coach's scraped birth city to lat/lon via OpenStreetMap Nominatim — see "Birthplace geocoding" below |
+| `geocode_birthplaces.py` | `pipeline/geocode_cache.json` | Geocodes each player/coach's scraped birth city to lat/lon via OpenStreetMap Nominatim + `pipeline/geocode_overrides.json` — see "Birthplace geocoding" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build; also derives tournament elimination status from `data/fixtures.json` — see "Relational model" and "Team status" below |
 | `export.py` | `data/v2/` (10 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
@@ -354,7 +354,31 @@ identifying `User-Agent`. Results are cached in `pipeline/geocode_cache.json`
 reasoning as `discipline_stats_cache.json`) keyed by the exact `"City,
 Country"` query string, so a rerun only geocodes pairs it hasn't seen before
 — a pair Nominatim couldn't resolve is cached as `null` too, so it isn't
-retried every run either (pass `--refresh-cache` to force a full re-geocode).
+retried every run either (pass `--retry-misses` to re-attempt just those, or
+`--refresh-cache` to force a full re-geocode of everything).
+
+Nominatim's own top-ranked "importance" match is sometimes confidently
+**wrong**, not just imprecise — a same-named administrative region (Italian
+provinces are usually named after their capital city) or an unrelated
+non-place feature (a railway station) can outrank the actual settlement.
+`_query_nominatim()` guards against both: a bounding-box containment check
+prefers a nested settlement candidate over a region-level top result only
+when its coordinates genuinely fall inside that region's own bbox (ruling
+out same-named-but-unrelated places elsewhere), and `featureType=settlement`
+excludes non-place results server-side. `FALLBACK_PATTERNS` separately
+retries with an administrative qualifier stripped ("12th arrondissement of
+Paris" → "Paris") when the direct query comes back empty. The residual
+minority — corrupted source strings, small villages/parishes Nominatim
+doesn't index under that name, or a case ambiguous enough to need actual
+research to identify — falls through to `pipeline/geocode_overrides.json`,
+a hand-verified, cited-source fallback (same only-fills-gaps pattern as
+`pipeline/birthplace_overrides.json`, one level down the pipeline). Its
+`_known_unresolved` section documents entries that were researched and
+deliberately left out rather than guessed — e.g. two persons whose scraped
+`birth_city` is literally their birth country's own name (no specific city
+was ever known), and one where the scraped value looks like an upstream
+Wikidata error unrelated to geocoding at all (a player whose birth country
+itself is probably wrong, not just hard to place on a map).
 
 `load.py` looks each person's `(birth_city, birth-country display name)` up
 in that cache and gets-or-creates the matching `city` row (deduplicated by

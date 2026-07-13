@@ -140,7 +140,12 @@
       "lon": 44.9236266,
       "addresstype": "district"
     },
-    "Al-Ahsa Oasis, Saudi Arabia": null,
+    "Al-Ahsa Oasis, Saudi Arabia": {
+      "city": "Al-Ahsa Oasis",
+      "lat": 25.3696585,
+      "lon": 49.5865224,
+      "addresstype": "override"
+    },
     "Albacete, Spain": {
       "city": "Albacete",
       "lat": 38.9950921,
@@ -1254,7 +1259,12 @@
       "lon": 45.1046224,
       "addresstype": "state"
     },
-    "Djibonker, Senegal": null,
+    "Djibonker, Senegal": {
+      "city": "Djibonker",
+      "lat": 12.5272,
+      "lon": -16.3518,
+      "addresstype": "override"
+    },
     "Doboj, Bosnia and Herzegovina": {
       "city": "Doboj",
       "lat": 44.7324559,
@@ -1555,7 +1565,12 @@
       "lon": 7.1612669,
       "addresstype": "town"
     },
-    "Fuerte Apache, Argentina": null,
+    "Fuerte Apache, Argentina": {
+      "city": "Fuerte Apache",
+      "lat": -34.633603,
+      "lon": -58.5426528,
+      "addresstype": "override"
+    },
     "Fukuoka Prefecture, Japan": {
       "city": "Fukuoka Prefecture",
       "lat": 33.6251241,
@@ -1940,7 +1955,12 @@
       "lon": 12.9771229,
       "addresstype": "suburb"
     },
-    "Hägerstens församling, Sweden": null,
+    "Hägerstens församling, Sweden": {
+      "city": "Hägerstens församling",
+      "lat": 59.3039831,
+      "lon": 17.9671408,
+      "addresstype": "override"
+    },
     "Ibarra, Ecuador": {
       "city": "Ibarra",
       "lat": 0.3520459,
@@ -2019,7 +2039,12 @@
       "lon": 135.4232139,
       "addresstype": "city"
     },
-    "Jarkurghon, Uzbekistan": null,
+    "Jarkurghon, Uzbekistan": {
+      "city": "Jarkurghon",
+      "lat": 37.5091604,
+      "lon": 67.4206492,
+      "addresstype": "override"
+    },
     "Jazan, Saudi Arabia": {
       "city": "Jazan",
       "lat": 16.894719,
@@ -2074,7 +2099,12 @@
       "lon": 14.165719,
       "addresstype": "city"
     },
-    "Kafr el-Dawwar, Egypt": null,
+    "Kafr el-Dawwar, Egypt": {
+      "city": "Kafr el-Dawwar",
+      "lat": 31.1328304,
+      "lon": 30.1335334,
+      "addresstype": "override"
+    },
     "Kafr el-Sheikh, Egypt": {
       "city": "Kafr el-Sheikh",
       "lat": 31.3814765,
@@ -2963,7 +2993,12 @@
       "lon": 14.4748281,
       "addresstype": "town"
     },
-    "Nagrig, Egypt": null,
+    "Nagrig, Egypt": {
+      "city": "Nagrig",
+      "lat": 30.9725,
+      "lon": 30.8669,
+      "addresstype": "override"
+    },
     "Najaf, Iraq": {
       "city": "Najaf",
       "lat": 32.0010227,
@@ -3114,7 +3149,12 @@
       "lon": 2.5524906,
       "addresstype": "town"
     },
-    "Norrköping Matteus church parish, Sweden": null,
+    "Norrköping Matteus church parish, Sweden": {
+      "city": "Norrköping Matteus church parish",
+      "lat": 58.5909124,
+      "lon": 16.1903511,
+      "addresstype": "override"
+    },
     "Norrköping, Sweden": {
       "city": "Norrköping",
       "lat": 58.5909124,
@@ -3626,7 +3666,12 @@
       "lon": -2.6115886,
       "addresstype": "town"
     },
-    "Rosa Zárate, Ecuador": null,
+    "Rosa Zárate, Ecuador": {
+      "city": "Rosa Zárate",
+      "lat": 0.328723,
+      "lon": -79.4726416,
+      "addresstype": "override"
+    },
     "Rosario, Argentina": {
       "city": "Rosario",
       "lat": -32.9593609,
@@ -3771,7 +3816,12 @@
       "lon": -101.192444,
       "addresstype": "city"
     },
-    "Sallent de Llobregat, Spain": null,
+    "Sallent de Llobregat, Spain": {
+      "city": "Sallent de Llobregat",
+      "lat": 41.8390397,
+      "lon": 1.9081612,
+      "addresstype": "override"
+    },
     "Salon-de-Provence, France": {
       "city": "Salon-de-Provence",
       "lat": 43.6405237,
@@ -3898,7 +3948,12 @@
       "lon": -79.1686724,
       "addresstype": "municipality"
     },
-    "Sarab-e Yas, Iran": null,
+    "Sarab-e Yas, Iran": {
+      "city": "Sarab-e Yas",
+      "lat": 33.43063,
+      "lon": 48.34377,
+      "addresstype": "override"
+    },
     "Sarajevo, Bosnia and Herzegovina": {
       "city": "Sarajevo",
       "lat": 43.8570713,
@@ -3995,7 +4050,12 @@
       "lon": 138.3831697,
       "addresstype": "city"
     },
-    "Shorqorgon, Uzbekistan": null,
+    "Shorqorgon, Uzbekistan": {
+      "city": "Shorqorgon",
+      "lat": 40.9250426,
+      "lon": 71.731648,
+      "addresstype": "override"
+    },
     "Shushufindi Canton, Ecuador": {
       "city": "Shushufindi Canton",
       "lat": -0.1471029,
@@ -4080,8 +4140,18 @@
       "lon": 16.4399659,
       "addresstype": "city"
     },
-    "Spånga-Kista församling, Sweden": null,
-    "Spånga-Tensta city district, Sweden": null,
+    "Spånga-Kista församling, Sweden": {
+      "city": "Spånga-Kista församling",
+      "lat": 59.403311,
+      "lon": 17.9442849,
+      "addresstype": "override"
+    },
+    "Spånga-Tensta city district, Sweden": {
+      "city": "Spånga-Tensta city district",
+      "lat": 59.3957349,
+      "lon": 17.9032284,
+      "addresstype": "override"
+    },
     "St. Albert, Canada": {
       "city": "St. Albert",
       "lat": 53.633239,
@@ -4592,7 +4662,12 @@
       "lon": -57.1129598,
       "addresstype": "town"
     },
-    "Villa monica alritmo, Paraguay": null,
+    "Villa monica alritmo, Paraguay": {
+      "city": "Villa monica alritmo",
+      "lat": -25.3947318,
+      "lon": -57.3532892,
+      "addresstype": "override"
+    },
     "Villeneuve-Saint-Georges, France": {
       "city": "Villeneuve-Saint-Georges",
       "lat": 48.7305272,
@@ -4725,7 +4800,12 @@
       "lon": -1.4454353,
       "addresstype": "town"
     },
-    "Wieringen, Netherlands": null,
+    "Wieringen, Netherlands": {
+      "city": "Wieringen",
+      "lat": 52.913916,
+      "lon": 4.9909934,
+      "addresstype": "override"
+    },
     "Willemstad, Curaçao": {
       "city": "Willemstad",
       "lat": 12.1066695,
@@ -4930,7 +5010,12 @@
       "lon": 29.7223732,
       "addresstype": "town"
     },
-    "Ķürgontepa, Uzbekistan": null,
+    "Ķürgontepa, Uzbekistan": {
+      "city": "Ķürgontepa",
+      "lat": 40.733957,
+      "lon": 72.7628617,
+      "addresstype": "override"
+    },
     "Šibenik, Croatia": {
       "city": "Šibenik",
       "lat": 43.7340647,
