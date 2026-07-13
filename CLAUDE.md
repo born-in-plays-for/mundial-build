@@ -19,7 +19,7 @@
 Only files consumed directly by the `mundial` frontend belong in the submodule:
 `elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, `fixtures.json`, and the
 pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
-`v2/discipline.json`,
+`v2/discipline.json`, `v2/birthplace.json`,
 `v2/wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see
 `pipeline/README.md`'s "Relational model" section for how these are built.
 `v2/status.json` carries **eliminated teams only** (`{iso2: {round, date?}}`)
@@ -38,6 +38,19 @@ client show "figures as of round X" without doing its own running-total math
 or leaking a later round's cards into an earlier one.
 **Not yet wired into `update_fixtures.sh`** — stays stale between manual
 `pipeline/fetch_discipline_stats.py` runs even as fixtures/status auto-refresh.
+
+`v2/birthplace.json` (`{pid: {city, lat, lon}}`) is a geocoded birth city per
+player/coach, for the frontend's "all players" table to plot birthplaces on
+the map — `pipeline/wc2026_birthplaces.py`/`wc2026_coaches.py` already scrape
+a `birth_city` string from Wikipedia/Wikidata (it just never used to leave
+the CSVs); `pipeline/geocode_birthplaces.py` resolves that string to lat/lon
+via OpenStreetMap's Nominatim, caching results in the committed
+`pipeline/geocode_cache.json` (rate-limited to 1 req/s, so not cheap to
+redo). Best-effort — a person with no scraped city, or a city Nominatim
+couldn't resolve, is simply absent from the file rather than carrying a null
+lat/lon. **Not wired into any auto-refresh script** — squads don't change
+mid-tournament, so re-run `pipeline/geocode_birthplaces.py` only after a
+squad re-scrape (`wc2026_birthplaces.py`/`wc2026_coaches.py` + `build_json.py`).
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.

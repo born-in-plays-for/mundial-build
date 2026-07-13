@@ -188,6 +188,8 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
             obj["surname"] = p["surname"]
         if p.get("shirtNumber") is not None:
             obj["shirtNumber"] = p["shirtNumber"]
+        if p.get("birth_city"):
+            obj["birthCity"] = p["birth_city"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])
@@ -221,6 +223,8 @@ for p in players:
             obj["surname"] = p["surname"]
         if p.get("shirtNumber") is not None:
             obj["shirtNumber"] = p["shirtNumber"]
+        if p.get("birth_city"):
+            obj["birthCity"] = p["birth_city"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])

@@ -13,6 +13,7 @@ nothing upstream changes:
   pipeline/wiki_<lang>.json x5    (add_wiki_urls.py)
   pipeline/r32_teams.json         (fetch_r32_teams.py)
   pipeline/discipline_stats.json  (fetch_discipline_stats.py)
+  pipeline/geocode_cache.json     (geocode_birthplaces.py)
   data/elo_rank.json              (update_elo_rankings.py)
   data/fixtures.json              (fetch_fixtures.py)
 
@@ -198,9 +199,10 @@ def compute_discipline(fixtures, fixture_stats):
 def collect_persons(map_data):
     """One tuple per person, in map_data file order (this order feeds pid
     assignment for new persons, and export re-derives the file's sort
-    orders stably from it). surname/shirt_number are appended last so the
-    existing (name, role, nation, birth, caps, title) positions — the ones
-    assign_pids() and the wiki-title pass key off — stay unchanged."""
+    orders stably from it). surname/shirt_number/birth_city are appended
+    last so the existing (name, role, nation, birth, caps, title) positions
+    — the ones assign_pids() and the wiki-title pass key off — stay
+    unchanged."""
     persons = []
     for rec in map_data["data"]:
         birth_iso2 = reg.resolve_iso2(rec["country"])
@@ -208,13 +210,15 @@ def collect_persons(map_data):
             persons.append((p["name"], p.get("role", "player"),
                             reg.resolve_iso2(p["nation"]), birth_iso2,
                             p["caps"], p["wikiTitle"],
-                            p.get("surname") or p["name"], p.get("shirtNumber")))
+                            p.get("surname") or p["name"], p.get("shirtNumber"),
+                            p.get("birthCity")))
     for nation, players in map_data["natives"].items():
         iso2 = reg.resolve_iso2(nation)
         for p in players:
             persons.append((p["name"], p.get("role", "player"),
                             iso2, iso2, p["caps"], p["wikiTitle"],
-                            p.get("surname") or p["name"], p.get("shirtNumber")))
+                            p.get("surname") or p["name"], p.get("shirtNumber"),
+                            p.get("birthCity")))
     return persons
 
 
@@ -242,7 +246,7 @@ def assign_pids(persons, af_ids_of):
     (iso2, name)), allocate fresh pids for new ones, rewrite the registry."""
     rows, af_to_pid, key_to_pid, next_pid = load_registry()
     pids, added = [], 0
-    for name, role, nation, birth, caps, title, surname, shirt_number in persons:
+    for name, role, nation, birth, caps, title, surname, shirt_number, birth_city in persons:
         af_ids = af_ids_of.get((nation, title), [])
         pid = next((af_to_pid[(role, a)] for a in af_ids if (role, a) in af_to_pid), None)
         if pid is None:
@@ -278,6 +282,8 @@ def main():
     elo         = read_json(DATA / "elo_rank.json")
     r32         = read_json(PIPELINE / "r32_teams.json")
     discipline  = read_json(PIPELINE / "discipline_stats.json")
+    geocode_all = read_json(PIPELINE / "geocode_cache.json")
+    geocode     = geocode_all["cities"]
     fixtures    = read_json(DATA / "fixtures.json")
     wiki        = {lang: read_json(PIPELINE / f"wiki_{lang}.json")["titles"] for lang in LANGS}
 
@@ -314,11 +320,27 @@ def main():
     pids, added = assign_pids(persons, af_ids_of)
 
     cid = reg.canonical_id
+    city_id_of = {}  # (name, country id) -> city.id, dedupes shared birth cities
+
+    def get_or_create_city(name, country_id, geo):
+        key = (name, country_id)
+        if key not in city_id_of:
+            lat = geo["lat"] if geo else None
+            lon = geo["lon"] if geo else None
+            cur = db.execute("INSERT INTO city (name, country, lat, lon) VALUES (?,?,?,?)",
+                             (name, country_id, lat, lon))
+            city_id_of[key] = cur.lastrowid
+        return city_id_of[key]
+
     af_used = 0
-    for pid, (name, role, nation, birth, caps, title, surname, shirt_number) in zip(pids, persons):
-        db.execute("INSERT INTO person VALUES (?,?,?,?,?,?,?,?,?)",
+    for pid, (name, role, nation, birth, caps, title, surname, shirt_number, birth_city) in zip(pids, persons):
+        city_id = None
+        if birth_city:
+            geo = geocode.get(f"{birth_city}, {reg.display_name(birth)}")
+            city_id = get_or_create_city(birth_city, cid(birth), geo)
+        db.execute("INSERT INTO person VALUES (?,?,?,?,?,?,?,?,?,?)",
                    (pid, name, role, cid(nation), cid(birth), caps,
-                    title if title != name else None, surname, shirt_number))
+                    title if title != name else None, surname, shirt_number, city_id))
         for af in af_ids_of.get((nation, title), []):
             db.execute("INSERT INTO af_person VALUES (?,?,?)", (af, role, pid))
             af_used += 1
@@ -391,6 +413,8 @@ def main():
                (fixtures["source"], fixtures["updated"]))
     db.execute("INSERT INTO provenance VALUES ('discipline',?,?)",
                (discipline["source"], discipline["updated"]))
+    db.execute("INSERT INTO provenance VALUES ('geocode',?,?)",
+               (geocode_all["source"], geocode_all["updated"]))
 
     # ── anomaly gate ────────────────────────────────────────────────────
     # The only tolerated anomaly is the missing-EN-title consequence of a
@@ -406,10 +430,12 @@ def main():
     n = lambda t: db.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
     print(f"Wrote {DB_PATH}")
     eliminated_n = db.execute("SELECT COUNT(*) FROM team_status WHERE status='eliminated'").fetchone()[0]
+    geocoded_n = db.execute("SELECT COUNT(*) FROM view_birthplace").fetchone()[0]
     print(f"  {n('country')} countries, {n('person')} persons ({added} new pids), "
           f"{n('af_person')} af ids, {n('wiki_title')} wiki titles, "
           f"{n('elo_ranking')} elo entries, {n('team_status')} teams tracked "
-          f"({eliminated_n} eliminated), {n('team_discipline')} discipline rows")
+          f"({eliminated_n} eliminated), {n('team_discipline')} discipline rows, "
+          f"{n('city')} cities ({geocoded_n} geocoded)")
     db.close()
 
 

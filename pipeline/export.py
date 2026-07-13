@@ -12,6 +12,12 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             key that doesn't collide with any real iso2/gb-nation code.
   data/v2/wiki_<lang>.json  {urlTemplate, titles: [...]} — array indexed
                             by pid (null = no article in that language)
+  data/v2/birthplace.json   {pid: {city, lat, lon}} — geocoded birth city,
+                            one entry per person view_birthplace has a
+                            resolved lat/lon for (see geocode_birthplaces.py);
+                            a person with no birth city, or a city Nominatim
+                            couldn't geocode, is simply absent — best-effort,
+                            not every person is expected to be present.
   data/v2/status.json       {iso2: {round, date?}} — ELIMINATED teams only.
                             A team absent from this file is still alive;
                             the client never needs a positive "alive" list.
@@ -196,6 +202,12 @@ def build_discipline(db):
     return discipline
 
 
+def build_birthplace(db):
+    return {str(pid): {"city": city, "lat": lat, "lon": lon}
+            for pid, city, lat, lon in db.execute(
+                "SELECT pid, birth_city, birth_lat, birth_lon FROM view_birthplace ORDER BY pid")}
+
+
 def build_wiki(db, lang):
     size = db.execute("SELECT MAX(pid) + 1 FROM person").fetchone()[0]
     titles = [None] * size
@@ -219,7 +231,8 @@ def main():
         sys.exit(1)
 
     files = {"map.json": build_map(db), "live.json": build_live(db),
-              "status.json": build_status(db), "discipline.json": build_discipline(db)}
+              "status.json": build_status(db), "discipline.json": build_discipline(db),
+              "birthplace.json": build_birthplace(db)}
     for lang in LANGS:
         files[f"wiki_{lang}.json"] = build_wiki(db, lang)
     db.close()

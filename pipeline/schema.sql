@@ -123,6 +123,27 @@ CREATE TABLE team_discipline (
     PRIMARY KEY (country, stage)
 );
 
+-- ── city (birthplaces) ─────────────────────────────────────────────────
+-- Distinct birth cities, deduplicated across persons — many players share
+-- one (e.g. several Brazilians born in São Paulo), so this is a normal
+-- entity with an FK from person, the same pattern country/capital_name use,
+-- rather than repeating the name/lat/lon on every person row. Geocoded via
+-- geocode_birthplaces.py (OpenStreetMap Nominatim); lat/lon NULL means the
+-- city name is known but Nominatim couldn't resolve it — kept (not dropped)
+-- so pipeline/geocode_cache.json remembers the miss instead of re-querying
+-- it every run. UNIQUE (name, country): a city name alone isn't a real
+-- identity key (many countries have a "Springfield"), but combined with the
+-- birth country resolved for the person who has it, it is.
+CREATE TABLE city (
+    id      INTEGER PRIMARY KEY,
+    name    TEXT    NOT NULL,
+    country INTEGER NOT NULL REFERENCES country(id),
+    lat     REAL,
+    lon     REAL,
+    UNIQUE (name, country),
+    CHECK ((lat IS NULL) = (lon IS NULL))
+);
+
 -- ── person ──────────────────────────────────────────────────────────────
 -- Players and coaches, one row per human, stored exactly once.
 --
@@ -150,6 +171,10 @@ CREATE TABLE person (
     -- Tournament shirt number, from the Wikipedia squads table's "No."
     -- column — NULL for coaches (not applicable) or an unresolved player.
     shirt_number INTEGER CHECK (shirt_number IS NULL OR shirt_number BETWEEN 1 AND 99),
+    -- Birth city (Wikipedia/Wikidata scrape, wc2026_players.csv/
+    -- wc2026_coaches.csv's own birth_city column — see build_json.py).
+    -- NULL = no scraped city. Points into city, not a repeated name/lat/lon.
+    birth_city   INTEGER REFERENCES city(id),
     -- duplicate-name safety net: two same-named people may exist across the
     -- tournament, never inside one squad
     UNIQUE (nation, name),
@@ -249,6 +274,15 @@ LEFT JOIN country b ON b.id = p.birth;
 -- Per-language wiki table (source of wiki_<lang>.json: array indexed by pid).
 CREATE VIEW view_wiki AS
 SELECT lang, pid, title FROM wiki_title;
+
+-- Geocoded birth cities (source of data/v2/birthplace.json) — only persons
+-- with a successfully geocoded city; a known-but-ungeocodable or altogether
+-- missing city is simply absent here rather than shipping a null lat/lon.
+CREATE VIEW view_birthplace AS
+SELECT p.pid, c.name AS birth_city, c.lat AS birth_lat, c.lon AS birth_lon
+FROM person p
+JOIN city c ON c.id = p.birth_city
+WHERE c.lat IS NOT NULL;
 
 -- Eliminated teams only (source of data/v2/status.json — absence from this
 -- view is the client-facing "still alive" signal, not a NULL/'alive' row).

@@ -43,11 +43,16 @@ python3 pipeline/fetch_fixtures.py      # → data/fixtures.json
 # rerun only fetches newly-finished fixtures.
 python3 pipeline/fetch_discipline_stats.py  # → pipeline/discipline_stats.json
 
+# Geocode player/coach birth cities (no key needed; hits OpenStreetMap's
+# Nominatim, rate-limited to 1 req/s) — re-run only after a squad re-scrape,
+# not every build. Cached per (city, country) pair (pipeline/geocode_cache.json).
+python3 pipeline/geocode_birthplaces.py  # → pipeline/geocode_cache.json
+
 # Relational model (runs AFTER the above; see pipeline/README.md "Relational model")
 # map_data.json / player_wiki.json / wiki_<lang>.json / data/fixtures.json /
-# discipline_stats.json above are this step's inputs — pipeline-internal (except
-# data/fixtures.json, which is also frontend-facing on its own), not what the
-# frontend fetches from the DB side.
+# discipline_stats.json / geocode_cache.json above are this step's inputs —
+# pipeline-internal (except data/fixtures.json, which is also frontend-facing
+# on its own), not what the frontend fetches from the DB side.
 python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + person_registry.csv
 python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically — THE
                              # frontend-facing output of this whole pipeline

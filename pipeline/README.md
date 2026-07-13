@@ -46,8 +46,9 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `update_elo_rankings.py` | `data/elo_rank.json` | Fetches current Elo ratings from eloratings.net |
 | `fetch_fixtures.py` | `data/fixtures.json` | Every WC2026 fixture, past and planned — see "Fixtures" below |
 | `fetch_discipline_stats.py` | `pipeline/discipline_stats.json` | Per-fixture foul/card counts from api-football's fixture statistics — see "Discipline stats" below |
+| `geocode_birthplaces.py` | `pipeline/geocode_cache.json` | Geocodes each player/coach's scraped birth city to lat/lon via OpenStreetMap Nominatim — see "Birthplace geocoding" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build; also derives tournament elimination status from `data/fixtures.json` — see "Relational model" and "Team status" below |
-| `export.py` | `data/v2/` (9 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
+| `export.py` | `data/v2/` (10 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
 
 ---
 
@@ -85,6 +86,14 @@ erDiagram
         INTEGER birth FK "NULL = unresolved"
         INTEGER caps "0 for coaches"
         TEXT    en_title "EN wiki title ONLY when it differs from name"
+        INTEGER birth_city FK "NULL = no scraped city"
+    }
+    city {
+        INTEGER id PK
+        TEXT    name "e.g. 'São Paulo'"
+        INTEGER country FK "same as the referencing person(s)' birth"
+        REAL    lat "NULL = known city Nominatim couldn't geocode"
+        REAL    lon "NULL iff lat is NULL"
     }
     af_person {
         INTEGER af_id PK "api-football person id (external)"
@@ -141,6 +150,8 @@ erDiagram
     country ||--o| af_team         : "api-football team id"
     country ||--o| team_status     : "alive / eliminated"
     country ||--o| team_discipline : "fouls/cards"
+    country ||--o{ city            : "birth city's country"
+    city    |o--o{ person          : "birth_city (shared across persons)"
     person  ||--o{ af_person       : "api-football id(s), 1:n (duplicate-id records)"
     person  ||--o{ wiki_title      : "article per language"
 ```
@@ -322,6 +333,47 @@ math. `foulsPerCard` is `null` for a team/stage with zero cards so far (not
 `fetch_discipline_stats.py` runs even as fixtures/status stay current. Fold
 it in (and add `v2/discipline.json` to the script's commit-diff check)
 before relying on this data staying fresh automatically.
+
+---
+
+## Birthplace geocoding (`geocode_birthplaces.py` → `city` table → `data/v2/birthplace.json`)
+
+`wc2026_birthplaces.py`/`wc2026_coaches.py` already scrape a `birth_city`
+string per person into `wc2026_players.csv`/`wc2026_coaches.csv` (Wikipedia
+squads table → Wikidata P19 → per-player infobox fallback — see
+`pipeline/CLAUDE.md`'s "Birthplace overrides" section); it just never used to
+leave those CSVs. `build_json.py` now carries it through as `birthCity` on
+every player/coach object in `pipeline/map_data.json` (exports and natives
+alike), and `geocode_birthplaces.py` resolves each unique `(birth_city,
+birth_country)` pair (cities are shared by many players — e.g. several
+Brazilians born in São Paulo — so pairs are deduplicated before any request
+goes out) to lat/lon via OpenStreetMap's Nominatim search API (no key
+needed), respecting Nominatim's usage policy: max 1 request/second, an
+identifying `User-Agent`. Results are cached in `pipeline/geocode_cache.json`
+(committed, same "hits a live external API, not cheap to redo casually"
+reasoning as `discipline_stats_cache.json`) keyed by the exact `"City,
+Country"` query string, so a rerun only geocodes pairs it hasn't seen before
+— a pair Nominatim couldn't resolve is cached as `null` too, so it isn't
+retried every run either (pass `--refresh-cache` to force a full re-geocode).
+
+`load.py` looks each person's `(birth_city, birth-country display name)` up
+in that cache and gets-or-creates the matching `city` row (deduplicated by
+`(name, country)` — see the ER diagram above), so 30-odd Brazilians born in
+São Paulo all point at the same `city.id` instead of repeating its name and
+coordinates 30 times; `person.birth_city` is just an FK into it. A person
+with no scraped city gets no `city` row at all; a scraped city Nominatim
+couldn't geocode still gets a `city` row (so it isn't re-geocoded as if
+never seen), just with `lat`/`lon` left NULL rather than a bogus fallback
+location. `view_birthplace` joins person → city and selects only the rows
+with a resolved `lat`/`lon`, and `export.py`'s `build_birthplace()` turns
+that into `data/v2/birthplace.json`: `{pid: {city, lat, lon}}`, one entry per
+successfully geocoded person — best-effort, not every person is expected to
+be present, matching the "all players" table's own filtered/partial nature.
+
+Squads don't change mid-tournament, so this doesn't need re-running on the
+fixtures cadence the way discipline/status/live do — only after a genuine
+squad re-scrape (a new `wc2026_birthplaces.py`/`wc2026_coaches.py` +
+`build_json.py` pass). **Not wired into `update_fixtures.sh`.**
 
 ---
 
@@ -513,6 +565,7 @@ tournament in case Wikipedia itself hasn't been updated yet.
 python3 pipeline/wc2026_birthplaces.py
 python3 pipeline/build_json.py
 python3 pipeline/add_wiki_urls.py       # only new/changed players need new API calls
+python3 pipeline/geocode_birthplaces.py # only new/changed birth cities need new API calls
 python3 pipeline/validate_country_coverage.py
 python3 pipeline/load.py && python3 pipeline/export.py   # re-export data/v2/
 ```
