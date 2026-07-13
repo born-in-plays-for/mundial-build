@@ -17,7 +17,8 @@
 ### `data/` submodule — what belongs there
 
 Only files consumed directly by the `mundial` frontend belong in the submodule:
-`elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, `fixtures.json`, and the
+`elo_rank.json`, `elo_history.json`, `uk-nations.geojson`, `fixtures.json`,
+`kde_risk.json`, `hotspots.json`, and the
 pid-keyed `v2/` files (`v2/map.json`, `v2/live.json`, `v2/status.json`,
 `v2/discipline.json`, `v2/birthplace.json`,
 `v2/wiki_en.json`/`wiki_fr.json`/`wiki_de.json`/`wiki_it.json`/`wiki_es.json`) — see
@@ -38,6 +39,23 @@ client show "figures as of round X" without doing its own running-total math
 or leaking a later round's cards into an earlier one.
 **Not yet wired into `update_fixtures.sh`** — stays stale between manual
 `pipeline/fetch_discipline_stats.py` runs even as fixtures/status auto-refresh.
+
+`kde_risk.json` + `hotspots.json` (`pipeline/kde_risk.py`) are a "talent
+production" relative-risk map layer — a population-normalized surface
+answering "does this place produce more WC2026 talent than its population
+would predict," not raw player density (which would just track megacity
+population). `kde_risk.json` is `{bandwidthKm, resolutionDeg, bbox, nx, ny,
+source, values}`, a row-major `log2(relative risk)` grid (`null` = masked,
+population too sparse to be meaningful); `hotspots.json` is
+`[{name, country, lon, lat, players, log2Risk}, ...]`, local maxima of that
+grid snapped to real WC2026 birth cities. See `pipeline/README.md`'s "KDE
+talent-production surface" section for the full methodology — notably why
+São Paulo comes out near/below the global rate despite having several
+notable players (its population is so large that isn't a statistical
+outlier — a deliberate, verified property of population normalization, not
+a bug). Written straight to the submodule like `fixtures.json`/
+`elo_rank.json`, no `v2/` relational routing. **Not wired into
+`update_fixtures.sh`** — only needs re-running after a squad re-scrape.
 
 `v2/birthplace.json` (`{pid: {city, lat, lon}}`) is a geocoded birth city per
 player/coach, for the frontend's "all players" table to plot birthplaces on

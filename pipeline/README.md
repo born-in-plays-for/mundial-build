@@ -22,7 +22,7 @@ charts) have their commands in `CLAUDE.md`'s build sequence, not here.
 ## Prerequisites
 
 ```bash
-pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
+pip install requests beautifulsoup4 pandas lxml pycountry jellyfish numpy scipy
 ```
 
 ---
@@ -49,6 +49,8 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish
 | `geocode_birthplaces.py` | `pipeline/geocode_cache.json` | Geocodes each player/coach's scraped birth city to lat/lon via OpenStreetMap Nominatim + `pipeline/geocode_overrides.json` — see "Birthplace geocoding" below |
 | `load.py` | `mundial.db` (gitignored), `person_registry.csv` | Phase 1 of the relational build; also derives tournament elimination status from `data/fixtures.json` — see "Relational model" and "Team status" below |
 | `export.py` | `data/v2/` (10 files) | Phase 2 — exports pid-keyed view files from `mundial.db` |
+| `fetch_population_points.py` | `pipeline/population_points.csv` | Population-weighted point cloud (GeoNames), the population denominator for `kde_risk.py` — see "KDE talent-production surface" below |
+| `kde_risk.py` | `data/kde_risk.json`, `data/hotspots.json` | Population-normalized "talent production" relative-risk surface + hotspot list — see "KDE talent-production surface" below |
 
 ---
 
@@ -401,6 +403,103 @@ Squads don't change mid-tournament, so this doesn't need re-running on the
 fixtures cadence the way discipline/status/live do — only after a genuine
 squad re-scrape (a new `wc2026_birthplaces.py`/`wc2026_coaches.py` +
 `build_json.py` pass). **Not wired into `update_fixtures.sh`.**
+
+---
+
+## KDE talent-production surface (`kde_risk.py` → `data/kde_risk.json` + `data/hotspots.json`)
+
+A "does this place produce more WC2026 talent than its population would
+predict" map layer, built once the birthplace geocoding above exists —
+`kde_risk.py` reads `pipeline/mundial.db`'s geocoded birth cities directly
+(no `data/v2/birthplace.json` round-trip needed, since the DB already has
+`city.lat`/`lon`/`country` in one join).
+
+**Two Gaussian KDEs on the same grid.** A 0.25°, world-extent grid
+(1440×720 cells), with a haversine-distance Gaussian kernel (`--bandwidth-km`,
+default 75) applied to two different point clouds on that SAME grid so
+they're directly comparable cell-by-cell:
+- **Player density** — every geocoded WC2026 birth city, weighted by how
+  many players/coaches were born there.
+- **Population density** — `pipeline/population_points.csv` (see
+  `fetch_population_points.py` below), standing in for a true gridded
+  population raster.
+
+The kernel is normalized to integrate to 1 over the plane, so both
+surfaces carry genuine "weight per km²" units — population density in
+real people/km², specifically, which is what makes `--pop-threshold`
+(default 1 person/km², masking ocean/ice/deep desert) a real-world
+figure rather than an arbitrary tuning knob.
+
+**Relative risk, not raw density.** `risk(cell) = (player_density(cell) /
+population_density(cell)) / (total_players / total_population)` —
+normalized against the dataset's own global per-capita rate, so `risk = 1`
+(`log2 = 0`) means "produces WC2026 talent exactly proportional to how many
+people live here." `log2` makes the scale symmetric (+1 = double the
+expected rate, -1 = half) and is what `data/kde_risk.json` actually stores.
+This deliberately answers a different question than "which city has
+produced the most famous players" (a raw, non-population-normalized
+density map would answer that, and would be dominated by megacities
+almost by construction).
+
+**Small-count shrinkage (`--smoothing-pop`, default 50 people/km²).** A
+raw rate ratio is noisy for low counts — the same "small-area estimation"
+problem epidemiology deals with for rare-event maps. Verified empirically:
+without smoothing, the surface was dominated by sparsely-populated Arctic
+Norwegian towns with 1-2 players each (a tiny local population makes even
+one player's contribution spike the ratio), not any recognizable football
+hotbed. The fix blends in a pseudo-population at the global rate before
+taking the ratio — a cell whose real population is small compared to
+`--smoothing-pop` gets pulled toward `risk = 1` (not enough local evidence
+yet); a cell whose population dwarfs it (real cities) is barely affected.
+
+**Verified reference cities** (`kde_risk.py`'s own console output, run
+after every change): Paris (~9x) and Buenos Aires (~6x) come out strongly
+positive, as expected. **São Paulo comes out ~0.63x — not a bug.** GeoNames
+records São Paulo's entire municipal population (12.4M) at one point, one
+of the densest urban regions on Earth; only ~8 WC2026 players fall within
+75km of it. Relative to a population that large, 8 players isn't a
+statistical outlier — the surface is correctly distinguishing "produces a
+lot of talent because it has a LOT of people" from "produces
+disproportionately more talent than its population predicts." Doha
+(~13x) is elevated but doesn't dominate the hotspot list (not #1) —
+arguably a legitimate finding given Qatar's well-documented, heavily-funded
+football academy system (Aspire Academy) relative to its small population,
+not something to suppress further. Don't re-tune `--smoothing-pop` to force
+São Paulo positive — that would be fitting the parameter to an intuition
+the analysis has already shown isn't what population-relative risk means.
+
+**Hotspots**: local maxima of the risk grid (`scipy.ndimage.maximum_filter`,
+footprint ~2×bandwidth so nearby maxima don't duplicate the same cluster),
+taken in descending `log2Risk` order and snapped to the nearest ACTUAL
+WC2026 birth city in `mundial.db` (not a `population_points.csv` point) —
+deduplicated by city, so two maxima near the same city only produce one
+`hotspots.json` entry. `--top-n` (default 25) caps the list.
+
+**`fetch_population_points.py`** downloads GeoNames' `cities1000.zip`
+(every populated place with population ≥ 1000, CC BY 4.0, no login needed —
+https://www.geonames.org/) and writes `pipeline/population_points.csv`
+(lat, lon, population; committed, same "hits an external source" reasoning
+as other `fetch_*.py` scripts). Summing its population column gives ~4.4B,
+not true world population (~8B) — it undercounts population dispersed
+outside any town/city GeoNames has a node for. That's fine for a *relative*
+risk ratio (this dataset is only ever normalized against its own total
+mass) but would matter for anything needing accurate absolute density; a
+true gridded raster (GPWv4/WorldPop) would need an EOSDIS Earthdata login
+or a much larger download this pipeline has no other use for — see
+`fetch_population_points.py`'s docstring for the full reasoning.
+
+**Output**: `data/kde_risk.json` (`{bandwidthKm, resolutionDeg, bbox, nx,
+ny, source, values}` — `values` is row-major, `ny` rows of `nx` values
+each, row `i` = latitude `bbox[1] + (i+0.5)*resolutionDeg` south to north,
+column `j` within a row = longitude `bbox[0] + (j+0.5)*resolutionDeg` west
+to east; `null` = masked) and `data/hotspots.json` (`[{name, country, lon,
+lat, players, log2Risk}, ...]` sorted descending). ~5.5MB uncompressed,
+~390KB gzipped — reasonable for a one-time base-layer fetch, so no PNG
+sidecar (the spec's fallback for an oversized grid) was needed.
+
+Squads don't change mid-tournament, so — like birthplace geocoding above —
+this only needs re-running after a genuine squad re-scrape, not on any
+other cadence. **Not wired into `update_fixtures.sh`.**
 
 ---
 

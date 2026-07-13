@@ -57,6 +57,13 @@ python3 pipeline/load.py    # inputs → pipeline/mundial.db (gitignored) + pers
 python3 pipeline/export.py  # mundial.db → data/v2/ pid-keyed view files, atomically — THE
                              # frontend-facing output of this whole pipeline
 
+# "Talent production" relative-risk map layer (runs AFTER load.py — reads
+# mundial.db directly; no key needed, hits GeoNames once) — re-run only
+# after a squad re-scrape, not every build. See pipeline/README.md's "KDE
+# talent-production surface" section.
+python3 pipeline/fetch_population_points.py  # → pipeline/population_points.csv (cached, re-run rarely)
+python3 pipeline/kde_risk.py                 # → data/kde_risk.json, data/hotspots.json
+
 # Extras (only needed for pages/ standalone charts)
 python3 extras/build_elo_history.py  # → extras/elo_history.json  (for pages/wc2026_elo_history.html)
 python3 extras/add_gdp.py            # → extras/gdp.json                   (for pages/wc2026_correlation.html)
