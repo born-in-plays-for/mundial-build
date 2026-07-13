@@ -376,9 +376,12 @@ a hand-verified, cited-source fallback (same only-fills-gaps pattern as
 `_known_unresolved` section documents entries that were researched and
 deliberately left out rather than guessed — e.g. two persons whose scraped
 `birth_city` is literally their birth country's own name (no specific city
-was ever known), and one where the scraped value looks like an upstream
-Wikidata error unrelated to geocoding at all (a player whose birth country
-itself is probably wrong, not just hard to place on a map).
+was ever known). One entry ("Piranshahr Sugar Factory, Iran") turned out to
+be an upstream Wikidata P19 error rather than a hard-to-geocode place at
+all — Saman Ghoddos's own Wikipedia infobox/prose say Malmö, Sweden — and
+was fixed at the source instead, via `build_json.py`'s
+`BIRTH_CITY_OVERRIDES` (see "Squad-scrape data-quality notes" below), so it
+no longer appears here.
 
 `load.py` looks each person's `(birth_city, birth-country display name)` up
 in that cache and gets-or-creates the matching `city` row (deduplicated by

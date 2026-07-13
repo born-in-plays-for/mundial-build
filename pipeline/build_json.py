@@ -111,6 +111,12 @@ for p in players:
 BIRTH_CITY_OVERRIDES = {
     "Aaron Hickey":  ("Glasgow",     "Scotland"),   # Wikidata returned "Scotland"
     "Callan Elliot": ("Kilmarnock",  "Scotland"),   # Wikidata returned "Scotland"
+    # Wikidata P19 returned "Piranshahr Sugar Factory, Iran" (1 unclear ref),
+    # contradicting his own Wikipedia infobox/prose ("born and raised in
+    # Malmö"; parents are from Ahvaz, Iran — he switched football allegiance
+    # from Sweden to Iran in 2017, which is likely how his P19 got confused
+    # with a family/heritage location instead of his actual birthplace).
+    "Saman Ghoddos": ("Malmö", "Sweden"),
 }
 # UK city -> home nation table lives in country_registry.py (shared with
 # wc2026_coaches.py, which faces the same "United Kingdom" ambiguity).
