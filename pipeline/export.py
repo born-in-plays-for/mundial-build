@@ -4,7 +4,9 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
 
   data/v2/map.json          same shape as map_data.json, but every
                             player/coach carries an integer "pid" instead
-                            of the "wikiTitle" string
+                            of the "wikiTitle" string, plus a "position"
+                            (GK/DF/MF/FW) field on players (absent for
+                            coaches or an unresolved player)
   data/v2/live.json         player_wiki.json's successor:
                             {iso2: {af_id: {pid, birthCountry}}, teams: {af_team_id: iso2}}
                             "teams" is api-football's numeric team id -> iso2 (formerly
@@ -58,7 +60,7 @@ OUT_DIR  = PIPELINE.parent / "data" / "v2"
 LANGS = ["en", "fr", "de", "it", "es"]
 
 
-def player_obj(name, surname, shirt_number, caps, role, pid, nation=None):
+def player_obj(name, surname, shirt_number, position, caps, role, pid, nation=None):
     obj = {"name": name}
     if nation is not None:
         obj["nation"] = nation
@@ -68,13 +70,15 @@ def player_obj(name, surname, shirt_number, caps, role, pid, nation=None):
     obj["surname"] = surname
     if shirt_number is not None:
         obj["shirtNumber"] = shirt_number
+    if position is not None:
+        obj["position"] = position
     obj["pid"] = pid
     return obj
 
 
 def build_map(db):
     persons = db.execute("""
-        SELECT p.pid, p.name, p.surname, p.shirt_number, p.role, p.caps,
+        SELECT p.pid, p.name, p.surname, p.shirt_number, p.position, p.role, p.caps,
                n.id, n.name, b.id, b.name, b.iso2
         FROM person p
         JOIN country n ON n.id = p.nation
@@ -84,12 +88,12 @@ def build_map(db):
     # exports: birth != nation, grouped by birth country in pid order
     groups = {}  # birth name -> {"id", "iso2", "players": [...]}
     natives = {}
-    for pid, name, surname, shirt_number, role, caps, n_id, n_name, b_id, b_name, b_iso2 in persons:
+    for pid, name, surname, shirt_number, position, role, caps, n_id, n_name, b_id, b_name, b_iso2 in persons:
         if b_id != n_id:
             g = groups.setdefault(b_name, {"id": b_id, "iso2": b_iso2, "players": []})
-            g["players"].append(player_obj(name, surname, shirt_number, caps, role, pid, nation=n_name))
+            g["players"].append(player_obj(name, surname, shirt_number, position, caps, role, pid, nation=n_name))
         else:
-            natives.setdefault(n_name, []).append(player_obj(name, surname, shirt_number, caps, role, pid))
+            natives.setdefault(n_name, []).append(player_obj(name, surname, shirt_number, position, caps, role, pid))
 
     records = []
     for country, g in groups.items():

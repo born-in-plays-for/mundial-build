@@ -74,6 +74,11 @@ with open(CSV_PATH, encoding="utf-8-sig") as f:
             "name":          row["player"],
             "surname":       row["surname"],
             "shirtNumber":   int(row["number"]) if row["number"] else None,
+            # Wikipedia's "No." column is really "<sort order> <code>"
+            # (e.g. "1 GK"); only the trailing GK/DF/MF/FW code is the
+            # actual position, the leading digit just orders goalkeepers
+            # before defenders before midfielders before forwards.
+            "position":      row["pos"].split()[-1] if row["pos"] else None,
             "nation":        row["nation"],
             "birth_city":    row["birth_city"],
             "birth_country": row["birth_country"],
@@ -194,6 +199,8 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
             obj["surname"] = p["surname"]
         if p.get("shirtNumber") is not None:
             obj["shirtNumber"] = p["shirtNumber"]
+        if p.get("position"):
+            obj["position"] = p["position"]
         if p.get("birth_city"):
             obj["birthCity"] = p["birth_city"]
         key = (p["name"], p["nation"])
@@ -229,6 +236,8 @@ for p in players:
             obj["surname"] = p["surname"]
         if p.get("shirtNumber") is not None:
             obj["shirtNumber"] = p["shirtNumber"]
+        if p.get("position"):
+            obj["position"] = p["position"]
         if p.get("birth_city"):
             obj["birthCity"] = p["birth_city"]
         key = (p["name"], p["nation"])

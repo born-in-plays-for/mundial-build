@@ -171,6 +171,11 @@ CREATE TABLE person (
     -- Tournament shirt number, from the Wikipedia squads table's "No."
     -- column — NULL for coaches (not applicable) or an unresolved player.
     shirt_number INTEGER CHECK (shirt_number IS NULL OR shirt_number BETWEEN 1 AND 99),
+    -- Playing position, from the same "No." column's leading GK/DF/MF/FW
+    -- code (Wikipedia sorts squads goalkeepers-first, so the column reads
+    -- "1 GK", "2 DF", ... — see build_json.py). NULL for coaches (not
+    -- applicable) or an unresolved player.
+    position     TEXT CHECK (position IS NULL OR position IN ('GK', 'DF', 'MF', 'FW')),
     -- Birth city (Wikipedia/Wikidata scrape, wc2026_players.csv/
     -- wc2026_coaches.csv's own birth_city column — see build_json.py).
     -- NULL = no scraped city. Points into city, not a repeated name/lat/lon.
@@ -233,7 +238,7 @@ CREATE TABLE provenance (
 -- Foreign-born players ("exports" from birth country to nation) — the map
 -- arcs and the birth-country grouping of map_data.
 CREATE VIEW view_export_player AS
-SELECT p.pid, p.name, p.surname, p.shirt_number, p.role, p.caps,
+SELECT p.pid, p.name, p.surname, p.shirt_number, p.position, p.role, p.caps,
        b.id AS birth_id,  b.name AS birth_country,
        n.id AS nation_id, n.name AS nation
 FROM person p
@@ -243,7 +248,7 @@ WHERE p.birth <> p.nation;
 
 -- Home-born players, grouped by nation ("natives" in map_data).
 CREATE VIEW view_native_player AS
-SELECT p.pid, p.name, p.surname, p.shirt_number, p.role, p.caps,
+SELECT p.pid, p.name, p.surname, p.shirt_number, p.position, p.role, p.caps,
        n.id AS nation_id, n.name AS nation
 FROM person p
 JOIN country n ON n.id = p.nation
