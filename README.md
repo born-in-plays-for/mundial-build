@@ -14,7 +14,6 @@ This repo scrapes player data, Elo ratings, and economic indicators, then writes
 | `pages/` | Self-contained HTML pages hosted from this repo |
 | `infographics/` | Infographic HTML sources (social cards) |
 | `screenshots/` | App screenshots for documentation |
-| `quotes_proposals.yaml` | Candidate quotes for the rotating header |
 
 ## Setup
 
