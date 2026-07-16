@@ -61,8 +61,8 @@ python3 pipeline/load.py
 echo "==> Exporting frontend-facing data..."
 python3 pipeline/export.py
 
-if git -C data diff --quiet -- fixtures.json v2/status.json; then
-    echo "==> No change in data/fixtures.json or data/v2/status.json — nothing to commit."
+if git -C data diff --quiet -- fixtures.json v2/status.json v2/discipline.json; then
+    echo "==> No change in data/fixtures.json or data/v2/status.json or v2/discipline.json — nothing to commit."
 else
     today="$(date +%Y-%m-%d)"
 
