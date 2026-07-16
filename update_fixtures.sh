@@ -67,7 +67,7 @@ else
     today="$(date +%Y-%m-%d)"
 
     echo "==> Committing in the data submodule..."
-    git -C data add fixtures.json v2/status.json
+    git -C data add fixtures.json v2/status.json v2/discipline.json
     git -C data commit -m "Update fixtures — ${today}"
 
     echo "==> Pushing data submodule..."
