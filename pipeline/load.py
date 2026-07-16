@@ -47,6 +47,7 @@ import sys
 from pathlib import Path
 
 import country_registry as reg
+from geocode_birthplaces import strip_admin_qualifier
 
 PIPELINE = Path(__file__).parent
 DATA     = PIPELINE.parent / "data"  # still-submodule output: elo_rank.json
@@ -348,6 +349,19 @@ def main():
               birth_lat, birth_lon) in zip(pids, persons):
         city_id = None
         if birth_city:
+            # A pure string derivation of birth_city itself (see
+            # strip_admin_qualifier/FALLBACK_PATTERNS) — computed uniformly
+            # here regardless of which source resolves the coordinate below,
+            # not sourced from geocode_cache.json's own (Nominatim-only)
+            # copy of the same computation. A city.source='wikidata' row
+            # skipping this entirely used to silently drop actualCityName
+            # for anyone whose birth_city is a sub-city administrative unit
+            # but who resolves via Wikidata (most such cases now do, since
+            # Wikidata often has its own distinct, more precise entity per
+            # arrondissement/district) — e.g. "12th arrondissement of
+            # Paris" lost its "Paris" actualCityName the moment that person
+            # started resolving via Wikidata instead of Nominatim.
+            actual_name = strip_admin_qualifier(birth_city)
             if birth_lat is not None and birth_lon is not None:
                 # The person's own Wikidata P19 claim already disambiguates
                 # this exact place — trust it directly, skip the (city,
@@ -355,13 +369,12 @@ def main():
                 # (which can't tell apart two people sharing a city NAME but
                 # not the same actual place).
                 city_id = get_or_create_city(birth_city, cid(birth), birth_lat, birth_lon,
-                                              None, None, "wikidata")
+                                              None, actual_name, "wikidata")
             else:
                 geo = geocode.get(f"{birth_city}, {reg.display_name(birth)}")
                 lat = geo["lat"] if geo else None
                 lon = geo["lon"] if geo else None
                 population = geo.get("population") if geo else None
-                actual_name = geo.get("actualCityName") if geo else None
                 source = None
                 if geo:
                     source = "override" if geo.get("addresstype") == "override" else "nominatim"

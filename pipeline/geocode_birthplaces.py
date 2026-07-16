@@ -40,13 +40,15 @@ arrondissement of Paris", "Bodø Municipality") often has no direct Nominatim
 match — see FALLBACK_PATTERNS, which strips the qualifier and retries with
 just the city name. `city` in a resolved entry stays that ORIGINAL scraped
 string (the label a client displays) even when the stripped form is what
-actually got the match; the stripped form itself is kept alongside it as
-`actualCityName` (e.g. "Paris" for a `city` of "12th arrondissement of
-Paris") — present only when FALLBACK_PATTERNS actually matched, same
-"only when it differs" convention as e.g. schema.sql's `person.en_title`.
-This is a pure string transformation (no Nominatim call needed), so it's
-backfilled unconditionally on every run, not gated behind a flag the way
-`population` is.
+actually got the match — pipeline/load.py separately derives the stripped
+plain-city form (its own `actual_name`/"actualCityName") straight from
+`birth_city`, uniformly for every person regardless of which source
+resolved their coordinate; it isn't computed or cached here, since it's a
+pure string transformation independent of Nominatim entirely (an earlier
+version DID compute and cache it here, which caused a real bug: a person
+who moved from this Nominatim path to a Wikidata-sourced coordinate
+silently lost the field, since nothing repeated the computation on the new
+path — see load.py's own comment).
 
 pipeline/geocode_overrides.json is a hand-verified, cited-source correction
 list, checked FIRST — before any Nominatim query at all — so a present
@@ -272,10 +274,10 @@ def _population_of(r):
 
 
 def geocode(city, country, overrides):
-    """-> {"city", "lat", "lon", "population", "actualCityName"?} or None if
-    nothing resolves it. geocode_overrides.json is checked FIRST,
-    unconditionally — a present override always wins over a live query
-    (same "always wins outright" precedent as surname_overrides.json, not
+    """-> {"city", "lat", "lon", "population"} or None if nothing resolves
+    it. geocode_overrides.json is checked FIRST, unconditionally — a
+    present override always wins over a live query (same "always wins
+    outright" precedent as surname_overrides.json, not
     birthplace_overrides.json's "fills gaps only" one), because Nominatim
     finding *a* result doesn't mean it found the *right* one — this
     ordering is what lets an override CORRECT a wrong result, not just fill
@@ -285,41 +287,28 @@ def geocode(city, country, overrides):
     just the wrong homonym; see pipeline/README.md). `city` in the result
     is always the ORIGINAL scraped name, even when a stripped fallback
     query is what resolved it — the fallback only changes what's sent to
-    Nominatim, not the label a client displays; `actualCityName` carries
-    that stripped form separately, only when FALLBACK_PATTERNS actually
-    matched `city`."""
-    actual = strip_admin_qualifier(city)
+    Nominatim, not the label a client displays. (An "actualCityName" —
+    the FALLBACK_PATTERNS-stripped plain form, e.g. "Paris" for "12th
+    arrondissement of Paris" — used to be computed and cached here, but
+    that's a pure derivation of `city` independent of how the coordinate
+    was resolved; pipeline/load.py now computes it uniformly for every
+    person regardless of source, so it isn't duplicated here anymore — see
+    load.py's own comment for why the old split caused a real bug: a
+    person who moved from this Nominatim path to a Wikidata-sourced
+    coordinate silently lost the field entirely.)"""
     override = overrides.get(f"{city}, {country}")
     if override is not None:
         # Never queries Nominatim at all when an override is present — no
         # population tag to read either.
-        result = {"city": city, "lat": override["lat"], "lon": override["lon"],
-                  "addresstype": "override", "population": None}
-    else:
-        r = _resolve(city, country)
-        if r is None:
-            return None
-        # addresstype is diagnostic only (not consumed by load.py) — kept so
-        # a future audit can spot-check without re-querying Nominatim.
-        result = {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
-                  "addresstype": r.get("addresstype"), "population": _population_of(r)}
-    if actual is not None:
-        result["actualCityName"] = actual
-    return result
-
-
-def _backfill_actual_city_names(cache):
-    """Adds 'actualCityName' to every resolved cache entry whose 'city'
-    matches a FALLBACK_PATTERNS admin-qualifier and doesn't have it yet —
-    pure string derivation from data already in the cache, no Nominatim
-    call needed, so safe (and cheap) to run unconditionally on every
-    invocation rather than gating it behind its own --add-* flag."""
-    for entry in cache.values():
-        if entry is None or "actualCityName" in entry:
-            continue
-        actual = strip_admin_qualifier(entry["city"])
-        if actual is not None:
-            entry["actualCityName"] = actual
+        return {"city": city, "lat": override["lat"], "lon": override["lon"],
+                "addresstype": "override", "population": None}
+    r = _resolve(city, country)
+    if r is None:
+        return None
+    # addresstype is diagnostic only (not consumed by load.py) — kept so
+    # a future audit can spot-check without re-querying Nominatim.
+    return {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
+            "addresstype": r.get("addresstype"), "population": _population_of(r)}
 
 
 def main():
@@ -365,7 +354,6 @@ def main():
                 print(f"  {i}/{len(todo_pop)} checked")
             if i < len(todo_pop):
                 time.sleep(RATE_LIMIT_S)
-        _backfill_actual_city_names(cache)
         with open(CACHE_PATH, "w", encoding="utf-8") as f:
             json.dump({
                 "source":  "nominatim.openstreetmap.org",
@@ -397,7 +385,6 @@ def main():
         if i < len(todo):
             time.sleep(RATE_LIMIT_S)
 
-    _backfill_actual_city_names(cache)
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump({
             "source":  "nominatim.openstreetmap.org",

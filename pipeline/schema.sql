@@ -172,8 +172,16 @@ CREATE TABLE team_discipline (
 -- geocode_birthplaces.py's FALLBACK_PATTERNS/strip_admin_qualifier.
 -- actual_name holds the stripped plain-city form ("Paris") ONLY when it
 -- differs from `name`; NULL means `name` already is the plain city name.
--- Same only-when-it-differs convention as person.en_title below. Only
--- ever set for source = 'nominatim' rows, same reason as population.
+-- Same only-when-it-differs convention as person.en_title below. UNLIKE
+-- population, this is set for every source (load.py derives it from
+-- `name` itself, uniformly, regardless of whether the coordinate came
+-- from Wikidata, Nominatim, or an override) — it's a pure string
+-- transformation of the scraped city text, independent of how the
+-- coordinate was resolved. An earlier version computed and cached this
+-- only on the Nominatim path, which silently dropped the field for anyone
+-- who moved to a Wikidata-sourced coordinate instead (most sub-city
+-- administrative units DO resolve via Wikidata today, since it often has
+-- its own distinct, more precise entity per arrondissement/district).
 CREATE TABLE city (
     id          INTEGER PRIMARY KEY,
     name        TEXT    NOT NULL,
