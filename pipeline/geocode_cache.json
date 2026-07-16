@@ -1,144 +1,167 @@
 {
   "source": "nominatim.openstreetmap.org",
-  "updated": "2026-07-13",
+  "updated": "2026-07-16",
   "cities": {
     "12th arrondissement of Paris, France": {
       "city": "12th arrondissement of Paris",
       "lat": 48.8534951,
       "lon": 2.3483915,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2165423"
     },
     "14th arrondissement of Paris, France": {
       "city": "14th arrondissement of Paris",
       "lat": 48.8534951,
       "lon": 2.3483915,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2165423"
     },
     "20th arrondissement of Paris, France": {
       "city": "20th arrondissement of Paris",
       "lat": 48.8534951,
       "lon": 2.3483915,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2165423"
     },
     "3rd arrondissement of Lyon, France": {
       "city": "3rd arrondissement of Lyon",
       "lat": 45.7578137,
       "lon": 4.8320114,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "522250"
     },
     "8th arrondissement of Lyon, France": {
       "city": "8th arrondissement of Lyon",
       "lat": 45.7578137,
       "lon": 4.8320114,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "522250"
     },
     "Aachen, Germany": {
       "city": "Aachen",
       "lat": 50.776351,
       "lon": 6.083862,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "241683"
     },
     "Aaigem, Belgium": {
       "city": "Aaigem",
       "lat": 50.8894174,
       "lon": 3.9366909,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Aarau, Switzerland": {
       "city": "Aarau",
       "lat": 47.3927146,
       "lon": 8.0444448,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "21191"
     },
     "Aarhus, Denmark": {
       "city": "Aarhus",
       "lat": 56.1496278,
       "lon": 10.2134046,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "273077"
     },
     "Aberdeen, Scotland": {
       "city": "Aberdeen",
       "lat": 57.1482429,
       "lon": -2.0928095,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "229060"
     },
     "Abidjan, Ivory Coast": {
       "city": "Abidjan",
       "lat": 5.320357,
       "lon": -4.016107,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "7567409"
     },
     "Abiko, Japan": {
       "city": "Abiko",
       "lat": 35.863999,
       "lon": 140.0280653,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "131398"
     },
     "Abuja, Nigeria": {
       "city": "Abuja",
       "lat": 9.0643305,
       "lon": 7.4892974,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "776298"
     },
     "Accra, Ghana": {
       "city": "Accra",
       "lat": 5.5571096,
       "lon": -0.2012376,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2388000"
     },
     "Adelaide, Australia": {
       "city": "Adelaide",
       "lat": -34.9281805,
       "lon": 138.5999312,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1245011"
     },
     "Adjamé, Ivory Coast": {
       "city": "Adjamé",
       "lat": 5.3531211,
       "lon": -4.0222008,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "254290"
     },
     "Adligenswil, Switzerland": {
       "city": "Adligenswil",
       "lat": 47.070535,
       "lon": 8.368244,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "5475"
     },
     "Agen, France": {
       "city": "Agen",
       "lat": 44.2015827,
       "lon": 0.6176112,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "32485"
     },
     "Ahome Municipality, Mexico": {
       "city": "Ahome Municipality",
       "lat": 25.9240491,
       "lon": -109.2058344,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": "459310"
     },
     "Aix-les-Bains, France": {
       "city": "Aix-les-Bains",
       "lat": 45.6886292,
       "lon": 5.9146362,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "31874"
     },
     "Ajaccio, France": {
       "city": "Ajaccio",
       "lat": 41.9263991,
       "lon": 8.7376029,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "73822"
     },
     "Ajax, Canada": {
       "city": "Ajax",
       "lat": 43.8505287,
       "lon": -79.0208814,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "119677"
     },
     "Al Diwaniyah, Iraq": {
       "city": "Al Diwaniyah",
       "lat": 31.9853304,
       "lon": 44.9236266,
-      "addresstype": "district"
+      "addresstype": "district",
+      "population": "650927"
     },
     "Al-Ahsa Oasis, Saudi Arabia": {
       "city": "Al-Ahsa Oasis",
@@ -150,1114 +173,1299 @@
       "city": "Albacete",
       "lat": 38.9950921,
       "lon": -1.8559154,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "175068"
     },
     "Alella, Spain": {
       "city": "Alella",
       "lat": 41.4955603,
       "lon": 2.2935325,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "10251"
     },
     "Alfredo Baquerizo Moreno, Ecuador": {
       "city": "Alfredo Baquerizo Moreno",
       "lat": -1.8913275,
       "lon": -79.555226,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Algueirão - Mem Martins, Portugal": {
       "city": "Algueirão - Mem Martins",
       "lat": 38.8033024,
       "lon": -9.3348119,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "68654"
     },
     "Almada, Portugal": {
       "city": "Almada",
       "lat": 38.6831302,
       "lon": -9.1576301,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "177268"
     },
     "Almere, Netherlands": {
       "city": "Almere",
       "lat": 52.3705038,
       "lon": 5.2185859,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "222825"
     },
     "Altındağ, Turkey": {
       "city": "Altındağ",
       "lat": 39.9523587,
       "lon": 32.8662025,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "412267"
     },
     "Amadora, Portugal": {
       "city": "Amadora",
       "lat": 38.758959,
       "lon": -9.2365233,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "171500"
     },
     "Amagasaki, Japan": {
       "city": "Amagasaki",
       "lat": 34.7339783,
       "lon": 135.4064015,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "459593"
     },
     "Amalfi, Colombia": {
       "city": "Amalfi",
       "lat": 6.9070097,
       "lon": -75.0735908,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "25962"
     },
     "Amberg, Germany": {
       "city": "Amberg",
       "lat": 49.4543662,
       "lon": 11.8474021,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Amman, Jordan": {
       "city": "Amman",
       "lat": 31.9515694,
       "lon": 35.9239625,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "4000000"
     },
     "Amsterdam, Netherlands": {
       "city": "Amsterdam",
       "lat": 52.3730796,
       "lon": 4.8924534,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "881933"
     },
     "Anchorage, United States": {
       "city": "Anchorage",
       "lat": 61.2163129,
       "lon": -149.894852,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "291247"
     },
     "Angers, France": {
       "city": "Angers",
       "lat": 47.4739884,
       "lon": -0.5515588,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "157175"
     },
     "Ankawa, Iraq": {
       "city": "Ankawa",
       "lat": 36.2325997,
       "lon": 43.9972173,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": null
     },
     "Ansan, South Korea": {
       "city": "Ansan",
       "lat": 37.3217152,
       "lon": 126.8308604,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "677710"
     },
     "Antalya, Turkey": {
       "city": "Antalya",
       "lat": 36.8865728,
       "lon": 30.7030242,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2722103"
     },
     "Antwerp, Belgium": {
       "city": "Antwerp",
       "lat": 51.2211097,
       "lon": 4.3997081,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "525935"
     },
     "Appleton, United States": {
       "city": "Appleton",
       "lat": 44.2613967,
       "lon": -88.4069744,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "72623"
     },
     "Aqaba, Jordan": {
       "city": "Aqaba",
       "lat": 29.5266483,
       "lon": 35.0075433,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "103100"
     },
     "Ar Ramtha, Jordan": {
       "city": "Ar Ramtha",
       "lat": 32.559167,
       "lon": 36.006944,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Arak, Iran": {
       "city": "Arak",
       "lat": 34.0862719,
       "lon": 49.6893884,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "526200"
     },
     "Aristóbulo del Valle, Argentina": {
       "city": "Aristóbulo del Valle",
       "lat": -27.099185,
       "lon": -54.8935248,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "24298"
     },
     "Arkel, Netherlands": {
       "city": "Arkel",
       "lat": 51.8634805,
       "lon": 4.993608,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "3439"
     },
     "Arlington, United States": {
       "city": "Arlington",
       "lat": 32.7355816,
       "lon": -97.1071186,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "365438"
     },
     "Arlon, Belgium": {
       "city": "Arlon",
       "lat": 49.6834601,
       "lon": 5.8167711,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "28759"
     },
     "Arnemuiden, Netherlands": {
       "city": "Arnemuiden",
       "lat": 51.5000009,
       "lon": 3.6762457,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "5315"
     },
     "Arnhem, Netherlands": {
       "city": "Arnhem",
       "lat": 51.984257,
       "lon": 5.9108573,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "165770"
     },
     "Arpajon, France": {
       "city": "Arpajon",
       "lat": 44.9034428,
       "lon": 2.4570176,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "6315"
     },
     "Artigas, Uruguay": {
       "city": "Artigas",
       "lat": -30.3984136,
       "lon": -56.4638078,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "43843"
     },
     "Asse, Belgium": {
       "city": "Asse",
       "lat": 50.9094333,
       "lon": 4.2015646,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Assomada, Cape Verde": {
       "city": "Assomada",
       "lat": 15.097635,
       "lon": -23.6668745,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Asteasu, Spain": {
       "city": "Asteasu",
       "lat": 43.192859,
       "lon": -2.0953446,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "1565"
     },
     "Asunción, Paraguay": {
       "city": "Asunción",
       "lat": -25.2800459,
       "lon": -57.6343814,
-      "addresstype": "region"
+      "addresstype": "region",
+      "population": "742023"
     },
     "Aubervilliers, France": {
       "city": "Aubervilliers",
       "lat": 48.9146078,
       "lon": 2.3821895,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "90071"
     },
     "Auckland, New Zealand": {
       "city": "Auckland",
       "lat": -36.852095,
       "lon": 174.7631803,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1463000"
     },
     "Autlán de Navarro Municipality, Mexico": {
       "city": "Autlán de Navarro Municipality",
       "lat": 19.7703379,
       "lon": -104.3642747,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "45382"
     },
     "Aveiro, Portugal": {
       "city": "Aveiro",
       "lat": 40.640496,
       "lon": -8.6537841,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "80978"
     },
     "Aïn M'lila, Algeria": {
       "city": "Aïn M'lila",
       "lat": 36.0375444,
       "lon": 6.570986,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "88441"
     },
     "Babahoyo, Ecuador": {
       "city": "Babahoyo",
       "lat": -1.8009022,
       "lon": -79.5338214,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "84164"
     },
     "Backnang, Germany": {
       "city": "Backnang",
       "lat": 48.9468454,
       "lon": 9.4303638,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "38184"
     },
     "Baghdad, Iraq": {
       "city": "Baghdad",
       "lat": 33.3061701,
       "lon": 44.3872213,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "7216040"
     },
     "Bahmai County, Iran": {
       "city": "Bahmai County",
       "lat": 30.9838624,
       "lon": 50.0792541,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Bahnemir, Iran": {
       "city": "Bahnemir",
       "lat": 36.6702899,
       "lon": 52.7620524,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "8000"
     },
     "Bahía Blanca, Argentina": {
       "city": "Bahía Blanca",
       "lat": -38.7176522,
       "lon": -62.2654871,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "301572"
     },
     "Baie-Mahault, France": {
       "city": "Baie-Mahault",
       "lat": 16.2679458,
       "lon": -61.5870766,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "30909"
     },
     "Balaguer, Spain": {
       "city": "Balaguer",
       "lat": 41.7896408,
       "lon": 0.8050711,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "17667"
     },
     "Balfron, Scotland": {
       "city": "Balfron",
       "lat": 56.0680711,
       "lon": -4.3356705,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "2200"
     },
     "Bambali, Senegal": {
       "city": "Bambali",
       "lat": 12.655907,
       "lon": -15.4529962,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Bandar-e Anzali, Iran": {
       "city": "Bandar-e Anzali",
       "lat": 37.4716356,
       "lon": 49.4685904,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "139016"
     },
     "Banja Luka, Bosnia and Herzegovina": {
       "city": "Banja Luka",
       "lat": 44.7720845,
       "lon": 17.1917651,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "138963"
     },
     "Barcelona, Spain": {
       "city": "Barcelona",
       "lat": 41.3825802,
       "lon": 2.177073,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1713247"
     },
     "Barnet, England": {
       "city": "Barnet",
       "lat": 51.65309,
       "lon": -0.2002261,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "111973"
     },
     "Barnsley, England": {
       "city": "Barnsley",
       "lat": 53.5527719,
       "lon": -1.4827755,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "245199"
     },
     "Barrancas, Colombia": {
       "city": "Barrancas",
       "lat": 10.9541684,
       "lon": -72.7888637,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "35743"
     },
     "Barreiro, Portugal": {
       "city": "Barreiro",
       "lat": 38.6340657,
       "lon": -9.0478559,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "78359"
     },
     "Basel, Switzerland": {
       "city": "Basel",
       "lat": 47.5581077,
       "lon": 7.5878261,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "174491"
     },
     "Bayat, Turkey": {
       "city": "Bayat",
       "lat": 40.5789741,
       "lon": 34.926489,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Bayonne, France": {
       "city": "Bayonne",
       "lat": 43.4945144,
       "lon": -1.4736657,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "52749"
     },
     "Bear, United States": {
       "city": "Bear",
       "lat": 39.6292091,
       "lon": -75.6585381,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Bechem, Ghana": {
       "city": "Bechem",
       "lat": 7.08778,
       "lon": -2.0246,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Beheira Governorate, Egypt": {
       "city": "Beheira Governorate",
       "lat": 30.7915206,
       "lon": 30.3465488,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": null
     },
     "Belén de Escobar, Argentina": {
       "city": "Belén de Escobar",
       "lat": -34.3453213,
       "lon": -58.7950701,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "54678"
     },
     "Benavente, Portugal": {
       "city": "Benavente",
       "lat": 38.9826508,
       "lon": -8.8095788,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "29716"
     },
     "Berchem-Sainte-Agathe, Belgium": {
       "city": "Berchem-Sainte-Agathe",
       "lat": 50.8649231,
       "lon": 4.2946734,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "22975"
     },
     "Bergen, Norway": {
       "city": "Bergen",
       "lat": 60.3943055,
       "lon": 5.3259192,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "293709"
     },
     "Berlin, Germany": {
       "city": "Berlin",
       "lat": 52.5173885,
       "lon": 13.3951309,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3769962"
     },
     "Berwyn, United States": {
       "city": "Berwyn",
       "lat": 41.8505874,
       "lon": -87.7936685,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "57250"
     },
     "Bethlehem, South Africa": {
       "city": "Bethlehem",
       "lat": -28.2308333,
       "lon": 28.3088889,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Bicas, Brazil": {
       "city": "Bicas",
       "lat": -21.7213723,
       "lon": -43.0604327,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "13978"
     },
     "Biel/Bienne, Switzerland": {
       "city": "Biel/Bienne",
       "lat": 47.1402077,
       "lon": 7.2439029,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "56378"
     },
     "Bilbao, Spain": {
       "city": "Bilbao",
       "lat": 43.2630018,
       "lon": -2.9350039,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "350975"
     },
     "Bingerville, Ivory Coast": {
       "city": "Bingerville",
       "lat": 5.3577727,
       "lon": -3.8885591,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "204656"
     },
     "Binningen, Switzerland": {
       "city": "Binningen",
       "lat": 47.53656,
       "lon": 7.570077,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "14905"
     },
     "Birmingham, United States": {
       "city": "Birmingham",
       "lat": 33.5206824,
       "lon": -86.8024326,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "200733"
     },
     "Bishop Lavis, South Africa": {
       "city": "Bishop Lavis",
       "lat": -33.9486111,
       "lon": 18.5758333,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Bloemfontein, South Africa": {
       "city": "Bloemfontein",
       "lat": -29.116395,
       "lon": 26.215496,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "370000"
     },
     "Blyth, England": {
       "city": "Blyth",
       "lat": 55.1270903,
       "lon": -1.5099726,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Bochum, Germany": {
       "city": "Bochum",
       "lat": 51.4818111,
       "lon": 7.2196635,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "371075"
     },
     "Bodø Municipality, Norway": {
       "city": "Bodø Municipality",
       "lat": 67.2844313,
       "lon": 14.3817503,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "53725"
     },
     "Bodø, Norway": {
       "city": "Bodø",
       "lat": 67.2844313,
       "lon": 14.3817503,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "53725"
     },
     "Bogotá, Colombia": {
       "city": "Bogotá",
       "lat": 4.6533817,
       "lon": -74.0836331,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "8181047"
     },
     "Bompata, Ghana": {
       "city": "Bompata",
       "lat": 6.634161,
       "lon": -1.059595,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Bondy, France": {
       "city": "Bondy",
       "lat": 48.9031,
       "lon": 2.48291,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "52905"
     },
     "Bonn, Germany": {
       "city": "Bonn",
       "lat": 50.7352621,
       "lon": 7.1024635,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "335913"
     },
     "Borne, Netherlands": {
       "city": "Borne",
       "lat": 52.3018287,
       "lon": 6.7502395,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "24741"
     },
     "Bou Ismaïl, Algeria": {
       "city": "Bou Ismaïl",
       "lat": 36.642758,
       "lon": 2.6899362,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "41684"
     },
     "Bouaké, Ivory Coast": {
       "city": "Bouaké",
       "lat": 7.6890212,
       "lon": -5.0283552,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "832371"
     },
     "Bourgoin-Jallieu, France": {
       "city": "Bourgoin-Jallieu",
       "lat": 45.5860438,
       "lon": 5.2772265,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "29577"
     },
     "Bourouba, Algeria": {
       "city": "Bourouba",
       "lat": 36.7138232,
       "lon": 3.1125789,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "71661"
     },
     "Boxtel, Netherlands": {
       "city": "Boxtel",
       "lat": 51.5890603,
       "lon": 5.3157954,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "30801"
     },
     "Braga, Portugal": {
       "city": "Braga",
       "lat": 41.5510583,
       "lon": -8.4280045,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "193349"
     },
     "Brampton, Canada": {
       "city": "Brampton",
       "lat": 43.685832,
       "lon": -79.7599366,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "593638"
     },
     "Brandenburg an der Havel, Germany": {
       "city": "Brandenburg an der Havel",
       "lat": 52.4108261,
       "lon": 12.5497933,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "74113"
     },
     "Brandýs nad Labem-Stará Boleslav, Czech Republic": {
       "city": "Brandýs nad Labem-Stará Boleslav",
       "lat": 50.1912412,
       "lon": 14.6649786,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "17290"
     },
     "Breda, Netherlands": {
       "city": "Breda",
       "lat": 51.5887845,
       "lon": 4.7760237,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "150008"
     },
     "Bredene, Belgium": {
       "city": "Bredene",
       "lat": 51.2408491,
       "lon": 2.9647914,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "16411"
     },
     "Bree, Belgium": {
       "city": "Bree",
       "lat": 51.1416131,
       "lon": 5.5974552,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "14774"
     },
     "Breisach, Germany": {
       "city": "Breisach",
       "lat": 48.0226167,
       "lon": 7.6040544,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Bremen, Germany": {
       "city": "Bremen",
       "lat": 53.0758196,
       "lon": 8.8071646,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "551767"
     },
     "Brisbane, Australia": {
       "city": "Brisbane",
       "lat": -27.4689623,
       "lon": 153.0235009,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2287896"
     },
     "Bristol, England": {
       "city": "Bristol",
       "lat": 51.4538022,
       "lon": -2.5972985,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "463400"
     },
     "Brooklyn, United States": {
       "city": "Brooklyn",
       "lat": 40.6526006,
       "lon": -73.9497211,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "2736074"
     },
     "Bruges, Belgium": {
       "city": "Bruges",
       "lat": 51.2085526,
       "lon": 3.226772,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "117639"
     },
     "Brussels, Belgium": {
       "city": "Brussels",
       "lat": 50.8467372,
       "lon": 4.352493,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "188137"
     },
     "Brussels-Capital Region, Belgium": {
       "city": "Brussels-Capital Region",
       "lat": 50.8387951,
       "lon": 4.3753041,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Buduburam, Ghana": {
       "city": "Buduburam",
       "lat": 5.5234971,
       "lon": -0.4776318,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Buenos Aires, Argentina": {
       "city": "Buenos Aires",
       "lat": -34.6095579,
       "lon": -58.3887904,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2891082"
     },
     "Bunia, DR Congo": {
       "city": "Bunia",
       "lat": 1.5620529,
       "lon": 30.2478844,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "366126"
     },
     "Burnaby, Canada": {
       "city": "Burnaby",
       "lat": 49.2433804,
       "lon": -122.972545,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "249125"
     },
     "Busan, South Korea": {
       "city": "Busan",
       "lat": 35.1799528,
       "lon": 129.0752365,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3586079"
     },
     "Bushehr, Iran": {
       "city": "Bushehr",
       "lat": 28.9310786,
       "lon": 50.8458443,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "223504"
     },
     "Bærum Municipality, Norway": {
       "city": "Bærum Municipality",
       "lat": 59.9289639,
       "lon": 10.4997108,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "132358"
     },
     "Béchar, Algeria": {
       "city": "Béchar",
       "lat": 31.616312,
       "lon": -2.21841,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "165627"
     },
     "Caacupé, Paraguay": {
       "city": "Caacupé",
       "lat": -25.3856888,
       "lon": -57.140477,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "47251"
     },
     "Caaguazú, Paraguay": {
       "city": "Caaguazú",
       "lat": -25.4661756,
       "lon": -56.0181685,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "146513"
     },
     "Cairo, Egypt": {
       "city": "Cairo",
       "lat": 30.0443879,
       "lon": 31.2357257,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "9120350"
     },
     "Calchín, Argentina": {
       "city": "Calchín",
       "lat": -31.666667,
       "lon": -63.2,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "2435"
     },
     "Cali, Colombia": {
       "city": "Cali",
       "lat": 3.4519988,
       "lon": -76.5325259,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2285099"
     },
     "Caloto, Colombia": {
       "city": "Caloto",
       "lat": 3.0336985,
       "lon": -76.4085199,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "30181"
     },
     "Camperdown, Australia": {
       "city": "Camperdown",
       "lat": -33.8896116,
       "lon": 151.1800986,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Campinas, Brazil": {
       "city": "Campinas",
       "lat": -22.9056391,
       "lon": -47.059564,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "1139047"
     },
     "Campo Grande, Brazil": {
       "city": "Campo Grande",
       "lat": -20.4640173,
       "lon": -54.6162947,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "898100"
     },
     "Canberra, Australia": {
       "city": "Canberra",
       "lat": -35.2975906,
       "lon": 149.1012676,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "466566"
     },
     "Canela, Brazil": {
       "city": "Canela",
       "lat": -29.3447033,
       "lon": -50.7604149,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "48946"
     },
     "Canelones, Uruguay": {
       "city": "Canelones",
       "lat": -34.5242373,
       "lon": -56.2817519,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "24185"
     },
     "Cannes, France": {
       "city": "Cannes",
       "lat": 43.5515198,
       "lon": 7.0134418,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "73255"
     },
     "Cape Town, South Africa": {
       "city": "Cape Town",
       "lat": -33.9288301,
       "lon": 18.4172197,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3740026"
     },
     "Cape Verde, Cape Verde": null,
     "Capelle aan den IJssel, Netherlands": {
       "city": "Capelle aan den IJssel",
       "lat": 51.9312552,
       "lon": 4.5883596,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "67122"
     },
     "Carapeguá, Paraguay": {
       "city": "Carapeguá",
       "lat": -25.767636,
       "lon": -57.2425331,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Cartagena, Colombia": {
       "city": "Cartagena",
       "lat": 10.4265566,
       "lon": -75.5441671,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1028736"
     },
     "Casablanca, Morocco": {
       "city": "Casablanca",
       "lat": 33.5945144,
       "lon": -7.6200284,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3215935"
     },
     "Castricum, Netherlands": {
       "city": "Castricum",
       "lat": 52.5496739,
       "lon": 4.6696185,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "35986"
     },
     "Catanduva, Brazil": {
       "city": "Catanduva",
       "lat": -21.1331035,
       "lon": -48.9712817,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "115791"
     },
     "Cayenne, France": {
       "city": "Cayenne",
       "lat": 4.9371544,
       "lon": -52.3258736,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "65493"
     },
     "Celaya, Mexico": {
       "city": "Celaya",
       "lat": 20.521788,
       "lon": -100.8140458,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "378143"
     },
     "Cergy-Pontoise, France": {
       "city": "Cergy-Pontoise",
       "lat": 49.0527528,
       "lon": 2.0388736,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "68348"
     },
     "Cham, Switzerland": {
       "city": "Cham",
       "lat": 47.1823761,
       "lon": 8.4611036,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "17060"
     },
     "Champigny-sur-Marne, France": {
       "city": "Champigny-sur-Marne",
       "lat": 48.8137847,
       "lon": 2.510611,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "77724"
     },
     "Charleroi, Belgium": {
       "city": "Charleroi",
       "lat": 50.4116233,
       "lon": 4.444528,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "202730"
     },
     "Chirakchi, Uzbekistan": {
       "city": "Chirakchi",
       "lat": 39.03341,
       "lon": 66.5758025,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "21000"
     },
     "Chlef, Algeria": {
       "city": "Chlef",
       "lat": 36.1649385,
       "lon": 1.3315687,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "178616"
     },
     "Christchurch, New Zealand": {
       "city": "Christchurch",
       "lat": -43.530955,
       "lon": 172.6364343,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "380600"
     },
     "Chuncheon, South Korea": {
       "city": "Chuncheon",
       "lat": 37.8810569,
       "lon": 127.7297641,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "280061"
     },
     "Châlons-en-Champagne, France": {
       "city": "Châlons-en-Champagne",
       "lat": 48.9566218,
       "lon": 4.3628851,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "43877"
     },
     "Châteaubriant, France": {
       "city": "Châteaubriant",
       "lat": 47.7194057,
       "lon": -1.3757282,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "12260"
     },
     "Châtenay-Malabry, France": {
       "city": "Châtenay-Malabry",
       "lat": 48.7670404,
       "lon": 2.2775316,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "34898"
     },
     "Cihuatlán, Mexico": {
       "city": "Cihuatlán",
       "lat": 19.2390374,
       "lon": -104.5618485,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "18787"
     },
     "Cité Soleil, Haiti": {
       "city": "Cité Soleil",
       "lat": 18.5783693,
       "lon": -72.3355123,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Ciudad Juárez, Mexico": {
       "city": "Ciudad Juárez",
       "lat": 31.6907979,
       "lon": -106.4253215,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1501551"
     },
     "Ciudad del Este, Paraguay": {
       "city": "Ciudad del Este",
       "lat": -25.5169015,
       "lon": -54.6168645,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "320782"
     },
     "Ciudadela, Argentina": {
       "city": "Ciudadela",
       "lat": -34.633603,
       "lon": -58.5426528,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "73031"
     },
     "Clichy, France": {
       "city": "Clichy",
       "lat": 48.9026,
       "lon": 2.30551,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "64849"
     },
     "Cockermouth, England": {
       "city": "Cockermouth",
       "lat": 54.6636532,
       "lon": -3.3657782,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Coimbra, Portugal": {
       "city": "Coimbra",
       "lat": 40.2111931,
       "lon": -8.4294632,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "140838"
     },
     "Colmar, France": {
       "city": "Colmar",
       "lat": 48.0777517,
       "lon": 7.3579641,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "67730"
     },
     "Cologne, Germany": {
       "city": "Cologne",
       "lat": 50.938361,
       "lon": 6.959974,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1097519"
     },
     "Colombes, France": {
       "city": "Colombes",
       "lat": 48.9227298,
       "lon": 2.2543631,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "88870"
     },
     "Colonia del Sacramento, Uruguay": {
       "city": "Colonia del Sacramento",
       "lat": -34.4698592,
       "lon": -57.8433679,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "32159"
     },
     "Colón City, Panama": {
       "city": "Colón City",
       "lat": 9.3553005,
       "lon": -79.8974085,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "280777"
     },
     "Conakry, Guinea": {
       "city": "Conakry",
       "lat": 9.5170602,
       "lon": -13.6998434,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1660973"
     },
     "Concordia, Argentina": {
       "city": "Concordia",
       "lat": -31.3972539,
       "lon": -58.0173305,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "149450"
     },
     "Constantine, Algeria": {
       "city": "Constantine",
       "lat": 36.3641642,
       "lon": 6.6084281,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "448374"
     },
     "Copenhagen, Denmark": {
       "city": "Copenhagen",
       "lat": 55.6867243,
       "lon": 12.5700724,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "613288"
     },
     "Corgi, Iraq": null,
     "Courcouronnes, France": {
       "city": "Courcouronnes",
       "lat": 48.622557,
       "lon": 2.4118939,
-      "addresstype": "city_district"
+      "addresstype": "city_district",
+      "population": null
     },
     "Coyuca de Catalán Municipality, Mexico": {
       "city": "Coyuca de Catalán Municipality",
       "lat": 18.3253222,
       "lon": -100.6995289,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "6857"
     },
     "Creil, France": {
       "city": "Creil",
       "lat": 49.2607914,
       "lon": 2.4733771,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "36106"
     },
     "Croydon, England": {
       "city": "Croydon",
       "lat": 51.3713049,
       "lon": -0.101957,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "173314"
     },
     "Crumlin, Ireland": {
       "city": "Crumlin",
       "lat": 53.3202316,
       "lon": -6.3161673,
-      "addresstype": "locality"
+      "addresstype": "locality",
+      "population": null
     },
     "Cuauhtémoc, Mexico": {
       "city": "Cuauhtémoc",
       "lat": 19.4326296,
       "lon": -99.1331785,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "9209944"
     },
     "Curaçao, Netherlands": null,
     "Curitiba, Brazil": {
       "city": "Curitiba",
       "lat": -25.4295963,
       "lon": -49.2712724,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "1773718"
     },
     "Córdoba, Argentina": {
       "city": "Córdoba",
       "lat": -31.4166867,
       "lon": -64.1834193,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1655481"
     },
     "Cúcuta, Colombia": {
       "city": "Cúcuta",
       "lat": 7.8971458,
       "lon": -72.5080387,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "777106"
     },
     "Daegu, South Korea": {
       "city": "Daegu",
       "lat": 35.8713,
       "lon": 128.6018,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2528933"
     },
     "Daejeon, South Korea": {
       "city": "Daejeon",
       "lat": 36.3497007,
       "lon": 127.3849016,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1537324"
     },
     "Dakar, Senegal": {
       "city": "Dakar",
       "lat": 14.693425,
       "lon": -17.447938,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2396800"
     },
     "Dalry, Scotland": {
       "city": "Dalry",
       "lat": 55.9423998,
       "lon": -3.2218312,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Dammam, Saudi Arabia": {
       "city": "Dammam",
       "lat": 26.4367824,
       "lon": 50.1039991,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "903312"
     },
     "Dandenong, Australia": {
       "city": "Dandenong",
       "lat": -37.98749,
       "lon": 145.2147923,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "30127"
     },
     "Darwin, Australia": {
       "city": "Darwin",
       "lat": -12.46044,
       "lon": 130.8410469,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "122207"
     },
     "Dennilton, South Africa": {
       "city": "Dennilton",
       "lat": -25.2655556,
       "lon": 29.1688889,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Desouk, Egypt": {
       "city": "Desouk",
       "lat": 31.128233,
       "lon": 30.646198,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "135336"
     },
     "Diouloulou, Senegal": {
       "city": "Diouloulou",
       "lat": 13.0482815,
       "lon": -16.598754,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Diyala Governorate, Iraq": {
       "city": "Diyala Governorate",
       "lat": 34.0228719,
       "lon": 45.1046224,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": null
     },
     "Djibonker, Senegal": {
       "city": "Djibonker",
@@ -1269,301 +1477,351 @@
       "city": "Doboj",
       "lat": 44.7324559,
       "lon": 18.0850157,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "25132"
     },
     "Dock Sud, Argentina": {
       "city": "Dock Sud",
       "lat": -34.6522029,
       "lon": -58.3470596,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "35897"
     },
     "Doha, Qatar": {
       "city": "Doha",
       "lat": 25.2856329,
       "lon": 51.5264162,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1312947"
     },
     "Dolní Němčí, Czech Republic": {
       "city": "Dolní Němčí",
       "lat": 48.9684218,
       "lon": 17.5853622,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "3047"
     },
     "Don Benito, Spain": {
       "city": "Don Benito",
       "lat": 38.9540269,
       "lon": -5.8619466,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "38009"
     },
     "Dornbirn, Austria": {
       "city": "Dornbirn",
       "lat": 47.4136351,
       "lon": 9.7423762,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "51222"
     },
     "Douglas, Isle of Man": {
       "city": "Douglas",
       "lat": 54.149774,
       "lon": -4.4779021,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "26218"
     },
     "Drammen, Norway": {
       "city": "Drammen",
       "lat": 59.6964936,
       "lon": 10.175642,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "105452"
     },
     "Drongen, Belgium": {
       "city": "Drongen",
       "lat": 51.0504639,
       "lon": 3.6639157,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "12905"
     },
     "Dumfries, Scotland": {
       "city": "Dumfries",
       "lat": 55.0691831,
       "lon": -3.6106856,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "39080"
     },
     "Durban, South Africa": {
       "city": "Durban",
       "lat": -29.861825,
       "lon": 31.009909,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3442361"
     },
     "Décines-Charpieu, France": {
       "city": "Décines-Charpieu",
       "lat": 45.773606,
       "lon": 4.9633314,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "29731"
     },
     "Düsseldorf, Germany": {
       "city": "Düsseldorf",
       "lat": 51.2254018,
       "lon": 6.7763137,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "653253"
     },
     "Ealing, England": {
       "city": "Ealing",
       "lat": 51.5126553,
       "lon": -0.3051952,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "113777"
     },
     "Edelira, Paraguay": {
       "city": "Edelira",
       "lat": -26.767587,
       "lon": -55.2780964,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Edinburgh, Scotland": {
       "city": "Edinburgh",
       "lat": 55.9533456,
       "lon": -3.1883749,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "488050"
     },
     "Ehime Prefecture, Japan": {
       "city": "Ehime Prefecture",
       "lat": 33.6013646,
       "lon": 132.8185275,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": null
     },
     "Eibar, Spain": {
       "city": "Eibar",
       "lat": 43.1842839,
       "lon": -2.4732748,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "27464"
     },
     "Eindhoven, Netherlands": {
       "city": "Eindhoven",
       "lat": 51.4485569,
       "lon": 5.4501225,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "243730"
     },
     "Eisenstadt, Austria": {
       "city": "Eisenstadt",
       "lat": 47.8454821,
       "lon": 16.5249288,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "9243"
     },
     "El Cerrito, Colombia": {
       "city": "El Cerrito",
       "lat": 3.6829185,
       "lon": -76.3071487,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "56470"
     },
     "El Mahalla El Kubra, Egypt": {
       "city": "El Mahalla El Kubra",
       "lat": 30.9723517,
       "lon": 31.1683002,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "431052"
     },
     "El Milia, Algeria": {
       "city": "El Milia",
       "lat": 36.7514104,
       "lon": 6.2744614,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "78087"
     },
     "El Molino, Colombia": {
       "city": "El Molino",
       "lat": 10.6523076,
       "lon": -72.9215565,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "7185"
     },
     "El Paso, United States": {
       "city": "El Paso",
       "lat": 31.7601001,
       "lon": -106.4870476,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "678815"
     },
     "Eloy Alfaro Canton, Ecuador": {
       "city": "Eloy Alfaro Canton",
       "lat": -1.6687274,
       "lon": -78.7402985,
-      "addresstype": "hamlet"
+      "addresstype": "hamlet",
+      "population": null
     },
     "Embalse, Argentina": {
       "city": "Embalse",
       "lat": -32.2067571,
       "lon": -64.4006283,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "9660"
     },
     "Emmen, Netherlands": {
       "city": "Emmen",
       "lat": 52.7528662,
       "lon": 6.9525135,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "108765"
     },
     "Empalme Olmos, Uruguay": {
       "city": "Empalme Olmos",
       "lat": -34.6954579,
       "lon": -55.8948676,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "4921"
     },
     "Ennenda, Switzerland": {
       "city": "Ennenda",
       "lat": 47.033828,
       "lon": 9.0779218,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "2726"
     },
     "Erbil, Iraq": {
       "city": "Erbil",
       "lat": 36.1911744,
       "lon": 44.0094145,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1713461"
     },
     "Eshtehard, Iran": {
       "city": "Eshtehard",
       "lat": 35.7234469,
       "lon": 50.3670608,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "29993"
     },
     "Esmeraldas, Ecuador": {
       "city": "Esmeraldas",
       "lat": 0.9668153,
       "lon": -79.6523847,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "95216"
     },
     "Esplugues de Llobregat, Spain": {
       "city": "Esplugues de Llobregat",
       "lat": 41.3778094,
       "lon": 2.0886257,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "48424"
     },
     "Essen, Germany": {
       "city": "Essen",
       "lat": 51.4582235,
       "lon": 7.0158171,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "569884"
     },
     "Estanyol, Spain": {
       "city": "Estanyol",
       "lat": 41.9411518,
       "lon": 2.7406459,
-      "addresstype": "hamlet"
+      "addresstype": "hamlet",
+      "population": "187"
     },
     "Falkenberg, Sweden": {
       "city": "Falkenberg",
       "lat": 56.904894,
       "lon": 12.4912926,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "20035"
     },
     "Famaillá, Argentina": {
       "city": "Famaillá",
       "lat": -27.054364,
       "lon": -65.4020439,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "22928"
     },
     "Faro, Portugal": {
       "city": "Faro",
       "lat": 37.0162944,
       "lon": -7.935182,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "67650"
     },
     "Fetakgomo Local Municipality, South Africa": {
       "city": "Fetakgomo Local Municipality",
       "lat": -24.41531,
       "lon": 29.8550226,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Fez, Morocco": {
       "city": "Fez",
       "lat": 34.0346534,
       "lon": -5.0161926,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1167842"
     },
     "Fidenza, Italy": {
       "city": "Fidenza",
       "lat": 44.866522,
       "lon": 10.0611939,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "26770"
     },
     "Flekkefjord Municipality, Norway": {
       "city": "Flekkefjord Municipality",
       "lat": 58.2949357,
       "lon": 6.6129626,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "9329"
     },
     "Florida, United States": {
       "city": "Florida",
       "lat": 27.7567667,
       "lon": -81.4639835,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": "21538187"
     },
     "Foios, Spain": {
       "city": "Foios",
       "lat": 39.5381541,
       "lon": -0.3561396,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "7987"
     },
     "Fort Lauderdale, United States": {
       "city": "Fort Lauderdale",
       "lat": 26.1223084,
       "lon": -80.1433786,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "165521"
     },
     "Frankfurt, Germany": {
       "city": "Frankfurt",
       "lat": 50.1106444,
       "lon": 8.6820917,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "756021"
     },
     "Freetown, Sierra Leone": {
       "city": "Freetown",
       "lat": 8.479004,
       "lon": -13.26795,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "951000"
     },
     "Fresno, United States": {
       "city": "Fresno",
       "lat": 36.7394421,
       "lon": -119.78483,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "520052"
     },
     "Fribourg, Switzerland": {
       "city": "Fribourg",
       "lat": 46.8055656,
       "lon": 7.1612669,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "37485"
     },
     "Fuerte Apache, Argentina": {
       "city": "Fuerte Apache",
@@ -1575,385 +1833,449 @@
       "city": "Fukuoka Prefecture",
       "lat": 33.6251241,
       "lon": 130.6180016,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": "5000000"
     },
     "Funchal, Portugal": {
       "city": "Funchal",
       "lat": 32.6496497,
       "lon": -16.9086783,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "105795"
     },
     "Gama, Brazil": {
       "city": "Gama",
       "lat": -16.0170857,
       "lon": -48.0653054,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "137331"
     },
     "Geldrop, Netherlands": {
       "city": "Geldrop",
       "lat": 51.4226684,
       "lon": 5.5607546,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "28767"
     },
     "Gelsenkirchen, Germany": {
       "city": "Gelsenkirchen",
       "lat": 51.5110321,
       "lon": 7.0960124,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "270107"
     },
     "General San Martín, Argentina": {
       "city": "General San Martín",
       "lat": -22.8343235,
       "lon": -63.7060586,
-      "addresstype": "state_district"
+      "addresstype": "state_district",
+      "population": null
     },
     "Geneva, Switzerland": {
       "city": "Geneva",
       "lat": 46.2017559,
       "lon": 6.1466014,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "191557"
     },
     "Gifu Prefecture, Japan": {
       "city": "Gifu Prefecture",
       "lat": 35.7867449,
       "lon": 137.0460777,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": null
     },
     "Gimje, South Korea": {
       "city": "Gimje",
       "lat": 35.803815,
       "lon": 126.880557,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "87782"
     },
     "Gimpo, South Korea": {
       "city": "Gimpo",
       "lat": 37.6155683,
       "lon": 126.7157798,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "392092"
     },
     "Giza, Egypt": {
       "city": "Giza",
       "lat": 29.9870753,
       "lon": 31.2118063,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2681863"
     },
     "Glasgow, Scotland": {
       "city": "Glasgow",
       "lat": 55.861155,
       "lon": -4.2501687,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "606340"
     },
     "Gold Coast, Australia": {
       "city": "Gold Coast",
       "lat": -28.0023731,
       "lon": 153.4145987,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "607665"
     },
     "Gonbad-e Kavus, Iran": {
       "city": "Gonbad-e Kavus",
       "lat": 37.2492965,
       "lon": 55.1659018,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "151910"
     },
     "Gothenburg, Sweden": {
       "city": "Gothenburg",
       "lat": 57.7072326,
       "lon": 11.9670171,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "607882"
     },
     "Gqeberha, South Africa": {
       "city": "Gqeberha",
       "lat": -33.9618598,
       "lon": 25.6186731,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1050000"
     },
     "Grand-Béréby, Ivory Coast": {
       "city": "Grand-Béréby",
       "lat": 4.6507586,
       "lon": -6.9247355,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "129340"
     },
     "Grand-Goâve, Haiti": {
       "city": "Grand-Goâve",
       "lat": 18.4282512,
       "lon": -72.7681957,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "49288"
     },
     "Graz, Austria": {
       "city": "Graz",
       "lat": 47.0708678,
       "lon": 15.4382786,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "331359"
     },
     "Greenfield Park, Canada": {
       "city": "Greenfield Park",
       "lat": 45.4926624,
       "lon": -73.4870499,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Greenwich, England": {
       "city": "Greenwich",
       "lat": 51.4820845,
       "lon": -0.0045417,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "285000"
     },
     "Grenchen, Switzerland": {
       "city": "Grenchen",
       "lat": 47.1911495,
       "lon": 7.3967199,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "16401"
     },
     "Grimbergen, Belgium": {
       "city": "Grimbergen",
       "lat": 50.9457843,
       "lon": 4.3890967,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": null
     },
     "Grimstad, Norway": {
       "city": "Grimstad",
       "lat": 58.2839967,
       "lon": 8.7128291,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "25419"
     },
     "Groningen, Netherlands": {
       "city": "Groningen",
       "lat": 53.2190652,
       "lon": 6.5680077,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "201242"
     },
     "Guachené, Colombia": {
       "city": "Guachené",
       "lat": 3.1323331,
       "lon": -76.3916018,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "19671"
     },
     "Guadalajara, Mexico": {
       "city": "Guadalajara",
       "lat": 20.6720375,
       "lon": -103.338396,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1385629"
     },
     "Gualeguay, Argentina": {
       "city": "Gualeguay",
       "lat": -33.1504259,
       "lon": -59.3106789,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "43009"
     },
     "Guarulhos, Brazil": {
       "city": "Guarulhos",
       "lat": -23.4675941,
       "lon": -46.5277704,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "1291771"
     },
     "Guayaquil, Ecuador": {
       "city": "Guayaquil",
       "lat": -2.1900572,
       "lon": -79.8868669,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3500000"
     },
     "Guédiawaye, Senegal": {
       "city": "Guédiawaye",
       "lat": 14.7771207,
       "lon": -17.390071,
-      "addresstype": "department"
+      "addresstype": "department",
+      "population": "286989"
     },
     "Haarlem, Netherlands": {
       "city": "Haarlem",
       "lat": 52.3837281,
       "lon": 4.6435679,
-      "addresstype": "city_district"
+      "addresstype": "city_district",
+      "population": null
     },
     "Halden, Norway": {
       "city": "Halden",
       "lat": 59.0680555,
       "lon": 11.537191,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "32038"
     },
     "Halesowen, England": {
       "city": "Halesowen",
       "lat": 52.4492074,
       "lon": -2.0514646,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Halle, Belgium": {
       "city": "Halle",
       "lat": 50.7360524,
       "lon": 4.2374349,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Halmstad, Sweden": {
       "city": "Halmstad",
       "lat": 56.6739826,
       "lon": 12.8574827,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "55688"
     },
     "Hamamatsu, Japan": {
       "city": "Hamamatsu",
       "lat": 34.7109786,
       "lon": 137.7259431,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "797033"
     },
     "Hamburg, Germany": {
       "city": "Hamburg",
       "lat": 53.5501721,
       "lon": 10.0013165,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1862565"
     },
     "Hamilton, New Zealand": {
       "city": "Hamilton",
       "lat": -37.7878809,
       "lon": 175.281788,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "169500"
     },
     "Hamilton, Scotland": {
       "city": "Hamilton",
       "lat": 55.7759095,
       "lon": -4.033442,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "53100"
     },
     "Hamm, Germany": {
       "city": "Hamm",
       "lat": 50.0165178,
       "lon": 6.4184628,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "18"
     },
     "Hammerfest, Norway": {
       "city": "Hammerfest",
       "lat": 70.6413392,
       "lon": 23.8360801,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "11324"
     },
     "Hanover, Germany": {
       "city": "Hanover",
       "lat": 52.3744779,
       "lon": 9.7385532,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "555372"
     },
     "Hareid, Norway": {
       "city": "Hareid",
       "lat": 62.3598311,
       "lon": 6.0305106,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "5320"
     },
     "Haro, Spain": {
       "city": "Haro",
       "lat": 42.5768922,
       "lon": -2.8466768,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "12153"
     },
     "Harold Wood, England": {
       "city": "Harold Wood",
       "lat": 51.5936326,
       "lon": 0.2310497,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Havlíčkův Brod, Czech Republic": {
       "city": "Havlíčkův Brod",
       "lat": 49.606942,
       "lon": 15.5795748,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "23534"
     },
     "Hawija, Iraq": {
       "city": "Hawija",
       "lat": 35.3233218,
       "lon": 43.7824093,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Hayama, Japan": {
       "city": "Hayama",
       "lat": 35.2719497,
       "lon": 139.5860744,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "31986"
     },
     "Heeswijk-Dinther, Netherlands": {
       "city": "Heeswijk-Dinther",
       "lat": 51.6493848,
       "lon": 5.4739859,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "8425"
     },
     "Hellmonsödt, Austria": {
       "city": "Hellmonsödt",
       "lat": 48.4317006,
       "lon": 14.3000344,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "2087"
     },
     "Helmond, Netherlands": {
       "city": "Helmond",
       "lat": 51.4736023,
       "lon": 5.6670321,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "92423"
     },
     "Helwan, Egypt": {
       "city": "Helwan",
       "lat": 29.8500001,
       "lon": 31.333333,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "643327"
     },
     "Hermosillo, Mexico": {
       "city": "Hermosillo",
       "lat": 29.0948207,
       "lon": -110.9692202,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "855563"
     },
     "Heroica Cárdenas, Mexico": {
       "city": "Heroica Cárdenas",
       "lat": 17.9886831,
       "lon": -93.3767428,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "80454"
     },
     "Hershey, United States": {
       "city": "Hershey",
       "lat": 40.2854881,
       "lon": -76.6506001,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "14682"
     },
     "Hluhluwe, South Africa": {
       "city": "Hluhluwe",
       "lat": -28.0175,
       "lon": 32.269167,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Hoboken, Belgium": {
       "city": "Hoboken",
       "lat": 51.1794946,
       "lon": 4.3617847,
-      "addresstype": "borough"
+      "addresstype": "borough",
+      "population": null
     },
     "Hoorn, Netherlands": {
       "city": "Hoorn",
       "lat": 52.653272,
       "lon": 5.0735802,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "73261"
     },
     "Horn, Austria": {
       "city": "Horn",
       "lat": 48.6636596,
       "lon": 15.6563147,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "6632"
     },
     "Hradec Králové, Czech Republic": {
       "city": "Hradec Králové",
       "lat": 50.2092113,
       "lon": 15.8327512,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "90457"
     },
     "Huizen, Netherlands": {
       "city": "Huizen",
       "lat": 52.2958122,
       "lon": 5.2567209,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "41273"
     },
     "Hwaseong, South Korea": {
       "city": "Hwaseong",
       "lat": 37.1994653,
       "lon": 126.8312632,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "696587"
     },
     "Hyllie, Sweden": {
       "city": "Hyllie",
       "lat": 55.5694418,
       "lon": 12.9771229,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Hägerstens församling, Sweden": {
       "city": "Hägerstens församling",
@@ -1965,79 +2287,92 @@
       "city": "Ibarra",
       "lat": 0.3520459,
       "lon": -78.1199716,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "108666"
     },
     "Imotski, Croatia": {
       "city": "Imotski",
       "lat": 43.4471115,
       "lon": 17.2179703,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "4008"
     },
     "Incheon, South Korea": {
       "city": "Incheon",
       "lat": 37.456,
       "lon": 126.7052,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2870545"
     },
     "Inverness, Scotland": {
       "city": "Inverness",
       "lat": 57.4790124,
       "lon": -4.225739,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "47060"
     },
     "Irbid, Jordan": {
       "city": "Irbid",
       "lat": 32.5556091,
       "lon": 35.8493023,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "292000"
     },
     "Irvine, Scotland": {
       "city": "Irvine",
       "lat": 55.6131309,
       "lon": -4.6696399,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "33698"
     },
     "Ismailia, Egypt": {
       "city": "Ismailia",
       "lat": 30.6043775,
       "lon": 32.2770825,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "352000"
     },
     "Istmina, Colombia": {
       "city": "Istmina",
       "lat": 5.1593099,
       "lon": -76.685528,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "30742"
     },
     "Itagüí, Colombia": {
       "city": "Itagüí",
       "lat": 6.1724352,
       "lon": -75.6093254,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "239056"
     },
     "Itapitanga, Brazil": {
       "city": "Itapitanga",
       "lat": -14.4232006,
       "lon": -39.5649322,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "10279"
     },
     "Ivančice, Czech Republic": {
       "city": "Ivančice",
       "lat": 49.1015881,
       "lon": 16.3776051,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "9538"
     },
     "Ivry-sur-Seine, France": {
       "city": "Ivry-sur-Seine",
       "lat": 48.8122302,
       "lon": 2.3872525,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "64001"
     },
     "Izumi, Japan": {
       "city": "Izumi",
       "lat": 34.4831932,
       "lon": 135.4232139,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "185913"
     },
     "Jarkurghon, Uzbekistan": {
       "city": "Jarkurghon",
@@ -2049,55 +2384,64 @@
       "city": "Jazan",
       "lat": 16.894719,
       "lon": 42.5579758,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "127743"
     },
     "Jeddah, Saudi Arabia": {
       "city": "Jeddah",
       "lat": 21.5504432,
       "lon": 39.1742363,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3430697"
     },
     "Jeonju, South Korea": {
       "city": "Jeonju",
       "lat": 35.8237631,
       "lon": 127.1472805,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "653387"
     },
     "Jesenice, Slovenia": {
       "city": "Jesenice",
       "lat": 46.4459152,
       "lon": 14.0663103,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": null
     },
     "Jizzakh, Uzbekistan": {
       "city": "Jizzakh",
       "lat": 40.1331797,
       "lon": 67.8234081,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "165000"
     },
     "Johannesburg, South Africa": {
       "city": "Johannesburg",
       "lat": -26.205,
       "lon": 28.049722,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "4434827"
     },
     "João Pessoa, Brazil": {
       "city": "João Pessoa",
       "lat": -7.1215981,
       "lon": -34.882028,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "833932"
     },
     "Judenburg, Austria": {
       "city": "Judenburg",
       "lat": 47.1694082,
       "lon": 14.6601079,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "9514"
     },
     "Jönköping, Sweden": {
       "city": "Jönköping",
       "lat": 57.7825634,
       "lon": 14.165719,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "84423"
     },
     "Kafr el-Dawwar, Egypt": {
       "city": "Kafr el-Dawwar",
@@ -2109,889 +2453,1037 @@
       "city": "Kafr el-Sheikh",
       "lat": 31.3814765,
       "lon": 30.8513566,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": null
     },
     "Kakegawa, Japan": {
       "city": "Kakegawa",
       "lat": 34.7688351,
       "lon": 137.9986433,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "114818"
     },
     "Kakuma, Kenya": {
       "city": "Kakuma",
       "lat": 3.706286,
       "lon": 34.873489,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Kanagawa Prefecture, Japan": {
       "city": "Kanagawa Prefecture",
       "lat": 35.4342935,
       "lon": 139.374753,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": null
     },
     "Kananga, DR Congo": {
       "city": "Kananga",
       "lat": -5.8951725,
       "lon": 22.408589,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Karabük, Turkey": {
       "city": "Karabük",
       "lat": 41.1955402,
       "lon": 32.6231154,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "123309"
     },
     "Karamürsel district, Turkey": {
       "city": "Karamürsel district",
       "lat": 40.6912501,
       "lon": 29.6165859,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Karlovy Vary, Czech Republic": {
       "city": "Karlovy Vary",
       "lat": 50.2306216,
       "lon": 12.8701437,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "52065"
     },
     "Karlsruhe, Germany": {
       "city": "Karlsruhe",
       "lat": 49.0068705,
       "lon": 8.4034195,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "283959"
     },
     "Kartal, Turkey": {
       "city": "Kartal",
       "lat": 40.8885036,
       "lon": 29.18589,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "475042"
     },
     "Kashan, Iran": {
       "city": "Kashan",
       "lat": 33.9876533,
       "lon": 51.4428856,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "275904"
     },
     "Kawasaki, Japan": {
       "city": "Kawasaki",
       "lat": 35.5306639,
       "lon": 139.7037668,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1538262"
     },
     "Kempton Park, South Africa": {
       "city": "Kempton Park",
       "lat": -26.0964372,
       "lon": 28.2336325,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Kerkrade, Netherlands": {
       "city": "Kerkrade",
       "lat": 50.8749089,
       "lon": 6.0593853,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "45749"
     },
     "Khartoum, Sudan": {
       "city": "Khartoum",
       "lat": 15.5635972,
       "lon": 32.5349123,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2682431"
     },
     "Khobar, Saudi Arabia": {
       "city": "Khobar",
       "lat": 26.3039999,
       "lon": 50.1960237,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "219679"
     },
     "Kigoma, Tanzania": {
       "city": "Kigoma",
       "lat": -4.877862,
       "lon": 29.6296319,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Kilmarnock, Scotland": {
       "city": "Kilmarnock",
       "lat": 55.6100589,
       "lon": -4.4964652,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "45000"
     },
     "Kingston upon Thames, England": {
       "city": "Kingston upon Thames",
       "lat": 51.4096275,
       "lon": -0.3062621,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "43013"
     },
     "Kinshasa, DR Congo": {
       "city": "Kinshasa",
       "lat": -4.32171,
       "lon": 15.3122511,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "17032322"
     },
     "Kirchbichl, Austria": {
       "city": "Kirchbichl",
       "lat": 47.5111617,
       "lon": 12.0859208,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "1233"
     },
     "Kirkuk, Iraq": {
       "city": "Kirkuk",
       "lat": 35.4719308,
       "lon": 44.3953896,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "850787"
     },
     "Kirriemuir, Scotland": {
       "city": "Kirriemuir",
       "lat": 56.6731057,
       "lon": -3.0043927,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "6012"
     },
     "Kisangani, DR Congo": {
       "city": "Kisangani",
       "lat": 0.5184021,
       "lon": 25.2057292,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Kista, Sweden": {
       "city": "Kista",
       "lat": 59.403311,
       "lon": 17.9442849,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Klatovy, Czech Republic": {
       "city": "Klatovy",
       "lat": 49.3951183,
       "lon": 13.2935954,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "22433"
     },
     "Knin, Croatia": {
       "city": "Knin",
       "lat": 44.04085,
       "lon": 16.199433,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "11633"
     },
     "Knokke-Heist, Belgium": {
       "city": "Knokke-Heist",
       "lat": 51.3433866,
       "lon": 3.2884738,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "33556"
     },
     "Kokand, Uzbekistan": {
       "city": "Kokand",
       "lat": 40.5408463,
       "lon": 70.9473889,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "264100"
     },
     "Kongsvinger Municipality, Norway": {
       "city": "Kongsvinger Municipality",
       "lat": 60.1899109,
       "lon": 12.2160367,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "18109"
     },
     "Koppigen, Switzerland": {
       "city": "Koppigen",
       "lat": 47.1318304,
       "lon": 7.601523,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "2265"
     },
     "Koson, Uzbekistan": {
       "city": "Koson",
       "lat": 39.0406833,
       "lon": 65.5858969,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "59300"
     },
     "Kosonsoy, Uzbekistan": {
       "city": "Kosonsoy",
       "lat": 41.2528658,
       "lon": 71.5446327,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Koumassi, Ivory Coast": {
       "city": "Koumassi",
       "lat": 5.2927045,
       "lon": -3.9585801,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "317562"
     },
     "Krumbach, Germany": {
       "city": "Krumbach",
       "lat": 48.2430587,
       "lon": 10.3631004,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "12729"
     },
     "Kuchl, Austria": {
       "city": "Kuchl",
       "lat": 47.6258369,
       "lon": 13.1451024,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "1862"
     },
     "Kumamoto, Japan": {
       "city": "Kumamoto",
       "lat": 32.8033909,
       "lon": 130.7082737,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "738865"
     },
     "Kumasi, Ghana": {
       "city": "Kumasi",
       "lat": 6.6985605,
       "lon": -1.6233086,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1517000"
     },
     "KwaMashu, South Africa": {
       "city": "KwaMashu",
       "lat": -29.741389,
       "lon": 30.962222,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Küçükçekmece, Turkey": {
       "city": "Küçükçekmece",
       "lat": 40.9918737,
       "lon": 28.7711956,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "792030"
     },
     "La Jagua de Ibirico, Colombia": {
       "city": "La Jagua de Ibirico",
       "lat": 9.5613975,
       "lon": -73.3328147,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "21386"
     },
     "La Plata, Argentina": {
       "city": "La Plata",
       "lat": -34.9206797,
       "lon": -57.9537638,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "193144"
     },
     "La Roche-sur-Yon, France": {
       "city": "La Roche-sur-Yon",
       "lat": 46.6705578,
       "lon": -1.4269591,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "54952"
     },
     "La Victoria, Colombia": {
       "city": "La Victoria",
       "lat": 5.5152589,
       "lon": -74.2354892,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Ladysmith, South Africa": {
       "city": "Ladysmith",
       "lat": -28.5587291,
       "lon": 29.7825044,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "64855"
     },
     "Lagny-sur-Marne, France": {
       "city": "Lagny-sur-Marne",
       "lat": 48.8773018,
       "lon": 2.7056056,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "21191"
     },
     "Lake Grove, United States": {
       "city": "Lake Grove",
       "lat": 40.8528761,
       "lon": -73.1151102,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "11072"
     },
     "Lancaster, England": {
       "city": "Lancaster",
       "lat": 54.0488219,
       "lon": -2.8013499,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "46000"
     },
     "Landsberg am Lech, Germany": {
       "city": "Landsberg am Lech",
       "lat": 48.0497474,
       "lon": 10.8768728,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "27140"
     },
     "Landshut, Germany": {
       "city": "Landshut",
       "lat": 48.536217,
       "lon": 12.1516551,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "73000"
     },
     "Langhus, Norway": {
       "city": "Langhus",
       "lat": 59.7464396,
       "lon": 10.8366712,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "13000"
     },
     "Langley, Canada": {
       "city": "Langley",
       "lat": 49.1039289,
       "lon": -122.657047,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "28963"
     },
     "Las Palmas de Gran Canaria, Spain": {
       "city": "Las Palmas de Gran Canaria",
       "lat": 28.1288694,
       "lon": -15.4349015,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "384023"
     },
     "Le Mans, France": {
       "city": "Le Mans",
       "lat": 48.0073849,
       "lon": 0.1967849,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "145004"
     },
     "Leamington, Canada": {
       "city": "Leamington",
       "lat": 42.0531385,
       "lon": -82.5997722,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "27595"
     },
     "Leeds, England": {
       "city": "Leeds",
       "lat": 53.7974185,
       "lon": -1.5437941,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "766399"
     },
     "Leicester, England": {
       "city": "Leicester",
       "lat": 52.6362,
       "lon": -1.1331969,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "305700"
     },
     "Leiderdorp, Netherlands": {
       "city": "Leiderdorp",
       "lat": 52.1617952,
       "lon": 4.5340923,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "27056"
     },
     "Leuchars, Scotland": {
       "city": "Leuchars",
       "lat": 56.381411,
       "lon": -2.8838885,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "3060"
     },
     "Leuven, Belgium": {
       "city": "Leuven",
       "lat": 50.879202,
       "lon": 4.7011675,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "102275"
     },
     "Liberec, Czech Republic": {
       "city": "Liberec",
       "lat": 50.7702648,
       "lon": 15.0583947,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "103415"
     },
     "Lilienfeld, Austria": {
       "city": "Lilienfeld",
       "lat": 48.0149797,
       "lon": 15.5966191,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "2.618"
     },
     "Lille, France": {
       "city": "Lille",
       "lat": 50.6365654,
       "lon": 3.0635282,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "236710"
     },
     "Linz, Austria": {
       "city": "Linz",
       "lat": 48.3059078,
       "lon": 14.286198,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "207812"
     },
     "Linzolo, Congo": {
       "city": "Linzolo",
       "lat": -4.413723,
       "lon": 15.1068663,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Lisbon, Portugal": {
       "city": "Lisbon",
       "lat": 38.7077507,
       "lon": -9.1365919,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "545923"
     },
     "Little Elm, United States": {
       "city": "Little Elm",
       "lat": 33.1626194,
       "lon": -96.9375051,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "42504"
     },
     "Liverpool, England": {
       "city": "Liverpool",
       "lat": 53.3933411,
       "lon": -2.9166389,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Livno, Bosnia and Herzegovina": {
       "city": "Livno",
       "lat": 43.8259136,
       "lon": 17.0042416,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "7927"
     },
     "Liège, Belgium": {
       "city": "Liège",
       "lat": 50.6450944,
       "lon": 5.5736112,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "197013"
     },
     "Ljubljana, Slovenia": {
       "city": "Ljubljana",
       "lat": 46.0500268,
       "lon": 14.5069289,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "285604"
     },
     "Ljubuški, Bosnia and Herzegovina": {
       "city": "Ljubuški",
       "lat": 43.1963022,
       "lon": 17.5447857,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "4023"
     },
     "Logoualé, Ivory Coast": {
       "city": "Logoualé",
       "lat": 7.1074292,
       "lon": -7.5511449,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "London Borough of Newham, England": {
       "city": "London Borough of Newham",
       "lat": 51.5300157,
       "lon": 0.0293091,
-      "addresstype": "city_district"
+      "addresstype": "city_district",
+      "population": null
     },
     "London, England": {
       "city": "London",
       "lat": 51.5074456,
       "lon": -0.1277653,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "8908083"
     },
     "Longueuil, Canada": {
       "city": "Longueuil",
       "lat": 45.521906,
       "lon": -73.4644578,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "254483"
     },
     "Los Angeles, United States": {
       "city": "Los Angeles",
       "lat": 34.0536909,
       "lon": -118.242766,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "4030904"
     },
     "Los Palacios y Villafranca, Spain": {
       "city": "Los Palacios y Villafranca",
       "lat": 37.1582119,
       "lon": -5.9244567,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "38778"
     },
     "Lucerne, Switzerland": {
       "city": "Lucerne",
       "lat": 47.052144,
       "lon": 8.3058123,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "81284"
     },
     "Ludwigshafen, Germany": {
       "city": "Ludwigshafen",
       "lat": 49.4704113,
       "lon": 8.4381568,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "163340"
     },
     "Lund, Sweden": {
       "city": "Lund",
       "lat": 55.7029296,
       "lon": 13.1929449,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "82800"
     },
     "Lunel, France": {
       "city": "Lunel",
       "lat": 43.6745265,
       "lon": 4.1348062,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "26185"
     },
     "Lyon, France": {
       "city": "Lyon",
       "lat": 45.7578137,
       "lon": 4.8320114,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "522250"
     },
     "M'Bour, Senegal": {
       "city": "M'Bour",
       "lat": 14.4207396,
       "lon": -16.971484,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "M'Sila, Algeria": {
       "city": "M'Sila",
       "lat": 35.7087096,
       "lon": 4.5371411,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "156647"
     },
     "Maasmechelen, Belgium": {
       "city": "Maasmechelen",
       "lat": 50.9634179,
       "lon": 5.6960212,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Macclesfield, England": {
       "city": "Macclesfield",
       "lat": 53.2606635,
       "lon": -2.1255158,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Machala, Ecuador": {
       "city": "Machala",
       "lat": -3.2588565,
       "lon": -79.9588518,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "231260"
     },
     "Madrid, Spain": {
       "city": "Madrid",
       "lat": 40.416782,
       "lon": -3.703507,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3477497"
     },
     "Magüí Payán, Colombia": {
       "city": "Magüí Payán",
       "lat": 1.7665774,
       "lon": -78.1835713,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Mahshahr, Iran": {
       "city": "Mahshahr",
       "lat": 30.5577268,
       "lon": 49.1997454,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "296271"
     },
     "Maia, Portugal": {
       "city": "Maia",
       "lat": 41.2373456,
       "lon": -8.6299982,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "134988"
     },
     "Mainz, Germany": {
       "city": "Mainz",
       "lat": 49.9995205,
       "lon": 8.2736253,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "227277"
     },
     "Malmö, Sweden": {
       "city": "Malmö",
       "lat": 55.6052931,
       "lon": 13.0001566,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "316588"
     },
     "Manchester, England": {
       "city": "Manchester",
       "lat": 53.4424618,
       "lon": -2.2324547,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Mannheim, Germany": {
       "city": "Mannheim",
       "lat": 49.4892913,
       "lon": 8.4673098,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "310000"
     },
     "Mansoura, Egypt": {
       "city": "Mansoura",
       "lat": 28.0758921,
       "lon": 30.7503674,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Manta, Ecuador": {
       "city": "Manta",
       "lat": -0.9486443,
       "lon": -80.7190822,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "217553"
     },
     "Mantes-la-Jolie, France": {
       "city": "Mantes-la-Jolie",
       "lat": 48.9891971,
       "lon": 1.7140683,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "44539"
     },
     "Mar del Plata, Argentina": {
       "city": "Mar del Plata",
       "lat": -37.9976168,
       "lon": -57.5482079,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "593337"
     },
     "Maracaná, Paraguay": {
       "city": "Maracaná",
       "lat": -24.1899734,
       "lon": -56.1197791,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Marseille, France": {
       "city": "Marseille",
       "lat": 43.2963986,
       "lon": 5.3777888,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "873076"
     },
     "Martigues, France": {
       "city": "Martigues",
       "lat": 43.4057279,
       "lon": 5.0548176,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "48568"
     },
     "Martorell, Spain": {
       "city": "Martorell",
       "lat": 41.4743886,
       "lon": 1.9307159,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "28989"
     },
     "Maysan Governorate, Iraq": {
       "city": "Maysan Governorate",
       "lat": 32.0182542,
       "lon": 47.0695957,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": null
     },
     "Mbuji-Mayi, DR Congo": {
       "city": "Mbuji-Mayi",
       "lat": -6.1258942,
       "lon": 23.5998111,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1680991"
     },
     "Meaux, France": {
       "city": "Meaux",
       "lat": 48.9582708,
       "lon": 2.8773541,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "55616"
     },
     "Meckhe, Senegal": {
       "city": "Meckhe",
       "lat": 15.112955,
       "lon": -16.631121,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "30000"
     },
     "Medellín, Colombia": {
       "city": "Medellín",
       "lat": 6.2697324,
       "lon": -75.6025597,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2486723"
     },
     "Medenine, Tunisia": {
       "city": "Medenine",
       "lat": 33.3434014,
       "lon": 10.4910703,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "71406"
     },
     "Medford, United States": {
       "city": "Medford",
       "lat": 42.4184296,
       "lon": -71.1061639,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "56173"
     },
     "Media, United States": {
       "city": "Media",
       "lat": 39.9167783,
       "lon": -75.387693,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "5682"
     },
     "Medina, Saudi Arabia": {
       "city": "Medina",
       "lat": 24.471153,
       "lon": 39.6111216,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1100093"
     },
     "Melbourne, Australia": {
       "city": "Melbourne",
       "lat": -37.8142454,
       "lon": 144.9631732,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "5031195"
     },
     "Melilla, Spain": {
       "city": "Melilla",
       "lat": 35.2919028,
       "lon": -2.9407146,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "87067"
     },
     "Meram district, Turkey": {
       "city": "Meram district",
       "lat": 37.8679527,
       "lon": 32.4946514,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "346366"
     },
     "Mexico City, Mexico": {
       "city": "Mexico City",
       "lat": 19.4326296,
       "lon": -99.1331785,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "9209944"
     },
     "Meziboří, Czech Republic": {
       "city": "Meziboří",
       "lat": 50.6203084,
       "lon": 13.6071384,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "4708"
     },
     "Mie Prefecture, Japan": {
       "city": "Mie Prefecture",
       "lat": 34.7339685,
       "lon": 136.5154489,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": null
     },
     "Milton Keynes, England": {
       "city": "Milton Keynes",
       "lat": 52.0406502,
       "lon": -0.7594092,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "229941"
     },
     "Mindelo, Cape Verde": {
       "city": "Mindelo",
       "lat": 16.8873057,
       "lon": -24.9864064,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "70000"
     },
     "Minya, Egypt": {
       "city": "Minya",
       "lat": 28.0893325,
       "lon": 30.7570623,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "247000"
     },
     "Mitcham, England": {
       "city": "Mitcham",
       "lat": 51.4058006,
       "lon": -0.1640787,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Mito, Japan": {
       "city": "Mito",
       "lat": 36.3659174,
       "lon": 140.4731743,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "271047"
     },
     "Miyamae-ku, Japan": {
       "city": "Miyamae-ku",
       "lat": 35.5891669,
       "lon": 139.5786951,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "225594"
     },
     "Mogadishu, Somalia": {
       "city": "Mogadishu",
       "lat": 2.0349312,
       "lon": 45.3419183,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2610000"
     },
     "Mogi das Cruzes, Brazil": {
       "city": "Mogi das Cruzes",
       "lat": -23.5234284,
       "lon": -46.1926671,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "451505"
     },
     "Mohammedia, Morocco": {
       "city": "Mohammedia",
       "lat": 33.6958383,
       "lon": -7.3893292,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "194358"
     },
     "Molde Municipality, Norway": {
       "city": "Molde Municipality",
       "lat": 62.6016257,
       "lon": 8.1386208,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "33163"
     },
     "Monterrey, Mexico": {
       "city": "Monterrey",
       "lat": 25.6802019,
       "lon": -100.315258,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1142994"
     },
     "Montevideo, Uruguay": {
       "city": "Montevideo",
       "lat": -34.9058916,
       "lon": -56.1913095,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1319108"
     },
     "Montfermeil, France": {
       "city": "Montfermeil",
       "lat": 48.8992679,
       "lon": 2.5660399,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "27980"
     },
     "Montivilliers, France": {
       "city": "Montivilliers",
       "lat": 49.5457966,
       "lon": 0.1920827,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "15478"
     },
     "Montpellier, France": {
       "city": "Montpellier",
       "lat": 43.6112422,
       "lon": 3.8767337,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "302454"
     },
     "Montreal, Canada": {
       "city": "Montreal",
       "lat": 45.5031824,
       "lon": -73.5698065,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1762949"
     },
     "Montreuil, France": {
       "city": "Montreuil",
       "lat": 50.4638918,
       "lon": 1.7631125,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "1893"
     },
     "Monufia Governorate, Egypt": {
       "city": "Monufia Governorate",
       "lat": 30.4370098,
       "lon": 30.7466852,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": null
     },
     "Moonee Ponds, Australia": {
       "city": "Moonee Ponds",
       "lat": -37.765575,
       "lon": 144.9212864,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "14250"
     },
     "Moordrecht, Netherlands": {
       "city": "Moordrecht",
       "lat": 51.9865065,
       "lon": 4.6698314,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "8395"
     },
     "Mostar, Bosnia and Herzegovina": {
       "city": "Mostar",
       "lat": 43.3435855,
       "lon": 17.8076584,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "60195"
     },
     "Motala, Sweden": {
       "city": "Motala",
       "lat": 58.5420395,
       "lon": 15.041261,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "29823"
     },
     "Mozelos, Portugal": {
       "city": "Mozelos",
       "lat": 40.9995263,
       "lon": -8.5579985,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "7142"
     },
     "Munich, Germany": {
       "city": "Munich",
       "lat": 48.1371079,
       "lon": 11.5753822,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1478280"
     },
     "Murphy, Argentina": {
       "city": "Murphy",
       "lat": -33.6423626,
       "lon": -61.8584359,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "4039"
     },
     "Musina, South Africa": {
       "city": "Musina",
       "lat": -22.3453519,
       "lon": 30.0268526,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "42678"
     },
     "Málaga, Spain": {
       "city": "Málaga",
       "lat": 36.7647913,
       "lon": -4.4422005,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "597173"
     },
     "Mülheim an der Ruhr, Germany": {
       "city": "Mülheim an der Ruhr",
       "lat": 51.4272925,
       "lon": 6.8829192,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "167108"
     },
     "Mělník, Czech Republic": {
       "city": "Mělník",
       "lat": 50.3520785,
       "lon": 14.4748281,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "19650"
     },
     "Nagrig, Egypt": {
       "city": "Nagrig",
@@ -3003,151 +3495,176 @@
       "city": "Najaf",
       "lat": 32.0010227,
       "lon": 44.3299926,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1221248"
     },
     "Nampula, Mozambique": {
       "city": "Nampula",
       "lat": -15.1194063,
       "lon": 39.2615886,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "477900"
     },
     "Namsos, Norway": {
       "city": "Namsos",
       "lat": 64.4666372,
       "lon": 11.3345047,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "15154"
     },
     "Namyangju, South Korea": {
       "city": "Namyangju",
       "lat": 37.6359398,
       "lon": 127.2165051,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "723215"
     },
     "Nancy, France": {
       "city": "Nancy",
       "lat": 48.6937223,
       "lon": 6.1834097,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "104260"
     },
     "Nantes, France": {
       "city": "Nantes",
       "lat": 47.2186371,
       "lon": -1.5541362,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "327734"
     },
     "Naperville, United States": {
       "city": "Naperville",
       "lat": 41.7728699,
       "lon": -88.1479278,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "149540"
     },
     "Naples, Italy": {
       "city": "Naples",
       "lat": 40.8358846,
       "lon": 14.2487679,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "972212"
     },
     "Navoiy, Uzbekistan": {
       "city": "Navoiy",
       "lat": 40.1034582,
       "lon": 65.3734221,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "215500"
     },
     "Navojoa, Mexico": {
       "city": "Navojoa",
       "lat": 27.0721872,
       "lon": -109.4438227,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "120926"
     },
     "Našice, Croatia": {
       "city": "Našice",
       "lat": 45.4907759,
       "lon": 18.0938075,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "14291"
     },
     "Ndangane, Senegal": {
       "city": "Ndangane",
       "lat": 14.0763643,
       "lon": -15.9246624,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Neerpelt, Belgium": {
       "city": "Neerpelt",
       "lat": 51.2292367,
       "lon": 5.442759,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Neftenbach, Switzerland": {
       "city": "Neftenbach",
       "lat": 47.528176,
       "lon": 8.6680365,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "5434"
     },
     "Nemours, France": {
       "city": "Nemours",
       "lat": 48.268026,
       "lon": 2.6953079,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "13189"
     },
     "Neunkirchen, Austria": {
       "city": "Neunkirchen",
       "lat": 47.7221147,
       "lon": 16.081602,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "11833"
     },
     "New Egypt, United States": {
       "city": "New Egypt",
       "lat": 40.0676135,
       "lon": -74.5307093,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "2357"
     },
     "New York City, United States": {
       "city": "New York City",
       "lat": 40.7127281,
       "lon": -74.0060152,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "8467513"
     },
     "Newark, United States": {
       "city": "Newark",
       "lat": 40.735657,
       "lon": -74.1723667,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "311549"
     },
     "Newcastle, Australia": {
       "city": "Newcastle",
       "lat": -32.9192953,
       "lon": 151.7795348,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Nexø, Denmark": {
       "city": "Nexø",
       "lat": 55.0650145,
       "lon": 15.1307273,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "3660"
     },
     "Nieuwegein, Netherlands": {
       "city": "Nieuwegein",
       "lat": 52.0367152,
       "lon": 5.0836117,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "61869"
     },
     "Nijmegen, Netherlands": {
       "city": "Nijmegen",
       "lat": 51.8474946,
       "lon": 5.8637771,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "182480"
     },
     "Nishapur, Iran": {
       "city": "Nishapur",
       "lat": 36.2105604,
       "lon": 58.7922291,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "264375"
     },
     "Noisy-le-Grand, France": {
       "city": "Noisy-le-Grand",
       "lat": 48.8492238,
       "lon": 2.5524906,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "70374"
     },
     "Norrköping Matteus church parish, Sweden": {
       "city": "Norrköping Matteus church parish",
@@ -3159,512 +3676,597 @@
       "city": "Norrköping",
       "lat": 58.5909124,
       "lon": 16.1903511,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "98088"
     },
     "Northampton, England": {
       "city": "Northampton",
       "lat": 52.2378853,
       "lon": -0.8963639,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "227184"
     },
     "Norwich, England": {
       "city": "Norwich",
       "lat": 52.6285576,
       "lon": 1.2923954,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "132512"
     },
     "Novi Pazar, Serbia": {
       "city": "Novi Pazar",
       "lat": 43.1406913,
       "lon": 20.518057,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "71462"
     },
     "Novo Hamburgo, Brazil": {
       "city": "Novo Hamburgo",
       "lat": -29.6905705,
       "lon": -51.1429035,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "227646"
     },
     "Nueva Palmira, Uruguay": {
       "city": "Nueva Palmira",
       "lat": -33.8710911,
       "lon": -58.4068884,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "10775"
     },
     "Nuevo Berlín, Uruguay": {
       "city": "Nuevo Berlín",
       "lat": -32.9803448,
       "lon": -58.0569456,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "2692"
     },
     "Nuremberg, Germany": {
       "city": "Nuremberg",
       "lat": 49.453872,
       "lon": 11.077298,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "526091"
     },
     "Nyon, Switzerland": {
       "city": "Nyon",
       "lat": 46.3820585,
       "lon": 6.2402791,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "19738"
     },
     "Odumase Krobo, Ghana": {
       "city": "Odumase Krobo",
       "lat": 6.1361198,
       "lon": 0.0053376,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Olhão, Portugal": {
       "city": "Olhão",
       "lat": 37.0270369,
       "lon": -7.8411287,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "44643"
     },
     "Olmaliq, Uzbekistan": {
       "city": "Olmaliq",
       "lat": 40.845729,
       "lon": 69.6071609,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "138000"
     },
     "Olomouc, Czech Republic": {
       "city": "Olomouc",
       "lat": 49.5940567,
       "lon": 17.251143,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "99604"
     },
     "Oost-Souburg, Netherlands": {
       "city": "Oost-Souburg",
       "lat": 51.4645556,
       "lon": 3.6042063,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "10240"
     },
     "Osaka, Japan": {
       "city": "Osaka",
       "lat": 34.6937569,
       "lon": 135.5014539,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2691185"
     },
     "Osasco, Brazil": {
       "city": "Osasco",
       "lat": -23.5324859,
       "lon": -46.7916801,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "728615"
     },
     "Oslo, Norway": {
       "city": "Oslo",
       "lat": 59.9723975,
       "lon": 10.7757292,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "724290"
     },
     "Osmangazi, Turkey": {
       "city": "Osmangazi",
       "lat": 40.1982203,
       "lon": 29.0612098,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "885441"
     },
     "Ostend, Belgium": {
       "city": "Ostend",
       "lat": 51.2258565,
       "lon": 2.919496,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "70600"
     },
     "Ouagadougou, Burkina Faso": {
       "city": "Ouagadougou",
       "lat": 12.3681873,
       "lon": -1.5270944,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1915102"
     },
     "Ouragahio, Ivory Coast": {
       "city": "Ouragahio",
       "lat": 6.3083585,
       "lon": -5.9312428,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Overland Park, United States": {
       "city": "Overland Park",
       "lat": 38.9742502,
       "lon": -94.6851702,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "188966"
     },
     "Oviedo, Spain": {
       "city": "Oviedo",
       "lat": 43.3533452,
       "lon": -5.8795096,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "223576"
     },
     "Paderborn, Germany": {
       "city": "Paderborn",
       "lat": 51.7177044,
       "lon": 8.752653,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "151633"
     },
     "Palma, Spain": {
       "city": "Palma",
       "lat": 39.5695818,
       "lon": 2.6500745,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "443196"
     },
     "Palmerston North, New Zealand": {
       "city": "Palmerston North",
       "lat": -40.356317,
       "lon": 175.6112388,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "81800"
     },
     "Pamplona, Spain": {
       "city": "Pamplona",
       "lat": 42.815686,
       "lon": -1.6522353,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "209676"
     },
     "Panama City, Panama": {
       "city": "Panama City",
       "lat": 8.9714493,
       "lon": -79.5341802,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1086990"
     },
     "Pap, Uzbekistan": {
       "city": "Pap",
       "lat": 40.8743693,
       "lon": 71.0970171,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Paris, France": {
       "city": "Paris",
       "lat": 48.8534951,
       "lon": 2.3483915,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2165423"
     },
     "Park Ridge, United States": {
       "city": "Park Ridge",
       "lat": 42.0112329,
       "lon": -87.8406031,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "39656"
     },
     "Parma, Italy": {
       "city": "Parma",
       "lat": 44.80153,
       "lon": 10.3279843,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "202111"
     },
     "Pereira, Colombia": {
       "city": "Pereira",
       "lat": 4.7854606,
       "lon": -75.788322,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": null
     },
     "Perth, Australia": {
       "city": "Perth",
       "lat": -31.9558967,
       "lon": 115.8605784,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2043762"
     },
     "Petit-Goâve, Haiti": {
       "city": "Petit-Goâve",
       "lat": 18.4326935,
       "lon": -72.865384,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "25367"
     },
     "Petite-Rivière-de-l'Artibonite, Haiti": {
       "city": "Petite-Rivière-de-l'Artibonite",
       "lat": 19.1228446,
       "lon": -72.4798459,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "35000"
     },
     "Petrópolis, Brazil": {
       "city": "Petrópolis",
       "lat": -22.5075743,
       "lon": -43.1785356,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "278881"
     },
     "Philadelphia, United States": {
       "city": "Philadelphia",
       "lat": 39.9527237,
       "lon": -75.1635262,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1603797"
     },
     "Pickering, Canada": {
       "city": "Pickering",
       "lat": 43.835765,
       "lon": -79.090576,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "91771"
     },
     "Pico Rivera, United States": {
       "city": "Pico Rivera",
       "lat": 33.9830688,
       "lon": -118.096735,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "64336"
     },
     "Pikine, Senegal": {
       "city": "Pikine",
       "lat": 14.751544,
       "lon": -17.396413,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Piranshahr Sugar Factory, Iran": null,
     "Plumpton, Australia": {
       "city": "Plumpton",
       "lat": -33.7566667,
       "lon": 150.8427778,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Plzeň, Czech Republic": {
       "city": "Plzeň",
       "lat": 49.7477415,
       "lon": 13.3775249,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "168951"
     },
     "Pohang, South Korea": {
       "city": "Pohang",
       "lat": 36.0189315,
       "lon": 129.3429384,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "514869"
     },
     "Point Cook, Australia": {
       "city": "Point Cook",
       "lat": -37.9064862,
       "lon": 144.7533059,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "60105"
     },
     "Poissy, France": {
       "city": "Poissy",
       "lat": 48.9274192,
       "lon": 2.0426301,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "40016"
     },
     "Polička, Czech Republic": {
       "city": "Polička",
       "lat": 49.7149137,
       "lon": 16.2653869,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "8832"
     },
     "Polokwane, South Africa": {
       "city": "Polokwane",
       "lat": -23.9058333,
       "lon": 29.4613889,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "628999"
     },
     "Pomigliano d'Arco, Italy": {
       "city": "Pomigliano d'Arco",
       "lat": 40.907912,
       "lon": 14.386233,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "39922"
     },
     "Pontoise, France": {
       "city": "Pontoise",
       "lat": 49.0508845,
       "lon": 2.1008067,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "31327"
     },
     "Port Said, Egypt": {
       "city": "Port Said",
       "lat": 31.263235,
       "lon": 32.305505,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "538378"
     },
     "Port Williams, Canada": {
       "city": "Port Williams",
       "lat": 45.0979991,
       "lon": -64.4100054,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Port-au-Prince, Haiti": {
       "city": "Port-au-Prince",
       "lat": 18.547327,
       "lon": -72.3395928,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1275000"
     },
     "Porto Alegre, Brazil": {
       "city": "Porto Alegre",
       "lat": -30.0324999,
       "lon": -51.2303767,
-      "addresstype": "district"
+      "addresstype": "district",
+      "population": "1332845"
     },
     "Posušje, Bosnia and Herzegovina": {
       "city": "Posušje",
       "lat": 43.4712288,
       "lon": 17.3271281,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "6386"
     },
     "Prague, Czech Republic": {
       "city": "Prague",
       "lat": 50.0874654,
       "lon": 14.4212535,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1397880"
     },
     "Praia, Cape Verde": {
       "city": "Praia",
       "lat": 14.9162811,
       "lon": -23.5095095,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "127832"
     },
     "Pujato, Argentina": {
       "city": "Pujato",
       "lat": -33.0176021,
       "lon": -61.0430978,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "3700"
     },
     "Pulheim, Germany": {
       "city": "Pulheim",
       "lat": 50.9979888,
       "lon": 6.8025409,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "54200"
     },
     "Punta del Este, Uruguay": {
       "city": "Punta del Este",
       "lat": -34.9632342,
       "lon": -54.9439981,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "18137"
     },
     "Qaem Shahr, Iran": {
       "city": "Qaem Shahr",
       "lat": 36.4636399,
       "lon": 52.8579311,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "204953"
     },
     "Qarshi, Uzbekistan": {
       "city": "Qarshi",
       "lat": 38.839824,
       "lon": 65.7927794,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "289600"
     },
     "Qatif governorate, Saudi Arabia": {
       "city": "Qatif governorate",
       "lat": 26.6078257,
       "lon": 49.9196611,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": "552442"
     },
     "Qatif, Saudi Arabia": {
       "city": "Qatif",
       "lat": 26.5586004,
       "lon": 50.0087399,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "87332"
     },
     "Qazvin, Iran": {
       "city": "Qazvin",
       "lat": 36.2691723,
       "lon": 50.005753,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "402748"
     },
     "Quibdó, Colombia": {
       "city": "Quibdó",
       "lat": 5.6912838,
       "lon": -76.6531337,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "116087"
     },
     "Quito, Ecuador": {
       "city": "Quito",
       "lat": -0.2201641,
       "lon": -78.5123274,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2671191"
     },
     "Racine, United States": {
       "city": "Racine",
       "lat": 42.7313756,
       "lon": -87.7834769,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "77816"
     },
     "Rafael Calzada, Argentina": {
       "city": "Rafael Calzada",
       "lat": -34.7916002,
       "lon": -58.3507175,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "56419"
     },
     "Rafaela, Argentina": {
       "city": "Rafaela",
       "lat": -31.2526923,
       "lon": -61.4916758,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "101471"
     },
     "Redbridge, England": {
       "city": "Redbridge",
       "lat": 51.5765828,
       "lon": 0.0453401,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Regensburg, Germany": {
       "city": "Regensburg",
       "lat": 49.0195333,
       "lon": 12.0974869,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "145000"
     },
     "Reggiolo, Italy": {
       "city": "Reggiolo",
       "lat": 44.9185339,
       "lon": 10.8042114,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "9178"
     },
     "Rennes, France": {
       "city": "Rennes",
       "lat": 48.1113387,
       "lon": -1.6800198,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "225081"
     },
     "Rheinfelden, Switzerland": {
       "city": "Rheinfelden",
       "lat": 47.5543859,
       "lon": 7.7922905,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "13360"
     },
     "Ribeira Grande, Cape Verde": {
       "city": "Ribeira Grande",
       "lat": 17.1833547,
       "lon": -25.0643795,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Richmond, United States": {
       "city": "Richmond",
       "lat": 37.5385087,
       "lon": -77.43428,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "226610"
     },
     "Rijeka, Croatia": {
       "city": "Rijeka",
       "lat": 45.3267976,
       "lon": 14.442208,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "107964"
     },
     "Rio Branco, Brazil": {
       "city": "Rio Branco",
       "lat": -9.9765362,
       "lon": -67.8220778,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "364756"
     },
     "Rio de Janeiro, Brazil": {
       "city": "Rio de Janeiro",
       "lat": -22.9110137,
       "lon": -43.2093727,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "6211223"
     },
     "Riobamba, Ecuador": {
       "city": "Riobamba",
       "lat": -1.6732765,
       "lon": -78.6482479,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "170000"
     },
     "Rivera, Uruguay": {
       "city": "Rivera",
       "lat": -30.900058,
       "lon": -55.5408151,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "84775"
     },
     "Riyadh, Saudi Arabia": {
       "city": "Riyadh",
       "lat": 24.638916,
       "lon": 46.7160104,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "5188286"
     },
     "Rome, Italy": {
       "city": "Rome",
       "lat": 41.8933203,
       "lon": 12.4829321,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2848084"
     },
     "Roquetas de Mar, Spain": {
       "city": "Roquetas de Mar",
       "lat": 36.7630203,
       "lon": -2.6115886,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "110054"
     },
     "Rosa Zárate, Ecuador": {
       "city": "Rosa Zárate",
@@ -3676,145 +4278,169 @@
       "city": "Rosario",
       "lat": -32.9593609,
       "lon": -60.6617024,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1037710"
     },
     "Rosice, Czech Republic": {
       "city": "Rosice",
       "lat": 49.1825874,
       "lon": 16.3878251,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "5666"
     },
     "Rosmalen, Netherlands": {
       "city": "Rosmalen",
       "lat": 51.71866,
       "lon": 5.3629244,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "29978"
     },
     "Rothrist, Switzerland": {
       "city": "Rothrist",
       "lat": 47.3029125,
       "lon": 7.8826232,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "8922"
     },
     "Rotterdam, Netherlands": {
       "city": "Rotterdam",
       "lat": 51.9244424,
       "lon": 4.47775,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "572392"
     },
     "Rottweil, Germany": {
       "city": "Rottweil",
       "lat": 48.1678244,
       "lon": 8.626979,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "25701"
     },
     "Roubaix, France": {
       "city": "Roubaix",
       "lat": 50.6915893,
       "lon": 3.1741734,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "98892"
     },
     "Rouen, France": {
       "city": "Rouen",
       "lat": 49.4404591,
       "lon": 1.0939658,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "114083"
     },
     "Rueil-Malmaison, France": {
       "city": "Rueil-Malmaison",
       "lat": 48.87778,
       "lon": 2.1802832,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "78186"
     },
     "Russeifa, Jordan": {
       "city": "Russeifa",
       "lat": 32.0174989,
       "lon": 36.0434611,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Rutherglen, Scotland": {
       "city": "Rutherglen",
       "lat": 55.8284315,
       "lon": -4.2134405,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "25000"
     },
     "Rælingen, Norway": {
       "city": "Rælingen",
       "lat": 59.8910114,
       "lon": 11.0789878,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "20509"
     },
     "Saijo, Japan": {
       "city": "Saijo",
       "lat": 33.9194466,
       "lon": 133.1813268,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "104791"
     },
     "Saint-Alexandre, Canada": {
       "city": "Saint-Alexandre",
       "lat": 47.6832387,
       "lon": -69.6239716,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": null
     },
     "Saint-Denis, France": {
       "city": "Saint-Denis",
       "lat": 48.9383732,
       "lon": 2.3627508,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Saint-Dié-des-Vosges, France": {
       "city": "Saint-Dié-des-Vosges",
       "lat": 48.2872305,
       "lon": 6.9474449,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "19319"
     },
     "Saint-Louis, Senegal": {
       "city": "Saint-Louis",
       "lat": 16.0280445,
       "lon": -16.5048686,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "176000"
     },
     "Saint-Marc, Haiti": {
       "city": "Saint-Marc",
       "lat": 19.1020269,
       "lon": -72.699511,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "122747"
     },
     "Saint-Maurice, France": {
       "city": "Saint-Maurice",
       "lat": 48.3275249,
       "lon": 7.3363439,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "329"
     },
     "Sainte-Ode, Belgium": {
       "city": "Sainte-Ode",
       "lat": 50.0166761,
       "lon": 5.5595141,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "2437"
     },
     "Saitama Prefecture, Japan": {
       "city": "Saitama Prefecture",
       "lat": 35.9754168,
       "lon": 139.4160114,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": null
     },
     "Sakakah, Saudi Arabia": {
       "city": "Sakakah",
       "lat": 29.9784008,
       "lon": 40.2047701,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": "242813"
     },
     "Sakiet Ezzit, Tunisia": {
       "city": "Sakiet Ezzit",
       "lat": 34.8023823,
       "lon": 10.7613107,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "87512"
     },
     "Salamanca, Mexico": {
       "city": "Salamanca",
       "lat": 20.571358,
       "lon": -101.192444,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "160682"
     },
     "Sallent de Llobregat, Spain": {
       "city": "Sallent de Llobregat",
@@ -3826,127 +4452,148 @@
       "city": "Salon-de-Provence",
       "lat": 43.6405237,
       "lon": 5.0980225,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "44731"
     },
     "Saltcoats, Scotland": {
       "city": "Saltcoats",
       "lat": 55.6332429,
       "lon": -4.7887547,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "11260"
     },
     "Salvador, Brazil": {
       "city": "Salvador",
       "lat": -12.9822499,
       "lon": -38.4812772,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "2417678"
     },
     "Salzburg, Austria": {
       "city": "Salzburg",
       "lat": 47.7981346,
       "lon": 13.0464806,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "152083"
     },
     "Samarkand, Uzbekistan": {
       "city": "Samarkand",
       "lat": 39.6550017,
       "lon": 66.9756954,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "573200"
     },
     "Sambreville, Belgium": {
       "city": "Sambreville",
       "lat": 50.4490552,
       "lon": 4.6108156,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Samfya, Zambia": {
       "city": "Samfya",
       "lat": -11.3684948,
       "lon": 29.5516598,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "San Juan Bautista, Paraguay": {
       "city": "San Juan Bautista",
       "lat": -26.6690194,
       "lon": -57.1455794,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "16593"
     },
     "San Justo, Argentina": {
       "city": "San Justo",
       "lat": -34.6774186,
       "lon": -58.5607837,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "105274"
     },
     "San Lorenzo, Argentina": {
       "city": "San Lorenzo",
       "lat": -32.7454865,
       "lon": -60.743091,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "50954"
     },
     "San Lorenzo, Ecuador": {
       "city": "San Lorenzo",
       "lat": 1.2883387,
       "lon": -78.8369504,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": null
     },
     "San Lorenzo, Paraguay": {
       "city": "San Lorenzo",
       "lat": -25.3425224,
       "lon": -57.509397,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "489000"
     },
     "San Nicolás de los Arroyos, Argentina": {
       "city": "San Nicolás de los Arroyos",
       "lat": -33.3277089,
       "lon": -60.2165909,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "133602"
     },
     "San Sebastián, Spain": {
       "city": "San Sebastián",
       "lat": 43.3224219,
       "lon": -1.9838889,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "189507"
     },
     "Sandnes Municipality, Norway": {
       "city": "Sandnes Municipality",
       "lat": 58.9831321,
       "lon": 6.394641,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "84908"
     },
     "Santa Cruz de Tenerife, Spain": {
       "city": "Santa Cruz de Tenerife",
       "lat": 28.467178,
       "lon": -16.2507843,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "211498"
     },
     "Santa Marta, Colombia": {
       "city": "Santa Marta",
       "lat": 11.2320944,
       "lon": -74.1950916,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "500000"
     },
     "Santa Rosa, Argentina": {
       "city": "Santa Rosa",
       "lat": -36.6203503,
       "lon": -64.2905765,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "116083"
     },
     "Santander, Spain": {
       "city": "Santander",
       "lat": 43.4618932,
       "lon": -3.8100255,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "175082"
     },
     "Santiago de Compostela, Spain": {
       "city": "Santiago de Compostela",
       "lat": 42.9064576,
       "lon": -8.5192983,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "100842"
     },
     "Santo Domingo, Ecuador": {
       "city": "Santo Domingo",
       "lat": -0.2546212,
       "lon": -79.1686724,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "270875"
     },
     "Sarab-e Yas, Iran": {
       "city": "Sarab-e Yas",
@@ -3958,97 +4605,113 @@
       "city": "Sarajevo",
       "lat": 43.8570713,
       "lon": 18.4126147,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "275524"
     },
     "Sarandí, Argentina": {
       "city": "Sarandí",
       "lat": -34.680758,
       "lon": -58.3463289,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "60752"
     },
     "Sari, Iran": {
       "city": "Sari",
       "lat": 36.5537458,
       "lon": 53.0602761,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "300000"
     },
     "Sayram, Kazakhstan": {
       "city": "Sayram",
       "lat": 42.3004979,
       "lon": 69.7599716,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "40000"
     },
     "Schaerbeek, Belgium": {
       "city": "Schaerbeek",
       "lat": 50.8676041,
       "lon": 4.3737121,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "129293"
     },
     "Scheibbs, Austria": {
       "city": "Scheibbs",
       "lat": 48.0053866,
       "lon": 15.1674871,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "4275"
     },
     "Sebokeng, South Africa": {
       "city": "Sebokeng",
       "lat": -26.560278,
       "lon": 27.8625,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Senlis, France": {
       "city": "Senlis",
       "lat": 50.5331612,
       "lon": 2.1523287,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "161"
     },
     "Seongnam, South Korea": {
       "city": "Seongnam",
       "lat": 37.4201556,
       "lon": 127.1262092,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "967510"
     },
     "Seoul, South Korea": {
       "city": "Seoul",
       "lat": 37.5666791,
       "lon": 126.9782914,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "9509458"
     },
     "Sevran, France": {
       "city": "Sevran",
       "lat": 48.937634,
       "lon": 2.5298164,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "51845"
     },
     "Sfax, Tunisia": {
       "city": "Sfax",
       "lat": 34.7394361,
       "lon": 10.7604024,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "955421"
     },
     "Sharpeville, South Africa": {
       "city": "Sharpeville",
       "lat": -26.685,
       "lon": 27.8758333,
-      "addresstype": "neighbourhood"
+      "addresstype": "neighbourhood",
+      "population": null
     },
     "Sheffield, England": {
       "city": "Sheffield",
       "lat": 53.3806626,
       "lon": -1.4702278,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "547000"
     },
     "Shiraz, Iran": {
       "city": "Shiraz",
       "lat": 29.6060218,
       "lon": 52.5378041,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1565572"
     },
     "Shizuoka, Japan": {
       "city": "Shizuoka",
       "lat": 34.9751974,
       "lon": 138.3831697,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "701803"
     },
     "Shorqorgon, Uzbekistan": {
       "city": "Shorqorgon",
@@ -4060,85 +4723,99 @@
       "city": "Shushufindi Canton",
       "lat": -0.1471029,
       "lon": -76.6119395,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": null
     },
     "Sidi Kacem, Morocco": {
       "city": "Sidi Kacem",
       "lat": 34.226412,
       "lon": -5.711434,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "75672"
     },
     "Sint-Pieters-Leeuw, Belgium": {
       "city": "Sint-Pieters-Leeuw",
       "lat": 50.7800261,
       "lon": 4.2443604,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Sintra, Portugal": {
       "city": "Sintra",
       "lat": 38.8355446,
       "lon": -9.3522371,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "385654"
     },
     "Sirdaryo, Uzbekistan": {
       "city": "Sirdaryo",
       "lat": 40.3737191,
       "lon": 68.4341132,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": "648100"
     },
     "Skalka, Czech Republic": {
       "city": "Skalka",
       "lat": 49.0381823,
       "lon": 17.2053355,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "172"
     },
     "Solihull, England": {
       "city": "Solihull",
       "lat": 52.4130189,
       "lon": -1.7768935,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "206091"
     },
     "Solin, Croatia": {
       "city": "Solin",
       "lat": 43.5442913,
       "lon": 16.4853016,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "24862"
     },
     "Solna, Sweden": {
       "city": "Solna",
       "lat": 59.366667,
       "lon": 18.016667,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "85540"
     },
     "Solothurn, Switzerland": {
       "city": "Solothurn",
       "lat": 47.2081355,
       "lon": 7.5384045,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "16599"
     },
     "Sousse, Tunisia": {
       "city": "Sousse",
       "lat": 35.8288284,
       "lon": 10.6405254,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "221530"
     },
     "Soweto, South Africa": {
       "city": "Soweto",
       "lat": -26.2227778,
       "lon": 27.89,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1270000"
     },
     "Spijkenisse, Netherlands": {
       "city": "Spijkenisse",
       "lat": 51.8464881,
       "lon": 4.3287681,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "71647"
     },
     "Split, Croatia": {
       "city": "Split",
       "lat": 43.5116383,
       "lon": 16.4399659,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "149830"
     },
     "Spånga-Kista församling, Sweden": {
       "city": "Spånga-Kista församling",
@@ -4156,511 +4833,596 @@
       "city": "St. Albert",
       "lat": 53.633239,
       "lon": -113.628845,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "68232"
     },
     "St. Louis, United States": {
       "city": "St. Louis",
       "lat": 38.6254063,
       "lon": -90.190009,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "301578"
     },
     "Stavanger, Norway": {
       "city": "Stavanger",
       "lat": 58.9699675,
       "lon": 5.7318101,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "150123"
     },
     "Stockholm, Sweden": {
       "city": "Stockholm",
       "lat": 59.3251172,
       "lon": 18.0710935,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "984748"
     },
     "Stockport, England": {
       "city": "Stockport",
       "lat": 53.407901,
       "lon": -2.160243,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "136082"
     },
     "Stourbridge, England": {
       "city": "Stourbridge",
       "lat": 52.4577615,
       "lon": -2.1474345,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Strakonice, Czech Republic": {
       "city": "Strakonice",
       "lat": 49.261277,
       "lon": 13.9025043,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "23071"
     },
     "Strasbourg, France": {
       "city": "Strasbourg",
       "lat": 48.584614,
       "lon": 7.7507127,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "291313"
     },
     "Strombeek-Bever, Belgium": {
       "city": "Strombeek-Bever",
       "lat": 50.9109938,
       "lon": 4.3422525,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Stuttgart, Germany": {
       "city": "Stuttgart",
       "lat": 48.7784485,
       "lon": 9.1800132,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "613392"
     },
     "Sunderland, England": {
       "city": "Sunderland",
       "lat": 54.9058512,
       "lon": -1.3828727,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "275300"
     },
     "Sunyani, Ghana": {
       "city": "Sunyani",
       "lat": 7.3384389,
       "lon": -2.3309226,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "248500"
     },
     "Suwon, South Korea": {
       "city": "Suwon",
       "lat": 37.2633325,
       "lon": 127.0287472,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1203000"
     },
     "Sydney, Australia": {
       "city": "Sydney",
       "lat": -33.8698439,
       "lon": 151.2082848,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "5,219,674"
     },
     "São Gonçalo, Brazil": {
       "city": "São Gonçalo",
       "lat": -22.8219014,
       "lon": -43.0309252,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "896744"
     },
     "São José dos Campos, Brazil": {
       "city": "São José dos Campos",
       "lat": -23.1867782,
       "lon": -45.8854538,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "697054"
     },
     "São Paulo, Brazil": {
       "city": "São Paulo",
       "lat": -23.5506507,
       "lon": -46.6333824,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "11451999"
     },
     "Säter, Sweden": {
       "city": "Säter",
       "lat": 60.3469718,
       "lon": 15.7486886,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "10925"
     },
     "Ta'if, Saudi Arabia": {
       "city": "Ta'if",
       "lat": 21.2702801,
       "lon": 40.4158308,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "579970"
     },
     "Tabarre, Haiti": {
       "city": "Tabarre",
       "lat": 18.5619986,
       "lon": -72.2507176,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": null
     },
     "Tadó, Colombia": {
       "city": "Tadó",
       "lat": 5.263378,
       "lon": -76.5621239,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "18011"
     },
     "Taguatinga, Brazil": {
       "city": "Taguatinga",
       "lat": -12.402404,
       "lon": -46.4365769,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "14011"
     },
     "Taher, Algeria": {
       "city": "Taher",
       "lat": 36.7712912,
       "lon": 5.897589,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "77367"
     },
     "Taishi, Japan": {
       "city": "Taishi",
       "lat": 34.517724,
       "lon": 135.646824,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "13748"
     },
     "Tamale, Ghana": {
       "city": "Tamale",
       "lat": 9.4051992,
       "lon": -0.8423986,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "950124"
     },
     "Tarrafal, Cape Verde": {
       "city": "Tarrafal",
       "lat": 15.2784159,
       "lon": -23.752294,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Tashkent Region, Uzbekistan": {
       "city": "Tashkent Region",
       "lat": 41.0877657,
       "lon": 69.4978552,
-      "addresstype": "state"
+      "addresstype": "state",
+      "population": "4450000"
     },
     "Tashkent, Uzbekistan": {
       "city": "Tashkent",
       "lat": 41.3123363,
       "lon": 69.2787079,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2956384"
     },
     "Tavira, Portugal": {
       "city": "Tavira",
       "lat": 37.1262493,
       "lon": -7.6499121,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "27530"
     },
     "Te Puke, New Zealand": {
       "city": "Te Puke",
       "lat": -37.7853294,
       "lon": 176.3270238,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "9780"
     },
     "Tebesbest, Algeria": {
       "city": "Tebesbest",
       "lat": 33.115308,
       "lon": 6.0818339,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "35032"
     },
     "Techiman, Ghana": {
       "city": "Techiman",
       "lat": 7.584971,
       "lon": -1.936401,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "104212"
     },
     "Tegueste, Spain": {
       "city": "Tegueste",
       "lat": 28.5180023,
       "lon": -16.3357755,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "11513"
     },
     "Tehran, Iran": {
       "city": "Tehran",
       "lat": 35.6892523,
       "lon": 51.3896004,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "8000000"
     },
     "Tepeji del Río de Ocampo Municipality, Mexico": {
       "city": "Tepeji del Río de Ocampo Municipality",
       "lat": 19.8936827,
       "lon": -99.3487182,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Terrassa, Spain": {
       "city": "Terrassa",
       "lat": 41.5629623,
       "lon": 2.0100492,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "232676"
     },
     "Terrebonne, Canada": {
       "city": "Terrebonne",
       "lat": 45.6951527,
       "lon": -73.6350148,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "111575"
     },
     "Teshie, Ghana": {
       "city": "Teshie",
       "lat": 5.5822343,
       "lon": -0.1135104,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "170000"
     },
     "The Hague, Netherlands": {
       "city": "The Hague",
       "lat": 52.0799838,
       "lon": 4.3113461,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "562839"
     },
     "Thembisa, South Africa": {
       "city": "Thembisa",
       "lat": -26.0221753,
       "lon": 28.2014478,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "463109"
     },
     "Thiaroye, Senegal": {
       "city": "Thiaroye",
       "lat": 14.7473433,
       "lon": -17.3687784,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "179789"
     },
     "Thomazeau, Haiti": {
       "city": "Thomazeau",
       "lat": 18.6521176,
       "lon": -72.0938014,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "52017"
     },
     "Thonon-les-Bains, France": {
       "city": "Thonon-les-Bains",
       "lat": 46.3731303,
       "lon": 6.4779448,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "37027"
     },
     "Thénia, Algeria": {
       "city": "Thénia",
       "lat": 36.724986,
       "lon": 3.556935,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "21439"
     },
     "Tikrit, Iraq": {
       "city": "Tikrit",
       "lat": 34.615807,
       "lon": 43.678606,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "260000"
     },
     "Tilburg, Netherlands": {
       "city": "Tilburg",
       "lat": 51.5856185,
       "lon": 5.0660616,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "227707"
     },
     "Tlalnepantla de Baz Municipality, Mexico": {
       "city": "Tlalnepantla de Baz Municipality",
       "lat": 19.5464902,
       "lon": -99.1899352,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Tokyo, Japan": {
       "city": "Tokyo",
       "lat": 35.6768601,
       "lon": 139.7638947,
-      "addresstype": "province"
+      "addresstype": "province",
+      "population": "13613660"
     },
     "Tongyeong, South Korea": {
       "city": "Tongyeong",
       "lat": 34.854254,
       "lon": 128.433205,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "139719"
     },
     "Toronto, Canada": {
       "city": "Toronto",
       "lat": 43.6534817,
       "lon": -79.3839347,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2731571"
     },
     "Torquay, England": {
       "city": "Torquay",
       "lat": 50.4652392,
       "lon": -3.5211361,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "65388"
     },
     "Torreón, Mexico": {
       "city": "Torreón",
       "lat": 25.542698,
       "lon": -103.410512,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "690193"
     },
     "Toulouse, France": {
       "city": "Toulouse",
       "lat": 43.6044638,
       "lon": 1.4442433,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "504078"
     },
     "Toyokawa, Japan": {
       "city": "Toyokawa",
       "lat": 34.827644,
       "lon": 137.378586,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "182804"
     },
     "Trabzon, Turkey": {
       "city": "Trabzon",
       "lat": 41.0054605,
       "lon": 39.7301463,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "816684"
     },
     "Tranqueras, Uruguay": {
       "city": "Tranqueras",
       "lat": -31.1926186,
       "lon": -55.7629604,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "7743"
     },
     "Trappes, France": {
       "city": "Trappes",
       "lat": 48.7760957,
       "lon": 1.9988356,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "33717"
     },
     "Travnik, Bosnia and Herzegovina": {
       "city": "Travnik",
       "lat": 44.2259454,
       "lon": 17.6661738,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "15344"
     },
     "Tremblay-en-France, France": {
       "city": "Tremblay-en-France",
       "lat": 48.9802035,
       "lon": 2.5589558,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "37271"
     },
     "Tromsø Municipality, Norway": {
       "city": "Tromsø Municipality",
       "lat": 69.6516345,
       "lon": 18.9558585,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "79421"
     },
     "Trondheim, Norway": {
       "city": "Trondheim",
       "lat": 63.4304475,
       "lon": 10.3952118,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "216518"
     },
     "Tsuyama, Japan": {
       "city": "Tsuyama",
       "lat": 35.0691284,
       "lon": 134.0043355,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "99937"
     },
     "Tulln an der Donau, Austria": {
       "city": "Tulln an der Donau",
       "lat": 48.3311702,
       "lon": 16.05179,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "12357"
     },
     "Tumaco, Colombia": {
       "city": "Tumaco",
       "lat": 1.8062887,
       "lon": -78.7649814,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "105832"
     },
     "Tunis, Tunisia": {
       "city": "Tunis",
       "lat": 36.8002068,
       "lon": 10.1857757,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "728453"
     },
     "Tuxtla Gutiérrez, Mexico": {
       "city": "Tuxtla Gutiérrez",
       "lat": 16.753801,
       "lon": -93.115959,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "578830"
     },
     "Tweefontein, South Africa": {
       "city": "Tweefontein",
       "lat": -26.0366667,
       "lon": 29.1805556,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": null
     },
     "Tábor, Czech Republic": {
       "city": "Tábor",
       "lat": 49.4141533,
       "lon": 14.6587234,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "33468"
     },
     "Tønsberg, Norway": {
       "city": "Tønsberg",
       "lat": 59.3549795,
       "lon": 10.2820491,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "59830"
     },
     "Uddevalla, Sweden": {
       "city": "Uddevalla",
       "lat": 58.3490555,
       "lon": 11.9382855,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "31212"
     },
     "Uherské Hradiště, Czech Republic": {
       "city": "Uherské Hradiště",
       "lat": 49.0681018,
       "lon": 17.4663899,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "25289"
     },
     "Ulsan, South Korea": {
       "city": "Ulsan",
       "lat": 35.5391697,
       "lon": 129.3119136,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1129827"
     },
     "Umhausen, Austria": {
       "city": "Umhausen",
       "lat": 47.1379396,
       "lon": 10.9298872,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "3147"
     },
     "Utrecht, Netherlands": {
       "city": "Utrecht",
       "lat": 52.0907006,
       "lon": 5.1215634,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "367947"
     },
     "Valence, France": {
       "city": "Valence",
       "lat": 44.9332277,
       "lon": 4.8920811,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "64483"
     },
     "Valencia, Spain": {
       "city": "Valencia",
       "lat": 39.4697065,
       "lon": -0.3763353,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "841558"
     },
     "Vancouver, Canada": {
       "city": "Vancouver",
       "lat": 49.2608724,
       "lon": -123.113952,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "631486"
     },
     "Varel, Germany": {
       "city": "Varel",
       "lat": 53.395777,
       "lon": 8.1372149,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "23554"
     },
     "Vegachi, Colombia": {
       "city": "Vegachi",
       "lat": 6.7715902,
       "lon": -74.7973449,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "11810"
     },
     "Vernon, France": {
       "city": "Vernon",
       "lat": 49.0932008,
       "lon": 1.4857205,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "24543"
     },
     "Viana do Castelo, Portugal": {
       "city": "Viana do Castelo",
       "lat": 41.6935131,
       "lon": -8.828277,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "85784"
     },
     "Vic, Spain": {
       "city": "Vic",
       "lat": 41.9302021,
       "lon": 2.2545943,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "50405"
     },
     "Vienna, Austria": {
       "city": "Vienna",
       "lat": 48.2083537,
       "lon": 16.3725042,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "2042036"
     },
     "Vila Nova de Famalicão, Portugal": {
       "city": "Vila Nova de Famalicão",
       "lat": 41.4064621,
       "lon": -8.5187849,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "133574"
     },
     "Villa del Rosario, Paraguay": {
       "city": "Villa del Rosario",
       "lat": -24.4233326,
       "lon": -57.1129598,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "11623"
     },
     "Villa monica alritmo, Paraguay": {
       "city": "Villa monica alritmo",
@@ -4672,133 +5434,155 @@
       "city": "Villeneuve-Saint-Georges",
       "lat": 48.7305272,
       "lon": 2.44782,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "35492"
     },
     "Villeurbanne, France": {
       "city": "Villeurbanne",
       "lat": 45.7660581,
       "lon": 4.8796267,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "156928"
     },
     "Virrey del Pino, Argentina": {
       "city": "Virrey del Pino",
       "lat": -34.8588622,
       "lon": -58.6643444,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "180526"
     },
     "Viseu, Portugal": {
       "city": "Viseu",
       "lat": 40.6574713,
       "lon": -7.9138664,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "99561"
     },
     "Vitoria-Gasteiz, Spain": {
       "city": "Vitoria-Gasteiz",
       "lat": 42.8505845,
       "lon": -2.66145,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "260402"
     },
     "Vitry-sur-Seine, France": {
       "city": "Vitry-sur-Seine",
       "lat": 48.7876,
       "lon": 2.39164,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "96205"
     },
     "Voitsberg, Austria": {
       "city": "Voitsberg",
       "lat": 47.0504742,
       "lon": 15.1474771,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Volda Municipality, Norway": {
       "city": "Volda Municipality",
       "lat": 62.0803798,
       "lon": 6.2744108,
-      "addresstype": "municipality"
+      "addresstype": "municipality",
+      "population": "11131"
     },
     "Vysoké Mýto, Czech Republic": {
       "city": "Vysoké Mýto",
       "lat": 49.9534727,
       "lon": 16.1616455,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "12483"
     },
     "Västerås, Sweden": {
       "city": "Västerås",
       "lat": 59.6110992,
       "lon": 16.5463679,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "110877"
     },
     "Wa, Ghana": {
       "city": "Wa",
       "lat": 10.0623261,
       "lon": -2.5054273,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "105000"
     },
     "Waiblingen, Germany": {
       "city": "Waiblingen",
       "lat": 48.8325659,
       "lon": 9.3163822,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "55000"
     },
     "Walthamstow, England": {
       "city": "Walthamstow",
       "lat": 51.5844701,
       "lon": -0.0188186,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Wappingers Falls, United States": {
       "city": "Wappingers Falls",
       "lat": 41.597081,
       "lon": -73.9169663,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "6103"
     },
     "Waregem, Belgium": {
       "city": "Waregem",
       "lat": 50.8868222,
       "lon": 3.4323622,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "39488"
     },
     "Warrington, England": {
       "city": "Warrington",
       "lat": 53.3899497,
       "lon": -2.5943178,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "202200"
     },
     "Washington, England": {
       "city": "Washington",
       "lat": 54.898614,
       "lon": -1.528827,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Wayne, United States": {
       "city": "Wayne",
       "lat": 41.6264414,
       "lon": -75.3045103,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": "51198"
     },
     "Wellington, New Zealand": {
       "city": "Wellington",
       "lat": -41.2887953,
       "lon": 174.7772114,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "215900"
     },
     "Wels, Austria": {
       "city": "Wels",
       "lat": 48.1565472,
       "lon": 14.0243752,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "59853"
     },
     "Whitehaven, England": {
       "city": "Whitehaven",
       "lat": 54.5474199,
       "lon": -3.5885335,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "25032"
     },
     "Whitley Bay, England": {
       "city": "Whitley Bay",
       "lat": 55.0422091,
       "lon": -1.4454353,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Wieringen, Netherlands": {
       "city": "Wieringen",
@@ -4810,205 +5594,239 @@
       "city": "Willemstad",
       "lat": 12.1066695,
       "lon": -68.9351307,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "140000"
     },
     "Wormer, Netherlands": {
       "city": "Wormer",
       "lat": 52.4983267,
       "lon": 4.8123847,
-      "addresstype": "village"
+      "addresstype": "village",
+      "population": "12555"
     },
     "Yamoussoukro, Ivory Coast": {
       "city": "Yamoussoukro",
       "lat": 6.8200066,
       "lon": -5.2776034,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "340234"
     },
     "Yaoundé, Cameroon": {
       "city": "Yaoundé",
       "lat": 3.8689867,
       "lon": 11.5213344,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "1817524"
     },
     "Yazd, Iran": {
       "city": "Yazd",
       "lat": 31.9052223,
       "lon": 54.3701235,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "486152"
     },
     "Yokohama, Japan": {
       "city": "Yokohama",
       "lat": 35.4503381,
       "lon": 139.6343802,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "3777491"
     },
     "Yokosuka, Japan": {
       "city": "Yokosuka",
       "lat": 35.2814779,
       "lon": 139.6719597,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "388078"
     },
     "Yopougon, Ivory Coast": {
       "city": "Yopougon",
       "lat": 5.335194,
       "lon": -4.075756,
-      "addresstype": "suburb"
+      "addresstype": "suburb",
+      "population": "1375020"
     },
     "Yıldırım district, Turkey": {
       "city": "Yıldırım district",
       "lat": 40.1866362,
       "lon": 29.128191,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "657176"
     },
     "Zaandam, Netherlands": {
       "city": "Zaandam",
       "lat": 52.4424926,
       "lon": 4.8298607,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "76804"
     },
     "Zabok, Croatia": {
       "city": "Zabok",
       "lat": 46.025686,
       "lon": 15.9036337,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "3408"
     },
     "Zadar, Croatia": {
       "city": "Zadar",
       "lat": 44.1168594,
       "lon": 15.2353257,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "67309"
     },
     "Zagazig, Egypt": {
       "city": "Zagazig",
       "lat": 30.5853431,
       "lon": 31.5035127,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "285097"
     },
     "Zagreb, Croatia": {
       "city": "Zagreb",
       "lat": 45.8130967,
       "lon": 15.9772795,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "767131"
     },
     "Zanjan, Iran": {
       "city": "Zanjan",
       "lat": 36.6700041,
       "lon": 48.4795399,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "386851"
     },
     "Zapotlán el Grande Municipality, Mexico": {
       "city": "Zapotlán el Grande Municipality",
       "lat": 19.6973465,
       "lon": -103.510648,
-      "addresstype": "county"
+      "addresstype": "county",
+      "population": null
     },
     "Zarafshon, Uzbekistan": {
       "city": "Zarafshon",
       "lat": 41.5719274,
       "lon": 64.1961296,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "80000"
     },
     "Zarqa, Jordan": {
       "city": "Zarqa",
       "lat": 32.0668425,
       "lon": 36.0885771,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "395227"
     },
     "Zell am See, Austria": {
       "city": "Zell am See",
       "lat": 47.3239636,
       "lon": 12.7963165,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "10131"
     },
     "Zenica, Bosnia and Herzegovina": {
       "city": "Zenica",
       "lat": 44.199828,
       "lon": 17.9093012,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "70533"
     },
     "Ziguinchor, Senegal": {
       "city": "Ziguinchor",
       "lat": 12.5634929,
       "lon": -16.2724609,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "230000"
     },
     "Zurich, Switzerland": {
       "city": "Zurich",
       "lat": 47.3744489,
       "lon": 8.5410422,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "443037"
     },
     "Zutphen, Netherlands": {
       "city": "Zutphen",
       "lat": 52.1396933,
       "lon": 6.194772,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "40624"
     },
     "Zwijndrecht, Netherlands": {
       "city": "Zwijndrecht",
       "lat": 51.8162227,
       "lon": 4.6405166,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "44737"
     },
     "Zwolle, Netherlands": {
       "city": "Zwolle",
       "lat": 52.5089759,
       "lon": 6.0943765,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "133810"
     },
     "Çankaya, Turkey": {
       "city": "Çankaya",
       "lat": 39.8853321,
       "lon": 32.8554966,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "937546"
     },
     "Épinay-sous-Sénart, France": {
       "city": "Épinay-sous-Sénart",
       "lat": 48.6953018,
       "lon": 2.5159134,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "11869"
     },
     "Évreux, France": {
       "city": "Évreux",
       "lat": 49.0268903,
       "lon": 1.1510164,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "47289"
     },
     "Örnsköldsvik, Sweden": {
       "city": "Örnsköldsvik",
       "lat": 63.2888613,
       "lon": 18.7160209,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "32953"
     },
     "Čapljina, Bosnia and Herzegovina": {
       "city": "Čapljina",
       "lat": 43.1133536,
       "lon": 17.705039,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "5774"
     },
     "İkizdere, Turkey": {
       "city": "İkizdere",
       "lat": 40.7779924,
       "lon": 40.5595743,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "6409"
     },
     "İzmir, Turkey": {
       "city": "İzmir",
       "lat": 38.4192537,
       "lon": 27.128469,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "4493242"
     },
     "İzmit, Turkey": {
       "city": "İzmit",
       "lat": 40.7721138,
       "lon": 29.9505623,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": "376056"
     },
     "İznik, Turkey": {
       "city": "İznik",
       "lat": 40.4303445,
       "lon": 29.7223732,
-      "addresstype": "town"
+      "addresstype": "town",
+      "population": null
     },
     "Ķürgontepa, Uzbekistan": {
       "city": "Ķürgontepa",
@@ -5020,7 +5838,8 @@
       "city": "Šibenik",
       "lat": 43.7340647,
       "lon": 15.8944767,
-      "addresstype": "city"
+      "addresstype": "city",
+      "population": "42599"
     }
   }
 }

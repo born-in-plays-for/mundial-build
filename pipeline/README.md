@@ -96,6 +96,7 @@ erDiagram
         INTEGER country FK "same as the referencing person(s)' birth"
         REAL    lat "NULL = known city Nominatim couldn't geocode"
         REAL    lon "NULL iff lat is NULL"
+        TEXT    population "Nominatim's OSM extratag, verbatim; NULL = no tag"
     }
     af_person {
         INTEGER af_id PK "api-football person id (external)"
@@ -395,9 +396,36 @@ couldn't geocode still gets a `city` row (so it isn't re-geocoded as if
 never seen), just with `lat`/`lon` left NULL rather than a bogus fallback
 location. `view_birthplace` joins person → city and selects only the rows
 with a resolved `lat`/`lon`, and `export.py`'s `build_birthplace()` turns
-that into `data/v2/birthplace.json`: `{pid: {city, lat, lon}}`, one entry per
-successfully geocoded person — best-effort, not every person is expected to
-be present, matching the "all players" table's own filtered/partial nature.
+that into `data/v2/birthplace.json`: `{pid: {city, lat, lon, population?}}`,
+one entry per successfully geocoded person — best-effort, not every person
+is expected to be present, matching the "all players" table's own
+filtered/partial nature.
+
+**Population** (`city.population`) is Nominatim's own OSM `population`
+extratag for the resolved place, read from the exact same query that
+resolved `lat`/`lon` — requested via `extratags=1`, not a second lookup
+against a different dataset. This was a deliberate call: `population_points.csv`
+(GeoNames' `cities1000` dump, already in the pipeline for `kde_risk.py`'s
+KDE weighting) also carries population, and cross-referencing it by nearest
+coordinate was the first idea — but that's a NEW fuzzy-identity problem
+(distance cutoffs, risk of snapping to the wrong nearby place) layered on
+top of a birth city this script has already resolved once. Reading the tag
+straight off the same Nominatim result sidesteps that entirely, at the cost
+of coverage: OSM population tagging is inconsistent, so most small
+towns/villages simply won't have one. `None`/absent is the normal case here,
+not a bug. `geocode_overrides.json` entries never carry a population — they
+have no live Nominatim result to read a tag from.
+
+Stored and shipped as **TEXT, not a number** — OSM's own tag isn't reliably
+numeric (a malformed value like `"2.618"` has been seen live) and nothing
+in this pipeline or the frontend does arithmetic on it, so it's carried
+through exactly as OSM has it rather than coerced/validated.
+
+Cache entries written before this field existed lack a `population` key
+entirely; `python3 pipeline/geocode_birthplaces.py --add-population`
+backfills it for already-resolved, non-override entries without
+re-resolving `lat`/`lon`, at the same 1 req/s Nominatim rate limit as every
+other pass here.
 
 Squads don't change mid-tournament, so this doesn't need re-running on the
 fixtures cadence the way discipline/status/live do — only after a genuine

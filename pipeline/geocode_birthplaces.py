@@ -37,10 +37,22 @@ only when both the direct query and the FALLBACK_PATTERNS retry come back
 empty; a later Nominatim/logic improvement that resolves one of these
 directly always wins over the override.
 
+Each resolved result also carries `population`, when Nominatim's matched
+place happens to carry an OSM `population` tag (requested via
+`extratags=1`) — deliberately NOT a second lookup against a different
+dataset (e.g. GeoNames' cities1000 dump, already used elsewhere for KDE
+population weighting): joining that in by nearest coordinate would need its
+own new fuzzy-matching logic, on top of the city-identity resolution this
+script already does. `population` is `None` when the tag is simply absent
+(most small places) or for a `geocode_overrides.json` override (which never
+has a live Nominatim result to read it from) — a coverage gap, not a
+failure, same as an unresolved geocode.
+
 Usage:
     python3 pipeline/geocode_birthplaces.py
     python3 pipeline/geocode_birthplaces.py --retry-misses
     python3 pipeline/geocode_birthplaces.py --refresh-cache
+    python3 pipeline/geocode_birthplaces.py --add-population
 """
 import argparse
 import json
@@ -176,7 +188,7 @@ def _query_nominatim(query):
     ranked a Prague railway station over any of the five real places named
     Skalka)."""
     url = (f"{NOMINATIM_URL}?{urlencode({'q': query, 'format': 'json', 'limit': RESULT_LIMIT})}"
-           f"&featureType=settlement")
+           f"&featureType=settlement&extratags=1")
     req = Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urlopen(req, timeout=15) as resp:
@@ -196,27 +208,51 @@ def _query_nominatim(query):
     return top
 
 
-def geocode(city, country, overrides):
-    """-> {"city", "lat", "lon"} or None if nothing resolves it, even after
-    retrying with an admin-qualifier stripped from `city` (see
-    strip_admin_qualifier) and checking geocode_overrides.json. `city` in the
-    result is always the ORIGINAL scraped name, even when a stripped
-    fallback query is what resolved it — the fallback only changes what's
-    sent to Nominatim, not the label a client displays."""
+def _resolve(city, country):
+    """-> raw Nominatim result dict for (city, country), retrying with an
+    admin-qualifier stripped from `city` (see strip_admin_qualifier) if the
+    direct query finds nothing, or None if neither does. Shared by geocode()
+    and --add-population's backfill pass so both use the exact same
+    resolution the cached lat/lon already came from."""
     r = _query_nominatim(f"{city}, {country}")
     if r is None:
         plain = strip_admin_qualifier(city)
         if plain is not None:
             r = _query_nominatim(f"{plain}, {country}")
+    return r
+
+
+def _population_of(r):
+    """-> population from a raw Nominatim result's extratags, as the exact
+    raw string OSM carries it (not coerced to a number — no downstream
+    consumer does arithmetic on it, and OSM's own tag isn't reliably
+    numeric anyway, e.g. a value like "2.618" seen live), or None if the
+    tag is absent (most small places don't carry one). Nominatim sometimes
+    returns "extratags": null rather than omitting the key entirely, so
+    `.get("extratags", {})` alone isn't enough — that default only kicks in
+    when the key is missing, not when it's present but null."""
+    pop = (r.get("extratags") or {}).get("population") if r else None
+    return pop or None
+
+
+def geocode(city, country, overrides):
+    """-> {"city", "lat", "lon", "population"} or None if nothing resolves
+    it, even after retrying with an admin-qualifier stripped from `city`
+    and checking geocode_overrides.json. `city` in the result is always the
+    ORIGINAL scraped name, even when a stripped fallback query is what
+    resolved it — the fallback only changes what's sent to Nominatim, not
+    the label a client displays."""
+    r = _resolve(city, country)
     if r is not None:
         # addresstype is diagnostic only (not consumed by load.py) — kept so
         # a future audit can spot-check without re-querying Nominatim.
         return {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
-                "addresstype": r.get("addresstype")}
+                "addresstype": r.get("addresstype"), "population": _population_of(r)}
     override = overrides.get(f"{city}, {country}")
     if override is not None:
+        # Never has a live Nominatim result to read a population tag from.
         return {"city": city, "lat": override["lat"], "lon": override["lon"],
-                "addresstype": "override"}
+                "addresstype": "override", "population": None}
     return None
 
 
@@ -227,6 +263,10 @@ def main():
     parser.add_argument("--retry-misses", action="store_true",
                         help="re-geocode only pairs cached as unresolved (null); leaves "
                              "already-resolved pairs untouched, unlike --refresh-cache")
+    parser.add_argument("--add-population", action="store_true",
+                        help="backfill 'population' onto already-cached, already-resolved "
+                             "entries that predate this field, without re-resolving lat/lon; "
+                             "skips override entries (never have a live Nominatim result)")
     args = parser.parse_args()
 
     with open(MAP_DATA, encoding="utf-8") as f:
@@ -240,6 +280,36 @@ def main():
             cache = json.load(f).get("cities", {})
     if args.retry_misses:
         cache = {k: v for k, v in cache.items() if v is not None}
+
+    if args.add_population:
+        todo_pop = [(city, country) for city, country in pairs
+                    if (entry := cache.get(f"{city}, {country}")) is not None
+                    and entry.get("addresstype") != "override"
+                    and "population" not in entry]
+        print(f"{len(todo_pop)} cached cities missing population data")
+        checked = 0
+        for i, (city, country) in enumerate(todo_pop, 1):
+            query = f"{city}, {country}"
+            population = _population_of(_resolve(city, country))
+            cache[query]["population"] = population
+            checked += 1
+            if population is not None:
+                print(f"  {query}: population {population}")
+            if i % 25 == 0 or i == len(todo_pop):
+                print(f"  {i}/{len(todo_pop)} checked")
+            if i < len(todo_pop):
+                time.sleep(RATE_LIMIT_S)
+        with open(CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump({
+                "source":  "nominatim.openstreetmap.org",
+                "updated": time.strftime("%Y-%m-%d"),
+                "cities":  dict(sorted(cache.items())),
+            }, f, ensure_ascii=False, indent=2)
+        found = sum(1 for city, country in todo_pop
+                    if cache[f"{city}, {country}"]["population"] is not None)
+        print(f"Wrote {CACHE_PATH}")
+        print(f"  {checked} checked, {found} had a population tag")
+        return
 
     todo = [(city, country) for city, country in pairs
             if f"{city}, {country}" not in cache]

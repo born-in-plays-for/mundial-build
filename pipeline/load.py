@@ -327,8 +327,9 @@ def main():
         if key not in city_id_of:
             lat = geo["lat"] if geo else None
             lon = geo["lon"] if geo else None
-            cur = db.execute("INSERT INTO city (name, country, lat, lon) VALUES (?,?,?,?)",
-                             (name, country_id, lat, lon))
+            population = geo.get("population") if geo else None
+            cur = db.execute("INSERT INTO city (name, country, lat, lon, population) VALUES (?,?,?,?,?)",
+                             (name, country_id, lat, lon, population))
             city_id_of[key] = cur.lastrowid
         return city_id_of[key]
 

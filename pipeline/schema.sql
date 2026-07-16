@@ -134,12 +134,23 @@ CREATE TABLE team_discipline (
 -- it every run. UNIQUE (name, country): a city name alone isn't a real
 -- identity key (many countries have a "Springfield"), but combined with the
 -- birth country resolved for the person who has it, it is.
+--
+-- population is Nominatim's own OSM `population` extratag for the resolved
+-- place, when the place happens to carry one — NOT a separate join against
+-- a different dataset (e.g. GeoNames, used elsewhere for KDE population
+-- weighting), which would need its own coordinate-matching logic on top of
+-- the city-identity resolution already done here. NULL is the normal case
+-- for most small places, not a failure. TEXT, not INTEGER: OSM's own tag
+-- isn't reliably numeric (a malformed value like "2.618" has been seen
+-- live) and nothing here does arithmetic on it, so it's carried through
+-- exactly as OSM has it rather than coerced.
 CREATE TABLE city (
-    id      INTEGER PRIMARY KEY,
-    name    TEXT    NOT NULL,
-    country INTEGER NOT NULL REFERENCES country(id),
-    lat     REAL,
-    lon     REAL,
+    id         INTEGER PRIMARY KEY,
+    name       TEXT    NOT NULL,
+    country    INTEGER NOT NULL REFERENCES country(id),
+    lat        REAL,
+    lon        REAL,
+    population TEXT,
     UNIQUE (name, country),
     CHECK ((lat IS NULL) = (lon IS NULL))
 );
@@ -284,7 +295,8 @@ SELECT lang, pid, title FROM wiki_title;
 -- with a successfully geocoded city; a known-but-ungeocodable or altogether
 -- missing city is simply absent here rather than shipping a null lat/lon.
 CREATE VIEW view_birthplace AS
-SELECT p.pid, c.name AS birth_city, c.lat AS birth_lat, c.lon AS birth_lon
+SELECT p.pid, c.name AS birth_city, c.lat AS birth_lat, c.lon AS birth_lon,
+       c.population AS birth_population
 FROM person p
 JOIN city c ON c.id = p.birth_city
 WHERE c.lat IS NOT NULL;

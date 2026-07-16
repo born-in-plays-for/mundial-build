@@ -57,18 +57,25 @@ a bug). Written straight to the submodule like `fixtures.json`/
 `elo_rank.json`, no `v2/` relational routing. **Not wired into
 `update_fixtures.sh`** — only needs re-running after a squad re-scrape.
 
-`v2/birthplace.json` (`{pid: {city, lat, lon}}`) is a geocoded birth city per
-player/coach, for the frontend's "all players" table to plot birthplaces on
-the map — `pipeline/wc2026_birthplaces.py`/`wc2026_coaches.py` already scrape
-a `birth_city` string from Wikipedia/Wikidata (it just never used to leave
-the CSVs); `pipeline/geocode_birthplaces.py` resolves that string to lat/lon
-via OpenStreetMap's Nominatim, caching results in the committed
-`pipeline/geocode_cache.json` (rate-limited to 1 req/s, so not cheap to
-redo). Best-effort — a person with no scraped city, or a city Nominatim
-couldn't resolve, is simply absent from the file rather than carrying a null
-lat/lon. **Not wired into any auto-refresh script** — squads don't change
-mid-tournament, so re-run `pipeline/geocode_birthplaces.py` only after a
-squad re-scrape (`wc2026_birthplaces.py`/`wc2026_coaches.py` + `build_json.py`).
+`v2/birthplace.json` (`{pid: {city, lat, lon, population?}}`) is a geocoded
+birth city per player/coach, for the frontend's "all players" table to plot
+birthplaces on the map — `pipeline/wc2026_birthplaces.py`/`wc2026_coaches.py`
+already scrape a `birth_city` string from Wikipedia/Wikidata (it just never
+used to leave the CSVs); `pipeline/geocode_birthplaces.py` resolves that
+string to lat/lon via OpenStreetMap's Nominatim, caching results in the
+committed `pipeline/geocode_cache.json` (rate-limited to 1 req/s, so not
+cheap to redo). Best-effort — a person with no scraped city, or a city
+Nominatim couldn't resolve, is simply absent from the file rather than
+carrying a null lat/lon. `population`, when present, is a STRING — Nominatim's
+own OSM `population` extratag for that same resolved place, verbatim, not
+coerced to a number (the tag isn't reliably numeric and nothing consumes it
+arithmetically) — omitted, not null, for the majority of places that don't
+carry the tag; see `pipeline/README.md`'s "Birthplace geocoding" section
+for why coordinate-matching against GeoNames was
+deliberately rejected in favor of this. **Not wired into any auto-refresh
+script** — squads don't change mid-tournament, so re-run
+`pipeline/geocode_birthplaces.py` only after a squad re-scrape
+(`wc2026_birthplaces.py`/`wc2026_coaches.py` + `build_json.py`).
 
 `countries.json` is a pipeline build input — it lives in `pipeline/`, not in the submodule.
 GDP/HDI extras live in `extras/` and are fetched only by `pages/wc2026_correlation.html`.
