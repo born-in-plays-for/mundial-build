@@ -334,6 +334,25 @@ def main():
     # schema change fixes; see schema.sql's city comment).
     city_id_of = {}
 
+    # (canonical name.lower(), birth country iso2) -> (lat, lon), from every
+    # person who already has a Wikidata-sourced coordinate — built BEFORE
+    # the main loop so order in `persons` doesn't matter. Consulted below by
+    # anyone who'd otherwise fall through to Nominatim: without this, e.g.
+    # 10 of 13 Amman-born players resolve directly via Wikidata (one shared
+    # point) while the remaining 3 hit Nominatim's OWN, independently
+    # resolved "Amman" point — same real city, ~1km apart, but two visibly
+    # distinct pins at city-level map zoom. Safe to keep only the first
+    # coordinate seen per key: wc2026_birthplaces.py's own sibling-adoption
+    # pass already guarantees every Wikidata-sourced person sharing a
+    # canonical name+country has the IDENTICAL coordinate by this point, so
+    # there's no ambiguity to arbitrate here.
+    wikidata_canonical_coords = {}
+    for (_name, _role, _nation, _birth, _caps, _title, _surname, _shirt_number, _birth_city,
+         _position, _birth_lat, _birth_lon) in persons:
+        if _birth_city and _birth_lat is not None and _birth_lon is not None:
+            _canonical = strip_admin_qualifier(_birth_city) or _birth_city
+            wikidata_canonical_coords.setdefault((_canonical.strip().lower(), _birth), (_birth_lat, _birth_lon))
+
     def get_or_create_city(name, country_id, lat, lon, population, actual_name, source):
         key = (name, country_id, lat, lon)
         if key not in city_id_of:
@@ -371,20 +390,31 @@ def main():
                 city_id = get_or_create_city(birth_city, cid(birth), birth_lat, birth_lon,
                                               None, actual_name, "wikidata")
             else:
-                # geocode_cache.json is keyed by the CANONICAL (stripped)
-                # form too — see geocode_birthplaces.py's
-                # collect_city_country_pairs — so every person needing
-                # Nominatim under the same parent city name converges on
-                # the same cache entry/coordinate, same reasoning as the
-                # Wikidata branch above.
                 canonical = actual_name or birth_city
-                geo = geocode.get(f"{canonical}, {reg.display_name(birth)}")
-                lat = geo["lat"] if geo else None
-                lon = geo["lon"] if geo else None
-                population = geo.get("population") if geo else None
-                source = None
-                if geo:
-                    source = "override" if geo.get("addresstype") == "override" else "nominatim"
+                sibling = wikidata_canonical_coords.get((canonical.strip().lower(), birth))
+                if sibling is not None:
+                    # A DIFFERENT person already resolved this exact
+                    # canonical city (same name, same birth country) via
+                    # Wikidata — adopt it rather than let Nominatim resolve
+                    # its own, independently-computed point for what's the
+                    # same real city (small but visible gaps otherwise —
+                    # Amman was ~1km, Wikidata's vs Nominatim's own center).
+                    lat, lon = sibling
+                    population, source = None, "wikidata"
+                else:
+                    # geocode_cache.json is keyed by the CANONICAL (stripped)
+                    # form too — see geocode_birthplaces.py's
+                    # collect_city_country_pairs — so every person needing
+                    # Nominatim under the same parent city name converges on
+                    # the same cache entry/coordinate, same reasoning as the
+                    # Wikidata branch above.
+                    geo = geocode.get(f"{canonical}, {reg.display_name(birth)}")
+                    lat = geo["lat"] if geo else None
+                    lon = geo["lon"] if geo else None
+                    population = geo.get("population") if geo else None
+                    source = None
+                    if geo:
+                        source = "override" if geo.get("addresstype") == "override" else "nominatim"
                 city_id = get_or_create_city(birth_city, cid(birth), lat, lon,
                                               population, actual_name, source)
         db.execute("INSERT INTO person VALUES (?,?,?,?,?,?,?,?,?,?,?)",
