@@ -519,6 +519,24 @@ numeric (a malformed value like `"2.618"` has been seen live) and nothing
 in this pipeline or the frontend does arithmetic on it, so it's carried
 through exactly as OSM has it rather than coerced/validated.
 
+**A Wikidata-sourced coordinate carries population too** — the SAME place
+entity's `P1082` statement, fetched in the same SPARQL query as `P625`
+(`get_birthplaces()`), threaded through `enrich_birth_coordinates()`'s
+direct-match AND sibling-adoption paths exactly like `birth_lat`/`birth_lon`
+themselves. This wasn't there from the start: the Wikidata-coordinate
+feature shipped (and later the cross-source sibling-adoption fix) before
+P1082 was wired in, so every person switched off Nominatim onto a Wikidata
+coordinate briefly, silently lost `population` — coverage dropped from
+~89% to ~3% of geocoded entries across those two commits, since only
+Nominatim had a population source at all at the time. Fixed by giving
+Wikidata its own population source (this section), not by trying to
+preserve a stale Nominatim value across a coordinate-source change — same
+"text field, not coerced, best-effort" treatment as the OSM extratag,
+including tolerating a place entity with more than one `P1082` statement
+(a population history across census years) by just taking whichever one
+Wikidata's query engine binds first, not a scientifically "most recent"
+value.
+
 Cache entries written before this field existed lack a `population` key
 entirely; `python3 pipeline/geocode_birthplaces.py --add-population`
 backfills it for already-resolved, non-override entries without

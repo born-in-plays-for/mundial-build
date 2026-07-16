@@ -243,6 +243,7 @@ def parse_wikipedia(soup: BeautifulSoup) -> list:
                 'birth_country': country,
                 'birth_lat':     '',
                 'birth_lon':     '',
+                'birth_population': '',
                 'caps':          get(idx_caps),
                 'club':          get(idx_club),
             })
@@ -292,6 +293,7 @@ def parse_wikipedia_pandas(soup: BeautifulSoup) -> list:
                 'birth_country': country,
                 'birth_lat':     '',
                 'birth_lon':     '',
+                'birth_population': '',
                 'caps':          str(row.get(caps_col, '')) if caps_col else '',
                 'club':          str(row.get(club_col, '')) if club_col else '',
             })
@@ -366,13 +368,22 @@ def _parse_wkt_point(wkt: str):
 
 def get_birthplaces(qids: list) -> dict:
     """Interroge Wikidata SPARQL pour P19 (lieu de naissance) par lots de 200.
-    -> {qid: (city_label, country_label, lat, lon)}. lat/lon (from the birth
-    city entity's own P625 coordinate, when it has one) are the entity's
-    real coordinates — disambiguated by construction, since P19 points at
-    one specific place entity, never a bare name (see this module's
-    enrich_birth_coordinates, which is what actually uses them; a P19 claim
-    without a P625 coordinate still gets its city_label/country_label as
-    before, just no lat/lon)."""
+    -> {qid: (city_label, country_label, lat, lon, population)}. lat/lon
+    (from the birth city entity's own P625 coordinate, when it has one) are
+    the entity's real coordinates — disambiguated by construction, since
+    P19 points at one specific place entity, never a bare name (see this
+    module's enrich_birth_coordinates, which is what actually uses them; a
+    P19 claim without a P625 coordinate still gets its
+    city_label/country_label as before, just no lat/lon). population is the
+    SAME entity's P1082 statement (a plain numeric-string quantity, not
+    coerced further), when it has one — same "coverage gap, not failure"
+    treatment as lat/lon: most small places don't have a P1082 statement
+    either. A place with more than one P1082 statement (a population
+    history across census years) picks whichever one Wikidata's query
+    engine happens to bind first — best-effort, not scientifically exact,
+    same tolerance already accepted for OSM's own population extratag
+    elsewhere in this pipeline; not worth a GROUP BY/SAMPLE to pin down
+    "most recent" for a field that's already documented as approximate."""
     mapping = {}
     batch_size = 200
     total = len(qids)
@@ -380,12 +391,13 @@ def get_birthplaces(qids: list) -> dict:
         batch = qids[i:i+batch_size]
         values = " ".join(f"wd:{q}" for q in batch)
         query = f"""
-SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord WHERE {{
+SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord ?population WHERE {{
   VALUES ?item {{ {values} }}
   OPTIONAL {{
     ?item wdt:P19 ?birthCity.
     OPTIONAL {{ ?birthCity wdt:P17 ?birthCountry. }}
     OPTIONAL {{ ?birthCity wdt:P625 ?coord. }}
+    OPTIONAL {{ ?birthCity wdt:P1082 ?population. }}
   }}
   SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
 }}
@@ -407,7 +419,8 @@ SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord WHERE {{
                 if country.startswith("Q") and country[1:].isdigit():
                     country = ""
                 lat, lon = _parse_wkt_point(row.get("coord", {}).get("value"))
-                mapping[qid] = (city, country, lat, lon)
+                population = row.get("population", {}).get("value")
+                mapping[qid] = (city, country, lat, lon, population)
         except Exception as e:
             print(f"   ⚠ Wikidata SPARQL (lot {i//batch_size + 1}) : {e}")
         done = min(i + batch_size, total)
@@ -431,7 +444,7 @@ def enrich_with_wikidata(players: list, title_to_qid: dict, qid_to_birth: dict) 
         qid = title_to_qid.get(p['wiki_title'])
         if not qid:
             continue
-        city, country, _lat, _lon = qid_to_birth.get(qid, ('', '', None, None))
+        city, country, _lat, _lon, _pop = qid_to_birth.get(qid, ('', '', None, None, None))
         # Wikidata's P19 (place of birth) sometimes points directly at a
         # country entity rather than a city (no specific city recorded) —
         # city == country in that case. Still record the country: it's true
@@ -449,11 +462,15 @@ def enrich_with_wikidata(players: list, title_to_qid: dict, qid_to_birth: dict) 
 def enrich_birth_coordinates(persons: list, title_to_qid: dict, qid_to_birth: dict,
                               name_key: str = 'player') -> None:
     """Attache birth_lat/birth_lon (coordonnées P625 de l'entité-lieu P19
-    elle-même — voir get_birthplaces) à chaque personne (joueur ou coach —
-    name_key donne le champ à citer dans les messages, 'player' ou
-    'coach'), en visant une coordonnée IDENTIQUE pour tout le monde
-    affiché sous le même nom de ville — pas seulement individuellement
-    correcte pour chaque personne.
+    elle-même — voir get_birthplaces) et birth_population (P1082 de cette
+    MÊME entité, quand elle en a une — remplace le trou de couverture
+    qu'un basculement Nominatim -> Wikidata ouvrirait sinon, puisque
+    l'extratag OSM de population n'existe que côté Nominatim) à chaque
+    personne (joueur ou coach — name_key donne le champ à citer dans les
+    messages, 'player' ou 'coach'), en visant une coordonnée (et, quand
+    disponible, une population) IDENTIQUE pour tout le monde affiché sous
+    le même nom de ville — pas seulement individuellement correcte pour
+    chaque personne.
 
     Deux passes :
 
@@ -489,7 +506,7 @@ def enrich_birth_coordinates(persons: list, title_to_qid: dict, qid_to_birth: di
     brut ni au canonique — ex: P19 seulement à granularité pays) est
     signalée et laissée sans coordonnée plutôt que devinée, même logique
     qu'avant."""
-    canonical_coords = {}   # (canonical.lower(), birth_country) -> (lat, lon)
+    canonical_coords = {}   # (canonical.lower(), birth_country) -> (lat, lon, population)
     needs_canonical = []    # personnes dont la revendication pointe vers une entité infra-urbaine précise
     attached = 0
     for p in persons:
@@ -498,13 +515,14 @@ def enrich_birth_coordinates(persons: list, title_to_qid: dict, qid_to_birth: di
         qid = title_to_qid.get(p['wiki_title'])
         if not qid:
             continue
-        city, _country, lat, lon = qid_to_birth.get(qid, ('', '', None, None))
+        city, _country, lat, lon, population = qid_to_birth.get(qid, ('', '', None, None, None))
         if lat is None or lon is None or not city:
             continue
         canonical = strip_admin_qualifier(p['birth_city']) or p['birth_city']
         if city.strip().lower() == canonical.strip().lower():
             p['birth_lat'], p['birth_lon'] = lat, lon
-            canonical_coords.setdefault((canonical.strip().lower(), p['birth_country']), (lat, lon))
+            p['birth_population'] = population or ''
+            canonical_coords.setdefault((canonical.strip().lower(), p['birth_country']), (lat, lon, population))
             attached += 1
         elif strip_admin_qualifier(p['birth_city']) is not None:
             needs_canonical.append(p)
@@ -518,7 +536,9 @@ def enrich_birth_coordinates(persons: list, title_to_qid: dict, qid_to_birth: di
         canonical = strip_admin_qualifier(p['birth_city'])
         key = (canonical.strip().lower(), p['birth_country'])
         if key in canonical_coords:
-            p['birth_lat'], p['birth_lon'] = canonical_coords[key]
+            lat, lon, population = canonical_coords[key]
+            p['birth_lat'], p['birth_lon'] = lat, lon
+            p['birth_population'] = population or ''
             from_sibling += 1
         else:
             still_missing.append(p)

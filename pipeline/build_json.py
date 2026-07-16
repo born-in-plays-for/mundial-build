@@ -89,6 +89,11 @@ with open(CSV_PATH, encoding="utf-8-sig") as f:
             # (geocode_birthplaces.py's free-text Nominatim search can't).
             "birth_lat":     float(row["birth_lat"]) if row.get("birth_lat") else None,
             "birth_lon":     float(row["birth_lon"]) if row.get("birth_lon") else None,
+            # Wikidata P1082 of the SAME entity, when present — see
+            # enrich_birth_coordinates. Kept as text (not coerced to a
+            # number), same reasoning as the Nominatim-sourced population
+            # field it's the Wikidata-side counterpart of.
+            "birth_population": row.get("birth_population") or None,
             "caps":          int(row["caps"]) if row["caps"] else 0,
         })
 
@@ -106,6 +111,7 @@ if COACHES_PATH.exists():
                 "birth_country": row["birth_country"],
                 "birth_lat":     float(row["birth_lat"]) if row.get("birth_lat") else None,
                 "birth_lon":     float(row["birth_lon"]) if row.get("birth_lon") else None,
+                "birth_population": row.get("birth_population") or None,
                 "caps":          0,
                 "role":          "coach",
             })
@@ -147,10 +153,11 @@ for p in players:
         # granularity), which "matched" that same broken "Scotland" label
         # and picked up P625's centroid-ish (57.0, -5.0) — nowhere near the
         # real Glasgow (55.86, -4.25) this override corrects him to. Clear
-        # both so geocode_birthplaces.py resolves fresh against the
-        # corrected text instead of silently keeping a coordinate that was
+        # both (and birth_population, same staleness risk) so
+        # geocode_birthplaces.py resolves fresh against the corrected text
+        # instead of silently keeping a coordinate/population that was
         # only ever valid for the string being discarded right here.
-        p["birth_lat"] = p["birth_lon"] = None
+        p["birth_lat"] = p["birth_lon"] = p["birth_population"] = None
     elif country == "United Kingdom":
         resolved = reg.resolve_uk_home_nation(city)
         if resolved:
@@ -227,6 +234,8 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
         if p.get("birth_lat") is not None and p.get("birth_lon") is not None:
             obj["birthLat"] = p["birth_lat"]
             obj["birthLon"] = p["birth_lon"]
+            if p.get("birth_population"):
+                obj["birthPopulation"] = p["birth_population"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])
@@ -267,6 +276,8 @@ for p in players:
         if p.get("birth_lat") is not None and p.get("birth_lon") is not None:
             obj["birthLat"] = p["birth_lat"]
             obj["birthLon"] = p["birth_lon"]
+            if p.get("birth_population"):
+                obj["birthPopulation"] = p["birth_population"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])

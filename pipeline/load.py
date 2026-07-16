@@ -201,12 +201,14 @@ def collect_persons(map_data):
     """One tuple per person, in map_data file order (this order feeds pid
     assignment for new persons, and export re-derives the file's sort
     orders stably from it). surname/shirt_number/birth_city/position/
-    birth_lat/birth_lon are appended last so the existing (name, role,
-    nation, birth, caps, title) positions — the ones assign_pids() and the
-    wiki-title pass key off — stay unchanged. birth_lat/birth_lon (from
-    build_json.py, ultimately Wikidata's P19-target P625 coordinate — see
-    wc2026_birthplaces.py's enrich_birth_coordinates) are None unless that
-    coordinate was resolved and agreed with birthCity."""
+    birth_lat/birth_lon/birth_population are appended last so the existing
+    (name, role, nation, birth, caps, title) positions — the ones
+    assign_pids() and the wiki-title pass key off — stay unchanged.
+    birth_lat/birth_lon/birth_population (from build_json.py, ultimately
+    Wikidata's P19-target P625/P1082 — see wc2026_birthplaces.py's
+    enrich_birth_coordinates) are None unless that coordinate was resolved
+    and agreed with birthCity (birth_population may still be None even
+    then — not every place entity has a P1082 statement)."""
     persons = []
     for rec in map_data["data"]:
         birth_iso2 = reg.resolve_iso2(rec["country"])
@@ -216,7 +218,7 @@ def collect_persons(map_data):
                             p["caps"], p["wikiTitle"],
                             p.get("surname") or p["name"], p.get("shirtNumber"),
                             p.get("birthCity"), p.get("position"),
-                            p.get("birthLat"), p.get("birthLon")))
+                            p.get("birthLat"), p.get("birthLon"), p.get("birthPopulation")))
     for nation, players in map_data["natives"].items():
         iso2 = reg.resolve_iso2(nation)
         for p in players:
@@ -224,7 +226,7 @@ def collect_persons(map_data):
                             iso2, iso2, p["caps"], p["wikiTitle"],
                             p.get("surname") or p["name"], p.get("shirtNumber"),
                             p.get("birthCity"), p.get("position"),
-                            p.get("birthLat"), p.get("birthLon")))
+                            p.get("birthLat"), p.get("birthLon"), p.get("birthPopulation")))
     return persons
 
 
@@ -253,7 +255,7 @@ def assign_pids(persons, af_ids_of):
     rows, af_to_pid, key_to_pid, next_pid = load_registry()
     pids, added = [], 0
     for (name, role, nation, birth, caps, title, surname, shirt_number, birth_city, position,
-         _birth_lat, _birth_lon) in persons:
+         _birth_lat, _birth_lon, _birth_population) in persons:
         af_ids = af_ids_of.get((nation, title), [])
         pid = next((af_to_pid[(role, a)] for a in af_ids if (role, a) in af_to_pid), None)
         if pid is None:
@@ -348,10 +350,11 @@ def main():
     # there's no ambiguity to arbitrate here.
     wikidata_canonical_coords = {}
     for (_name, _role, _nation, _birth, _caps, _title, _surname, _shirt_number, _birth_city,
-         _position, _birth_lat, _birth_lon) in persons:
+         _position, _birth_lat, _birth_lon, _birth_population) in persons:
         if _birth_city and _birth_lat is not None and _birth_lon is not None:
             _canonical = strip_admin_qualifier(_birth_city) or _birth_city
-            wikidata_canonical_coords.setdefault((_canonical.strip().lower(), _birth), (_birth_lat, _birth_lon))
+            wikidata_canonical_coords.setdefault((_canonical.strip().lower(), _birth),
+                                                  (_birth_lat, _birth_lon, _birth_population))
 
     def get_or_create_city(name, country_id, lat, lon, population, actual_name, source):
         key = (name, country_id, lat, lon)
@@ -365,7 +368,7 @@ def main():
 
     af_used = 0
     for pid, (name, role, nation, birth, caps, title, surname, shirt_number, birth_city, position,
-              birth_lat, birth_lon) in zip(pids, persons):
+              birth_lat, birth_lon, birth_population) in zip(pids, persons):
         city_id = None
         if birth_city:
             # A pure string derivation of birth_city itself (see
@@ -388,7 +391,7 @@ def main():
                 # (which can't tell apart two people sharing a city NAME but
                 # not the same actual place).
                 city_id = get_or_create_city(birth_city, cid(birth), birth_lat, birth_lon,
-                                              None, actual_name, "wikidata")
+                                              birth_population, actual_name, "wikidata")
             else:
                 canonical = actual_name or birth_city
                 sibling = wikidata_canonical_coords.get((canonical.strip().lower(), birth))
@@ -399,8 +402,8 @@ def main():
                     # its own, independently-computed point for what's the
                     # same real city (small but visible gaps otherwise —
                     # Amman was ~1km, Wikidata's vs Nominatim's own center).
-                    lat, lon = sibling
-                    population, source = None, "wikidata"
+                    lat, lon, population = sibling
+                    source = "wikidata"
                 else:
                     # geocode_cache.json is keyed by the CANONICAL (stripped)
                     # form too — see geocode_birthplaces.py's

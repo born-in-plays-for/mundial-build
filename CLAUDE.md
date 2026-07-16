@@ -61,20 +61,26 @@ a bug). Written straight to the submodule like `fixtures.json`/
 is a geocoded birth city per player/coach, for the frontend's "all players"
 table to plot birthplaces on the map — `pipeline/wc2026_birthplaces.py`/
 `wc2026_coaches.py` already scrape a `birth_city` string from
-Wikipedia/Wikidata (it just never used to leave the CSVs);
-`pipeline/geocode_birthplaces.py` resolves that string to lat/lon via
-OpenStreetMap's Nominatim, caching results in the committed
+Wikipedia/Wikidata (it just never used to leave the CSVs), and increasingly
+resolve lat/lon directly from that same person's own Wikidata P19 claim
+(disambiguated by construction); `pipeline/geocode_birthplaces.py`'s
+OpenStreetMap Nominatim search, cached in the committed
 `pipeline/geocode_cache.json` (rate-limited to 1 req/s, so not cheap to
-redo). Best-effort — a person with no scraped city, or a city Nominatim
-couldn't resolve, is simply absent from the file rather than carrying a null
-lat/lon. `population`, when present, is a STRING — Nominatim's own OSM
-`population` extratag for that same resolved place, verbatim, not coerced
-to a number (the tag isn't reliably numeric and nothing consumes it
-arithmetically) — omitted, not null, for the majority of places that don't
-carry the tag; see `pipeline/README.md`'s "Birthplace geocoding" section
-for why coordinate-matching against GeoNames was deliberately rejected in
-favor of this. `city` has always been the ORIGINAL scraped string, even
-when it's actually a sub-city administrative unit rather than a plain city
+redo), is the fallback for whoever has no usable P19 coordinate. Best-effort
+— a person with no scraped city, or a city nothing could resolve, is simply
+absent from the file rather than carrying a null lat/lon. `population`,
+when present, is a STRING — either Nominatim's OSM `population` extratag,
+or (for a Wikidata-sourced coordinate) that SAME place entity's `P1082`
+statement — not coerced to a number either way (neither source is reliably
+numeric and nothing consumes it arithmetically) — omitted, not null, for
+the majority of places/entities that carry neither; see
+`pipeline/README.md`'s "Birthplace geocoding" section for why
+coordinate-matching against GeoNames was deliberately rejected in favor of
+this, and for the regression P1082 fixed (population briefly, silently
+dropped for anyone a coordinate-source change moved off Nominatim, before
+Wikidata had its own population source). `city` has always been the
+ORIGINAL scraped string, even when it's actually a sub-city administrative
+unit rather than a plain city
 name ("12th arrondissement of Paris", "Bodø Municipality") — `actualCityName`
 now carries the plain form ("Paris", "Bodø") separately, present only when
 `city` actually has that kind of qualifier. **Not wired into any auto-refresh

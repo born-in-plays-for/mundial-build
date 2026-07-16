@@ -273,6 +273,7 @@ def parse_coaches(soup: BeautifulSoup) -> list:
                 'birth_country': '',
                 'birth_lat':    '',
                 'birth_lon':    '',
+                'birth_population': '',
             })
             print(f"  ✓ {current_nation:<30} {coach_name:<30} (nationality: {coach_nationality})")
 
@@ -306,19 +307,20 @@ def get_wikidata_ids(titles: list) -> dict:
 
 
 def get_birthplaces(qids: list) -> dict:
-    """-> {qid: (city_label, country_label, lat, lon)} — see
-    wc2026_birthplaces.py's get_birthplaces docstring for the lat/lon
-    rationale (P625 on the P19 target entity itself, disambiguated by
-    construction)."""
+    """-> {qid: (city_label, country_label, lat, lon, population)} — see
+    wc2026_birthplaces.py's get_birthplaces docstring for the lat/lon and
+    population rationale (P625/P1082 on the P19 target entity itself,
+    disambiguated by construction)."""
     mapping = {}
     values = " ".join(f"wd:{q}" for q in qids)
     query = f"""
-SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord WHERE {{
+SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord ?population WHERE {{
   VALUES ?item {{ {values} }}
   OPTIONAL {{
     ?item wdt:P19 ?birthCity.
     OPTIONAL {{ ?birthCity wdt:P17 ?birthCountry. }}
     OPTIONAL {{ ?birthCity wdt:P625 ?coord. }}
+    OPTIONAL {{ ?birthCity wdt:P1082 ?population. }}
   }}
   SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
 }}
@@ -339,7 +341,8 @@ SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord WHERE {{
             if country.startswith("Q") and country[1:].isdigit():
                 country = ""
             lat, lon = _parse_wkt_point(row.get("coord", {}).get("value"))
-            mapping[qid] = (city, country, lat, lon)
+            population = row.get("population", {}).get("value")
+            mapping[qid] = (city, country, lat, lon, population)
     except Exception as e:
         print(f"   ⚠ Wikidata SPARQL: {e}")
     return mapping
@@ -404,7 +407,7 @@ def enrich_birthplaces(coaches: list) -> None:
         qid = title_to_qid.get(c['wiki_title'])
         if not qid:
             continue
-        city, country, _lat, _lon = qid_to_birth.get(qid, ('', '', None, None))
+        city, country, _lat, _lon, _pop = qid_to_birth.get(qid, ('', '', None, None, None))
         if city or country:
             c['birth_city'] = city
             c['birth_country'] = country
@@ -501,7 +504,7 @@ def main():
     # 5. Export CSV
     df = pd.DataFrame(coaches)
     df = df[['nation', 'coach', 'surname', 'nationality', 'birth_city', 'birth_country',
-              'birth_lat', 'birth_lon', 'wiki_title']]
+              'birth_lat', 'birth_lon', 'birth_population', 'wiki_title']]
     df.to_csv(OUT_CSV, index=False, encoding='utf-8-sig')
     print(f"\n💾 {OUT_CSV}  ({len(df)} rows)")
 

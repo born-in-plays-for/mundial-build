@@ -155,17 +155,25 @@ CREATE TABLE team_discipline (
 -- "kept for a future audit, not consumed downstream" precedent as
 -- geocode_cache.json's own addresstype field.
 --
--- population is Nominatim's own OSM `population` extratag for the resolved
--- place, when the place happens to carry one — NOT a separate join against
--- a different dataset (e.g. GeoNames, used elsewhere for KDE population
--- weighting), which would need its own coordinate-matching logic on top of
--- the city-identity resolution already done here. NULL is the normal case
--- for most small places, not a failure. TEXT, not INTEGER: OSM's own tag
--- isn't reliably numeric (a malformed value like "2.618" has been seen
--- live) and nothing here does arithmetic on it, so it's carried through
--- exactly as OSM has it rather than coerced. Only ever set for
--- source = 'nominatim' rows — a Wikidata-sourced coordinate has no
--- equivalent population lookup performed today.
+-- population comes from whichever source resolved the coordinate: for
+-- source='nominatim' rows, Nominatim's own OSM `population` extratag; for
+-- source='wikidata' rows (including one adopted via a sibling — see
+-- load.py's wikidata_canonical_coords), the SAME place entity's P1082
+-- statement. Deliberately read off the entity already resolved for lat/lon
+-- rather than a separate join against a different dataset (e.g. GeoNames,
+-- used elsewhere for KDE population weighting), which would need its own
+-- coordinate-matching logic on top of the city-identity resolution already
+-- done here. NULL is the normal case for most small places (or a place
+-- entity lacking that particular statement), not a failure. TEXT, not
+-- INTEGER: neither source's value is reliably clean (a malformed OSM tag
+-- like "2.618" has been seen live) and nothing here does arithmetic on it,
+-- so it's carried through as given rather than coerced. A Wikidata
+-- coordinate switched a lot of persons off Nominatim in one commit
+-- (converging same-city coordinates across sources) BEFORE P1082 was
+-- wired in as a counterpart — population briefly, silently dropped for
+-- everyone switched, since only Nominatim had it at the time; fixed by
+-- reading P1082 off the same query already fetching P625, not by trying
+-- to preserve the old Nominatim value across a source change.
 --
 -- actual_name: `name` is sometimes a sub-city administrative unit rather
 -- than a plain city ("12th arrondissement of Paris") — see

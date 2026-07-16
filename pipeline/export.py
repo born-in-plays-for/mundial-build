@@ -21,13 +21,14 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             city, or a city Nominatim couldn't geocode, is
                             simply absent — best-effort, not every person is
                             expected to be present. `population` (a STRING,
-                            not a number — Nominatim's raw OSM extratag for
-                            the place, when it has one; not coerced, since
-                            nothing here does arithmetic on it and the tag
-                            itself isn't reliably numeric) is OMITTED, not
-                            null, when unknown — coverage is partial by
-                            nature of OSM tagging, most small places don't
-                            carry the tag at all. `actualCityName` is the
+                            not a number — either Nominatim's raw OSM
+                            extratag or, for a Wikidata-sourced coordinate,
+                            that same place entity's P1082 statement;
+                            neither is coerced, since nothing here does
+                            arithmetic on it and neither is reliably
+                            numeric) is OMITTED, not null, when unknown —
+                            coverage is partial, most small places or place
+                            entities don't carry either. `actualCityName` is the
                             plain city name (e.g. "Paris") when `city` is
                             actually a sub-city administrative unit (e.g.
                             "12th arrondissement of Paris") — OMITTED
