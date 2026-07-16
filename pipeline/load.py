@@ -328,8 +328,10 @@ def main():
             lat = geo["lat"] if geo else None
             lon = geo["lon"] if geo else None
             population = geo.get("population") if geo else None
-            cur = db.execute("INSERT INTO city (name, country, lat, lon, population) VALUES (?,?,?,?,?)",
-                             (name, country_id, lat, lon, population))
+            actual_name = geo.get("actualCityName") if geo else None
+            cur = db.execute(
+                "INSERT INTO city (name, country, lat, lon, population, actual_name) VALUES (?,?,?,?,?,?)",
+                (name, country_id, lat, lon, population, actual_name))
             city_id_of[key] = cur.lastrowid
         return city_id_of[key]
 

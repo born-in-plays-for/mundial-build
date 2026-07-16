@@ -144,13 +144,21 @@ CREATE TABLE team_discipline (
 -- isn't reliably numeric (a malformed value like "2.618" has been seen
 -- live) and nothing here does arithmetic on it, so it's carried through
 -- exactly as OSM has it rather than coerced.
+--
+-- actual_name: `name` is sometimes a sub-city administrative unit rather
+-- than a plain city ("12th arrondissement of Paris") — see
+-- geocode_birthplaces.py's FALLBACK_PATTERNS/strip_admin_qualifier.
+-- actual_name holds the stripped plain-city form ("Paris") ONLY when it
+-- differs from `name`; NULL means `name` already is the plain city name.
+-- Same only-when-it-differs convention as person.en_title below.
 CREATE TABLE city (
-    id         INTEGER PRIMARY KEY,
-    name       TEXT    NOT NULL,
-    country    INTEGER NOT NULL REFERENCES country(id),
-    lat        REAL,
-    lon        REAL,
-    population TEXT,
+    id          INTEGER PRIMARY KEY,
+    name        TEXT    NOT NULL,
+    country     INTEGER NOT NULL REFERENCES country(id),
+    lat         REAL,
+    lon         REAL,
+    population  TEXT,
+    actual_name TEXT,
     UNIQUE (name, country),
     CHECK ((lat IS NULL) = (lon IS NULL))
 );
@@ -296,7 +304,7 @@ SELECT lang, pid, title FROM wiki_title;
 -- missing city is simply absent here rather than shipping a null lat/lon.
 CREATE VIEW view_birthplace AS
 SELECT p.pid, c.name AS birth_city, c.lat AS birth_lat, c.lon AS birth_lon,
-       c.population AS birth_population
+       c.population AS birth_population, c.actual_name AS birth_actual_city_name
 FROM person p
 JOIN city c ON c.id = p.birth_city
 WHERE c.lat IS NOT NULL;

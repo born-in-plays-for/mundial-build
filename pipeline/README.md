@@ -97,6 +97,7 @@ erDiagram
         REAL    lat "NULL = known city Nominatim couldn't geocode"
         REAL    lon "NULL iff lat is NULL"
         TEXT    population "Nominatim's OSM extratag, verbatim; NULL = no tag"
+        TEXT    actual_name "plain city name, ONLY when name has an admin qualifier"
     }
     af_person {
         INTEGER af_id PK "api-football person id (external)"
@@ -396,10 +397,10 @@ couldn't geocode still gets a `city` row (so it isn't re-geocoded as if
 never seen), just with `lat`/`lon` left NULL rather than a bogus fallback
 location. `view_birthplace` joins person → city and selects only the rows
 with a resolved `lat`/`lon`, and `export.py`'s `build_birthplace()` turns
-that into `data/v2/birthplace.json`: `{pid: {city, lat, lon, population?}}`,
-one entry per successfully geocoded person — best-effort, not every person
-is expected to be present, matching the "all players" table's own
-filtered/partial nature.
+that into `data/v2/birthplace.json`: `{pid: {city, lat, lon, population?,
+actualCityName?}}`, one entry per successfully geocoded person —
+best-effort, not every person is expected to be present, matching the "all
+players" table's own filtered/partial nature.
 
 **Population** (`city.population`) is Nominatim's own OSM `population`
 extratag for the resolved place, read from the exact same query that
@@ -426,6 +427,20 @@ entirely; `python3 pipeline/geocode_birthplaces.py --add-population`
 backfills it for already-resolved, non-override entries without
 re-resolving `lat`/`lon`, at the same 1 req/s Nominatim rate limit as every
 other pass here.
+
+**`actualCityName`** (`city.actual_name`) addresses a separate, longstanding
+quirk: `city.name`/`data/v2/birthplace.json`'s `city` field has always been
+the ORIGINAL scraped string, even for entries where that string is a
+sub-city administrative unit rather than a plain city name — "12th
+arrondissement of Paris", "Bodø Municipality" (`FALLBACK_PATTERNS`, above,
+strips exactly this kind of qualifier, but only to build a Nominatim query
+that resolves; it was never applied to the label itself). `actualCityName`
+carries that stripped, plain form ("Paris", "Bodø") as a separate field —
+present only when `FALLBACK_PATTERNS` actually matched `city`, absent (not
+duplicated) when `city` is already a plain name. Unlike `population`, this
+is a pure string transformation over data already in the cache, no
+Nominatim call involved, so it's backfilled unconditionally on every
+`geocode_birthplaces.py` run rather than needing its own opt-in flag.
 
 Squads don't change mid-tournament, so this doesn't need re-running on the
 fixtures cadence the way discipline/status/live do — only after a genuine

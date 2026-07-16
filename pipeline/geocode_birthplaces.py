@@ -27,8 +27,15 @@ also affect previously "resolved" pairs, not just misses).
 A scraped birth city that's actually a sub-city administrative unit ("12th
 arrondissement of Paris", "Bodø Municipality") often has no direct Nominatim
 match — see FALLBACK_PATTERNS, which strips the qualifier and retries with
-just the city name, keeping the original string as the label. The remaining
-unresolvable minority (corrupted source strings, small villages/parishes
+just the city name. `city` in a resolved entry stays that ORIGINAL scraped
+string (the label a client displays) even when the stripped form is what
+actually got the match; the stripped form itself is kept alongside it as
+`actualCityName` (e.g. "Paris" for a `city` of "12th arrondissement of
+Paris") — present only when FALLBACK_PATTERNS actually matched, same
+"only when it differs" convention as e.g. schema.sql's `person.en_title`.
+This is a pure string transformation (no Nominatim call needed), so it's
+backfilled unconditionally on every run, not gated behind a flag the way
+`population` is. The remaining unresolvable minority (corrupted source strings, small villages/parishes
 Nominatim doesn't have under that name, or a case needing real research to
 identify at all) is handled by pipeline/geocode_overrides.json — same
 hand-verified, cited-source, only-fills-gaps pattern as
@@ -236,24 +243,45 @@ def _population_of(r):
 
 
 def geocode(city, country, overrides):
-    """-> {"city", "lat", "lon", "population"} or None if nothing resolves
-    it, even after retrying with an admin-qualifier stripped from `city`
-    and checking geocode_overrides.json. `city` in the result is always the
-    ORIGINAL scraped name, even when a stripped fallback query is what
-    resolved it — the fallback only changes what's sent to Nominatim, not
-    the label a client displays."""
+    """-> {"city", "lat", "lon", "population", "actualCityName"?} or None if
+    nothing resolves it, even after retrying with an admin-qualifier
+    stripped from `city` and checking geocode_overrides.json. `city` in the
+    result is always the ORIGINAL scraped name, even when a stripped
+    fallback query is what resolved it — the fallback only changes what's
+    sent to Nominatim, not the label a client displays; `actualCityName`
+    carries that stripped form separately, only when FALLBACK_PATTERNS
+    actually matched `city`."""
+    actual = strip_admin_qualifier(city)
     r = _resolve(city, country)
     if r is not None:
         # addresstype is diagnostic only (not consumed by load.py) — kept so
         # a future audit can spot-check without re-querying Nominatim.
-        return {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
-                "addresstype": r.get("addresstype"), "population": _population_of(r)}
-    override = overrides.get(f"{city}, {country}")
-    if override is not None:
+        result = {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
+                  "addresstype": r.get("addresstype"), "population": _population_of(r)}
+    else:
+        override = overrides.get(f"{city}, {country}")
+        if override is None:
+            return None
         # Never has a live Nominatim result to read a population tag from.
-        return {"city": city, "lat": override["lat"], "lon": override["lon"],
-                "addresstype": "override", "population": None}
-    return None
+        result = {"city": city, "lat": override["lat"], "lon": override["lon"],
+                  "addresstype": "override", "population": None}
+    if actual is not None:
+        result["actualCityName"] = actual
+    return result
+
+
+def _backfill_actual_city_names(cache):
+    """Adds 'actualCityName' to every resolved cache entry whose 'city'
+    matches a FALLBACK_PATTERNS admin-qualifier and doesn't have it yet —
+    pure string derivation from data already in the cache, no Nominatim
+    call needed, so safe (and cheap) to run unconditionally on every
+    invocation rather than gating it behind its own --add-* flag."""
+    for entry in cache.values():
+        if entry is None or "actualCityName" in entry:
+            continue
+        actual = strip_admin_qualifier(entry["city"])
+        if actual is not None:
+            entry["actualCityName"] = actual
 
 
 def main():
@@ -299,6 +327,7 @@ def main():
                 print(f"  {i}/{len(todo_pop)} checked")
             if i < len(todo_pop):
                 time.sleep(RATE_LIMIT_S)
+        _backfill_actual_city_names(cache)
         with open(CACHE_PATH, "w", encoding="utf-8") as f:
             json.dump({
                 "source":  "nominatim.openstreetmap.org",
@@ -330,6 +359,7 @@ def main():
         if i < len(todo):
             time.sleep(RATE_LIMIT_S)
 
+    _backfill_actual_city_names(cache)
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump({
             "source":  "nominatim.openstreetmap.org",

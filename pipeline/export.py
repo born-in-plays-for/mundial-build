@@ -14,9 +14,9 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             key that doesn't collide with any real iso2/gb-nation code.
   data/v2/wiki_<lang>.json  {urlTemplate, titles: [...]} — array indexed
                             by pid (null = no article in that language)
-  data/v2/birthplace.json   {pid: {city, lat, lon, population?}} — geocoded
-                            birth city, one entry per person view_birthplace
-                            has a resolved lat/lon for (see
+  data/v2/birthplace.json   {pid: {city, lat, lon, population?, actualCityName?}}
+                            — geocoded birth city, one entry per person
+                            view_birthplace has a resolved lat/lon for (see
                             geocode_birthplaces.py); a person with no birth
                             city, or a city Nominatim couldn't geocode, is
                             simply absent — best-effort, not every person is
@@ -27,7 +27,12 @@ export.py — phase 2 of the two-phase DB build: export pipeline/mundial.db
                             itself isn't reliably numeric) is OMITTED, not
                             null, when unknown — coverage is partial by
                             nature of OSM tagging, most small places don't
-                            carry the tag at all.
+                            carry the tag at all. `actualCityName` is the
+                            plain city name (e.g. "Paris") when `city` is
+                            actually a sub-city administrative unit (e.g.
+                            "12th arrondissement of Paris") — OMITTED
+                            (not equal to `city`) for the common case where
+                            `city` is already a plain name.
   data/v2/status.json       {iso2: {round, date?}} — ELIMINATED teams only.
                             A team absent from this file is still alive;
                             the client never needs a positive "alive" list.
@@ -216,12 +221,14 @@ def build_discipline(db):
 
 def build_birthplace(db):
     out = {}
-    for pid, city, lat, lon, population in db.execute(
-            "SELECT pid, birth_city, birth_lat, birth_lon, birth_population "
-            "FROM view_birthplace ORDER BY pid"):
+    for pid, city, lat, lon, population, actual_city_name in db.execute(
+            "SELECT pid, birth_city, birth_lat, birth_lon, birth_population, "
+            "birth_actual_city_name FROM view_birthplace ORDER BY pid"):
         entry = {"city": city, "lat": lat, "lon": lon}
         if population is not None:
             entry["population"] = population
+        if actual_city_name is not None:
+            entry["actualCityName"] = actual_city_name
         out[str(pid)] = entry
     return out
 

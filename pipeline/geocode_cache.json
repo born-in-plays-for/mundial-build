@@ -7,35 +7,40 @@
       "lat": 48.8534951,
       "lon": 2.3483915,
       "addresstype": "city",
-      "population": "2165423"
+      "population": "2165423",
+      "actualCityName": "Paris"
     },
     "14th arrondissement of Paris, France": {
       "city": "14th arrondissement of Paris",
       "lat": 48.8534951,
       "lon": 2.3483915,
       "addresstype": "city",
-      "population": "2165423"
+      "population": "2165423",
+      "actualCityName": "Paris"
     },
     "20th arrondissement of Paris, France": {
       "city": "20th arrondissement of Paris",
       "lat": 48.8534951,
       "lon": 2.3483915,
       "addresstype": "city",
-      "population": "2165423"
+      "population": "2165423",
+      "actualCityName": "Paris"
     },
     "3rd arrondissement of Lyon, France": {
       "city": "3rd arrondissement of Lyon",
       "lat": 45.7578137,
       "lon": 4.8320114,
       "addresstype": "city",
-      "population": "522250"
+      "population": "522250",
+      "actualCityName": "Lyon"
     },
     "8th arrondissement of Lyon, France": {
       "city": "8th arrondissement of Lyon",
       "lat": 45.7578137,
       "lon": 4.8320114,
       "addresstype": "city",
-      "population": "522250"
+      "population": "522250",
+      "actualCityName": "Lyon"
     },
     "Aachen, Germany": {
       "city": "Aachen",
@@ -133,7 +138,8 @@
       "lat": 25.9240491,
       "lon": -109.2058344,
       "addresstype": "county",
-      "population": "459310"
+      "population": "459310",
+      "actualCityName": "Ahome"
     },
     "Aix-les-Bains, France": {
       "city": "Aix-les-Bains",
@@ -433,7 +439,8 @@
       "lat": 19.7703379,
       "lon": -104.3642747,
       "addresstype": "town",
-      "population": "45382"
+      "population": "45382",
+      "actualCityName": "Autlán de Navarro"
     },
     "Aveiro, Portugal": {
       "city": "Aveiro",
@@ -734,7 +741,8 @@
       "lat": 67.2844313,
       "lon": 14.3817503,
       "addresstype": "municipality",
-      "population": "53725"
+      "population": "53725",
+      "actualCityName": "Bodø"
     },
     "Bodø, Norway": {
       "city": "Bodø",
@@ -965,7 +973,8 @@
       "lat": 59.9289639,
       "lon": 10.4997108,
       "addresstype": "municipality",
-      "population": "132358"
+      "population": "132358",
+      "actualCityName": "Bærum"
     },
     "Béchar, Algeria": {
       "city": "Béchar",
@@ -1338,7 +1347,8 @@
       "lat": 18.3253222,
       "lon": -100.6995289,
       "addresstype": "town",
-      "population": "6857"
+      "population": "6857",
+      "actualCityName": "Coyuca de Catalán"
     },
     "Creil, France": {
       "city": "Creil",
@@ -1751,7 +1761,8 @@
       "lat": -24.41531,
       "lon": 29.8550226,
       "addresstype": "city",
-      "population": null
+      "population": null,
+      "actualCityName": "Fetakgomo Local"
     },
     "Fez, Morocco": {
       "city": "Fez",
@@ -1772,7 +1783,8 @@
       "lat": 58.2949357,
       "lon": 6.6129626,
       "addresstype": "municipality",
-      "population": "9329"
+      "population": "9329",
+      "actualCityName": "Flekkefjord"
     },
     "Florida, United States": {
       "city": "Florida",
@@ -2496,7 +2508,8 @@
       "lat": 40.6912501,
       "lon": 29.6165859,
       "addresstype": "town",
-      "population": null
+      "population": null,
+      "actualCityName": "Karamürsel"
     },
     "Karlovy Vary, Czech Republic": {
       "city": "Karlovy Vary",
@@ -2657,7 +2670,8 @@
       "lat": 60.1899109,
       "lon": 12.2160367,
       "addresstype": "municipality",
-      "population": "18109"
+      "population": "18109",
+      "actualCityName": "Kongsvinger"
     },
     "Koppigen, Switzerland": {
       "city": "Koppigen",
@@ -3259,7 +3273,8 @@
       "lat": 37.8679527,
       "lon": 32.4946514,
       "addresstype": "town",
-      "population": "346366"
+      "population": "346366",
+      "actualCityName": "Meram"
     },
     "Mexico City, Mexico": {
       "city": "Mexico City",
@@ -3350,7 +3365,8 @@
       "lat": 62.6016257,
       "lon": 8.1386208,
       "addresstype": "municipality",
-      "population": "33163"
+      "population": "33163",
+      "actualCityName": "Molde"
     },
     "Monterrey, Mexico": {
       "city": "Monterrey",
@@ -3959,7 +3975,6 @@
       "addresstype": "city",
       "population": null
     },
-    "Piranshahr Sugar Factory, Iran": null,
     "Plumpton, Australia": {
       "city": "Plumpton",
       "lat": -33.7566667,
@@ -4551,7 +4566,8 @@
       "lat": 58.9831321,
       "lon": 6.394641,
       "addresstype": "municipality",
-      "population": "84908"
+      "population": "84908",
+      "actualCityName": "Sandnes"
     },
     "Santa Cruz de Tenerife, Spain": {
       "city": "Santa Cruz de Tenerife",
@@ -4827,7 +4843,8 @@
       "city": "Spånga-Tensta city district",
       "lat": 59.3957349,
       "lon": 17.9032284,
-      "addresstype": "override"
+      "addresstype": "override",
+      "actualCityName": "Spånga-Tensta"
     },
     "St. Albert, Canada": {
       "city": "St. Albert",
@@ -5072,7 +5089,8 @@
       "lat": 19.8936827,
       "lon": -99.3487182,
       "addresstype": "county",
-      "population": null
+      "population": null,
+      "actualCityName": "Tepeji del Río de Ocampo"
     },
     "Terrassa, Spain": {
       "city": "Terrassa",
@@ -5156,7 +5174,8 @@
       "lat": 19.5464902,
       "lon": -99.1899352,
       "addresstype": "county",
-      "population": null
+      "population": null,
+      "actualCityName": "Tlalnepantla de Baz"
     },
     "Tokyo, Japan": {
       "city": "Tokyo",
@@ -5247,7 +5266,8 @@
       "lat": 69.6516345,
       "lon": 18.9558585,
       "addresstype": "municipality",
-      "population": "79421"
+      "population": "79421",
+      "actualCityName": "Tromsø"
     },
     "Trondheim, Norway": {
       "city": "Trondheim",
@@ -5484,7 +5504,8 @@
       "lat": 62.0803798,
       "lon": 6.2744108,
       "addresstype": "municipality",
-      "population": "11131"
+      "population": "11131",
+      "actualCityName": "Volda"
     },
     "Vysoké Mýto, Czech Republic": {
       "city": "Vysoké Mýto",
@@ -5651,7 +5672,8 @@
       "lat": 40.1866362,
       "lon": 29.128191,
       "addresstype": "town",
-      "population": "657176"
+      "population": "657176",
+      "actualCityName": "Yıldırım"
     },
     "Zaandam, Netherlands": {
       "city": "Zaandam",
@@ -5700,7 +5722,8 @@
       "lat": 19.6973465,
       "lon": -103.510648,
       "addresstype": "county",
-      "population": null
+      "population": null,
+      "actualCityName": "Zapotlán el Grande"
     },
     "Zarafshon, Uzbekistan": {
       "city": "Zarafshon",
