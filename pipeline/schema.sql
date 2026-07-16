@@ -127,13 +127,33 @@ CREATE TABLE team_discipline (
 -- Distinct birth cities, deduplicated across persons — many players share
 -- one (e.g. several Brazilians born in São Paulo), so this is a normal
 -- entity with an FK from person, the same pattern country/capital_name use,
--- rather than repeating the name/lat/lon on every person row. Geocoded via
--- geocode_birthplaces.py (OpenStreetMap Nominatim); lat/lon NULL means the
--- city name is known but Nominatim couldn't resolve it — kept (not dropped)
--- so pipeline/geocode_cache.json remembers the miss instead of re-querying
--- it every run. UNIQUE (name, country): a city name alone isn't a real
--- identity key (many countries have a "Springfield"), but combined with the
--- birth country resolved for the person who has it, it is.
+-- rather than repeating the name/lat/lon on every person row. lat/lon NULL
+-- means the city name is known but unresolved — kept (not dropped) so a
+-- rerun doesn't have to re-resolve it. Two sources, load.py picks per
+-- person (see `source` below): a direct Wikidata P19 coordinate when the
+-- person has one, else pipeline/geocode_birthplaces.py's Nominatim search.
+--
+-- UNIQUE (name, country, lat, lon) — NOT just (name, country): `name` alone
+-- is not a real identity key even combined with country, because the SAME
+-- city-name text can legitimately refer to DIFFERENT real places for
+-- different persons (French homonym communes are common — "Montreuil"
+-- alone is at least 5 different towns; a bare (name, country) key forced
+-- every "Montreuil, France" person into one row/one lat-lon, which is
+-- exactly how 6 WC2026 players ended up geocoded to the wrong Montreuil
+-- before this was fixed by resolving per-person via Wikidata). Including
+-- lat/lon in the key lets same-named-but-different places coexist as
+-- separate rows instead of silently merging, while still collapsing
+-- persons who share both the name AND the resolved place into one row.
+--
+-- source distinguishes how lat/lon (when present) were resolved:
+-- 'wikidata' (the person's own P19 target's P625 coordinate — disambiguated
+-- by construction, preferred whenever available), 'nominatim' (free-text
+-- search over (name, country), only used when no Wikidata coordinate
+-- exists), 'override' (pipeline/geocode_overrides.json, hand-verified),
+-- or NULL (name known, nothing resolved it). Diagnostic only — not
+-- exposed via view_birthplace/data/v2/birthplace.json — same
+-- "kept for a future audit, not consumed downstream" precedent as
+-- geocode_cache.json's own addresstype field.
 --
 -- population is Nominatim's own OSM `population` extratag for the resolved
 -- place, when the place happens to carry one — NOT a separate join against
@@ -143,14 +163,17 @@ CREATE TABLE team_discipline (
 -- for most small places, not a failure. TEXT, not INTEGER: OSM's own tag
 -- isn't reliably numeric (a malformed value like "2.618" has been seen
 -- live) and nothing here does arithmetic on it, so it's carried through
--- exactly as OSM has it rather than coerced.
+-- exactly as OSM has it rather than coerced. Only ever set for
+-- source = 'nominatim' rows — a Wikidata-sourced coordinate has no
+-- equivalent population lookup performed today.
 --
 -- actual_name: `name` is sometimes a sub-city administrative unit rather
 -- than a plain city ("12th arrondissement of Paris") — see
 -- geocode_birthplaces.py's FALLBACK_PATTERNS/strip_admin_qualifier.
 -- actual_name holds the stripped plain-city form ("Paris") ONLY when it
 -- differs from `name`; NULL means `name` already is the plain city name.
--- Same only-when-it-differs convention as person.en_title below.
+-- Same only-when-it-differs convention as person.en_title below. Only
+-- ever set for source = 'nominatim' rows, same reason as population.
 CREATE TABLE city (
     id          INTEGER PRIMARY KEY,
     name        TEXT    NOT NULL,
@@ -159,7 +182,8 @@ CREATE TABLE city (
     lon         REAL,
     population  TEXT,
     actual_name TEXT,
-    UNIQUE (name, country),
+    source      TEXT CHECK (source IN ('wikidata', 'nominatim', 'override')),
+    UNIQUE (name, country, lat, lon),
     CHECK ((lat IS NULL) = (lon IS NULL))
 );
 

@@ -3412,10 +3412,10 @@
     },
     "Montreuil, France": {
       "city": "Montreuil",
-      "lat": 50.4638918,
-      "lon": 1.7631125,
-      "addresstype": "village",
-      "population": "1893"
+      "lat": 48.860278,
+      "lon": 2.443056,
+      "addresstype": "override",
+      "population": null
     },
     "Monufia Governorate, Egypt": {
       "city": "Monufia Governorate",

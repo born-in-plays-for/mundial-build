@@ -82,6 +82,13 @@ with open(CSV_PATH, encoding="utf-8-sig") as f:
             "nation":        row["nation"],
             "birth_city":    row["birth_city"],
             "birth_country": row["birth_country"],
+            # Wikidata P19 target entity's own P625 coordinate (see
+            # wc2026_birthplaces.py's enrich_birth_coordinates) — present
+            # only when Wikidata resolved one AND it agreed with birth_city;
+            # disambiguates same-named-but-different real places
+            # (geocode_birthplaces.py's free-text Nominatim search can't).
+            "birth_lat":     float(row["birth_lat"]) if row.get("birth_lat") else None,
+            "birth_lon":     float(row["birth_lon"]) if row.get("birth_lon") else None,
             "caps":          int(row["caps"]) if row["caps"] else 0,
         })
 
@@ -97,6 +104,8 @@ if COACHES_PATH.exists():
                 "nation":        row["nation"],
                 "birth_city":    row.get("birth_city", ""),
                 "birth_country": row["birth_country"],
+                "birth_lat":     float(row["birth_lat"]) if row.get("birth_lat") else None,
+                "birth_lon":     float(row["birth_lon"]) if row.get("birth_lon") else None,
                 "caps":          0,
                 "role":          "coach",
             })
@@ -203,6 +212,9 @@ for country, group in sorted(by_birth.items(), key=lambda x: -len(x[1])):
             obj["position"] = p["position"]
         if p.get("birth_city"):
             obj["birthCity"] = p["birth_city"]
+        if p.get("birth_lat") is not None and p.get("birth_lon") is not None:
+            obj["birthLat"] = p["birth_lat"]
+            obj["birthLon"] = p["birth_lon"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])
@@ -240,6 +252,9 @@ for p in players:
             obj["position"] = p["position"]
         if p.get("birth_city"):
             obj["birthCity"] = p["birth_city"]
+        if p.get("birth_lat") is not None and p.get("birth_lon") is not None:
+            obj["birthLat"] = p["birth_lat"]
+            obj["birthLon"] = p["birth_lon"]
         key = (p["name"], p["nation"])
         if key in wiki_cache:
             obj.update(wiki_cache[key])

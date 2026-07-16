@@ -1,5 +1,5 @@
 {
-  "_comment": "Manual geocoding fallback for birth_city/birth_country pairs Nominatim couldn't resolve after geocode_birthplaces.py's automated pass (direct query + FALLBACK_PATTERNS qualifier-stripping) — same pattern as pipeline/birthplace_overrides.json, one level down the pipeline. Keyed by the exact 'City, Country' cache-query string (pipeline/geocode_cache.json's own keys). Only consulted when the automated pass has no result for that key; a later automated fix that resolves one of these directly wins (same only-fills-gaps semantics as birthplace_overrides.json). Each entry cites the real place identified and a source — never a guess presented as fact.",
+  "_comment": "Manual geocoding correction for birth_city/birth_country pairs — either Nominatim resolved nothing (the traditional gap-filling case) or, since geocode_birthplaces.py's geocode() checks this file FIRST, resolved the WRONG place (a same-named homonym outranking the real one by Nominatim's 'importance' score, e.g. 'Montreuil, France' below). Keyed by the exact 'City, Country' cache-query string (pipeline/geocode_cache.json's own keys). A present entry always wins outright over a live Nominatim query — same precedent as pipeline/surname_overrides.json, NOT pipeline/birthplace_overrides.json's 'only fills gaps' semantics, since a wrong-but-present Nominatim result would otherwise never be corrected. Each entry cites the real place identified and a source — never a guess presented as fact.",
   "overrides": {
     "Nagrig, Egypt": {
       "lat": 30.9725, "lon": 30.8669,
@@ -68,6 +68,10 @@
     "Norrköping Matteus church parish, Sweden": {
       "lat": 58.5909124, "lon": 16.1903511,
       "_note": "Ken Sema's birthplace — Matteus is a Church of Sweden parish within Norrköping; point is Norrköping city itself."
+    },
+    "Montreuil, France": {
+      "lat": 48.860278, "lon": 2.443056,
+      "_note": "Correction, not a gap-fill — Nominatim's free-text search for 'Montreuil, France' resolves to Montreuil-sur-Mer (Pas-de-Calais, pop. ~1,900), which outranks the real match by Nominatim's own 'importance' score. This is Montreuil, Seine-Saint-Denis (the Paris suburb, pop. ~111,000) — verified via Wikidata Q193370's P625 coordinate, the P19 (place of birth) target shared by every WC2026 player currently scraped with birth_city='Montreuil': Warren Zaïre-Emery, Pape Gueye, Yehvann Diouf, Elisha Owusu, Rayan Aït-Nouri, Farès Ghedjemis. Per-person Wikidata P19 coordinates (wc2026_birthplaces.py's enrich_birth_coordinates) already resolve all 6 correctly without needing this entry at all — kept as a defensive backstop for any future 'Montreuil'-born person who lacks a usable P19 coordinate of their own (e.g. infobox-scrape-only)."
     }
   },
   "_known_unresolved": {

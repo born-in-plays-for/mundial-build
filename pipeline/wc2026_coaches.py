@@ -29,7 +29,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 import country_registry as reg
-from wc2026_birthplaces import compute_surname
+from wc2026_birthplaces import compute_surname, _parse_wkt_point
 
 # Hand-corrected surnames for coaches nameparser's "Firstname Surname"
 # assumption gets wrong (e.g. Korean family-name-first order), keyed by
@@ -273,6 +273,8 @@ def parse_coaches(soup: BeautifulSoup) -> list:
                 'nationality':  coach_nationality,
                 'birth_city':   '',
                 'birth_country': '',
+                'birth_lat':    '',
+                'birth_lon':    '',
             })
             print(f"  ✓ {current_nation:<30} {coach_name:<30} (nationality: {coach_nationality})")
 
@@ -306,14 +308,19 @@ def get_wikidata_ids(titles: list) -> dict:
 
 
 def get_birthplaces(qids: list) -> dict:
+    """-> {qid: (city_label, country_label, lat, lon)} — see
+    wc2026_birthplaces.py's get_birthplaces docstring for the lat/lon
+    rationale (P625 on the P19 target entity itself, disambiguated by
+    construction)."""
     mapping = {}
     values = " ".join(f"wd:{q}" for q in qids)
     query = f"""
-SELECT ?item ?birthCityLabel ?birthCountryLabel WHERE {{
+SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord WHERE {{
   VALUES ?item {{ {values} }}
   OPTIONAL {{
     ?item wdt:P19 ?birthCity.
     OPTIONAL {{ ?birthCity wdt:P17 ?birthCountry. }}
+    OPTIONAL {{ ?birthCity wdt:P625 ?coord. }}
   }}
   SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
 }}
@@ -333,7 +340,8 @@ SELECT ?item ?birthCityLabel ?birthCountryLabel WHERE {{
                 city = ""
             if country.startswith("Q") and country[1:].isdigit():
                 country = ""
-            mapping[qid] = (city, country)
+            lat, lon = _parse_wkt_point(row.get("coord", {}).get("value"))
+            mapping[qid] = (city, country, lat, lon)
     except Exception as e:
         print(f"   ⚠ Wikidata SPARQL: {e}")
     return mapping
@@ -375,19 +383,21 @@ def _parse_wikipedia_birthplace(soup: BeautifulSoup) -> tuple:
 
 
 def enrich_birthplaces(coaches: list) -> None:
-    need = [c for c in coaches if not c['birth_city'] and c['wiki_title']]
-    if not need:
-        return
-
-    titles = list({c['wiki_title'] for c in need})
-    print(f"\n🌐 Wikidata enrichment for {len(titles)} coaches ...")
-
-    title_to_qid = get_wikidata_ids(titles)
-    print(f"   ✓ {len(title_to_qid)} QIDs found")
-
-    qids = list(set(title_to_qid.values()))
-    qid_to_birth = get_birthplaces(qids)
-    print(f"   ✓ {len(qid_to_birth)} birthplaces found")
+    # Resolve QIDs for EVERY coach with a wiki_title, not just those missing
+    # a birth_city — the coordinate-attach pass below needs a P19 lookup
+    # even for a coach whose birth_city already came straight from the
+    # Wikipedia squads table, same reasoning as wc2026_birthplaces.py's
+    # main(). One SPARQL round-trip, reused by both the text-filling step
+    # and the coordinate step.
+    titled = [c for c in coaches if c['wiki_title']]
+    title_to_qid, qid_to_birth = {}, {}
+    if titled:
+        titles = list({c['wiki_title'] for c in titled})
+        print(f"\n🌐 Wikidata resolution for {len(titles)} coaches ...")
+        title_to_qid = get_wikidata_ids(titles)
+        print(f"   ✓ {len(title_to_qid)} QIDs found")
+        qid_to_birth = get_birthplaces(list(set(title_to_qid.values())))
+        print(f"   ✓ {len(qid_to_birth)} birthplaces found")
 
     enriched = 0
     for c in coaches:
@@ -396,7 +406,7 @@ def enrich_birthplaces(coaches: list) -> None:
         qid = title_to_qid.get(c['wiki_title'])
         if not qid:
             continue
-        city, country = qid_to_birth.get(qid, ('', ''))
+        city, country, _lat, _lon = qid_to_birth.get(qid, ('', '', None, None))
         if city or country:
             c['birth_city'] = city
             c['birth_country'] = country
@@ -427,6 +437,33 @@ def enrich_birthplaces(coaches: list) -> None:
             print(f"\r   → {i}/{len(still_missing)} checked, {fb} enriched", end="", flush=True)
             time.sleep(0.5)
         print(f"\n   ✓ {fb} coaches enriched via Wikipedia pages")
+
+    # Coordinates (P625 of the P19 target entity itself) — ONLY when the
+    # Wikidata city label matches the coach's now-final birth_city, same
+    # "surface a mismatch, don't guess" rule as
+    # wc2026_birthplaces.py's enrich_birth_coordinates (which this mirrors;
+    # not imported directly since it prints p['player'], coaches have
+    # 'coach' instead).
+    attached, mismatched = 0, 0
+    for c in coaches:
+        if not c['wiki_title'] or not c['birth_city']:
+            continue
+        qid = title_to_qid.get(c['wiki_title'])
+        if not qid:
+            continue
+        city, _country, lat, lon = qid_to_birth.get(qid, ('', '', None, None))
+        if lat is None or lon is None or not city:
+            continue
+        if city.strip().lower() != c['birth_city'].strip().lower():
+            print(f"   ⚠ {c['coach']} ({c['nation']}) : birth_city={c['birth_city']!r} "
+                  f"mais Wikidata P19 pointe vers {city!r} — coordonnées ignorées, "
+                  f"vérifier à la main", file=sys.stderr)
+            mismatched += 1
+            continue
+        c['birth_lat'], c['birth_lon'] = lat, lon
+        attached += 1
+    print(f"   ✓ {attached} coach(es) avec coordonnées Wikidata P19 "
+          f"({mismatched} désaccord(s) signalé(s))")
 
     # Resolve "United Kingdom" → specific home nation
     resolved = 0
@@ -487,7 +524,8 @@ def main():
 
     # 5. Export CSV
     df = pd.DataFrame(coaches)
-    df = df[['nation', 'coach', 'surname', 'nationality', 'birth_city', 'birth_country', 'wiki_title']]
+    df = df[['nation', 'coach', 'surname', 'nationality', 'birth_city', 'birth_country',
+              'birth_lat', 'birth_lon', 'wiki_title']]
     df.to_csv(OUT_CSV, index=False, encoding='utf-8-sig')
     print(f"\n💾 {OUT_CSV}  ({len(df)} rows)")
 

@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 """
-geocode_birthplaces.py — resolve every player/coach birth city in
+geocode_birthplaces.py — resolve player/coach birth cities in
 pipeline/map_data.json to lat/lon coordinates, via OpenStreetMap's Nominatim
 search API (no key needed).
 
+This is the FALLBACK path only: map_data.json's "birthCity" carries an
+optional "birthLat"/"birthLon" too, when wc2026_birthplaces.py's
+enrich_birth_coordinates already resolved the person's own Wikidata P19
+claim to a coordinate — that's disambiguated by construction (P19 points at
+one specific place entity, never a bare name) and takes priority in
+load.py, so this script only ever runs for people without one. Free-text
+search over a bare city NAME can't tell two different real places with the
+same name apart — see the module-level "Montreuil, France" note below —
+which per-person Wikidata coordinates avoid entirely; this script remains
+necessary only for the residual minority with no usable P19 claim.
+
 map_data.json already carries a "birthCity" string per player/coach
 (build_json.py, sourced from wc2026_players.csv/wc2026_coaches.csv's own
-birth_city column) — this script only geocodes it, keyed by the SAME
-(city, birth-country display name) pair load.py resolves for each person, so
+birth_city column) — this script geocodes it, keyed by the SAME (city,
+birth-country display name) pair load.py resolves for each such person, so
 a plain dict lookup at load time finds it without re-deriving anything.
 
 City+country pairs are deduplicated first (many players share a birth city —
@@ -35,14 +46,25 @@ Paris") — present only when FALLBACK_PATTERNS actually matched, same
 "only when it differs" convention as e.g. schema.sql's `person.en_title`.
 This is a pure string transformation (no Nominatim call needed), so it's
 backfilled unconditionally on every run, not gated behind a flag the way
-`population` is. The remaining unresolvable minority (corrupted source strings, small villages/parishes
-Nominatim doesn't have under that name, or a case needing real research to
-identify at all) is handled by pipeline/geocode_overrides.json — same
-hand-verified, cited-source, only-fills-gaps pattern as
-pipeline/birthplace_overrides.json, one level down the pipeline. Checked
-only when both the direct query and the FALLBACK_PATTERNS retry come back
-empty; a later Nominatim/logic improvement that resolves one of these
-directly always wins over the override.
+`population` is.
+
+pipeline/geocode_overrides.json is a hand-verified, cited-source correction
+list, checked FIRST — before any Nominatim query at all — so a present
+entry always wins outright (same precedent as
+pipeline/surname_overrides.json, NOT pipeline/birthplace_overrides.json's
+"only fills gaps" one). This matters because Nominatim finding *a* result
+doesn't mean it found the *right* one: "Montreuil, France" confidently
+resolves to Montreuil-sur-Mer (a ~1,900-person village, apparently ranked
+above real candidates by Nominatim's "importance" score — likely its
+*Les Misérables* fame) instead of Montreuil, Seine-Saint-Denis (the actual
+110,000-person Paris suburb every currently-known WC2026 player named
+"Montreuil" was verified born in via Wikidata P19) — a wrong RESULT, not a
+missing one, so an override that only kicked in when Nominatim found
+nothing could never have fixed it. Overrides also cover the traditional
+gap-filling case (corrupted source strings, small villages/parishes
+Nominatim doesn't index under that name, or a case needing real research to
+identify at all) — those simply have no live Nominatim result to lose to
+in the first place.
 
 Each resolved result also carries `population`, when Nominatim's matched
 place happens to carry an OSM `population` tag (requested via
@@ -162,15 +184,22 @@ def collect_city_country_pairs(map_data):
     """-> sorted set of (city, birth-country display name) pairs, matching
     exactly the pairing load.py will look each person up by: exports are
     grouped by rec["country"] (the birth country), natives by the nation
-    dict key (birth country == nation for a native by definition)."""
+    dict key (birth country == nation for a native by definition).
+
+    Skips anyone who already carries birthLat/birthLon — a person's own
+    Wikidata P19 coordinate (see wc2026_birthplaces.py's
+    enrich_birth_coordinates) is disambiguated by construction and takes
+    priority over this script's free-text Nominatim search in load.py, so
+    there's nothing for Nominatim to usefully resolve for them (also
+    shrinks how many live queries this script makes)."""
     pairs = set()
     for rec in map_data["data"]:
         for p in rec["players"]:
-            if p.get("birthCity"):
+            if p.get("birthCity") and p.get("birthLat") is None:
                 pairs.add((p["birthCity"], rec["country"]))
     for nation, players in map_data["natives"].items():
         for p in players:
-            if p.get("birthCity"):
+            if p.get("birthCity") and p.get("birthLat") is None:
                 pairs.add((p["birthCity"], nation))
     return sorted(pairs)
 
@@ -244,27 +273,36 @@ def _population_of(r):
 
 def geocode(city, country, overrides):
     """-> {"city", "lat", "lon", "population", "actualCityName"?} or None if
-    nothing resolves it, even after retrying with an admin-qualifier
-    stripped from `city` and checking geocode_overrides.json. `city` in the
-    result is always the ORIGINAL scraped name, even when a stripped
-    fallback query is what resolved it — the fallback only changes what's
-    sent to Nominatim, not the label a client displays; `actualCityName`
-    carries that stripped form separately, only when FALLBACK_PATTERNS
-    actually matched `city`."""
+    nothing resolves it. geocode_overrides.json is checked FIRST,
+    unconditionally — a present override always wins over a live query
+    (same "always wins outright" precedent as surname_overrides.json, not
+    birthplace_overrides.json's "fills gaps only" one), because Nominatim
+    finding *a* result doesn't mean it found the *right* one — this
+    ordering is what lets an override CORRECT a wrong result, not just fill
+    a gap when Nominatim finds nothing at all (the bug it was added for:
+    "Montreuil, France" confidently resolved to tiny Montreuil-sur-Mer
+    instead of the actual Montreuil, Seine-Saint-Denis — a real result,
+    just the wrong homonym; see pipeline/README.md). `city` in the result
+    is always the ORIGINAL scraped name, even when a stripped fallback
+    query is what resolved it — the fallback only changes what's sent to
+    Nominatim, not the label a client displays; `actualCityName` carries
+    that stripped form separately, only when FALLBACK_PATTERNS actually
+    matched `city`."""
     actual = strip_admin_qualifier(city)
-    r = _resolve(city, country)
-    if r is not None:
+    override = overrides.get(f"{city}, {country}")
+    if override is not None:
+        # Never queries Nominatim at all when an override is present — no
+        # population tag to read either.
+        result = {"city": city, "lat": override["lat"], "lon": override["lon"],
+                  "addresstype": "override", "population": None}
+    else:
+        r = _resolve(city, country)
+        if r is None:
+            return None
         # addresstype is diagnostic only (not consumed by load.py) — kept so
         # a future audit can spot-check without re-querying Nominatim.
         result = {"city": city, "lat": float(r["lat"]), "lon": float(r["lon"]),
                   "addresstype": r.get("addresstype"), "population": _population_of(r)}
-    else:
-        override = overrides.get(f"{city}, {country}")
-        if override is None:
-            return None
-        # Never has a live Nominatim result to read a population tag from.
-        result = {"city": city, "lat": override["lat"], "lon": override["lon"],
-                  "addresstype": "override", "population": None}
     if actual is not None:
         result["actualCityName"] = actual
     return result

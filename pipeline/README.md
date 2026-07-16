@@ -94,10 +94,11 @@ erDiagram
         INTEGER id PK
         TEXT    name "e.g. 'São Paulo'"
         INTEGER country FK "same as the referencing person(s)' birth"
-        REAL    lat "NULL = known city Nominatim couldn't geocode"
+        REAL    lat "NULL = known city, unresolved"
         REAL    lon "NULL iff lat is NULL"
-        TEXT    population "Nominatim's OSM extratag, verbatim; NULL = no tag"
+        TEXT    population "Nominatim's OSM extratag, verbatim; only for source='nominatim'"
         TEXT    actual_name "plain city name, ONLY when name has an admin qualifier"
+        TEXT    source "wikidata | nominatim | override | NULL"
     }
     af_person {
         INTEGER af_id PK "api-football person id (external)"
@@ -340,67 +341,128 @@ before relying on this data staying fresh automatically.
 
 ---
 
-## Birthplace geocoding (`geocode_birthplaces.py` → `city` table → `data/v2/birthplace.json`)
+## Birthplace geocoding (`city` table → `data/v2/birthplace.json`)
 
 `wc2026_birthplaces.py`/`wc2026_coaches.py` already scrape a `birth_city`
 string per person into `wc2026_players.csv`/`wc2026_coaches.csv` (Wikipedia
 squads table → Wikidata P19 → per-player infobox fallback — see
 `pipeline/CLAUDE.md`'s "Birthplace overrides" section); it just never used to
-leave those CSVs. `build_json.py` now carries it through as `birthCity` on
-every player/coach object in `pipeline/map_data.json` (exports and natives
-alike), and `geocode_birthplaces.py` resolves each unique `(birth_city,
-birth_country)` pair (cities are shared by many players — e.g. several
-Brazilians born in São Paulo — so pairs are deduplicated before any request
-goes out) to lat/lon via OpenStreetMap's Nominatim search API (no key
-needed), respecting Nominatim's usage policy: max 1 request/second, an
-identifying `User-Agent`. Results are cached in `pipeline/geocode_cache.json`
-(committed, same "hits a live external API, not cheap to redo casually"
-reasoning as `discipline_stats_cache.json`) keyed by the exact `"City,
-Country"` query string, so a rerun only geocodes pairs it hasn't seen before
-— a pair Nominatim couldn't resolve is cached as `null` too, so it isn't
-retried every run either (pass `--retry-misses` to re-attempt just those, or
-`--refresh-cache` to force a full re-geocode of everything).
+leave those CSVs. `build_json.py` carries it through as `birthCity` on every
+player/coach object in `pipeline/map_data.json` (exports and natives alike).
+Two independent sources resolve that string to coordinates; `load.py` picks
+per person (see `city.source`, below):
+
+### Primary: Wikidata P19's own coordinate
+
+`wc2026_birthplaces.py`'s `get_birthplaces()` SPARQL query (also queried for
+the `birth_city`/`birth_country` text labels above) additionally selects the
+P19 *target entity's own* `P625` coordinate. `enrich_birth_coordinates()`
+attaches it as `birth_lat`/`birth_lon` to every player whose Wikidata city
+label case-insensitively matches their final `birth_city` (run after all
+text sources — squads table, Wikidata, infobox fallback, manual overrides —
+have already settled it; a mismatch is printed and left unresolved rather
+than pairing a name with the wrong coordinate). `build_json.py` carries these
+through as `birthLat`/`birthLon`.
+
+This is disambiguated **by construction**: a Wikidata P19 claim points at one
+specific place entity, never a bare name, the same way a Wikipedia bluelink
+does — unlike a free-text search, it cannot confuse two different real
+places that happen to share a name. This is why it exists: `"Montreuil,
+France"` is a genuine homonym — at least 5 distinct French communes share
+that exact name — and Nominatim's free-text search (below) confidently
+resolved it to the *wrong* one (Montreuil-sur-Mer, pop. ~1,900, apparently
+ranked above the real match by Nominatim's own "importance" score — likely
+its *Les Misérables* fame) instead of Montreuil, Seine-Saint-Denis (pop.
+~111,000, the actual Paris suburb every WC2026 player scraped with
+`birth_city='Montreuil'` was verified born in via their own individual P19
+claim, all independently pointing at the same Wikidata entity Q193370).
+Population wasn't a safe tiebreaker either — the *same* Montreuil-sur-Mer
+place shows population 1,893 as a "village" Nominatim result but 111,519 as
+a "municipality" result, depending on which OSM feature happens to come
+back. Per-person Wikidata coordinates sidestep the whole class of bug:
+`load.py` trusts one whenever it's present and never even queries Nominatim
+for that person.
+
+### Fallback: Nominatim free-text search (`geocode_birthplaces.py`)
+
+For the residual population with no usable P19 coordinate (an infobox-scrape
+`birth_city` with no Wikidata linkage at all is the main case),
+`geocode_birthplaces.py` resolves each unique `(birth_city, birth_country)`
+pair (cities are shared by many players — e.g. several Brazilians born in
+São Paulo — so pairs are deduplicated before any request goes out, and
+anyone who already has a Wikidata coordinate is skipped entirely — see
+`collect_city_country_pairs()`) to lat/lon via OpenStreetMap's Nominatim
+search API (no key needed), respecting Nominatim's usage policy: max 1
+request/second, an identifying `User-Agent`. Results are cached in
+`pipeline/geocode_cache.json` (committed, same "hits a live external API,
+not cheap to redo casually" reasoning as `discipline_stats_cache.json`)
+keyed by the exact `"City, Country"` query string, so a rerun only geocodes
+pairs it hasn't seen before — a pair Nominatim couldn't resolve is cached as
+`null` too, so it isn't retried every run either (pass `--retry-misses` to
+re-attempt just those, or `--refresh-cache` to force a full re-geocode of
+everything).
 
 Nominatim's own top-ranked "importance" match is sometimes confidently
-**wrong**, not just imprecise — a same-named administrative region (Italian
-provinces are usually named after their capital city) or an unrelated
-non-place feature (a railway station) can outrank the actual settlement.
-`_query_nominatim()` guards against both: a bounding-box containment check
-prefers a nested settlement candidate over a region-level top result only
-when its coordinates genuinely fall inside that region's own bbox (ruling
-out same-named-but-unrelated places elsewhere), and `featureType=settlement`
-excludes non-place results server-side. `FALLBACK_PATTERNS` separately
+**wrong**, not just imprecise — same-name homonym settlements (Montreuil,
+above) or a same-named administrative region (Italian provinces are usually
+named after their capital city) can outrank the actual match, and an
+unrelated non-place feature (a railway station) can too.
+`_query_nominatim()` guards against the region case: a bounding-box
+containment check prefers a nested settlement candidate over a region-level
+top result only when its coordinates genuinely fall inside that region's own
+bbox (ruling out same-named-but-unrelated places elsewhere), and
+`featureType=settlement` excludes non-place results server-side. There is no
+general automated defense against the homonym-settlement case (population
+isn't safe, as above) — that's what per-person Wikidata coordinates and
+`geocode_overrides.json` (below) are for. `FALLBACK_PATTERNS` separately
 retries with an administrative qualifier stripped ("12th arrondissement of
-Paris" → "Paris") when the direct query comes back empty. The residual
-minority — corrupted source strings, small villages/parishes Nominatim
-doesn't index under that name, or a case ambiguous enough to need actual
-research to identify — falls through to `pipeline/geocode_overrides.json`,
-a hand-verified, cited-source fallback (same only-fills-gaps pattern as
-`pipeline/birthplace_overrides.json`, one level down the pipeline). Its
-`_known_unresolved` section documents entries that were researched and
-deliberately left out rather than guessed — e.g. two persons whose scraped
-`birth_city` is literally their birth country's own name (no specific city
-was ever known). One entry ("Piranshahr Sugar Factory, Iran") turned out to
-be an upstream Wikidata P19 error rather than a hard-to-geocode place at
-all — Saman Ghoddos's own Wikipedia infobox/prose say Malmö, Sweden — and
-was fixed at the source instead, via `build_json.py`'s
-`BIRTH_CITY_OVERRIDES` (see "Squad-scrape data-quality notes" below), so it
-no longer appears here.
+Paris" → "Paris") when the direct query comes back empty.
 
-`load.py` looks each person's `(birth_city, birth-country display name)` up
-in that cache and gets-or-creates the matching `city` row (deduplicated by
-`(name, country)` — see the ER diagram above), so 30-odd Brazilians born in
-São Paulo all point at the same `city.id` instead of repeating its name and
-coordinates 30 times; `person.birth_city` is just an FK into it. A person
-with no scraped city gets no `city` row at all; a scraped city Nominatim
-couldn't geocode still gets a `city` row (so it isn't re-geocoded as if
-never seen), just with `lat`/`lon` left NULL rather than a bogus fallback
-location. `view_birthplace` joins person → city and selects only the rows
-with a resolved `lat`/`lon`, and `export.py`'s `build_birthplace()` turns
-that into `data/v2/birthplace.json`: `{pid: {city, lat, lon, population?,
-actualCityName?}}`, one entry per successfully geocoded person —
-best-effort, not every person is expected to be present, matching the "all
-players" table's own filtered/partial nature.
+`pipeline/geocode_overrides.json` is checked **first**, unconditionally,
+before any Nominatim query — a present entry always wins outright (same
+precedent as `pipeline/surname_overrides.json`, NOT
+`pipeline/birthplace_overrides.json`'s "only fills gaps" semantics), because
+Nominatim finding *a* result doesn't mean it found the *right* one. This is
+what actually lets an override fix a homonym-settlement case like Montreuil
+(a real, wrong result) — an override only consulted when Nominatim finds
+*nothing* could never correct that. The file's `_known_unresolved` section
+separately documents entries that were researched and deliberately left out
+rather than guessed — e.g. two persons whose scraped `birth_city` is
+literally their birth country's own name (no specific city was ever known).
+One entry ("Piranshahr Sugar Factory, Iran") turned out to be an upstream
+Wikidata P19 error rather than a hard-to-geocode place at all — Saman
+Ghoddos's own Wikipedia infobox/prose say Malmö, Sweden — and was fixed at
+the source instead, via `build_json.py`'s `BIRTH_CITY_OVERRIDES` (see
+"Squad-scrape data-quality notes" below), so it no longer appears here.
+
+### Loading into `city` (`load.py`)
+
+For each person, `load.py` prefers `birth_lat`/`birth_lon` (Wikidata,
+`city.source = 'wikidata'`) when present; otherwise it looks
+`(birth_city, birth-country display name)` up in `geocode_cache.json`
+(`city.source = 'nominatim'`, or `'override'` when that cache entry came from
+`geocode_overrides.json`). Either way it gets-or-creates the matching `city`
+row, deduplicated by **`(name, country, lat, lon)`** — not just
+`(name, country)` — so 30-odd Brazilians born in São Paulo (same name, same
+coordinate) still collapse onto one `city.id`, while two people who share a
+city NAME but resolve to different real coordinates (e.g. one Wikidata-sourced,
+one Nominatim-text-guessed, or two genuinely different homonyms) get separate
+rows instead of being silently forced onto one — this is the actual
+persistence-layer fix for the Montreuil-class bug (a bare `(name, country)`
+key made that impossible to represent at all: every "Montreuil, France"
+person was forced onto one row/one coordinate no matter what). `person.birth_city`
+is just an FK into `city`. A person with no scraped city gets no `city` row
+at all; a scraped city nothing could resolve still gets a `city` row (so it
+isn't re-resolved as if never seen), just with `lat`/`lon` left NULL rather
+than a bogus fallback location. `view_birthplace` joins person → city and
+selects only the rows with a resolved `lat`/`lon`, and `export.py`'s
+`build_birthplace()` turns that into `data/v2/birthplace.json`:
+`{pid: {city, lat, lon, population?, actualCityName?}}`, one entry per
+successfully resolved person — best-effort, not every person is expected to
+be present, matching the "all players" table's own filtered/partial nature.
+`city.source` itself is diagnostic-only (not exposed in `view_birthplace` or
+the exported JSON) — kept for a future audit, same precedent as
+`geocode_cache.json`'s own `addresstype` field.
 
 **Population** (`city.population`) is Nominatim's own OSM `population`
 extratag for the resolved place, read from the exact same query that

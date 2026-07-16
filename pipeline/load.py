@@ -199,10 +199,13 @@ def compute_discipline(fixtures, fixture_stats):
 def collect_persons(map_data):
     """One tuple per person, in map_data file order (this order feeds pid
     assignment for new persons, and export re-derives the file's sort
-    orders stably from it). surname/shirt_number/birth_city/position are
-    appended last so the existing (name, role, nation, birth, caps, title)
-    positions — the ones assign_pids() and the wiki-title pass key off —
-    stay unchanged."""
+    orders stably from it). surname/shirt_number/birth_city/position/
+    birth_lat/birth_lon are appended last so the existing (name, role,
+    nation, birth, caps, title) positions — the ones assign_pids() and the
+    wiki-title pass key off — stay unchanged. birth_lat/birth_lon (from
+    build_json.py, ultimately Wikidata's P19-target P625 coordinate — see
+    wc2026_birthplaces.py's enrich_birth_coordinates) are None unless that
+    coordinate was resolved and agreed with birthCity."""
     persons = []
     for rec in map_data["data"]:
         birth_iso2 = reg.resolve_iso2(rec["country"])
@@ -211,14 +214,16 @@ def collect_persons(map_data):
                             reg.resolve_iso2(p["nation"]), birth_iso2,
                             p["caps"], p["wikiTitle"],
                             p.get("surname") or p["name"], p.get("shirtNumber"),
-                            p.get("birthCity"), p.get("position")))
+                            p.get("birthCity"), p.get("position"),
+                            p.get("birthLat"), p.get("birthLon")))
     for nation, players in map_data["natives"].items():
         iso2 = reg.resolve_iso2(nation)
         for p in players:
             persons.append((p["name"], p.get("role", "player"),
                             iso2, iso2, p["caps"], p["wikiTitle"],
                             p.get("surname") or p["name"], p.get("shirtNumber"),
-                            p.get("birthCity"), p.get("position")))
+                            p.get("birthCity"), p.get("position"),
+                            p.get("birthLat"), p.get("birthLon")))
     return persons
 
 
@@ -246,7 +251,8 @@ def assign_pids(persons, af_ids_of):
     (iso2, name)), allocate fresh pids for new ones, rewrite the registry."""
     rows, af_to_pid, key_to_pid, next_pid = load_registry()
     pids, added = [], 0
-    for name, role, nation, birth, caps, title, surname, shirt_number, birth_city, position in persons:
+    for (name, role, nation, birth, caps, title, surname, shirt_number, birth_city, position,
+         _birth_lat, _birth_lon) in persons:
         af_ids = af_ids_of.get((nation, title), [])
         pid = next((af_to_pid[(role, a)] for a in af_ids if (role, a) in af_to_pid), None)
         if pid is None:
@@ -320,27 +326,47 @@ def main():
     pids, added = assign_pids(persons, af_ids_of)
 
     cid = reg.canonical_id
-    city_id_of = {}  # (name, country id) -> city.id, dedupes shared birth cities
+    # (name, country id, lat, lon) -> city.id. lat/lon are part of the dedup
+    # key, not just (name, country) — a bare (name, country) key would force
+    # every person sharing a city NAME into one row/one coordinate even when
+    # they're really different places (the Montreuil homonym bug this
+    # schema change fixes; see schema.sql's city comment).
+    city_id_of = {}
 
-    def get_or_create_city(name, country_id, geo):
-        key = (name, country_id)
+    def get_or_create_city(name, country_id, lat, lon, population, actual_name, source):
+        key = (name, country_id, lat, lon)
         if key not in city_id_of:
-            lat = geo["lat"] if geo else None
-            lon = geo["lon"] if geo else None
-            population = geo.get("population") if geo else None
-            actual_name = geo.get("actualCityName") if geo else None
             cur = db.execute(
-                "INSERT INTO city (name, country, lat, lon, population, actual_name) VALUES (?,?,?,?,?,?)",
-                (name, country_id, lat, lon, population, actual_name))
+                "INSERT INTO city (name, country, lat, lon, population, actual_name, source) "
+                "VALUES (?,?,?,?,?,?,?)",
+                (name, country_id, lat, lon, population, actual_name, source))
             city_id_of[key] = cur.lastrowid
         return city_id_of[key]
 
     af_used = 0
-    for pid, (name, role, nation, birth, caps, title, surname, shirt_number, birth_city, position) in zip(pids, persons):
+    for pid, (name, role, nation, birth, caps, title, surname, shirt_number, birth_city, position,
+              birth_lat, birth_lon) in zip(pids, persons):
         city_id = None
         if birth_city:
-            geo = geocode.get(f"{birth_city}, {reg.display_name(birth)}")
-            city_id = get_or_create_city(birth_city, cid(birth), geo)
+            if birth_lat is not None and birth_lon is not None:
+                # The person's own Wikidata P19 claim already disambiguates
+                # this exact place — trust it directly, skip the (city,
+                # country) TEXT-keyed geocode_cache.json lookup entirely
+                # (which can't tell apart two people sharing a city NAME but
+                # not the same actual place).
+                city_id = get_or_create_city(birth_city, cid(birth), birth_lat, birth_lon,
+                                              None, None, "wikidata")
+            else:
+                geo = geocode.get(f"{birth_city}, {reg.display_name(birth)}")
+                lat = geo["lat"] if geo else None
+                lon = geo["lon"] if geo else None
+                population = geo.get("population") if geo else None
+                actual_name = geo.get("actualCityName") if geo else None
+                source = None
+                if geo:
+                    source = "override" if geo.get("addresstype") == "override" else "nominatim"
+                city_id = get_or_create_city(birth_city, cid(birth), lat, lon,
+                                              population, actual_name, source)
         db.execute("INSERT INTO person VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                    (pid, name, role, cid(nation), cid(birth), caps,
                     title if title != name else None, surname, shirt_number, position, city_id))

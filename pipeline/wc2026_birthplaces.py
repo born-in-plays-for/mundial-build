@@ -227,6 +227,8 @@ def parse_wikipedia(soup: BeautifulSoup) -> list:
                 'birth_date':    get(idx_dob),
                 'birth_city':    city,
                 'birth_country': country,
+                'birth_lat':     '',
+                'birth_lon':     '',
                 'caps':          get(idx_caps),
                 'club':          get(idx_club),
             })
@@ -274,6 +276,8 @@ def parse_wikipedia_pandas(soup: BeautifulSoup) -> list:
                 'birth_date':    str(row.get(dob_col, '')) if dob_col else '',
                 'birth_city':    city,
                 'birth_country': country,
+                'birth_lat':     '',
+                'birth_lon':     '',
                 'caps':          str(row.get(caps_col, '')) if caps_col else '',
                 'club':          str(row.get(club_col, '')) if club_col else '',
             })
@@ -331,8 +335,30 @@ def get_wikidata_ids(titles: list) -> dict:
     return mapping
 
 
+_WKT_POINT = re.compile(r'^Point\(([-\d.]+)\s+([-\d.]+)\)$')
+
+
+def _parse_wkt_point(wkt: str):
+    """-> (lat, lon) floats from a Wikidata P625 WKT literal like
+    "Point(2.443 48.860)", or (None, None) if absent/unparseable. WKT order
+    is LONGITUDE then LATITUDE — the reverse of how this pipeline names its
+    own lat/lon pair everywhere else, easy to invert by mistake."""
+    m = _WKT_POINT.match(wkt) if wkt else None
+    if not m:
+        return (None, None)
+    lon, lat = float(m.group(1)), float(m.group(2))
+    return (lat, lon)
+
+
 def get_birthplaces(qids: list) -> dict:
-    """Interroge Wikidata SPARQL pour P19 (lieu de naissance) par lots de 200."""
+    """Interroge Wikidata SPARQL pour P19 (lieu de naissance) par lots de 200.
+    -> {qid: (city_label, country_label, lat, lon)}. lat/lon (from the birth
+    city entity's own P625 coordinate, when it has one) are the entity's
+    real coordinates — disambiguated by construction, since P19 points at
+    one specific place entity, never a bare name (see this module's
+    enrich_birth_coordinates, which is what actually uses them; a P19 claim
+    without a P625 coordinate still gets its city_label/country_label as
+    before, just no lat/lon)."""
     mapping = {}
     batch_size = 200
     total = len(qids)
@@ -340,11 +366,12 @@ def get_birthplaces(qids: list) -> dict:
         batch = qids[i:i+batch_size]
         values = " ".join(f"wd:{q}" for q in batch)
         query = f"""
-SELECT ?item ?birthCityLabel ?birthCountryLabel WHERE {{
+SELECT ?item ?birthCityLabel ?birthCountryLabel ?coord WHERE {{
   VALUES ?item {{ {values} }}
   OPTIONAL {{
     ?item wdt:P19 ?birthCity.
     OPTIONAL {{ ?birthCity wdt:P17 ?birthCountry. }}
+    OPTIONAL {{ ?birthCity wdt:P625 ?coord. }}
   }}
   SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
 }}
@@ -365,7 +392,8 @@ SELECT ?item ?birthCityLabel ?birthCountryLabel WHERE {{
                     city = ""
                 if country.startswith("Q") and country[1:].isdigit():
                     country = ""
-                mapping[qid] = (city, country)
+                lat, lon = _parse_wkt_point(row.get("coord", {}).get("value"))
+                mapping[qid] = (city, country, lat, lon)
         except Exception as e:
             print(f"   ⚠ Wikidata SPARQL (lot {i//batch_size + 1}) : {e}")
         done = min(i + batch_size, total)
@@ -375,24 +403,11 @@ SELECT ?item ?birthCityLabel ?birthCountryLabel WHERE {{
     return mapping
 
 
-def enrich_with_wikidata(players: list) -> None:
-    """Complète birth_city / birth_country via Wikidata pour les joueurs sans lieu."""
-    need_enrichment = [p for p in players
-                       if p['wiki_title'] and (not p['birth_city'] or p['birth_city'] == p['birth_country'])]
-    if not need_enrichment:
-        return
-
-    titles = list({p['wiki_title'] for p in need_enrichment})
-    print(f"\n🌐 Enrichissement Wikidata pour {len(need_enrichment)} joueurs "
-          f"({len(titles)} pages uniques) ...")
-
-    title_to_qid = get_wikidata_ids(titles)
-    print(f"   ✓ {len(title_to_qid)} QIDs trouvés")
-
-    qids = list(set(title_to_qid.values()))
-    qid_to_birth = get_birthplaces(qids)
-    print(f"   ✓ {len(qid_to_birth)} lieux de naissance récupérés")
-
+def enrich_with_wikidata(players: list, title_to_qid: dict, qid_to_birth: dict) -> None:
+    """Complète birth_city / birth_country via Wikidata pour les joueurs sans
+    lieu, à partir des mappings déjà résolus pour TOUS les joueurs (voir
+    main() — un seul aller-retour SPARQL, réutilisé aussi par
+    enrich_birth_coordinates)."""
     enriched = 0
     for p in players:
         if not p['wiki_title']:
@@ -402,7 +417,7 @@ def enrich_with_wikidata(players: list) -> None:
         qid = title_to_qid.get(p['wiki_title'])
         if not qid:
             continue
-        city, country = qid_to_birth.get(qid, ('', ''))
+        city, country, _lat, _lon = qid_to_birth.get(qid, ('', '', None, None))
         # Wikidata's P19 (place of birth) sometimes points directly at a
         # country entity rather than a city (no specific city recorded) —
         # city == country in that case. Still record the country: it's true
@@ -414,7 +429,40 @@ def enrich_with_wikidata(players: list) -> None:
             if city != country:
                 p['birth_city'] = city
             enriched += 1
-    print(f"   ✓ {enriched} joueurs enrichis")
+    print(f"   ✓ {enriched} joueurs enrichis via Wikidata")
+
+
+def enrich_birth_coordinates(players: list, title_to_qid: dict, qid_to_birth: dict) -> None:
+    """Attache birth_lat/birth_lon (coordonnées P625 de l'entité-lieu P19
+    elle-même — voir get_birthplaces) à chaque joueur, UNIQUEMENT quand le
+    label Wikidata du lieu correspond (insensible à la casse) au birth_city
+    FINAL du joueur (déjà résolu par enrich_with_wikidata /
+    enrich_with_wikipedia_pages / apply_manual_overrides à ce stade — donc
+    appelé après ces étapes). Un désaccord (ex : infobox obsolète vs
+    revendication Wikidata corrigée) est signalé plutôt que deviné — les
+    coordonnées restent vides plutôt que d'associer un nom et des
+    coordonnées incohérents, même risque que le bug d'homonymie
+    (Montreuil-sur-Mer vs Montreuil Seine-Saint-Denis) que ce champ corrige."""
+    attached, mismatched = 0, 0
+    for p in players:
+        if not p['wiki_title'] or not p['birth_city']:
+            continue
+        qid = title_to_qid.get(p['wiki_title'])
+        if not qid:
+            continue
+        city, _country, lat, lon = qid_to_birth.get(qid, ('', '', None, None))
+        if lat is None or lon is None or not city:
+            continue
+        if city.strip().lower() != p['birth_city'].strip().lower():
+            print(f"   ⚠ {p['player']} ({p['nation']}) : birth_city={p['birth_city']!r} "
+                  f"mais Wikidata P19 pointe vers {city!r} — coordonnées ignorées, "
+                  f"vérifier à la main", file=sys.stderr)
+            mismatched += 1
+            continue
+        p['birth_lat'], p['birth_lon'] = lat, lon
+        attached += 1
+    print(f"   ✓ {attached} joueur(s) avec coordonnées Wikidata P19 "
+          f"({mismatched} désaccord(s) signalé(s))")
 
 
 # ── Enrichissement Wikipedia (pages individuelles) ────────────────────────────
@@ -597,14 +645,36 @@ def main():
         print("\n❌ Aucun joueur extrait. La structure de la page a peut-être changé.")
         sys.exit(1)
 
-    # 3. Enrichir via Wikidata, puis FBref pour les joueurs restants
-    enrich_with_wikidata(players)
+    # 3. Résoudre les QIDs Wikidata pour TOUS les joueurs ayant un wiki_title
+    #    (pas seulement ceux sans lieu de naissance — enrich_birth_coordinates
+    #    ci-dessous en a besoin même pour un joueur dont le birth_city vient
+    #    déjà de la table des effectifs Wikipedia), un seul aller-retour
+    #    SPARQL réutilisé par les deux enrichissements ci-dessous.
+    titled = [p for p in players if p['wiki_title']]
+    print(f"\n🌐 Résolution Wikidata pour {len(titled)} joueurs "
+          f"({len({p['wiki_title'] for p in titled})} pages uniques) ...")
+    title_to_qid = get_wikidata_ids(list({p['wiki_title'] for p in titled}))
+    print(f"   ✓ {len(title_to_qid)} QIDs trouvés")
+    qid_to_birth = get_birthplaces(list(set(title_to_qid.values())))
+    print(f"   ✓ {len(qid_to_birth)} lieux de naissance récupérés")
+
+    # 3a. Compléter birth_city / birth_country manquants via Wikidata, puis
+    #     Wikipedia (pages individuelles) pour les joueurs restants
+    enrich_with_wikidata(players, title_to_qid, qid_to_birth)
     enrich_with_wikipedia_pages(players)
 
     # 3b. Overrides manuelles (lieux introuvables ou erronés côté Wikidata/Wikipedia)
     apply_manual_overrides(players)
 
-    # 3c. Nom de famille triable (dérivé de 'player', pas de FIFA — voir surname_overrides.json)
+    # 3c. Coordonnées P625 de l'entité-lieu P19 elle-même (voir
+    #     enrich_birth_coordinates) — APRÈS que birth_city soit définitif,
+    #     pour toutes les sources (table Wikipedia, Wikidata, infobox,
+    #     overrides manuelles) ; évite le bug d'homonymie (une même
+    #     birth_city TEXTE peut désigner des lieux réels différents — voir
+    #     le cas Montreuil documenté dans pipeline/README.md).
+    enrich_birth_coordinates(players, title_to_qid, qid_to_birth)
+
+    # 3d. Nom de famille triable (dérivé de 'player', pas de FIFA — voir surname_overrides.json)
     for p in players:
         p['surname'] = compute_surname(p['player'])
     apply_surname_overrides(players)
