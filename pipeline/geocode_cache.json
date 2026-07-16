@@ -141,6 +141,13 @@
       "population": "459310",
       "actualCityName": "Ahome"
     },
+    "Ahome, Mexico": {
+      "city": "Ahome",
+      "lat": 25.9240491,
+      "lon": -109.2058344,
+      "addresstype": "county",
+      "population": "459310"
+    },
     "Aix-les-Bains, France": {
       "city": "Aix-les-Bains",
       "lat": 45.6886292,
@@ -448,6 +455,13 @@
       "addresstype": "town",
       "population": "45382",
       "actualCityName": "Autlán de Navarro"
+    },
+    "Autlán de Navarro, Mexico": {
+      "city": "Autlán de Navarro",
+      "lat": 19.7703379,
+      "lon": -104.3642747,
+      "addresstype": "town",
+      "population": "45382"
     },
     "Aveiro, Portugal": {
       "city": "Aveiro",
@@ -990,6 +1004,13 @@
       "population": "132358",
       "actualCityName": "Bærum"
     },
+    "Bærum, Norway": {
+      "city": "Bærum",
+      "lat": 59.9289639,
+      "lon": 10.4997108,
+      "addresstype": "municipality",
+      "population": "132358"
+    },
     "Béchar, Algeria": {
       "city": "Béchar",
       "lat": 31.616312,
@@ -1363,6 +1384,13 @@
       "addresstype": "town",
       "population": "6857",
       "actualCityName": "Coyuca de Catalán"
+    },
+    "Coyuca de Catalán, Mexico": {
+      "city": "Coyuca de Catalán",
+      "lat": 18.3253222,
+      "lon": -100.6995289,
+      "addresstype": "town",
+      "population": "6857"
     },
     "Creil, France": {
       "city": "Creil",
@@ -1778,6 +1806,13 @@
       "population": null,
       "actualCityName": "Fetakgomo Local"
     },
+    "Fetakgomo Local, South Africa": {
+      "city": "Fetakgomo Local",
+      "lat": -24.41531,
+      "lon": 29.8550226,
+      "addresstype": "city",
+      "population": null
+    },
     "Fez, Morocco": {
       "city": "Fez",
       "lat": 34.0346534,
@@ -1799,6 +1834,13 @@
       "addresstype": "municipality",
       "population": "9329",
       "actualCityName": "Flekkefjord"
+    },
+    "Flekkefjord, Norway": {
+      "city": "Flekkefjord",
+      "lat": 58.2949357,
+      "lon": 6.6129626,
+      "addresstype": "municipality",
+      "population": "9329"
     },
     "Florida, United States": {
       "city": "Florida",
@@ -2525,6 +2567,13 @@
       "population": null,
       "actualCityName": "Karamürsel"
     },
+    "Karamürsel, Turkey": {
+      "city": "Karamürsel",
+      "lat": 40.6912501,
+      "lon": 29.6165859,
+      "addresstype": "town",
+      "population": null
+    },
     "Karlovy Vary, Czech Republic": {
       "city": "Karlovy Vary",
       "lat": 50.2306216,
@@ -2686,6 +2735,13 @@
       "addresstype": "municipality",
       "population": "18109",
       "actualCityName": "Kongsvinger"
+    },
+    "Kongsvinger, Norway": {
+      "city": "Kongsvinger",
+      "lat": 60.1899109,
+      "lon": 12.2160367,
+      "addresstype": "municipality",
+      "population": "18109"
     },
     "Koppigen, Switzerland": {
       "city": "Koppigen",
@@ -3291,6 +3347,13 @@
       "population": "346366",
       "actualCityName": "Meram"
     },
+    "Meram, Turkey": {
+      "city": "Meram",
+      "lat": 37.8679527,
+      "lon": 32.4946514,
+      "addresstype": "town",
+      "population": "346366"
+    },
     "Mexico City, Mexico": {
       "city": "Mexico City",
       "lat": 19.4326296,
@@ -3382,6 +3445,13 @@
       "addresstype": "municipality",
       "population": "33163",
       "actualCityName": "Molde"
+    },
+    "Molde, Norway": {
+      "city": "Molde",
+      "lat": 62.6016257,
+      "lon": 8.1386208,
+      "addresstype": "municipality",
+      "population": "33163"
     },
     "Monterrey, Mexico": {
       "city": "Monterrey",
@@ -4584,6 +4654,13 @@
       "population": "84908",
       "actualCityName": "Sandnes"
     },
+    "Sandnes, Norway": {
+      "city": "Sandnes",
+      "lat": 58.9831321,
+      "lon": 6.394641,
+      "addresstype": "municipality",
+      "population": "84908"
+    },
     "Santa Cruz de Tenerife, Spain": {
       "city": "Santa Cruz de Tenerife",
       "lat": 28.467178,
@@ -4868,6 +4945,7 @@
       "addresstype": "override",
       "actualCityName": "Spånga-Tensta"
     },
+    "Spånga-Tensta, Sweden": null,
     "St. Albert, Canada": {
       "city": "St. Albert",
       "lat": 53.633239,
@@ -5114,6 +5192,13 @@
       "population": null,
       "actualCityName": "Tepeji del Río de Ocampo"
     },
+    "Tepeji del Río de Ocampo, Mexico": {
+      "city": "Tepeji del Río de Ocampo",
+      "lat": 19.8936827,
+      "lon": -99.3487182,
+      "addresstype": "county",
+      "population": null
+    },
     "Terrassa, Spain": {
       "city": "Terrassa",
       "lat": 41.5629623,
@@ -5198,6 +5283,13 @@
       "addresstype": "county",
       "population": null,
       "actualCityName": "Tlalnepantla de Baz"
+    },
+    "Tlalnepantla de Baz, Mexico": {
+      "city": "Tlalnepantla de Baz",
+      "lat": 19.5464902,
+      "lon": -99.1899352,
+      "addresstype": "county",
+      "population": null
     },
     "Tokyo, Japan": {
       "city": "Tokyo",
@@ -5290,6 +5382,13 @@
       "addresstype": "municipality",
       "population": "79421",
       "actualCityName": "Tromsø"
+    },
+    "Tromsø, Norway": {
+      "city": "Tromsø",
+      "lat": 69.6516345,
+      "lon": 18.9558585,
+      "addresstype": "municipality",
+      "population": "79421"
     },
     "Trondheim, Norway": {
       "city": "Trondheim",
@@ -5529,6 +5628,13 @@
       "population": "11131",
       "actualCityName": "Volda"
     },
+    "Volda, Norway": {
+      "city": "Volda",
+      "lat": 62.0803798,
+      "lon": 6.2744108,
+      "addresstype": "municipality",
+      "population": "11131"
+    },
     "Vysoké Mýto, Czech Republic": {
       "city": "Vysoké Mýto",
       "lat": 49.9534727,
@@ -5697,6 +5803,13 @@
       "population": "657176",
       "actualCityName": "Yıldırım"
     },
+    "Yıldırım, Turkey": {
+      "city": "Yıldırım",
+      "lat": 40.1866362,
+      "lon": 29.128191,
+      "addresstype": "town",
+      "population": "657176"
+    },
     "Zaandam, Netherlands": {
       "city": "Zaandam",
       "lat": 52.4424926,
@@ -5746,6 +5859,13 @@
       "addresstype": "county",
       "population": null,
       "actualCityName": "Zapotlán el Grande"
+    },
+    "Zapotlán el Grande, Mexico": {
+      "city": "Zapotlán el Grande",
+      "lat": 19.6973465,
+      "lon": -103.510648,
+      "addresstype": "county",
+      "population": null
     },
     "Zarafshon, Uzbekistan": {
       "city": "Zarafshon",

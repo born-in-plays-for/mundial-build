@@ -357,12 +357,38 @@ per person (see `city.source`, below):
 `wc2026_birthplaces.py`'s `get_birthplaces()` SPARQL query (also queried for
 the `birth_city`/`birth_country` text labels above) additionally selects the
 P19 *target entity's own* `P625` coordinate. `enrich_birth_coordinates()`
-attaches it as `birth_lat`/`birth_lon` to every player whose Wikidata city
-label case-insensitively matches their final `birth_city` (run after all
-text sources — squads table, Wikidata, infobox fallback, manual overrides —
-have already settled it; a mismatch is printed and left unresolved rather
-than pairing a name with the wrong coordinate). `build_json.py` carries these
-through as `birthLat`/`birthLon`.
+attaches it as `birth_lat`/`birth_lon` (run after all text sources — squads
+table, Wikidata, infobox fallback, manual overrides — have already settled
+`birth_city`), aiming for a coordinate that's IDENTICAL for every person who
+*displays* under the same city name, not just individually correct for each
+person:
+
+1. A person's own P19 claim is trusted directly only when its place label
+   matches their **canonical** city name (`birth_city` with any
+   `FALLBACK_PATTERNS` admin qualifier stripped — "Lyon" for both "Lyon" and
+   "3rd arrondissement of Lyon"). Comparing against the raw `birth_city`
+   instead (an earlier version did) accepts a person's own P19 pointing at
+   the *specific* sub-city entity at face value — individually correct
+   (Wikidata often has its own distinct, genuinely more precise QID per
+   arrondissement/district/municipality), but means several players who all
+   display as e.g. "Lyon, France" (via `actualCityName` rollup) end up
+   scattered across visibly different map points for what's shown as one
+   place — the exact bug this two-step process exists to prevent.
+2. Anyone whose own claim doesn't match the canonical name — because it
+   points at that finer sub-city entity, not a genuine data disagreement —
+   instead **adopts** whichever coordinate some *other* person with the
+   exact plain canonical name already resolved directly in this same run,
+   if one exists (e.g. Lyon-born Houssem Aouar's own direct P19→"Lyon"
+   match backfills the coordinate for Farès Chaïbi, whose own P19 points at
+   "3rd arrondissement of Lyon" specifically). Only the residual case — no
+   canonical sibling anywhere in the current roster — falls through to
+   Nominatim, itself now called with this same canonical name (see below),
+   so multiple such residual people still converge on each other too. A
+   genuine disagreement (the Wikidata label matches neither the raw nor the
+   canonical `birth_city` — e.g. a P19 with only country-level granularity)
+   is printed and left unresolved rather than guessed, same as before.
+
+`build_json.py` carries the result through as `birthLat`/`birthLon`.
 
 This is disambiguated **by construction**: a Wikidata P19 claim points at one
 specific place entity, never a bare name, the same way a Wikipedia bluelink
@@ -387,12 +413,17 @@ for that person.
 
 For the residual population with no usable P19 coordinate (an infobox-scrape
 `birth_city` with no Wikidata linkage at all is the main case),
-`geocode_birthplaces.py` resolves each unique `(birth_city, birth_country)`
-pair (cities are shared by many players — e.g. several Brazilians born in
-São Paulo — so pairs are deduplicated before any request goes out, and
-anyone who already has a Wikidata coordinate is skipped entirely — see
-`collect_city_country_pairs()`) to lat/lon via OpenStreetMap's Nominatim
-search API (no key needed), respecting Nominatim's usage policy: max 1
+`geocode_birthplaces.py` resolves each unique `(city, birth_country)` pair
+to lat/lon via OpenStreetMap's Nominatim search API (no key needed). `city`
+here is already the CANONICAL form (admin qualifier stripped, same
+canonical form `enrich_birth_coordinates()` above uses) — see
+`collect_city_country_pairs()` — so an admin-qualified person falling
+through to Nominatim still converges with any sibling sharing that same
+canonical name, rather than resolving independently at its own sub-city
+granularity. Pairs are deduplicated before any request goes out (cities are
+shared by many players — e.g. several Brazilians born in São Paulo), and
+anyone who already has a Wikidata coordinate is skipped entirely. Nominatim
+itself is queried respecting its usage policy: max 1
 request/second, an identifying `User-Agent`. Results are cached in
 `pipeline/geocode_cache.json` (committed, same "hits a live external API,
 not cheap to redo casually" reasoning as `discipline_stats_cache.json`)
@@ -439,9 +470,13 @@ the source instead, via `build_json.py`'s `BIRTH_CITY_OVERRIDES` (see
 
 For each person, `load.py` prefers `birth_lat`/`birth_lon` (Wikidata,
 `city.source = 'wikidata'`) when present; otherwise it looks
-`(birth_city, birth-country display name)` up in `geocode_cache.json`
-(`city.source = 'nominatim'`, or `'override'` when that cache entry came from
-`geocode_overrides.json`). Either way it gets-or-creates the matching `city`
+`(actual_name or birth_city, birth-country display name)` up in
+`geocode_cache.json` — the same CANONICAL key `geocode_birthplaces.py`
+cached it under — (`city.source = 'nominatim'`, or `'override'` when that
+cache entry came from `geocode_overrides.json`). `actual_name` itself
+(`strip_admin_qualifier(birth_city)`) is computed once, uniformly, before
+this branch — see its own comment further down for why that single-source
+design matters. Either way it gets-or-creates the matching `city`
 row, deduplicated by **`(name, country, lat, lon)`** — not just
 `(name, country)` — so 30-odd Brazilians born in São Paulo (same name, same
 coordinate) still collapse onto one `city.id`, while two people who share a

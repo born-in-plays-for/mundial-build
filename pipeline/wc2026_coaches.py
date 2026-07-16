@@ -28,7 +28,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 import country_registry as reg
-from wc2026_birthplaces import compute_surname, _parse_wkt_point, wiki_title_from_href
+from wc2026_birthplaces import compute_surname, _parse_wkt_point, wiki_title_from_href, enrich_birth_coordinates
 
 # Hand-corrected surnames for coaches nameparser's "Firstname Surname"
 # assumption gets wrong (e.g. Korean family-name-first order), keyed by
@@ -436,32 +436,10 @@ def enrich_birthplaces(coaches: list) -> None:
             time.sleep(0.5)
         print(f"\n   ✓ {fb} coaches enriched via Wikipedia pages")
 
-    # Coordinates (P625 of the P19 target entity itself) — ONLY when the
-    # Wikidata city label matches the coach's now-final birth_city, same
-    # "surface a mismatch, don't guess" rule as
-    # wc2026_birthplaces.py's enrich_birth_coordinates (which this mirrors;
-    # not imported directly since it prints p['player'], coaches have
-    # 'coach' instead).
-    attached, mismatched = 0, 0
-    for c in coaches:
-        if not c['wiki_title'] or not c['birth_city']:
-            continue
-        qid = title_to_qid.get(c['wiki_title'])
-        if not qid:
-            continue
-        city, _country, lat, lon = qid_to_birth.get(qid, ('', '', None, None))
-        if lat is None or lon is None or not city:
-            continue
-        if city.strip().lower() != c['birth_city'].strip().lower():
-            print(f"   ⚠ {c['coach']} ({c['nation']}) : birth_city={c['birth_city']!r} "
-                  f"mais Wikidata P19 pointe vers {city!r} — coordonnées ignorées, "
-                  f"vérifier à la main", file=sys.stderr)
-            mismatched += 1
-            continue
-        c['birth_lat'], c['birth_lon'] = lat, lon
-        attached += 1
-    print(f"   ✓ {attached} coach(es) avec coordonnées Wikidata P19 "
-          f"({mismatched} désaccord(s) signalé(s))")
+    # Coordinates (P625 of the P19 target entity itself), converging every
+    # coach displayed under the same city name onto one shared point — see
+    # wc2026_birthplaces.py's enrich_birth_coordinates docstring.
+    enrich_birth_coordinates(coaches, title_to_qid, qid_to_birth, name_key='coach')
 
     # Resolve "United Kingdom" → specific home nation
     resolved = 0

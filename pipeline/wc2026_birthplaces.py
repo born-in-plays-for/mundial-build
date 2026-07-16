@@ -32,6 +32,7 @@ from nameparser import HumanName
 from nameparser.config import CONSTANTS as NAME_CONSTANTS
 
 import country_registry as reg
+from geocode_birthplaces import strip_admin_qualifier
 
 # "Abu"/"Al"/"El" are recognized as surname prefixes by nameparser out of the
 # box; "Ben"/"Bani" (Arabic patronymic prefixes, e.g. "Anis Ben Slimane" ->
@@ -445,19 +446,53 @@ def enrich_with_wikidata(players: list, title_to_qid: dict, qid_to_birth: dict) 
     print(f"   ✓ {enriched} joueurs enrichis via Wikidata")
 
 
-def enrich_birth_coordinates(players: list, title_to_qid: dict, qid_to_birth: dict) -> None:
+def enrich_birth_coordinates(persons: list, title_to_qid: dict, qid_to_birth: dict,
+                              name_key: str = 'player') -> None:
     """Attache birth_lat/birth_lon (coordonnées P625 de l'entité-lieu P19
-    elle-même — voir get_birthplaces) à chaque joueur, UNIQUEMENT quand le
-    label Wikidata du lieu correspond (insensible à la casse) au birth_city
-    FINAL du joueur (déjà résolu par enrich_with_wikidata /
-    enrich_with_wikipedia_pages / apply_manual_overrides à ce stade — donc
-    appelé après ces étapes). Un désaccord (ex : infobox obsolète vs
-    revendication Wikidata corrigée) est signalé plutôt que deviné — les
-    coordonnées restent vides plutôt que d'associer un nom et des
-    coordonnées incohérents, même risque que le bug d'homonymie
-    (Montreuil-sur-Mer vs Montreuil Seine-Saint-Denis) que ce champ corrige."""
-    attached, mismatched = 0, 0
-    for p in players:
+    elle-même — voir get_birthplaces) à chaque personne (joueur ou coach —
+    name_key donne le champ à citer dans les messages, 'player' ou
+    'coach'), en visant une coordonnée IDENTIQUE pour tout le monde
+    affiché sous le même nom de ville — pas seulement individuellement
+    correcte pour chaque personne.
+
+    Deux passes :
+
+    1. La revendication P19 d'une personne n'est retenue directement que
+       si le label Wikidata du lieu correspond à son nom de ville
+       CANONIQUE (birth_city débarrassé d'un éventuel qualificatif
+       administratif via strip_admin_qualifier — "Lyon" aussi bien pour
+       "Lyon" que pour "3rd arrondissement of Lyon"). Comparer au
+       birth_city BRUT à la place (comme une version antérieure de cette
+       fonction le faisait) accepte telle quelle la revendication P19 d'une
+       personne qui pointe vers l'entité infra-urbaine PRÉCISE (un lieu
+       réel, valide, souvent doté de son propre QID Wikidata plus précis
+       que la ville) — individuellement correct, mais deux personnes
+       affichées toutes deux "Lyon, France" (l'une via le repli
+       actualCityName) se retrouvent alors avec des points de carte
+       visiblement différents pour ce qui est, à l'affichage, le même
+       lieu. Chaque correspondance canonique directe alimente
+       canonical_coords, un dict {(nom canonique, birth_country): (lat,
+       lon)}.
+    2. Toute personne dont la revendication ne correspond PAS au nom
+       canonique — parce qu'elle pointe justement vers cette entité
+       infra-urbaine plus précise, pas une vraie divergence de donnée —
+       ADOPTE plutôt la coordonnée qu'une AUTRE personne au nom de ville
+       canonique exact a déjà résolue dans ce même run, si elle existe :
+       ça garantit que tout le monde sous un même nom canonique converge
+       vers un seul point. Reste sans coordonnée seulement si aucun
+       homonyme canonique n'existe dans l'effectif courant — retombe alors
+       sur geocode_birthplaces.py (Nominatim), lui-même appelé avec ce même
+       nom canonique (voir collect_city_country_pairs), donc au moins tous
+       les résidus de ce type convergent aussi entre eux.
+
+    Une vraie divergence (le label Wikidata ne correspond ni au birth_city
+    brut ni au canonique — ex: P19 seulement à granularité pays) est
+    signalée et laissée sans coordonnée plutôt que devinée, même logique
+    qu'avant."""
+    canonical_coords = {}   # (canonical.lower(), birth_country) -> (lat, lon)
+    needs_canonical = []    # personnes dont la revendication pointe vers une entité infra-urbaine précise
+    attached = 0
+    for p in persons:
         if not p['wiki_title'] or not p['birth_city']:
             continue
         qid = title_to_qid.get(p['wiki_title'])
@@ -466,16 +501,35 @@ def enrich_birth_coordinates(players: list, title_to_qid: dict, qid_to_birth: di
         city, _country, lat, lon = qid_to_birth.get(qid, ('', '', None, None))
         if lat is None or lon is None or not city:
             continue
-        if city.strip().lower() != p['birth_city'].strip().lower():
-            print(f"   ⚠ {p['player']} ({p['nation']}) : birth_city={p['birth_city']!r} "
+        canonical = strip_admin_qualifier(p['birth_city']) or p['birth_city']
+        if city.strip().lower() == canonical.strip().lower():
+            p['birth_lat'], p['birth_lon'] = lat, lon
+            canonical_coords.setdefault((canonical.strip().lower(), p['birth_country']), (lat, lon))
+            attached += 1
+        elif strip_admin_qualifier(p['birth_city']) is not None:
+            needs_canonical.append(p)
+        else:
+            print(f"   ⚠ {p[name_key]} ({p['nation']}) : birth_city={p['birth_city']!r} "
                   f"mais Wikidata P19 pointe vers {city!r} — coordonnées ignorées, "
                   f"vérifier à la main", file=sys.stderr)
-            mismatched += 1
-            continue
-        p['birth_lat'], p['birth_lon'] = lat, lon
-        attached += 1
-    print(f"   ✓ {attached} joueur(s) avec coordonnées Wikidata P19 "
-          f"({mismatched} désaccord(s) signalé(s))")
+
+    from_sibling, still_missing = 0, []
+    for p in needs_canonical:
+        canonical = strip_admin_qualifier(p['birth_city'])
+        key = (canonical.strip().lower(), p['birth_country'])
+        if key in canonical_coords:
+            p['birth_lat'], p['birth_lon'] = canonical_coords[key]
+            from_sibling += 1
+        else:
+            still_missing.append(p)
+    if still_missing:
+        details = ', '.join(f"{p[name_key]} ({strip_admin_qualifier(p['birth_city'])})"
+                             for p in still_missing)
+        print(f"   ℹ {len(still_missing)} personne(s) à granularité infra-urbaine sans "
+              f"homonyme canonique dans l'effectif actuel — retombent sur Nominatim: {details}")
+
+    print(f"   ✓ {attached} avec coordonnées Wikidata P19 directes, "
+          f"{from_sibling} via un homonyme canonique dans l'effectif")
 
 
 # ── Enrichissement Wikipedia (pages individuelles) ────────────────────────────

@@ -371,7 +371,14 @@ def main():
                 city_id = get_or_create_city(birth_city, cid(birth), birth_lat, birth_lon,
                                               None, actual_name, "wikidata")
             else:
-                geo = geocode.get(f"{birth_city}, {reg.display_name(birth)}")
+                # geocode_cache.json is keyed by the CANONICAL (stripped)
+                # form too — see geocode_birthplaces.py's
+                # collect_city_country_pairs — so every person needing
+                # Nominatim under the same parent city name converges on
+                # the same cache entry/coordinate, same reasoning as the
+                # Wikidata branch above.
+                canonical = actual_name or birth_city
+                geo = geocode.get(f"{canonical}, {reg.display_name(birth)}")
                 lat = geo["lat"] if geo else None
                 lon = geo["lon"] if geo else None
                 population = geo.get("population") if geo else None

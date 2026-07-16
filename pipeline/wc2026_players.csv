@@ -25,23 +25,23 @@ Czech Republic,,23,1 GK,Lukáš Horníček,13 July 2002,Vysoké Mýto,Czech Repu
 Czech Republic,,24,3 MF,Alexandr Sojka,2 April 2003,Klatovy,Czech Republic,49.395625338,13.295088913,2,Viktoria Plzeň,Sojka
 Czech Republic,,25,3 MF,Hugo Sochůrek,7 June 2008,Tábor,Czech Republic,49.414485338,14.657835974,1,Sparta Prague,Sochůrek
 Czech Republic,,26,4 FW,Denis Višinský,21 March 2003,Mělník,Czech Republic,50.350570679,14.474193495,2,Viktoria Plzeň,Višinský
-Mexico,,1,1 GK,Raúl Rangel,25 February 2000,Zapotlán el Grande Municipality,Mexico,19.7,-103.516666666,14,Guadalajara,Rangel
+Mexico,,1,1 GK,Raúl Rangel,25 February 2000,Zapotlán el Grande Municipality,Mexico,,,14,Guadalajara,Rangel
 Mexico,,2,2 DF,Jorge Sánchez,10 December 1997,Torreón,Mexico,25.54389,-103.41898,59,PAOK,Sánchez
 Mexico,,3,2 DF,César Montes,24 February 1997,Hermosillo,Mexico,29.075,-110.958333333,67,Lokomotiv Moscow,Montes
-Mexico,,4,2 DF,Edson Álvarez,24 October 1997,Tlalnepantla de Baz Municipality,Mexico,19.54,-99.166666666,98,Fenerbahçe,Álvarez
+Mexico,,4,2 DF,Edson Álvarez,24 October 1997,Tlalnepantla de Baz Municipality,Mexico,,,98,Fenerbahçe,Álvarez
 Mexico,,5,2 DF,Johan Vásquez,22 October 1998,Navojoa,Mexico,27.081666666,-109.445555555,46,Genoa,Vásquez
 Mexico,,6,3 MF,Érik Lira,8 May 2000,Cuauhtémoc,Mexico,19.443055555,-99.144722222,25,Cruz Azul,Lira
-Mexico,,7,3 MF,Luis Romo,5 June 1995,Ahome Municipality,Mexico,25.833333333,-109.05,63,Guadalajara,Romo
+Mexico,,7,3 MF,Luis Romo,5 June 1995,Ahome Municipality,Mexico,,,63,Guadalajara,Romo
 Mexico,,8,3 MF,Álvaro Fidalgo,9 April 1997,Oviedo,Spain,43.3625,-5.850277777,4,Real Betis,Fidalgo
-Mexico,,9,4 FW,Raúl Jiménez,5 May 1991,Tepeji del Río de Ocampo Municipality,Mexico,19.905277777,-99.341666666,124,Fulham,Jiménez
+Mexico,,9,4 FW,Raúl Jiménez,5 May 1991,Tepeji del Río de Ocampo Municipality,Mexico,,,124,Fulham,Jiménez
 Mexico,,10,4 FW,Alexis Vega,25 November 1997,Cuauhtémoc,Mexico,19.443055555,-99.144722222,52,Toluca,Vega
 Mexico,,11,4 FW,Santiago Giménez,18 April 2001,Buenos Aires,Argentina,-34.599722222,-58.381944444,47,Milan,Giménez
 Mexico,,12,1 GK,Carlos Acevedo,19 April 1996,Torreón,Mexico,25.54389,-103.41898,7,Santos Laguna,Acevedo
 Mexico,,13,1 GK,Guillermo Ochoa,13 July 1985,Guadalajara,Mexico,20.676388888,-103.342222222,152,AEL Limassol,Ochoa
 Mexico,,14,4 FW,Armando González,20 April 2003,Celaya,Mexico,20.528888888,-100.815,7,Guadalajara,González
-Mexico,,15,2 DF,Israel Reyes,23 May 2000,Autlán de Navarro Municipality,Mexico,19.75,-104.3,34,América,Reyes
+Mexico,,15,2 DF,Israel Reyes,23 May 2000,Autlán de Navarro Municipality,Mexico,,,34,América,Reyes
 Mexico,,16,4 FW,Julián Quiñones,24 March 1997,Magüí Payán,Colombia,1.765833333,-78.182777777,22,Al-Qadsiah,Quiñones
-Mexico,,17,3 MF,Orbelín Pineda,24 March 1996,Coyuca de Catalán Municipality,Mexico,18.0888,-100.9149,92,AEK Athens,Pineda
+Mexico,,17,3 MF,Orbelín Pineda,24 March 1996,Coyuca de Catalán Municipality,Mexico,,,92,AEK Athens,Pineda
 Mexico,,18,3 MF,Obed Vargas,5 August 2005,Anchorage,United States,61.216666666,-149.893611111,6,Atlético Madrid,Vargas
 Mexico,,19,3 MF,Gilberto Mora,14 October 2008,Tuxtla Gutiérrez,Mexico,16.753055555,-93.115555555,8,Tijuana,Mora
 Mexico,,20,2 DF,Mateo Chávez,12 May 2004,Monterrey,Mexico,25.684444444,-100.318055555,10,AZ,Chávez
@@ -67,7 +67,7 @@ South Africa,,13,3 MF,Sphephelo Sithole,3 March 1999,Durban,South Africa,-29.858
 South Africa,,14,2 DF,Mbekezeli Mbokazi,19 September 2005,Hluhluwe,South Africa,-28.018888888,32.2675,10,Chicago Fire FC,Mbokazi
 South Africa,,15,4 FW,Iqraam Rayners,19 December 1995,Cape Town,South Africa,-33.925277777,18.423888888,14,Mamelodi Sundowns,Rayners
 South Africa,,16,1 GK,Sipho Chaine,14 December 1996,Bloemfontein,South Africa,-29.1,26.216666666,4,Orlando Pirates,Chaine
-South Africa,,17,4 FW,Evidence Makgopa,5 June 2000,Fetakgomo Local Municipality,South Africa,-24.4167,29.9167,26,Orlando Pirates,Makgopa
+South Africa,,17,4 FW,Evidence Makgopa,5 June 2000,Fetakgomo Local Municipality,South Africa,,,26,Orlando Pirates,Makgopa
 South Africa,,18,2 DF,Samukele Kabini,15 March 2004,Tweefontein,South Africa,,,6,Molde,Kabini
 South Africa,,19,2 DF,Nkosinathi Sibisi,22 September 1995,Durban,South Africa,-29.858333333,31.025,20,Orlando Pirates,Sibisi
 South Africa,,20,2 DF,Khuliso Mudau,26 April 1995,Musina,South Africa,-22.338055555,30.041666666,32,Mamelodi Sundowns,Mudau
@@ -108,7 +108,7 @@ Bosnia and Herzegovina,,2,2 DF,Nihad Mujakić,15 April 1998,Sarajevo,Bosnia and 
 Bosnia and Herzegovina,,3,2 DF,Dennis Hadžikadunić,9 July 1998,Malmö,Sweden,55.583333333,13.0,32,Sampdoria,Hadžikadunić
 Bosnia and Herzegovina,,4,2 DF,Tarik Muharemović,28 February 2003,Ljubljana,Slovenia,46.051388888,14.506111111,14,Sassuolo,Muharemović
 Bosnia and Herzegovina,,5,2 DF,Sead Kolašinac,20 June 1993,Karlsruhe,Germany,49.016666666,8.4,65,Atalanta,Kolašinac
-Bosnia and Herzegovina,,6,3 MF,Benjamin Tahirović,3 March 2003,Spånga-Tensta city district,Sweden,59.39416667,17.90111111,28,Brøndby,Tahirović
+Bosnia and Herzegovina,,6,3 MF,Benjamin Tahirović,3 March 2003,Spånga-Tensta city district,Sweden,,,28,Brøndby,Tahirović
 Bosnia and Herzegovina,,7,2 DF,Amar Dedić,18 August 2002,Zell am See,Austria,47.323333333,12.798055555,28,Benfica,Dedić
 Bosnia and Herzegovina,,8,3 MF,Armin Gigović,6 April 2002,Lund,Sweden,55.708313018,13.199164196,20,Young Boys,Gigović
 Bosnia and Herzegovina,,9,4 FW,Samed Baždar,31 January 2004,Novi Pazar,Serbia,43.15,20.516666666,13,Jagiellonia Białystok,Baždar
@@ -364,8 +364,8 @@ Paraguay,,24,3 MF,Gustavo Caballero,21 September 2001,San Lorenzo,Paraguay,-25.3
 Paraguay,,25,4 FW,Isidro Pitta,14 August 1999,Asunción,Paraguay,-25.28,-57.634444444,5,Red Bull Bragantino,Pitta
 Paraguay,,26,2 DF,Alexandro Maidana,26 July 2005,Caacupé,Paraguay,-25.386111,-57.140833,2,Talleres,Maidana
 Turkey,,1,1 GK,Mert Günok,1 March 1989,Karabük,Turkey,41.2,32.633333333,37,Fenerbahçe,Günok
-Turkey,,2,2 DF,Zeki Çelik,17 February 1997,Yıldırım district,Turkey,40.1900988,29.097653,61,Roma,Çelik
-Turkey,,3,2 DF,Merih Demiral,5 March 1998,Karamürsel district,Turkey,40.691388888,29.615555555,62,Al-Ahli,Demiral
+Turkey,,2,2 DF,Zeki Çelik,17 February 1997,Yıldırım district,Turkey,,,61,Roma,Çelik
+Turkey,,3,2 DF,Merih Demiral,5 March 1998,Karamürsel district,Turkey,,,62,Al-Ahli,Demiral
 Turkey,,4,2 DF,Çağlar Söyüncü,23 May 1996,İzmir,Turkey,38.41273,27.13838,60,Fenerbahçe,Söyüncü
 Turkey,,5,3 MF,Salih Özcan,11 January 1998,Cologne,Germany,50.942222222,6.957777777,30,Borussia Dortmund,Özcan
 Turkey,,6,3 MF,Orkun Kökçü,29 December 2000,Haarlem,Netherlands,52.380277777,4.640555555,50,Beşiktaş,Kökçü
@@ -376,7 +376,7 @@ Turkey,,10,3 MF,Hakan Çalhanoğlu,8 February 1994,Mannheim,Germany,49.487777777
 Turkey,,11,4 FW,Kenan Yıldız,4 May 2005,Regensburg,Germany,49.016666666,12.083333333,28,Juventus,Yıldız
 Turkey,,12,1 GK,Altay Bayındır,14 April 1998,Osmangazi,Turkey,40.219166666,29.041388888,12,Manchester United,Bayındır
 Turkey,,13,2 DF,Eren Elmalı,7 July 2000,Kartal,Turkey,40.906388888,29.211111111,23,Galatasaray,Elmalı
-Turkey,,14,2 DF,Abdülkerim Bardakcı,7 September 1994,Meram district,Turkey,37.836388888,32.438333333,27,Galatasaray,Bardakcı
+Turkey,,14,2 DF,Abdülkerim Bardakcı,7 September 1994,Meram district,Turkey,,,27,Galatasaray,Bardakcı
 Turkey,,15,2 DF,Ozan Kabak,25 March 2000,Çankaya,Turkey,39.908333333,32.846111111,30,TSG Hoffenheim,Kabak
 Turkey,,16,3 MF,İsmail Yüksek,26 January 1999,İznik,Turkey,40.428888888,29.719444444,32,Fenerbahçe,Yüksek
 Turkey,,17,4 FW,İrfan Can Kahveci,15 July 1995,Bayat,Turkey,40.185,32.437,47,Kasımpaşa,Kahveci
@@ -446,7 +446,7 @@ Ecuador,,2,2 DF,Félix Torres,11 January 1997,San Lorenzo,Ecuador,1.286388888,-7
 Ecuador,,3,2 DF,Piero Hincapié,9 January 2002,Esmeraldas,Ecuador,0.95,-79.666666666,52,Arsenal,Hincapié
 Ecuador,,4,2 DF,Joel Ordóñez,21 April 2004,Guayaquil,Ecuador,-2.19,-79.8875,17,Club Brugge,Ordóñez
 Ecuador,,5,3 MF,Jordy Alcívar,5 August 1999,Manta,Ecuador,-0.950022222,-80.7162,11,Independiente del Valle,Alcívar
-Ecuador,,6,2 DF,Willian Pacho,16 October 2001,Rosa Zárate,Ecuador,0.327222222,-79.468888888,34,Paris Saint-Germain,Pacho
+Ecuador,,6,2 DF,Willian Pacho,16 October 2001,Quinindé Canton,Ecuador,0.33,-79.48,34,Paris Saint-Germain,Pacho
 Ecuador,,7,2 DF,Pervis Estupiñán,21 January 1998,Esmeraldas,Ecuador,0.95,-79.666666666,54,Milan,Estupiñán
 Ecuador,,8,3 MF,Anthony Valencia,21 July 2003,Guayaquil,Ecuador,-2.19,-79.8875,3,Antwerp,Valencia
 Ecuador,,9,4 FW,John Yeboah,23 June 2000,Hamburg,Germany,53.55,10.0,23,Venezia,Yeboah
@@ -513,7 +513,7 @@ Ivory Coast,,17,2 DF,Guéla Doué,17 October 2002,Angers,France,47.472777777,-0.
 Ivory Coast,,18,3 MF,Ibrahim Sangaré,2 December 1997,Koumassi,Ivory Coast,5.3,-3.95,57,Nottingham Forest,Sangaré
 Ivory Coast,,19,4 FW,Nicolas Pépé,29 May 1995,Mantes-la-Jolie,France,48.990555555,1.716666666,56,Villarreal,Pépé
 Ivory Coast,,20,2 DF,Emmanuel Agbadou,17 June 1997,Abidjan,Ivory Coast,,,20,Beşiktaş,Agbadou
-Ivory Coast,,21,2 DF,Evan Ndicka,20 August 1999,20th arrondissement of Paris,France,48.865061111,2.39905,28,Roma,Ndicka
+Ivory Coast,,21,2 DF,Evan Ndicka,20 August 1999,20th arrondissement of Paris,France,48.856666666,2.352222222,28,Roma,Ndicka
 Ivory Coast,,22,4 FW,Evann Guessand,1 July 2001,Ajaccio,France,41.925555555,8.736388888,21,Crystal Palace,Guessand
 Ivory Coast,,23,1 GK,Alban Lafont,23 January 1999,Ouagadougou,Burkina Faso,12.368611111,-1.5275,4,Panathinaikos,Lafont
 Ivory Coast,,24,4 FW,Bazoumana Touré,2 March 2006,Bouaké,Ivory Coast,7.68333,-5.03306,6,TSG Hoffenheim,Touré
@@ -622,7 +622,7 @@ Tunisia,,22,1 GK,Sabri Ben Hessen,13 June 1996,Sfax,Tunisia,34.74,10.76,2,Étoil
 Tunisia,,23,2 DF,Moutaz Neffati,4 September 2004,Norrköping,Sweden,58.579331104,16.149318388,5,IFK Norrköping,Neffati
 Tunisia,,24,2 DF,Raed Chikhaoui,9 June 2004,Sakiet Ezzit,Tunisia,34.8,10.77,0,US Monastir,Chikhaoui
 Tunisia,,25,3 MF,Anis Ben Slimane,16 March 2001,Copenhagen,Denmark,55.676111111,12.568888888,41,Norwich City,Ben Slimane
-Tunisia,,26,3 MF,Sebastian Tounekti,13 July 2002,Tromsø Municipality,Norway,69.64961,18.95701,12,Celtic,Tounekti
+Tunisia,,26,3 MF,Sebastian Tounekti,13 July 2002,Tromsø Municipality,Norway,,,12,Celtic,Tounekti
 Belgium,,1,1 GK,Thibaut Courtois,11 May 1992,Bree,Belgium,51.133333333,5.583333333,109,Real Madrid,Courtois
 Belgium,,2,2 DF,Zeno Debast,24 October 2003,Halle,Belgium,50.736111111,4.237222222,26,Sporting CP,Debast
 Belgium,,3,2 DF,Arthur Theate,25 May 2000,Liège,Belgium,50.639722222,5.570555555,33,Eintracht Frankfurt,Theate
@@ -835,7 +835,7 @@ France,,1,1 GK,Brice Samba,25 April 1994,Linzolo,Republic of the Congo,-4.413611
 France,,2,2 DF,Malo Gusto,19 May 2003,Décines-Charpieu,France,45.768611111,4.958888888,11,Chelsea,Gusto
 France,,3,2 DF,Lucas Digne,20 July 1993,Meaux,France,48.959444444,2.887777777,58,Aston Villa,Digne
 France,,4,2 DF,Dayot Upamecano,27 October 1998,Évreux,France,49.023333333,1.1525,38,Bayern Munich,Upamecano
-France,,5,2 DF,Jules Koundé,12 November 1998,14th arrondissement of Paris,France,48.833022222,2.326888888,48,Barcelona,Koundé
+France,,5,2 DF,Jules Koundé,12 November 1998,14th arrondissement of Paris,France,48.856666666,2.352222222,48,Barcelona,Koundé
 France,,6,3 MF,Manu Koné,17 May 2001,Colombes,France,48.923611111,2.252222222,14,Roma,Koné
 France,,7,4 FW,Ousmane Dembélé,15 May 1997,Vernon,France,49.091666666,1.485,59,Paris Saint-Germain,Dembélé
 France,,8,3 MF,Aurélien Tchouaméni,27 January 2000,Rouen,France,49.443055555,1.1025,46,Real Madrid,Tchouaméni
@@ -883,32 +883,32 @@ Iraq,,23,2 DF,Merchas Doski,7 December 1999,Hanover,Germany,52.374444444,9.73861
 Iraq,,24,3 MF,Zaid Ismail,3 January 2002,Diyala Governorate,Iraq,33.883333333,45.066666666,6,Al-Talaba,Ismail
 Iraq,,25,2 DF,Mustafa Saadoon,25 May 2001,Corgi,Iraq,,,17,Al-Shorta,Saadoon
 Iraq,,26,2 DF,Frans Putros,14 July 1993,Aarhus,Denmark,56.156388888,10.209722222,28,Persib,Putros
-Norway,,1,1 GK,Ørjan Nyland,10 September 1990,Volda Municipality,Norway,62.14678,6.068,71,Sevilla,Nyland
+Norway,,1,1 GK,Ørjan Nyland,10 September 1990,Volda Municipality,Norway,,,71,Sevilla,Nyland
 Norway,,2,3 MF,Morten Thorsby,5 May 1996,Oslo,Norway,59.913333333,10.738888888,31,Cremonese,Thorsby
 Norway,,3,2 DF,Kristoffer Ajer,17 April 1998,Rælingen,Norway,59.889166666,11.075277777,52,Brentford,Ajer
-Norway,,4,2 DF,Leo Østigård,28 November 1999,Molde Municipality,Norway,62.733333,7.183333,38,Genoa,Østigård
+Norway,,4,2 DF,Leo Østigård,28 November 1999,Molde Municipality,Norway,,,38,Genoa,Østigård
 Norway,,5,2 DF,David Møller Wolfe,23 April 2002,Bergen,Norway,60.3925,5.323333333,22,Wolverhampton Wanderers,Wolfe
 Norway,,6,3 MF,Patrick Berg,24 November 1997,Bodø,Norway,67.28267,14.37513,43,Bodø/Glimt,Berg
 Norway,,7,4 FW,Alexander Sørloth,5 December 1995,Trondheim,Norway,63.44,10.4,72,Atlético Madrid,Sørloth
-Norway,,8,3 MF,Sander Berge,14 February 1998,Bærum Municipality,Norway,59.8904,10.526,66,Fulham,Berge
+Norway,,8,3 MF,Sander Berge,14 February 1998,Bærum Municipality,Norway,,,66,Fulham,Berge
 Norway,,9,4 FW,Erling Haaland,21 July 2000,Leeds,United Kingdom,53.7975,-1.543611111,50,Manchester City,Haaland
 Norway,,10,3 MF,Martin Ødegaard,17 December 1998,Drammen,Norway,59.745361111,10.205969444,68,Arsenal,Ødegaard
 Norway,,11,4 FW,Jørgen Strand Larsen,6 February 2000,Halden,Norway,59.126389,11.482778,28,Crystal Palace,Larsen
 Norway,,12,1 GK,Sander Tangvik,29 November 2002,Trondheim,Norway,63.44,10.4,0,Hamburger SV,Tangvik
-Norway,,13,1 GK,Egil Selvik,30 July 1997,Sandnes Municipality,Norway,58.845,5.829444,7,Watford,Selvik
+Norway,,13,1 GK,Egil Selvik,30 July 1997,Sandnes Municipality,Norway,,,7,Watford,Selvik
 Norway,,14,3 MF,Fredrik Aursnes,10 December 1995,Hareid,Norway,62.364166666,6.001388888,22,Benfica,Aursnes
-Norway,,15,2 DF,Fredrik André Bjørkan,21 August 1998,Bodø Municipality,Norway,67.283055555,14.383055555,21,Bodø/Glimt,Bjørkan
+Norway,,15,2 DF,Fredrik André Bjørkan,21 August 1998,Bodø Municipality,Norway,67.28267,14.37513,21,Bodø/Glimt,Bjørkan
 Norway,,16,2 DF,Marcus Holmgren Pedersen,16 July 2000,Hammerfest,Norway,70.66336,23.68209,32,Torino,Pedersen
 Norway,,17,2 DF,Torbjørn Heggem,12 January 1999,Trondheim,Norway,63.44,10.4,15,Bologna,Heggem
 Norway,,18,3 MF,Kristian Thorstvedt,13 March 1999,Stavanger,Norway,58.97,5.731388888,37,Sassuolo,Thorstvedt
 Norway,,19,3 MF,Thelo Aasgaard,2 May 2002,Liverpool,United Kingdom,53.407222222,-2.991666666,8,Rangers,Aasgaard
 Norway,,20,3 MF,Antonio Nusa,17 April 2005,Langhus,Norway,59.75,10.833333333,24,RB Leipzig,Nusa
-Norway,,21,3 MF,Andreas Schjelderup,1 June 2004,Bodø Municipality,Norway,67.283055555,14.383055555,12,Benfica,Schjelderup
+Norway,,21,3 MF,Andreas Schjelderup,1 June 2004,Bodø Municipality,Norway,67.28267,14.37513,12,Benfica,Schjelderup
 Norway,,22,3 MF,Oscar Bobb,12 July 2003,Oslo,Norway,59.913333333,10.738888888,20,Fulham,Bobb
 Norway,,23,3 MF,Jens Petter Hauge,12 October 1999,Bodø,Norway,67.28267,14.37513,15,Bodø/Glimt,Hauge
 Norway,,24,2 DF,Sondre Langås,2 February 2001,Namsos,Norway,64.467,11.494,3,Derby County,Langås
 Norway,,25,2 DF,Henrik Falchener,8 May 2003,Tønsberg,Norway,59.298055555,10.423611111,1,Viking,Falchener
-Norway,,26,2 DF,Julian Ryerson,17 November 1997,Flekkefjord Municipality,Norway,58.327222222,6.666666666,43,Borussia Dortmund,Ryerson
+Norway,,26,2 DF,Julian Ryerson,17 November 1997,Flekkefjord Municipality,Norway,,,43,Borussia Dortmund,Ryerson
 Senegal,,1,1 GK,Yehvann Diouf,16 November 1999,Montreuil,France,48.860277777,2.443055555,2,Nice,Diouf
 Senegal,,2,2 DF,Mamadou Sarr,29 August 2005,Martigues,France,43.405277777,5.0475,8,Chelsea,Sarr
 Senegal,,3,2 DF,Kalidou Koulibaly,20 June 1991,Saint-Dié-des-Vosges,France,48.284166666,6.949166666,104,Al-Hilal,Koulibaly
@@ -944,7 +944,7 @@ Algeria,,6,3 MF,Ramiz Zerrouki,26 May 1998,Amsterdam,Netherlands,52.366666666,4.
 Algeria,,7,4 FW,Riyad Mahrez,21 February 1991,Clichy,France,48.903611111,2.305555555,116,Al-Ahli,Mahrez
 Algeria,,8,3 MF,Houssem Aouar,30 June 1998,Lyon,France,45.7675,4.835,22,Al-Ittihad,Aouar
 Algeria,,9,4 FW,Amine Gouiri,16 February 2000,Bourgoin-Jallieu,France,45.590833333,5.279166666,23,Marseille,Gouiri
-Algeria,,10,3 MF,Farès Chaïbi,28 November 2002,3rd arrondissement of Lyon,France,45.7586,4.855822222,31,Eintracht Frankfurt,Chaïbi
+Algeria,,10,3 MF,Farès Chaïbi,28 November 2002,3rd arrondissement of Lyon,France,45.7675,4.835,31,Eintracht Frankfurt,Chaïbi
 Algeria,,11,4 FW,Anis Hadj Moussa,11 February 2002,Paris,France,48.856666666,2.352222222,15,Feyenoord,Moussa
 Algeria,,12,4 FW,Nadhir Benbouali,17 April 2000,Chlef,Algeria,36.164722222,1.331666666,4,Győri ETO,Benbouali
 Algeria,,13,2 DF,Jaouen Hadjam,26 March 2003,Paris,France,48.856666666,2.352222222,18,Young Boys,Hadjam
@@ -1072,7 +1072,7 @@ DR Congo,,4,2 DF,Axel Tuanzebe,14 November 1997,Bunia,Democratic Republic of the
 DR Congo,,5,2 DF,Dylan Batubinsika,15 February 1996,Cergy-Pontoise,France,49.0361,2.06306,14,AEL,Batubinsika
 DR Congo,,6,3 MF,Ngal'ayel Mukau,3 November 2004,Antwerp,Belgium,51.221111111,4.399722222,14,Lille,Mukau
 DR Congo,,7,3 MF,Nathanaël Mbuku,16 March 2002,Villeneuve-Saint-Georges,France,48.7325,2.449722222,19,Montpellier,Mbuku
-DR Congo,,8,3 MF,Samuel Moutoussamy,12 August 1996,12th arrondissement of Paris,France,48.840808333,2.388183333,58,Atromitos,Moutoussamy
+DR Congo,,8,3 MF,Samuel Moutoussamy,12 August 1996,12th arrondissement of Paris,France,48.856666666,2.352222222,58,Atromitos,Moutoussamy
 DR Congo,,9,4 FW,Brian Cipenga,11 March 1998,Kinshasa,Democratic Republic of the Congo,-4.321944444,15.311944444,8,Castellón,Cipenga
 DR Congo,,10,3 MF,Théo Bongonda,20 November 1995,Charleroi,Belgium,,,38,Spartak Moscow,Bongonda
 DR Congo,,11,4 FW,Gaël Kakuta,21 June 1991,Lille,France,50.631944444,3.0575,31,AEL,Kakuta
@@ -1088,7 +1088,7 @@ DR Congo,,20,4 FW,Yoane Wissa,3 September 1996,Épinay-sous-Sénart,France,48.69
 DR Congo,,21,1 GK,Matthieu Epolo,15 January 2005,Brussels,Belgium,50.846666666,4.351666666,1,Standard Liège,Epolo
 DR Congo,,22,2 DF,Chancel Mbemba,8 August 1994,Kisangani,Democratic Republic of the Congo,0.515277777,25.191111111,109,Lille,Mbemba
 DR Congo,,23,4 FW,Simon Banza,13 August 1996,Creil,France,,,15,Al Jazira,Banza
-DR Congo,,24,2 DF,Gédéon Kalulu,29 August 1997,8th arrondissement of Lyon,France,45.734822222,4.868138888,28,Aris Limassol,Kalulu
+DR Congo,,24,2 DF,Gédéon Kalulu,29 August 1997,8th arrondissement of Lyon,France,45.7675,4.835,28,Aris Limassol,Kalulu
 DR Congo,,25,3 MF,Edo Kayembe,3 June 1998,Kananga,Democratic Republic of the Congo,-5.896111111,22.416666666,43,Watford,Kayembe
 DR Congo,,26,2 DF,Arthur Masuaku,7 November 1993,Lille,France,50.631944444,3.0575,45,Lens,Masuaku
 Portugal,,1,1 GK,Diogo Costa,19 September 1999,Rothrist,Switzerland,47.302777777,7.883333333,43,Porto,Costa

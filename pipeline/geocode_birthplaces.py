@@ -183,26 +183,37 @@ def strip_admin_qualifier(city):
 
 
 def collect_city_country_pairs(map_data):
-    """-> sorted set of (city, birth-country display name) pairs, matching
-    exactly the pairing load.py will look each person up by: exports are
-    grouped by rec["country"] (the birth country), natives by the nation
-    dict key (birth country == nation for a native by definition).
+    """-> sorted set of (CANONICAL city, birth-country display name) pairs
+    — city with any FALLBACK_PATTERNS admin qualifier already stripped
+    (e.g. "Lyon" for a birthCity of "3rd arrondissement of Lyon"), matching
+    exactly the canonical pairing load.py will look each person up by: an
+    admin-qualified birthCity and the plain city it belongs to should
+    always converge on the SAME resolved coordinate — otherwise two
+    persons who both display under the parent city's name (one via
+    actualCityName rollup) could end up with visibly different map points
+    for what's shown as the same place. Exports are grouped by
+    rec["country"] (the birth country), natives by the nation dict key
+    (birth country == nation for a native by definition).
 
     Skips anyone who already carries birthLat/birthLon — a person's own
     Wikidata P19 coordinate (see wc2026_birthplaces.py's
-    enrich_birth_coordinates) is disambiguated by construction and takes
-    priority over this script's free-text Nominatim search in load.py, so
-    there's nothing for Nominatim to usefully resolve for them (also
-    shrinks how many live queries this script makes)."""
+    enrich_birth_coordinates, which already performs this same
+    canonical-name convergence among Wikidata-sourced persons) is
+    disambiguated by construction and takes priority over this script's
+    free-text Nominatim search in load.py, so there's nothing for
+    Nominatim to usefully resolve for them (also shrinks how many live
+    queries this script makes)."""
     pairs = set()
     for rec in map_data["data"]:
         for p in rec["players"]:
             if p.get("birthCity") and p.get("birthLat") is None:
-                pairs.add((p["birthCity"], rec["country"]))
+                canonical = strip_admin_qualifier(p["birthCity"]) or p["birthCity"]
+                pairs.add((canonical, rec["country"]))
     for nation, players in map_data["natives"].items():
         for p in players:
             if p.get("birthCity") and p.get("birthLat") is None:
-                pairs.add((p["birthCity"], nation))
+                canonical = strip_admin_qualifier(p["birthCity"]) or p["birthCity"]
+                pairs.add((canonical, nation))
     return sorted(pairs)
 
 

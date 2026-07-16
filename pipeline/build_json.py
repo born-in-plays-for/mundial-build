@@ -139,6 +139,18 @@ for p in players:
     city, country = p["birth_city"], p["birth_country"]
     if p["name"] in BIRTH_CITY_OVERRIDES:
         p["birth_city"], p["birth_country"] = BIRTH_CITY_OVERRIDES[p["name"]]
+        # birth_lat/birth_lon (if set) were validated against the OLD
+        # birth_city text by wc2026_birthplaces.py's enrich_birth_coordinates
+        # — that check is meaningless against the NEW, overridden text, and
+        # a stale match can be badly wrong: Aaron Hickey's raw scrape had
+        # birth_city="Scotland" (Wikidata returned only country-level
+        # granularity), which "matched" that same broken "Scotland" label
+        # and picked up P625's centroid-ish (57.0, -5.0) — nowhere near the
+        # real Glasgow (55.86, -4.25) this override corrects him to. Clear
+        # both so geocode_birthplaces.py resolves fresh against the
+        # corrected text instead of silently keeping a coordinate that was
+        # only ever valid for the string being discarded right here.
+        p["birth_lat"] = p["birth_lon"] = None
     elif country == "United Kingdom":
         resolved = reg.resolve_uk_home_nation(city)
         if resolved:
