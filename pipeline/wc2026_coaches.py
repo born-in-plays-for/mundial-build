@@ -22,14 +22,13 @@ import re
 import sys
 import time
 from pathlib import Path
-from urllib.parse import unquote
 
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
 import country_registry as reg
-from wc2026_birthplaces import compute_surname, _parse_wkt_point
+from wc2026_birthplaces import compute_surname, _parse_wkt_point, wiki_title_from_href
 
 # Hand-corrected surnames for coaches nameparser's "Firstname Surname"
 # assumption gets wrong (e.g. Korean family-name-first order), keyed by
@@ -233,11 +232,10 @@ def parse_coaches(soup: BeautifulSoup) -> list:
         # For foreign coaches, a flag image link precedes the coach name link
         coach_link = None
         for a in links:
-            href = a['href']
-            if not href.startswith('/wiki/'):
+            link_title = wiki_title_from_href(a['href'])
+            if link_title is None:
                 continue
             # Skip country/flag links (they link to countries, not people)
-            link_title = unquote(href[6:]).replace('_', ' ')
             # Check if this link has a flag image (→ it's the nationality link)
             img = a.find('img')
             if img:

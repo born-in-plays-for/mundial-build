@@ -23,7 +23,7 @@ Step 4 — set player["wikiTitle"] = <EN title> on every player object
 """
 import json, re, time, requests
 from pathlib import Path
-from urllib.parse import unquote, quote
+from urllib.parse import unquote, quote, urlparse
 from bs4 import BeautifulSoup
 
 import country_registry as reg
@@ -71,12 +71,21 @@ for table in soup.find_all("table", class_=re.compile(r"wikitable")):
         continue
     squad_tables += 1
     for a in table.find_all("a", href=True):
-        href = a["href"]
-        if href.startswith("/wiki/") and ":" not in href:
-            title = unquote(href[6:]).replace("_", " ")
-            name  = a.get_text(strip=True)
-            if name and title:
-                name_to_title[(nation, name)] = title
+        # urlparse(...).path, not the raw href: Wikipedia serves both
+        # root-relative ("/wiki/Title") and protocol-relative
+        # ("//en.wikipedia.org/wiki/Title") article links depending on
+        # context — a bare href.startswith("/wiki/") silently matches
+        # nothing for the latter (this broke wiki-title extraction
+        # pipeline-wide the day Wikipedia started doing that live).
+        path = urlparse(a["href"]).path
+        if not path.startswith("/wiki/"):
+            continue
+        title = unquote(path[6:]).replace("_", " ")
+        if ":" in title:  # namespaced page (Category:, File:, ...), not an article
+            continue
+        name = a.get_text(strip=True)
+        if name and title:
+            name_to_title[(nation, name)] = title
 
 # Also load coach wiki titles from coaches CSV
 import csv

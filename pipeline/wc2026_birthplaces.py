@@ -23,7 +23,7 @@ import re
 import sys
 import time
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 
 import requests
 import pandas as pd
@@ -90,6 +90,19 @@ def clean(text: str) -> str:
     text = re.sub(r'\[[\w\s]*\]', '', text)
     text = re.sub(r'\(.*?\)', '', text)
     return text.strip()
+
+
+def wiki_title_from_href(href: str):
+    """-> EN Wikipedia title from an <a> tag's href, or None if it isn't a
+    plain article link. Handles both root-relative ("/wiki/Title") and
+    protocol-relative ("//en.wikipedia.org/wiki/Title") hrefs — Wikipedia
+    renders either depending on context, and a naive
+    href.startswith('/wiki/') silently matches nothing when the
+    protocol-relative form is what's actually served (this broke wiki_title
+    extraction pipeline-wide the day Wikipedia started doing that live —
+    urlparse(href).path normalizes both forms the same way)."""
+    path = urlparse(href).path
+    return unquote(path[6:]).replace('_', ' ') if path.startswith('/wiki/') else None
 
 
 def extract_birth_info(raw: str) -> tuple:
@@ -211,8 +224,8 @@ def parse_wikipedia(soup: BeautifulSoup) -> list:
             wiki_title = ''
             if idx_name is not None and idx_name < len(cells):
                 link = cells[idx_name].find('a', href=True)
-                if link and link['href'].startswith('/wiki/'):
-                    wiki_title = unquote(link['href'][6:]).replace('_', ' ')
+                if link:
+                    wiki_title = wiki_title_from_href(link['href']) or ''
 
             place_raw = get(idx_place) if idx_place is not None else ''
             city, country = extract_birth_info(place_raw) if place_raw else ('', '')

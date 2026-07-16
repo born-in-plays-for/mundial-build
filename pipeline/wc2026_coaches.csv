@@ -1,49 +1,49 @@
-﻿nation,coach,surname,nationality,birth_city,birth_country,wiki_title
-Czech Republic,Miroslav Koubek,Koubek,Czech Republic,Prague,Czech Republic,Miroslav Koubek
-Mexico,Javier Aguirre,Aguirre,Mexico,Mexico City,Mexico,Javier Aguirre
-South Africa,Hugo Broos,Broos,Belgium,Grimbergen,Belgium,Hugo Broos
-South Korea,Hong Myung-bo,Hong,South Korea,Seoul,South Korea,Hong Myung-bo
-Bosnia and Herzegovina,Sergej Barbarez,Barbarez,Bosnia and Herzegovina,Mostar,Bosnia and Herzegovina,Sergej Barbarez
-Canada,Jesse Marsch,Marsch,United States,Racine,United States,Jesse Marsch
-Qatar,Julen Lopetegui,Lopetegui,Spain,Asteasu,Spain,Julen Lopetegui
-Switzerland,Murat Yakin,Yakin,Switzerland,Basel,Switzerland,Murat Yakin
-Brazil,Carlo Ancelotti,Ancelotti,Italy,Reggiolo,Italy,Carlo Ancelotti
-Haiti,Sébastien Migné,Migné,France,La Roche-sur-Yon,France,Sébastien Migné
-Morocco,Mohamed Ouahbi,Ouahbi,Morocco,Schaerbeek,Belgium,Mohamed Ouahbi
-Scotland,Steve Clarke,Clarke,Scotland,Saltcoats,Scotland,Steve Clarke
-Australia,Tony Popovic,Popovic,Australia,Sydney,Australia,Tony Popovic
-Paraguay,Gustavo Alfaro,Alfaro,Argentina,Rafaela,Argentina,Gustavo Alfaro
-Turkey,Vincenzo Montella,Montella,Italy,Pomigliano d'Arco,Italy,Vincenzo Montella
-United States,Mauricio Pochettino,Pochettino,Argentina,Murphy,Argentina,Mauricio Pochettino
-Curaçao,Dick Advocaat,Advocaat,Netherlands,The Hague,Netherlands,Dick Advocaat
-Ecuador,Sebastián Beccacece,Beccacece,Argentina,Rosario,Argentina,Sebastián Beccacece
-Germany,Julian Nagelsmann,Nagelsmann,Germany,Landsberg am Lech,Germany,Julian Nagelsmann
-Ivory Coast,Emerse Faé,Faé,Ivory Coast,Nantes,France,Emerse Faé
-Japan,Hajime Moriyasu,Moriyasu,Japan,Kakegawa,Japan,Hajime Moriyasu
-Netherlands,Ronald Koeman,Koeman,Netherlands,Zaandam,Netherlands,Ronald Koeman
-Sweden,Graham Potter,Potter,England,Solihull,England,Graham Potter
-Tunisia,Hervé Renard,Renard,France,Aix-les-Bains,France,Hervé Renard
-Belgium,Rudi Garcia,Garcia,France,Nemours,France,Rudi Garcia
-Egypt,Hossam Hassan,Hassan,Egypt,Helwan,Egypt,Hossam Hassan
-Iran,Amir Ghalenoei,Ghalenoei,Iran,Tehran,Iran,Amir Ghalenoei
-New Zealand,Darren Bazeley,Bazeley,England,Northampton,England,Darren Bazeley
-Cape Verde,Bubista,Bubista,Cape Verde,Cape Verde,Cape Verde,Bubista
-Saudi Arabia,Georgios Donis,Donis,Greece,Frankfurt,Germany,Georgios Donis
-Spain,Luis de la Fuente,de la Fuente,Spain,Haro,Spain,"Luis de la Fuente (footballer, born 1961)"
-Uruguay,Marcelo Bielsa,Bielsa,Argentina,Rosario,Argentina,Marcelo Bielsa
-France,Didier Deschamps,Deschamps,France,Bayonne,France,Didier Deschamps
-Iraq,Graham Arnold,Arnold,Australia,Sydney,Australia,Graham Arnold
-Norway,Ståle Solbakken,Solbakken,Norway,Kongsvinger Municipality,Norway,Ståle Solbakken
-Senegal,Pape Thiaw,Thiaw,Senegal,Dakar,Senegal,Pape Thiaw
-Algeria,Vladimir Petković,Petković,Bosnia and Herzegovina,Sarajevo,Bosnia and Herzegovina,Vladimir Petković
-Argentina,Lionel Scaloni,Scaloni,Argentina,Pujato,Argentina,Lionel Scaloni
-Austria,Ralf Rangnick,Rangnick,Germany,Backnang,Germany,Ralf Rangnick
-Jordan,Jamal Sellami,Sellami,Morocco,Casablanca,Morocco,Jamal Sellami
-Colombia,Néstor Lorenzo,Lorenzo,Argentina,Buenos Aires,Argentina,Néstor Lorenzo
-DR Congo,Sébastien Desabre,Desabre,France,Valence,France,Sébastien Desabre
-Portugal,Roberto Martínez,Martínez,Spain,Balaguer,Spain,Roberto Martínez
-Uzbekistan,Fabio Cannavaro,Cannavaro,Italy,Naples,Italy,Fabio Cannavaro
-Croatia,Zlatko Dalić,Dalić,Croatia,Livno,Bosnia and Herzegovina,Zlatko Dalić
-England,Thomas Tuchel,Tuchel,Germany,Krumbach,Germany,Thomas Tuchel
-Ghana,Carlos Queiroz,Queiroz,Portugal,Nampula,Mozambique,Carlos Queiroz
-Panama,Thomas Christiansen,Christiansen,Spain,Copenhagen,Denmark,Thomas Christiansen
+﻿nation,coach,surname,nationality,birth_city,birth_country,birth_lat,birth_lon,wiki_title
+Czech Republic,Miroslav Koubek,Koubek,Czech Republic,Prague,Czech Republic,50.0875,14.421388888,Miroslav Koubek
+Mexico,Javier Aguirre,Aguirre,Mexico,Mexico City,Mexico,19.353773,-99.13589,Javier Aguirre
+South Africa,Hugo Broos,Broos,Belgium,Grimbergen,Belgium,50.933333333,4.383333333,Hugo Broos
+South Korea,Hong Myung-bo,Hong,South Korea,Seoul,South Korea,37.56,126.99,Hong Myung-bo
+Bosnia and Herzegovina,Sergej Barbarez,Barbarez,Bosnia and Herzegovina,Mostar,Bosnia and Herzegovina,43.343611111,17.8075,Sergej Barbarez
+Canada,Jesse Marsch,Marsch,United States,Racine,United States,42.726111111,-87.805833333,Jesse Marsch
+Qatar,Julen Lopetegui,Lopetegui,Spain,Asteasu,Spain,43.1928306,-2.0953614,Julen Lopetegui
+Switzerland,Murat Yakin,Yakin,Switzerland,Basel,Switzerland,47.560555555,7.590555555,Murat Yakin
+Brazil,Carlo Ancelotti,Ancelotti,Italy,Reggiolo,Italy,44.916666666,10.816666666,Carlo Ancelotti
+Haiti,Sébastien Migné,Migné,France,La Roche-sur-Yon,France,46.669722222,-1.427777777,Sébastien Migné
+Morocco,Mohamed Ouahbi,Ouahbi,Morocco,Schaerbeek,Belgium,50.8675,4.373611111,Mohamed Ouahbi
+Scotland,Steve Clarke,Clarke,Scotland,Saltcoats,Scotland,55.6352,-4.7896,Steve Clarke
+Australia,Tony Popovic,Popovic,Australia,Sydney,Australia,-33.867777777,151.21,Tony Popovic
+Paraguay,Gustavo Alfaro,Alfaro,Argentina,Rafaela,Argentina,-31.266666666,-61.483333333,Gustavo Alfaro
+Turkey,Vincenzo Montella,Montella,Italy,Pomigliano d'Arco,Italy,40.916666666,14.4,Vincenzo Montella
+United States,Mauricio Pochettino,Pochettino,Argentina,Murphy,Argentina,-33.616666666,-61.866666666,Mauricio Pochettino
+Curaçao,Dick Advocaat,Advocaat,Netherlands,The Hague,Netherlands,52.08,4.31,Dick Advocaat
+Ecuador,Sebastián Beccacece,Beccacece,Argentina,Rosario,Argentina,-32.9575,-60.639444444,Sebastián Beccacece
+Germany,Julian Nagelsmann,Nagelsmann,Germany,Landsberg am Lech,Germany,48.052769444,10.868930555,Julian Nagelsmann
+Ivory Coast,Emerse Faé,Faé,Ivory Coast,Nantes,France,47.217222222,-1.553888888,Emerse Faé
+Japan,Hajime Moriyasu,Moriyasu,Japan,Kakegawa,Japan,34.76875,137.998388888,Hajime Moriyasu
+Netherlands,Ronald Koeman,Koeman,Netherlands,Zaandam,Netherlands,52.441666666,4.842222222,Ronald Koeman
+Sweden,Graham Potter,Potter,England,Solihull,England,52.413,-1.772,Graham Potter
+Tunisia,Hervé Renard,Renard,France,Aix-les-Bains,France,45.688611111,5.915,Hervé Renard
+Belgium,Rudi Garcia,Garcia,France,Nemours,France,48.268611111,2.693611111,Rudi Garcia
+Egypt,Hossam Hassan,Hassan,Egypt,Helwan,Egypt,29.8493,31.3327,Hossam Hassan
+Iran,Amir Ghalenoei,Ghalenoei,Iran,Tehran,Iran,35.688888888,51.389722222,Amir Ghalenoei
+New Zealand,Darren Bazeley,Bazeley,England,Northampton,England,52.233333333,-0.9,Darren Bazeley
+Cape Verde,Bubista,Bubista,Cape Verde,Cape Verde,Cape Verde,15.3,-23.7,Bubista
+Saudi Arabia,Georgios Donis,Donis,Greece,Frankfurt am Main,Germany,50.110555555,8.682222222,Georgios Donis
+Spain,Luis de la Fuente,de la Fuente,Spain,Haro,Spain,42.576944444,-2.846111111,"Luis de la Fuente (footballer, born 1961)"
+Uruguay,Marcelo Bielsa,Bielsa,Argentina,Rosario,Argentina,-32.9575,-60.639444444,Marcelo Bielsa
+France,Didier Deschamps,Deschamps,France,Bayonne,France,43.4925,-1.476388888,Didier Deschamps
+Iraq,Graham Arnold,Arnold,Australia,Sydney,Australia,-33.867777777,151.21,Graham Arnold
+Norway,Ståle Solbakken,Solbakken,Norway,Kongsvinger Municipality,Norway,60.19117,11.99916,Ståle Solbakken
+Senegal,Pape Thiaw,Thiaw,Senegal,Dakar,Senegal,14.672555555,-17.432,Pape Thiaw
+Algeria,Vladimir Petković,Petković,Bosnia and Herzegovina,Sarajevo,Bosnia and Herzegovina,43.856388888,18.413055555,Vladimir Petković
+Argentina,Lionel Scaloni,Scaloni,Argentina,Pujato,Argentina,-33.0169,-61.0431,Lionel Scaloni
+Austria,Ralf Rangnick,Rangnick,Germany,Backnang,Germany,48.946388888,9.430555555,Ralf Rangnick
+Jordan,Jamal Sellami,Sellami,Morocco,Casablanca,Morocco,33.599166666,-7.62,Jamal Sellami
+Colombia,Néstor Lorenzo,Lorenzo,Argentina,Buenos Aires,Argentina,-34.599722222,-58.381944444,Néstor Lorenzo
+DR Congo,Sébastien Desabre,Desabre,France,Valence,France,44.9325,4.890833333,Sébastien Desabre
+Portugal,Roberto Martínez,Martínez,Spain,Balaguer,Spain,41.790401,0.805573,Roberto Martínez
+Uzbekistan,Fabio Cannavaro,Cannavaro,Italy,Naples,Italy,40.835833333,14.248611111,Fabio Cannavaro
+Croatia,Zlatko Dalić,Dalić,Croatia,Livno,Bosnia and Herzegovina,43.826944444,17.008055555,Zlatko Dalić
+England,Thomas Tuchel,Tuchel,Germany,Krumbach,Germany,48.243055555,10.363333333,Thomas Tuchel
+Ghana,Carlos Queiroz,Queiroz,Portugal,Nampula,Mozambique,-15.116666666,39.266666666,Carlos Queiroz
+Panama,Thomas Christiansen,Christiansen,Spain,Copenhagen,Denmark,55.676111111,12.568888888,Thomas Christiansen

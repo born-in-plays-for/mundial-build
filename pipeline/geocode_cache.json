@@ -175,6 +175,13 @@
       "lon": 49.5865224,
       "addresstype": "override"
     },
+    "Al-Qahirah, Egypt": {
+      "city": "Al-Qahirah",
+      "lat": 30.0443879,
+      "lon": 31.2357257,
+      "addresstype": "city",
+      "population": "9120350"
+    },
     "Albacete, Spain": {
       "city": "Albacete",
       "lat": 38.9950921,
@@ -727,6 +734,13 @@
       "lat": 55.1270903,
       "lon": -1.5099726,
       "addresstype": "town",
+      "population": null
+    },
+    "Boa Vista, Cape Verde": {
+      "city": "Boa Vista",
+      "lat": 16.099509,
+      "lon": -22.8009411,
+      "addresstype": "county",
       "population": null
     },
     "Bochum, Germany": {
@@ -3121,6 +3135,7 @@
       "addresstype": "city",
       "population": "316588"
     },
+    "Mampong-Akuapem, Ghana": null,
     "Manchester, England": {
       "city": "Manchester",
       "lat": 53.4424618,
@@ -4644,6 +4659,13 @@
       "lon": 69.7599716,
       "addresstype": "suburb",
       "population": "40000"
+    },
+    "Saḩāb, Jordan": {
+      "city": "Saḩāb",
+      "lat": 31.8786659,
+      "lon": 36.0043148,
+      "addresstype": "city",
+      "population": null
     },
     "Schaerbeek, Belgium": {
       "city": "Schaerbeek",
