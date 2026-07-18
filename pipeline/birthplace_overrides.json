@@ -21,6 +21,11 @@
     "Al-Hashmi Al-Hussain": {
       "birth_city": "Doha",
       "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    },
+    "Salah Zakaria": {
+      "birth_city": "Eastern Province",
+      "birth_country": "Saudi Arabia",
+      "_note": "birth_country had defaulted to Qatar (his nation) with no source; French Wikipedia's own article contradicts itself — infobox links 'Ach-Charqiya (Égypte)' but the prose says 'né ... à Ach-Charqiya en Arabie saoudite'. English Wikipedia has no place of birth at all. Ach-Charqiya/Ash-Sharqiyah names a real place in both Egypt (Sharqia Governorate) and Saudi Arabia (Eastern Province) — genuinely ambiguous. Using Saudi Arabia's Eastern Province per user decision on 2026-07-18 (prose repeated 'Arabie saoudite'; also geographically plausible for a Qatar international)."
     }
   },
   "Egypt": {
@@ -32,6 +37,10 @@
     "Hossam Abdelmaguid": {
       "birth_city": "Cairo",
       "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced manually."
+    },
+    "Mahmoud Saber": {
+      "birth_city": "Desouk",
+      "_note": "Wikidata/Wikipedia had no place of birth as of 2026-07; sourced from fr.wikipedia.org/wiki/Mahmoud_Saber ('30 juillet 2001 (24 ans) Desouk (Égypte)') on 2026-07-18."
     }
   },
   "Saudi Arabia": {

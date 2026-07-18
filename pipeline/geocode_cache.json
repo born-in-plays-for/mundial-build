@@ -1,6 +1,6 @@
 {
   "source": "nominatim.openstreetmap.org",
-  "updated": "2026-07-16",
+  "updated": "2026-07-18",
   "cities": {
     "12th arrondissement of Paris, France": {
       "city": "12th arrondissement of Paris",
@@ -1622,6 +1622,13 @@
       "lon": -0.3051952,
       "addresstype": "town",
       "population": "113777"
+    },
+    "Eastern Province, Saudi Arabia": {
+      "city": "Eastern Province",
+      "lat": 23.3036077,
+      "lon": 50.1258804,
+      "addresstype": "state",
+      "population": "5125254"
     },
     "Edelira, Paraguay": {
       "city": "Edelira",
@@ -4157,6 +4164,13 @@
       "lon": 17.3271281,
       "addresstype": "town",
       "population": "6386"
+    },
+    "Povoação Velha, Cape Verde": {
+      "city": "Povoação Velha",
+      "lat": 16.0387537,
+      "lon": -22.9174681,
+      "addresstype": "village",
+      "population": null
     },
     "Prague, Czech Republic": {
       "city": "Prague",
