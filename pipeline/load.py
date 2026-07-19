@@ -92,9 +92,10 @@ def classify_round(round_name):
 
 
 def compute_eliminated(fixtures):
-    """-> {iso2: {"round", "date", "lostTo"}}, from data/fixtures.json's
-    fixture list. See fetch_team_status.py's former docstring (git history)
-    for the elimination-logic rationale this ports verbatim:
+    """-> ({iso2: {"round", "date", "lostTo"}}, {iso2: {"result", "date", "opponent"}})
+    from data/fixtures.json's fixture list. See fetch_team_status.py's former
+    docstring (git history) for the elimination-logic rationale this ports
+    verbatim:
 
       - Knockout rounds: a finished fixture's loser is eliminated at that
         round, dated to kickoff, with lostTo recording the winner.
@@ -102,6 +103,18 @@ def compute_eliminated(fixtures):
         checking which WC2026 teams are absent from the Round of 32 field —
         that absence IS the tie-break result, already computed by whoever
         seeded that round.
+
+    Second dict covers ONLY the two Semi-finals losers who go on to play the
+    3rd Place Final — keyed by iso2, `result` is 'won' or 'lost'. Kept fully
+    separate from the first dict so the consolation match can never overwrite
+    a team's real bracket-elimination round/lostTo: both Semi-finals losers
+    already get an `eliminated` entry when that stage is processed, and the
+    3rd Place Final used to be just another stage in the same loop, so
+    whichever of the two lost it got its entry silently clobbered — round
+    flipping from 'Semi-finals' to '3rd Place Final', lostTo flipping from
+    its real Semi-finals conqueror to its 3rd-place opponent, destroying the
+    win-backlink that's the only proof the other Semi-finals winner won that
+    round.
     """
     by_stage = {}
     for f in fixtures:
@@ -124,6 +137,7 @@ def compute_eliminated(fixtures):
               f"{names}", file=sys.stderr)
 
     eliminated = {}
+    third_place = {}
 
     # ── Group stage: decide only once every group fixture is finished ────
     group_fixtures = by_stage.get("group", [])
@@ -150,9 +164,14 @@ def compute_eliminated(fixtures):
                 print(f"  Warning: could not resolve country for eliminated "
                       f"team in fixture {f['id']}", file=sys.stderr)
                 continue
+            if stage == "3rd Place Final":
+                date = f["date"][:10]
+                third_place[iso2] = {"result": "lost", "date": date, "opponent": winner_iso2}
+                third_place[winner_iso2] = {"result": "won", "date": date, "opponent": iso2}
+                continue
             eliminated[iso2] = {"round": stage, "date": f["date"][:10], "lostTo": winner_iso2}
 
-    return eliminated
+    return eliminated, third_place
 
 
 def compute_discipline(fixtures, fixture_stats):
@@ -463,7 +482,7 @@ def main():
         db.execute("INSERT INTO af_team VALUES (?,?)", (cid(t["iso2"]), t["id"]))
 
     # ── team_status: every WC2026 team starts 'alive', a loss updates it ─
-    eliminated = compute_eliminated(fixtures["fixtures"])
+    eliminated, third_place = compute_eliminated(fixtures["fixtures"])
     for row in db.execute("SELECT id FROM country WHERE is_wc2026 = 1"):
         db.execute("INSERT INTO team_status (country) VALUES (?)", (row[0],))
     for iso2, info in eliminated.items():
@@ -471,6 +490,10 @@ def main():
         db.execute("""UPDATE team_status SET status='eliminated', eliminated_round=?,
                      eliminated_date=?, eliminated_by=? WHERE country=?""",
                    (info["round"], info["date"], cid(lost_to) if lost_to else None, cid(iso2)))
+    for iso2, info in third_place.items():
+        db.execute("""UPDATE team_status SET third_place_result=?, third_place_date=?,
+                     third_place_opponent=? WHERE country=?""",
+                   (info["result"], info["date"], cid(info["opponent"]), cid(iso2)))
 
     # ── team_discipline: bucketed by stage (see compute_discipline). Seed
     # every wc2026 team with a zero Group Stage row so the anomaly gate

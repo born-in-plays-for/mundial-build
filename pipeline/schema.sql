@@ -89,14 +89,26 @@ CREATE TABLE af_team (
 -- have won, and its current round is one past that (see view_current_round).
 -- NULL for Group Stage exits (round-robin, no single deciding opponent —
 -- same condition as eliminated_date being NULL) or an unresolved name.
+--
+-- third_place_* covers ONLY the two Semi-finals losers, who go on to play
+-- the 3rd Place Final — kept fully separate from eliminated_round/_by so
+-- that consolation match can never overwrite a team's real bracket-
+-- elimination round (see load.py's compute_eliminated docstring for the
+-- overwrite bug this replaced). The CHECK below is a DB-enforced guarantee
+-- that '3rd Place Final' can never again appear as anyone's eliminated_round
+-- — the two concepts can't collide by construction.
 CREATE TABLE team_status (
     country          INTEGER PRIMARY KEY REFERENCES country(id),
     status           TEXT NOT NULL DEFAULT 'alive' CHECK (status IN ('alive', 'eliminated')),
     eliminated_round TEXT,
     eliminated_date  TEXT,
     eliminated_by    INTEGER REFERENCES country(id),
+    third_place_result   TEXT CHECK (third_place_result IN ('won', 'lost')),
+    third_place_date     TEXT,
+    third_place_opponent INTEGER REFERENCES country(id),
     CHECK ((status = 'alive') = (eliminated_round IS NULL)),
-    CHECK (eliminated_by IS NULL OR eliminated_round <> 'Group Stage')
+    CHECK (eliminated_by IS NULL OR eliminated_round <> 'Group Stage'),
+    CHECK (third_place_result IS NULL OR eliminated_round = 'Semi-finals')
 );
 
 -- ── Discipline (fouls/cards) ────────────────────────────────────────────
@@ -353,10 +365,12 @@ WHERE c.lat IS NOT NULL;
 -- Eliminated teams only (source of data/v2/status.json — absence from this
 -- view is the client-facing "still alive" signal, not a NULL/'alive' row).
 CREATE VIEW view_eliminated AS
-SELECT c.iso2, t.eliminated_round, t.eliminated_date, w.iso2 AS lost_to_iso2
+SELECT c.iso2, t.eliminated_round, t.eliminated_date, w.iso2 AS lost_to_iso2,
+       t.third_place_result, t.third_place_date, tp.iso2 AS third_place_opponent_iso2
 FROM team_status t
 JOIN country c ON c.id = t.country
 LEFT JOIN country w ON w.id = t.eliminated_by
+LEFT JOIN country tp ON tp.id = t.third_place_opponent
 WHERE t.status = 'eliminated';
 
 -- Debug/verification view only — NOT exported. Proves eliminated_by alone

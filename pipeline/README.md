@@ -206,8 +206,17 @@ Elimination status, one row per WC2026 team, derived from `data/fixtures.json`
   left to derive. Tagged `"Group Stage"`, undated, no `lostTo` (round-robin,
   no single deciding opponent — same condition as the missing date).
 
+- **3rd Place Final** — the two Semi-finals losers' consolation match. Its
+  result is recorded additively, in its own `thirdPlace` field, never by
+  overwriting the Semi-finals loss: `round`/`lostTo` are guaranteed to never
+  read `"3rd Place Final"` (enforced by `team_status`'s CHECK constraint),
+  so a team's real bracket-elimination round and its 3rd-place outcome can
+  never collide in the same slot the way they used to.
+
 `data/v2/status.json` carries **only eliminated teams** — `{iso2: {round,
-date?, lostTo?}}`. A team absent from the file is still alive; the client
+date?, lostTo?, thirdPlace?}}`, where `thirdPlace` is `{result: 'won'|'lost',
+date, opponent}`, present only for the two Semi-finals losers once their
+3rd Place Final has been played. A team absent from the file is still alive; the client
 never needs a positive "still in it" list, since the alternative (listing
 all 48 minus eliminated) grows the payload as the tournament empties out,
 exactly backwards from what you'd want. Verified against the live API

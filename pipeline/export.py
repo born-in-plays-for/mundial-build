@@ -175,14 +175,20 @@ def build_status(db):
     """Eliminated teams only — absence from this file IS the "still alive"
     signal (see schema.sql's view_eliminated / team_status comments).
     lostTo (who beat them) also derives every ALIVE team's current round —
-    see schema.sql's view_current_round for the walk-the-chain logic."""
+    see schema.sql's view_current_round for the walk-the-chain logic.
+    thirdPlace is additive and only present for the two Semi-finals losers,
+    once their 3rd Place Final has been played — round/lostTo never read
+    '3rd Place Final' (see team_status's CHECK constraint)."""
     status = {}
-    for iso2, rnd, dt, lost_to in db.execute("SELECT * FROM view_eliminated ORDER BY iso2"):
+    for iso2, rnd, dt, lost_to, tp_result, tp_date, tp_opp in db.execute(
+            "SELECT * FROM view_eliminated ORDER BY iso2"):
         entry = {"round": rnd}
         if dt is not None:
             entry["date"] = dt
         if lost_to is not None:
             entry["lostTo"] = lost_to
+        if tp_result is not None:
+            entry["thirdPlace"] = {"result": tp_result, "date": tp_date, "opponent": tp_opp}
         status[iso2] = entry
     return status
 
