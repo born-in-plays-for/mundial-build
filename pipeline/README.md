@@ -34,6 +34,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish numpy scipy
 | `fetch_countries.py` | `countries.json` | Population + multilingual capital from mledoze + World Bank + Wikidata. Auto-runs `patch_uk_nations.py` + `patch_kosovo.py` at the end. |
 | `patch_uk_nations.py` | `countries.json` (in-place) | Adds UK home nations (ids 8260–8263) |
 | `patch_kosovo.py` | `countries.json`, `data/elo_rank.json` (in-place) | Adds Kosovo (id 383) |
+| `patch_weirdo_territories.py` | `countries.json` (in-place) | Adds Northern Cyprus (id 8264) + Somaliland (id 8265) population/capital — their `elo_rank.json` entries come straight from `update_elo_rankings.py`'s own `ELO_SPECIAL` table, no separate patch needed |
 | `patch_unrated_birth_countries.py` | `data/elo_rank.json` (in-place) | Generalizes the above: any real `countries.json` country referenced as a birth country in `map_data.json` but absent from `elo_rank.json`'s rankings (e.g. Isle of Man, id 833) |
 | `country_registry.py` | _(module, no output)_ | Canonical country-identity resolver — see below. Run directly (`python3 pipeline/country_registry.py`) for a self-test. |
 | `wc2026_birthplaces.py` | `wc2026_players.csv` | Scraper: Wikipedia squad page + Wikidata birth lookup |
@@ -827,6 +828,24 @@ addition. Auto-called at the end of `update_elo_rankings.py`, right after
 `patch_kosovo.py`; idempotent and safe to re-run. Still deliberately
 narrower than Kosovo/UK-nations: a birth country absent from
 `countries.json` entirely is still its own one-off patch script to write.
+
+A related but distinct gap: Northern Cyprus and Somaliland already have
+*real, live* eloratings.net ratings — they're just reported under a
+made-up 2-letter eloratings.net code with no ISO 3166-1 equivalent, so
+`update_elo_rankings.py`'s parser used to bucket them as `weirdo: true`
+(`id: None`, `iso2: None`, invisible to the frontend the same way Kurdistan/
+Zanzibar/Tibet/etc. still are). Since both already have real `rank`/`pts`
+every run, this needed a different fix than the null-ranked patches above:
+`update_elo_rankings.py`'s own `ELO_SPECIAL` table (already used for the UK
+home nations/Tahiti) now routes them in directly with a project-assigned id
+(8264/8265, continuing the UK nations' block) and a pseudo `iso2` matching
+the `circle-flags` CDN's own filename for each (`northern_cyprus.svg`/
+`somaliland.svg`) — no elo_rank.json patch script needed at all.
+`patch_weirdo_territories.py` is the `countries.json`-side counterpart
+(population/capital, pulled live from each territory's own Wikidata item —
+both happen to carry real P1082/P36 statements, unlike Kosovo), auto-called
+at the end of `fetch_countries.py` alongside `patch_uk_nations.py`/
+`patch_kosovo.py`.
 
 ---
 

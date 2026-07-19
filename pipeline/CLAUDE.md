@@ -9,7 +9,7 @@ matters when actually working in `pipeline/`.
 
 ```bash
 # Countries (run when rebuilding from scratch — patches run automatically at end)
-python3 pipeline/fetch_countries.py      # → pipeline/countries.json (includes patch_uk_nations + patch_kosovo)
+python3 pipeline/fetch_countries.py      # → pipeline/countries.json (includes patch_uk_nations + patch_kosovo + patch_weirdo_territories)
 
 # Squad data
 python3 pipeline/wc2026_birthplaces.py  # → pipeline/wc2026_players.csv
@@ -96,7 +96,7 @@ python3 pipeline/export.py           # → data/v2/*.json, incl. status.json —
 Then follow "Commit workflow" below — commit `data/fixtures.json` and
 `data/v2/status.json` together, since both come from this one fetch.
 
-## UK home nations & Kosovo
+## UK home nations, Kosovo, Northern Cyprus & Somaliland
 
 Standard ISO tables don't include UK home nations (ids 8260–8263, alpha2 `gb-eng/gb-sct/gb-wls/gb-nir`) or Kosovo (id 383, `xk`). They are injected by patch scripts:
 
@@ -104,6 +104,26 @@ Standard ISO tables don't include UK home nations (ids 8260–8263, alpha2 `gb-e
 - `pipeline/patch_kosovo.py` — patches `pipeline/countries.json` and `data/elo_rank.json`
 
 Both patches are **automatically called** at the end of `fetch_countries.py`. They can also be run standalone. (`patch_kosovo.py` is also called a second time, standalone, at the end of `update_elo_rankings.py` — see below — since `data/elo_rank.json` doesn't exist yet when `fetch_countries.py` runs.)
+
+Northern Cyprus (id 8264) and Somaliland (id 8265) are the same kind of gap,
+continuing the same self-assigned id block, but a different shape: both
+already have real, live ratings on eloratings.net (unlike Kosovo, which isn't
+on the TSV at all) — eloratings.net just has no ISO code to report them
+under, so `update_elo_rankings.py`'s own parser used to route them into
+`WEIRDO_NAMES` (`id: None, iso2: None`, invisible to the frontend). Its
+`ELO_SPECIAL` table (already used for the UK nations/Tahiti) now routes them
+in directly instead, with a project-assigned id and a pseudo `iso2` matching
+the `circle-flags` CDN's own filename for each (`northern_cyprus.svg`/
+`somaliland.svg` — neither has a widely-recognized real 2-letter code, unlike
+Kosovo's `xk`) — no separate elo_rank.json patch script needed, since their
+real `rank`/`pts` already come straight from the TSV parse every run.
+`pipeline/patch_weirdo_territories.py` is the `countries.json`-side
+counterpart (population/capital, for display parity with every other
+non-qualified pill) — population and capital are pulled live from each
+territory's own Wikidata item (P1082/P36), not hardcoded, since (unlike
+Kosovo) both actually carry that data. Auto-called at the end of
+`fetch_countries.py` alongside the other two patches; idempotent, can also
+be run standalone.
 
 ## Unrated birth countries (real ISO country, no eloratings.net entry)
 

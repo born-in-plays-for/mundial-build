@@ -46,14 +46,27 @@ HEADERS = {
     'Accept': 'text/tab-separated-values, text/plain, */*',
 }
 
-# UK home nations + Tahiti: eloratings code → (app_id, iso2, name, fifaMember)
-# These bypass the standard ISO alpha-2 lookup entirely.
+# UK home nations + Tahiti + Northern Cyprus + Somaliland: eloratings code →
+# (app_id, iso2, name, fifaMember). These bypass the standard ISO alpha-2
+# lookup entirely — app_id is a project-assigned synthetic id (no official
+# ISO 3166-1 numeric exists), same block as the UK home nations (8260-8263).
+# Northern Cyprus/Somaliland's 'iso2' is not a real alpha-2 code either — it's
+# the circle-flags CDN's own filename for each (northern_cyprus.svg,
+# somaliland.svg — verified present there, unlike a 2-letter code neither
+# entity has a widely-recognized version of), reused as the pseudo-code
+# throughout this project's id→flag lookups (mirrors 'gb-eng' etc. already
+# being longer than 2 chars). Both DO have real, live Elo ratings from
+# eloratings.net (unlike Kosovo, which needs its own patch script because
+# it's absent from the TSV entirely) — they only needed routing here instead
+# of WEIRDO_NAMES below to get a proper id/iso2 instead of id=None/iso2=None.
 ELO_SPECIAL = {
-    'EN': (8260, 'gb-eng', 'England',          True),
-    'SQ': (8261, 'gb-sct', 'Scotland',         True),
-    'WA': (8262, 'gb-wls', 'Wales',            True),
-    'EI': (8263, 'gb-nir', 'Northern Ireland', True),
-    'TI': (258,  'pf',     'Tahiti',           True),
+    'EN': (8260, 'gb-eng',           'England',           True),
+    'SQ': (8261, 'gb-sct',           'Scotland',          True),
+    'WA': (8262, 'gb-wls',           'Wales',             True),
+    'EI': (8263, 'gb-nir',           'Northern Ireland',  True),
+    'TI': (258,  'pf',               'Tahiti',            True),
+    'NS': (8264, 'northern_cyprus',  'Northern Cyprus',   False),
+    'JS': (8265, 'somaliland',       'Somaliland',        False),
 }
 
 # eloratings codes that differ from ISO 3166-1 alpha-2
@@ -71,10 +84,8 @@ ELO_OVERRIDES = {
 # of a local override dict.
 
 WEIRDO_NAMES = {
-    'NS': 'Northern Cyprus',
     'KD': 'Kurdistan',
     'ZN': 'Zanzibar',
-    'JS': 'Somaliland',
     'HG': 'Chagos Islands',
     'EU': 'Sint Eustatius',
     'AB': 'Saba',

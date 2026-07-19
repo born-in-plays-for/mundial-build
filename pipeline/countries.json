@@ -3543,5 +3543,33 @@
       "es": "Pristina"
     },
     "population": 1762009
+  },
+  "8264": {
+    "id": 8264,
+    "alpha2": "northern_cyprus",
+    "alpha3": "",
+    "name": "Northern Cyprus",
+    "capital": {
+      "en": "North Nicosia",
+      "fr": "Nicosie-Nord",
+      "de": "Nord-Nikosia",
+      "it": "Nicosia Nord",
+      "es": "Nicosia del Norte"
+    },
+    "population": 476214
+  },
+  "8265": {
+    "id": 8265,
+    "alpha2": "somaliland",
+    "alpha3": "",
+    "name": "Somaliland",
+    "capital": {
+      "en": "Hargeisa",
+      "fr": "Hargeisa",
+      "de": "Hargeysa",
+      "it": "Hargheisa",
+      "es": "Hargeisa"
+    },
+    "population": 6500000
   }
 }

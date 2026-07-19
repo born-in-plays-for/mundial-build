@@ -148,8 +148,8 @@ with open(out_path, "w", encoding="utf-8") as f:
 
 print(f"  Written {len(result)} entries → {out_path}")
 
-# ── 5. Apply patches (UK home nations + Kosovo) ───────────────────────────────
+# ── 5. Apply patches (UK home nations + Kosovo + Northern Cyprus/Somaliland) ──
 here = Path(__file__).parent
-for patch in ("patch_uk_nations.py", "patch_kosovo.py"):
+for patch in ("patch_uk_nations.py", "patch_kosovo.py", "patch_weirdo_territories.py"):
     print(f"\n── {patch} ──────────────────────────────────────────────")
     subprocess.run([sys.executable, str(here / patch)], check=True)
