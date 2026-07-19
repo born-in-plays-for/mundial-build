@@ -34,6 +34,7 @@ pip install requests beautifulsoup4 pandas lxml pycountry jellyfish numpy scipy
 | `fetch_countries.py` | `countries.json` | Population + multilingual capital from mledoze + World Bank + Wikidata. Auto-runs `patch_uk_nations.py` + `patch_kosovo.py` at the end. |
 | `patch_uk_nations.py` | `countries.json` (in-place) | Adds UK home nations (ids 8260–8263) |
 | `patch_kosovo.py` | `countries.json`, `data/elo_rank.json` (in-place) | Adds Kosovo (id 383) |
+| `patch_unrated_birth_countries.py` | `data/elo_rank.json` (in-place) | Generalizes the above: any real `countries.json` country referenced as a birth country in `map_data.json` but absent from `elo_rank.json`'s rankings (e.g. Isle of Man, id 833) |
 | `country_registry.py` | _(module, no output)_ | Canonical country-identity resolver — see below. Run directly (`python3 pipeline/country_registry.py`) for a self-test. |
 | `wc2026_birthplaces.py` | `wc2026_players.csv` | Scraper: Wikipedia squad page + Wikidata birth lookup |
 | `wc2026_coaches.py` | `wc2026_coaches.csv` | Scraper: coaches from Wikipedia squad page + Wikidata birth lookup |
@@ -810,6 +811,22 @@ the end of `fetch_countries.py`. `update_elo_rankings.py` re-fetches from
 eloratings.net (which doesn't have Kosovo), so re-run `patch_kosovo.py`
 afterward if you ever call `update_elo_rankings.py` outside the documented
 order above.
+
+More generally, a player/coach's *birth* country doesn't have to be a
+WC2026 team, a FIFA member, or even eloratings.net-rated at all — it just
+has to be a real place someone was born. `patch_unrated_birth_countries.py`
+generalizes the Kosovo case: it reads `map_data.json`'s already-resolved
+`data[]` array (not the raw CSVs' `birth_country` column directly — that
+one can still carry a pre-drill-down "United Kingdom" for players, resolved
+down to a home nation only later, in `build_json.py`) for any birth-country
+iso2 missing from `elo_rank.json`'s rankings, and patches it in with a
+null-ranked entry (`fifaMember` from `fifa_members_cache.json`, `weirdo:
+false`) — same shape as Kosovo's, minus the `fifaAbsences` bookkeeping,
+which stays specific to FIFA members and is untouched by a non-member
+addition. Auto-called at the end of `update_elo_rankings.py`, right after
+`patch_kosovo.py`; idempotent and safe to re-run. Still deliberately
+narrower than Kosovo/UK-nations: a birth country absent from
+`countries.json` entirely is still its own one-off patch script to write.
 
 ---
 

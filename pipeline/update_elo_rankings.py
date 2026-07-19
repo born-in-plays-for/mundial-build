@@ -384,6 +384,15 @@ def main():
         [sys.executable, str(Path(__file__).parent / 'patch_kosovo.py')],
         check=True,
     )
+    # Generalizes the Kosovo patch above to any other real, resolvable birth
+    # country (see pipeline/map_data.json's own data[] array) that
+    # eloratings.net doesn't rate — e.g. the Isle of Man. See
+    # patch_unrated_birth_countries.py's own docstring for why this is a
+    # separate, additive script rather than folded into patch_kosovo.py.
+    subprocess.run(
+        [sys.executable, str(Path(__file__).parent / 'patch_unrated_birth_countries.py')],
+        check=True,
+    )
 
     final = json.loads(OUT.read_text(encoding='utf-8'))
     fr = final['rankings']

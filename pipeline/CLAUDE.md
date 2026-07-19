@@ -25,7 +25,7 @@ python3 pipeline/add_wiki_urls.py       # → pipeline/map_data.json (in-place) 
 # from a CSV.
 python3 pipeline/validate_country_coverage.py
 
-# Elo ratings (no key needed; re-patches Kosovo automatically)
+# Elo ratings (no key needed; re-patches Kosovo + any unrated birth country automatically)
 python3 pipeline/update_elo_rankings.py  # → data/elo_rank.json
 
 # Round of 32 teams + player/coach identity for the live-match page (need API_FOOTBALL_KEY)
@@ -103,7 +103,28 @@ Standard ISO tables don't include UK home nations (ids 8260–8263, alpha2 `gb-e
 - `pipeline/patch_uk_nations.py` — patches `pipeline/countries.json` in-place
 - `pipeline/patch_kosovo.py` — patches `pipeline/countries.json` and `data/elo_rank.json`
 
-Both patches are **automatically called** at the end of `fetch_countries.py`. They can also be run standalone.
+Both patches are **automatically called** at the end of `fetch_countries.py`. They can also be run standalone. (`patch_kosovo.py` is also called a second time, standalone, at the end of `update_elo_rankings.py` — see below — since `data/elo_rank.json` doesn't exist yet when `fetch_countries.py` runs.)
+
+## Unrated birth countries (real ISO country, no eloratings.net entry)
+
+A player/coach's *birth* country doesn't have to be a WC2026 team, a FIFA
+member, or even rated by eloratings.net — it just has to be a real place
+someone was born. When such a country is already a genuine entry in
+`pipeline/countries.json` but eloratings.net simply doesn't track it, it has
+no `data/elo_rank.json` entry and so renders nowhere as a normal country pill
+(only ever as a birth-city value). Kosovo above is one hand-maintained
+instance of this; `pipeline/patch_unrated_birth_countries.py` generalizes it:
+it scans `pipeline/map_data.json`'s already-resolved `data[]` array (built by
+`build_json.py`) for birth-country iso2s absent from `data/elo_rank.json`'s
+`rankings`, and patches each in with a synthetic, null-ranked entry
+(`fifaMember` looked up from `pipeline/fifa_members_cache.json`, `weirdo:
+false`) — e.g. the Isle of Man (id 833, `im`), added 2026-07 after a Canada
+international's geocoded birthplace surfaced the gap. Idempotent, called
+automatically at the end of `update_elo_rankings.py` (after `patch_kosovo.py`
+there), can also be run standalone. Deliberately narrower than Kosovo/UK-
+nations: it only ever adds a country `map_data.json` already carries a
+resolved iso2 for — a birth country with no `countries.json` entry at all is
+still a one-off patch script of its own, same as Kosovo/UK nations are.
 
 ## Country identity (iso2 is the join key)
 
