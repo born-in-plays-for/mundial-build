@@ -74,8 +74,9 @@ CREATE TABLE af_team (
 -- alive is a data/v2/status.json export-time convention, not a DB one.
 --
 -- eliminated_round is the API's own round-name string for a knockout exit
--- ('Round of 32', 'Round of 16', 'Quarter-finals', 'Semi-finals', 'Final')
--- or the literal 'Group Stage' when a team misses the round-of-32 cut.
+-- ('Round of 32', 'Round of 16', 'Quarter-finals', 'Semi-finals',
+-- '3rd Place Final', 'Final') or the literal 'Group Stage' when a team
+-- misses the round-of-32 cut.
 -- eliminated_date is NULL for a Group Stage exit: WC2026's 8-best-thirds
 -- tie-break isn't recomputed here — non-appearance in the round of 32
 -- bracket, once every group fixture is finished, IS the tie-break result,
@@ -417,7 +418,8 @@ LEFT JOIN view_current_round cr ON cr.iso2 = c.iso2;
 CREATE VIEW view_discipline AS
 WITH stage_order(stage, ord) AS (
     VALUES ('Group Stage', 0), ('Round of 32', 1), ('Round of 16', 2),
-           ('Quarter-finals', 3), ('Semi-finals', 4), ('Final', 5)
+           ('Quarter-finals', 3), ('Semi-finals', 4), ('3rd Place Final', 5),
+           ('Final', 6)
 ),
 cumulative AS (
     SELECT d.country, so.stage, so.ord,
