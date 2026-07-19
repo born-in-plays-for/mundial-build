@@ -1,6 +1,6 @@
 {
   "source": "api-football.com",
-  "updated": "2026-07-12",
+  "updated": "2026-07-19",
   "fixtures": {
     "1489369": {
       "mx": {
@@ -1200,6 +1200,42 @@
         "foulsCommitted": 18,
         "yellowCards": 2,
         "redCards": 1
+      }
+    },
+    "1585131": {
+      "fr": {
+        "foulsCommitted": 11,
+        "yellowCards": 2,
+        "redCards": 0
+      },
+      "es": {
+        "foulsCommitted": 12,
+        "yellowCards": 1,
+        "redCards": 0
+      }
+    },
+    "1586077": {
+      "gb-eng": {
+        "foulsCommitted": 11,
+        "yellowCards": 1,
+        "redCards": 0
+      },
+      "ar": {
+        "foulsCommitted": 15,
+        "yellowCards": 3,
+        "redCards": 0
+      }
+    },
+    "1591865": {
+      "fr": {
+        "foulsCommitted": 14,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "gb-eng": {
+        "foulsCommitted": 8,
+        "yellowCards": 0,
+        "redCards": 0
       }
     }
   }
