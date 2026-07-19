@@ -72,7 +72,8 @@ FINISHED = {"FT", "AET", "PEN"}
 # league/season (verified live — see fetch_r32_teams.py's find_r32_round
 # for the naming-varies-by-edition caveat; add fallbacks here if a future
 # re-run reports an unrecognized round name for a knockout fixture).
-KNOCKOUT_STAGES = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals", "Final"]
+KNOCKOUT_STAGES = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals",
+                   "3rd Place Final", "Final"]
 
 
 def read_json(path):
