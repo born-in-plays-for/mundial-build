@@ -1,6 +1,6 @@
 {
   "source": "api-football.com",
-  "updated": "2026-07-19",
+  "updated": "2026-07-23",
   "fixtures": {
     "1489369": {
       "mx": {
@@ -1236,6 +1236,18 @@
         "foulsCommitted": 8,
         "yellowCards": 0,
         "redCards": 0
+      }
+    },
+    "1591866": {
+      "es": {
+        "foulsCommitted": 21,
+        "yellowCards": 0,
+        "redCards": 0
+      },
+      "ar": {
+        "foulsCommitted": 25,
+        "yellowCards": 6,
+        "redCards": 1
       }
     }
   }
